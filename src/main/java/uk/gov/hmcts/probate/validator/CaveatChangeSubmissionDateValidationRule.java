@@ -2,67 +2,69 @@ package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
+
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
 public class CaveatChangeSubmissionDateValidationRule {
 
     public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE = "applicationSubmittedDateIsInTheFuture";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE_WELSH =
-            "applicationSubmittedDateIsInTheFutureWelsh";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD = "applicationSubmittedDateBeforeDod";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD_WELSH =
-            "applicationSubmittedDateBeforeDodWelsh";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID =
             "applicationSubmittedDateDodMissingOrInvalid";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID_WELSH =
-            "applicationSubmittedDateDodMissingOrInvalidWelsh";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_MISSING = "applicationSubmittedDateIsEmpty";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_MISSING_WELSH = "applicationSubmittedDateIsEmptyWelsh";
+    public static final String CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT =
+            "applicationSubmittedDateMissingPayment";
 
-    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private final PaymentsService paymentsService;
+    private final BusinessValidationMessageService businessValidationMessageService;
 
-    public List<String> validate(CaveatDetails caseDetails) {
-        List<String> errors = new ArrayList<>();
+    public List<FieldErrorResponse> validate(CaveatDetails caseDetails) {
+        Set<FieldErrorResponse> errors = new HashSet<>();
         CaveatData caveatData = caseDetails.getData();
 
         LocalDate applicationSubmittedDate = caveatData.getApplicationSubmittedDate();
         if (applicationSubmittedDate == null) {
-            addMessagePair(errors, CODE_APPLICATION_SUBMITTED_DATE_MISSING,
-                    CODE_APPLICATION_SUBMITTED_DATE_MISSING_WELSH);
-            return errors;
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    CODE_APPLICATION_SUBMITTED_DATE_MISSING));
+            return new ArrayList<>(errors);
         }
 
         if (applicationSubmittedDate.isAfter(LocalDate.now())) {
-            addMessagePair(errors, CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE,
-                    CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE_WELSH);
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE));
         }
 
         LocalDate dod = caveatData.getDeceasedDateOfDeath();
         if (dod == null || dod.isAfter(LocalDate.now())) {
-            addMessagePair(errors, CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID,
-                    CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID_WELSH);
-            return errors;
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID));
+            return new ArrayList<>(errors);
         }
 
         if (dod.isAfter(applicationSubmittedDate)) {
-            addMessagePair(errors, CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD,
-                    CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD_WELSH);
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD));
         }
 
-        return errors;
+        if (!paymentsService.isPaymentSuccessByCaseId(caseDetails.getId().toString())) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT));
+        }
+
+        return new ArrayList<>(errors);
     }
 
-    private void addMessagePair(List<String> errors, String englishCode, String welshCode) {
-        errors.add(businessValidationMessageRetriever.getMessage(englishCode, null, Locale.UK));
-        errors.add(businessValidationMessageRetriever.getMessage(welshCode, null, Locale.UK));
-    }
 }
