@@ -306,18 +306,28 @@ public class CaveatController {
 
     @PostMapping(path = "/change-submission-date")
     public ResponseEntity<CaveatCallbackResponse> changeSubmissionDate(
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest
+    ) {
         log.info("change-submission-date case id: {}", caveatCallbackRequest.getCaseDetails().getId());
+        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+        caveatNotificationService.recalculateSubmissionExpiryDate(caveatData);
+        caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.changeSubmissionDate(
+                caveatCallbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
+    @PostMapping(path = "/validate-change-submission-date")
+    public ResponseEntity<CaveatCallbackResponse> validateChangeSubmissionDate(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        log.info("valiate-change-submission-date case id: {}", callbackRequest.getCaseDetails().getId());
         List<FieldErrorResponse> errors = caveatChangeSubmissionDateValidationRule
-                .validate(caveatCallbackRequest.getCaseDetails());
+                .validate(callbackRequest.getCaseDetails());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(CaveatCallbackResponse.builder()
                     .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                     .build());
         }
-        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
-        caveatNotificationService.recalculateSubmissionExpiryDate(caveatData);
-        caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
-        return ResponseEntity.ok(caveatCallbackResponseTransformer.changeSubmissionDate(caveatCallbackRequest));
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 }

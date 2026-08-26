@@ -237,7 +237,6 @@ class CaveatControllerUnitTest {
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
         CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
 
-        when(caveatChangeSubmissionDateValidationRule.validate(caveatDetails)).thenReturn(List.of());
         when(caveatCallbackResponseTransformer.changeSubmissionDate(request)).thenReturn(caveatCallbackResponse);
 
         ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
@@ -249,7 +248,7 @@ class CaveatControllerUnitTest {
     }
 
     @Test
-    void shouldReturnValidationErrorsForChangeSubmissionDate() {
+    void shouldReturnValidationErrorsForValidateChangeSubmissionDate() {
         CaveatData caveatData = CaveatData.builder().build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
         CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
@@ -262,7 +261,7 @@ class CaveatControllerUnitTest {
         when(caveatChangeSubmissionDateValidationRule.validate(caveatDetails))
                 .thenReturn(errors);
 
-        ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.validateChangeSubmissionDate(request);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors(), is(List.of("error-1", "error-2")));
