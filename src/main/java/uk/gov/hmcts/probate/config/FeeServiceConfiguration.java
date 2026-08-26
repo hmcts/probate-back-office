@@ -18,6 +18,7 @@ public class FeeServiceConfiguration {
     private String applicantType;
     private String keyword;
     private String newCopiesFeeKeyword;
+    private String newCopiesFee2026Keyword;
     private String newIssuesFee5kKeyword;
     private String newIssuesFeeKeyword;
     private String newCaveat;

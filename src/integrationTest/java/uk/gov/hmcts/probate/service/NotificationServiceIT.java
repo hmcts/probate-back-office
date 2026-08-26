@@ -34,10 +34,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -185,11 +185,15 @@ class NotificationServiceIT {
     @Mock
     private DateFormatterService dateFormatterService;
 
+
     @MockitoBean
     private AuthTokenGenerator tokenGenerator;
 
     @MockitoBean
     private DocumentManagementService documentManagementService;
+
+    @MockitoBean
+    FeatureToggleService featureToggleServiceMock;
 
     @MockitoBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -1214,7 +1218,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
@@ -1246,7 +1250,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
 
         verify(notificationClient).sendEmail(
@@ -1279,7 +1283,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
@@ -1321,7 +1325,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseDataWelsh);
 
         verify(notificationClient).sendEmail(

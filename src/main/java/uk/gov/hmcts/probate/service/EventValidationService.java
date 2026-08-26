@@ -35,10 +35,10 @@ public class EventValidationService {
     private final CCDDataTransformer ccdBeanTransformer;
     private final CaveatDataTransformer caveatDataTransformer;
 
-    static final String SEP_DATE_BEFORE_DOB_EN = "WIP Date of divorce, dissolution or judicial separation"
+    static final String SEP_DATE_BEFORE_DOB_EN = "Date of divorce, dissolution or judicial separation"
             + " must be after the date of birth";
-    static final String SEP_DATE_BEFORE_DOB_CY = "WIP (NEEDS TRANSLATION) Date of divorce, dissolution or"
-            + " judicial separation must be after the date of birth";
+    static final String SEP_DATE_BEFORE_DOB_CY = "Rhaid i ddyddiad yr ysgariad, diddymiad neu ymwahaniad"
+            + " cyfreithiol fod ar ôl y dyddiad geni";
 
     static final String SEP_DATE_AFTER_DOD_EN = "Date of divorce, dissolution or judicial separation must be"
             + " before the date of death";

@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -88,14 +89,20 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doReturn;
+
+
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
@@ -226,6 +233,10 @@ class BusinessValidationUnitTest {
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -270,7 +281,8 @@ class BusinessValidationUnitTest {
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
-            attorneyAppointedExecutorValidationRule);
+            attorneyAppointedExecutorValidationRule,
+            ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -322,10 +334,12 @@ class BusinessValidationUnitTest {
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess(AUTH_TOKEN,
-                "GrantOfRepresentation", callbackRequestMock);
+                "GrantOfRepresentation", true,callbackRequestMock);
 
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -1413,6 +1427,29 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(callbackResponseTransformerMock).transformForIssueGrant(any(), any());
     }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCaseDetailsIsNull() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> underTest.setSupplementaryData(callbackRequestMock)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
+    }
+
 
     @Test
     void testSolsCreationReportsErrorsSepDate() {

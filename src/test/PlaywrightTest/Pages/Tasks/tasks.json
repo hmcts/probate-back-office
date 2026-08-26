@@ -1,0 +1,15 @@
+{
+    "ExamineDigitalCaseProbate": {
+        "Name": "Examine Digital Case - Probate",
+        "Priority": "low",
+        "WorkingDaysToComplete": 10,
+        "NextSteps": [
+            "Amend Case Details",
+            "Issue Grant",
+            "Escalate to Registrar",
+            "Select For QA",
+            "SME Referral",
+            "Stop Case"
+        ]
+    }
+}

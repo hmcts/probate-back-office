@@ -561,12 +561,12 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.remissionPageSubHeadingLocator).toBeVisible();
     await this.page.locator('#remissionCode').fill(refundConfig.remissionReference);
     await this.continueButtonLocator.click();
-    await expect(this.remissionPageSubHeadingLocator).not.toBeVisible();
+    await expect(this.remissionPageSubHeadingLocator).toBeHidden();
 
     await expect(this.remissionAmountHeadingLocator).toBeVisible();
     await this.page.locator('#amount').fill(refundConfig.remissionAmount);
     await this.page.getByRole('button', { name: 'Continue' }).click();
-    await expect(this.remissionAmountHeadingLocator).not.toBeVisible();
+    await expect(this.remissionAmountHeadingLocator).toBeHidden();
 
     await expect(this.cyaPageHeadingLocator).toBeVisible();
     await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionReference) })).toBeVisible();
