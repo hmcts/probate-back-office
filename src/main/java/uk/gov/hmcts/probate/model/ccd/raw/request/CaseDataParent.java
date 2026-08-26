@@ -105,17 +105,14 @@ public class CaseDataParent {
     private final String reissueDate;
     private final String grantIssuedDate;
 
-    private final LocalDate currentDate = LocalDate.now();
-    private final boolean hasGrantIssuedDate =
-            null != this.getGrantIssuedDate() && !this.getGrantIssuedDate().isBlank();
-
     @Getter(lazy = true)
     private final String reissueDateFormatted = convertDate(reissueDate);
 
     @Getter(lazy = true)
-    private final String grantIssuedDateFormatted = hasGrantIssuedDate
+    private final String grantIssuedDateFormatted =
+        grantIssuedDate != null && !grantIssuedDate.isBlank()
             ? convertDate(grantIssuedDate)
-            : convertDate(currentDate);
+            : convertDate(LocalDate.now());
 
     public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
