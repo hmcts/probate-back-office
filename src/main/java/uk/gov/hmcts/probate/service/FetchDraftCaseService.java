@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.payments.ServiceRequestClient;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
@@ -21,10 +21,10 @@ import java.util.List;
 @Slf4j
 public class FetchDraftCaseService {
 
-    public static final String SERVICE_NAME = "Probate";
     private final SecurityUtils securityUtils;
     private final ServiceRequestClient serviceRequestClient;
     private final NotificationService notificationService;
+    private final PaymentsService paymentsService;
     private final ElasticSearchRepository elasticSearchRepository;
     private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
             + "draft_cases_date_range_query.json";
@@ -84,7 +84,7 @@ public class FetchDraftCaseService {
     private void processCases(List<CaseDetails> cases, List<CaseDetails> successfulPaymentCases) {
         for (CaseDetails caseDetails : cases) {
             log.info("Draft state case id: {}", caseDetails.getId());
-            boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
+            boolean isPaymentSuccessful = paymentsService.isPaymentSuccessByCaseId(caseDetails.getId().toString());
 
             if (isPaymentSuccessful) {
                 log.info("Payment status is Success for case id: {}", caseDetails.getId());
@@ -105,16 +105,5 @@ public class FetchDraftCaseService {
         } catch (NotificationClientException e) {
             log.error("NotificationClientException for GOR report: {}", e.getMessage());
         }
-    }
-
-    private boolean processPayment(String caseId) {
-        SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-        PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
-                securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
-
-        boolean isPaymentSuccessful = response.getPayments().stream()
-                .anyMatch(payment -> "success".equalsIgnoreCase(payment.getStatus()));
-        log.info("PaymentSuccessful: {}", isPaymentSuccessful);
-        return isPaymentSuccessful;
     }
 }
