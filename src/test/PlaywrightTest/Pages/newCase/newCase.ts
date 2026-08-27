@@ -70,7 +70,6 @@ export class CreateCasePage extends BasePage {
     }
 
     async selectCaseTypeOptions(caseType: string, event: string) {
-        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await this.verifyPageLoad(this.createCaseLocator, 10_000);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
