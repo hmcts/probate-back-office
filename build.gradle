@@ -181,7 +181,7 @@ def versions = [
         jacksonVersion                  : '2.22.2',
         jsoup                           : '1.23.2',
         launchdarkly                    : '7.15.0',
-        lifeEventsClientVersion         : '1.5.7',
+        lifeEventsClientVersion         : '1.6.0',
         lombok                          : '1.18.46',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
