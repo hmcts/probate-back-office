@@ -207,4 +207,8 @@ public class TaskAttributeConstants {
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
+
+    public static final String EXAMINE_HORIZON_SCHEME_PRINTED = "ExamineHorizonSchemePrinted";
+    public static final String EXAMINE_HORIZON_SCHEME_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
+    public static final String EXAMINE_HORIZON_SCHEME_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
 }
