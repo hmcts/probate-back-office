@@ -1,6 +1,11 @@
 import axios from 'axios';
+import { testConfig } from '../../Configs/config.ts';
 
-export const getAccessToken = async ( idamUrl, email: string,  password: string  ) => {
+export const getAccessToken = async (
+  idamUrl: string,
+  email: string,
+  password: string,
+): Promise<string> => {
   try {
     console.log('=== API REQUEST DEBUG ===');
     console.log('Base URL:', idamUrl);
@@ -11,16 +16,27 @@ export const getAccessToken = async ( idamUrl, email: string,  password: string 
     console.log('Password is undefined:', password === undefined);
     console.log('Email trimmed length:', email?.trim().length);
     console.log('Password trimmed length:', password?.trim().length);
-    const axiosConfig = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      timeout: 30000,  // - 30 second timeout
-    };
-    const url = `${idamUrl}/loginUser?username=${email}&password=${password}`;
-    const response = await axios.post(url, {}, axiosConfig);
-    const token = response.data.access_token;
-    return token;
+    const body = new URLSearchParams({
+      grant_type: 'password',
+      client_id: 'ccd_gateway',
+      client_secret: testConfig.TestEnvCcdGatewayIdamClientSecret,
+      scope: 'openid profile roles',
+      username: email,
+      password: password,
+    });
+
+    const response = await axios.post(
+      `${idamUrl}/o/token`,
+      body.toString(),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        timeout: 30000,
+      }
+    );
+
+    return response.data.access_token;
   } catch (error) {
     console.error('Auth failed:', error);
     throw error;
