@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Base64;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
@@ -34,17 +37,43 @@ public class WaTaskContoller {
     private final TaskUtils taskUtils;
     private final ObjectMapper objectMapper;
     private final WorkAllocationToggleService workAllocationToggleService;
+    private final WaTaskService waTaskService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
-    @PostMapping(path = "/case-type/updateClientContext",
+    @PostMapping(path = "/case-type/updateCaseTypeClientContext",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> updateClientContext(
+    public ResponseEntity<CallbackResponse> updateCaseTypeClientContext(
             @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
+        Predicate<CallbackRequest> completeTask = waTaskService.getCaseTypePredicate();
+        return getCallbackResponseResponseEntity(callbackRequest, clientContext, bindingResult, request, completeTask);
+    }
+
+
+    @PostMapping(path = "/case-type/updateHandOffClientContext",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateHandOffClientContext(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        Predicate<CallbackRequest> completeTask = waTaskService.getHandOffPredicate();
+        return getCallbackResponseResponseEntity(callbackRequest, clientContext, bindingResult, request, completeTask);
+    }
+
+    private @NonNull ResponseEntity<CallbackResponse> getCallbackResponseResponseEntity(
+            CallbackRequest callbackRequest,
+            String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request,
+            Predicate<CallbackRequest> completeTask) {
+
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);
 
@@ -57,10 +86,7 @@ public class WaTaskContoller {
             Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
                     clientContext,
                     callbackRequest,
-                    paramCallbackRequest ->
-                            !paramCallbackRequest.getCaseDetails().getData().getCaseType()
-                                    .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
-
+                    completeTask
             );
 
             encodedClientContext
@@ -74,6 +100,8 @@ public class WaTaskContoller {
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
+
+
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
