@@ -307,5 +307,4 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 )
        );
     }
-
 }
