@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-permissions-probate-grantofrepresentation" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_1pr5oic" hitPolicy="RULE ORDER">
       <input id="InputClause_12crj6e" label="Task Type" biodi:width="299" camunda:inputVariable="taskType">
@@ -1296,6 +1296,64 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0omt4st">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06jvjf8">
+        <inputEntry id="UnaryTests_0vrwbdk">
+          <text>"ExamineSection116CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1okeob4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l31m53">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1trm1fm">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1o7tmz7">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yao6e3">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1aevqqm">
+          <text>"SKILL:ABA6:Section116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p9cgrg">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kj8koh">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0akskmr">
+        <inputEntry id="UnaryTests_0imav2c">
+          <text>"ExamineSection116CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dfqnwu">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vts2rd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j0hkxs">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zgmt1b">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nqlvvd">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_181qikr">
+          <text>"SKILL:ABA6:Section116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ywnhj8">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vrtmxe">
           <text>false</text>
         </outputEntry>
       </rule>
