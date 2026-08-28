@@ -46,16 +46,16 @@ public class EventValidationService {
             + " cyfreithiol fod cyn dyddiad y farwolaeth";
 
     static final String DIV_DISS_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the divorce or"
-            + " dissolution took place outside of England and Wales. You should apply by post using Form PA1A instead.";
+            + " dissolution took place outside of England and Wales. You should apply by post using Form PA1P instead.";
     static final String DIV_DISS_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os"
             + " digwyddodd yr ysgariad neu'r diddymiad y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan"
-            + " ddefnyddio Ffurflen PA1A yn lle hynny.";
+            + " ddefnyddio Ffurflen PA1P yn lle hynny.";
 
     static final String SEPARATION_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the judicial"
-            + " separation took place outside of England and  Wales. You should apply by post using Form PA1A instead.";
+            + " separation took place outside of England and  Wales. You should apply by post using Form PA1P instead.";
     static final String SEPARATION_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os"
             + " digwyddodd yr ymwahaniad cyfreithiol y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan"
-            + " ddefnyddio Ffurflen PA1A yn lle hynny.";
+            + " ddefnyddio Ffurflen PA1P yn lle hynny.";
 
     public List<FieldErrorResponse> validate(CCDData form, List<? extends ValidationRule> rules) {
         return rules.stream()
