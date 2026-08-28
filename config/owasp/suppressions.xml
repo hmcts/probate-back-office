@@ -32,20 +32,4 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <suppress until = "2026-10-24">
-        <notes><![CDATA[
-            CVE-2026-62380 affects Netty 4.2.16.Final (SOCKS4/SOCKS5 client encoders); fixed in 4.2.17.Final.
-            Netty is a transitive dependency pinned via gradle/libs.versions.toml. BAU are handling the
-            version bump; temporary suppression to unblock builds in the meantime.
-        ]]></notes>
-        <cve>CVE-2026-62380</cve>
-    </suppress>
-    <suppress until = "2026-10-24">
-        <notes><![CDATA[
-   file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
-   CVE-2026-54285. BAU are handling the dependency upgrade; temporary suppression
-   to unblock builds in the meantime.
-   ]]></notes>
-        <cve>CVE-2026-54285</cve>
-    </suppress>
 </suppressions>
