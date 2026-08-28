@@ -310,7 +310,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fdtj7u">
-        <description>ES116</description>
+        <description>ES116CP</description>
         <inputEntry id="UnaryTests_08pxkwt">
           <text></text>
         </inputEntry>
