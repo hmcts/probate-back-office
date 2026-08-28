@@ -310,6 +310,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
                 )
+
         );
     }
 }
