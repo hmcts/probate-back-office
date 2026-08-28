@@ -32,4 +32,10 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
+   ]]></notes>
+        <cve>CVE-2026-54285</cve>
+    </suppress>
 </suppressions>
