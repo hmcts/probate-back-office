@@ -38,4 +38,19 @@
    ]]></notes>
         <cve>CVE-2026-54285</cve>
     </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            CVE-2026-59313 / CVE-2026-59314 affect Spring Framework 6.2.x (EOL as of 2026-06-30) and are
+            only fixed OSS in Spring Framework 7.0.9 (Spring Boot 4.x), which requires a major-version
+            migration not yet scheduled. Both are Low severity (CVSS 2.6 and 3.1) and require attack
+            paths this application does not use: CVE-2026-59313 requires a WebMvc.fn functional route
+            returning ServerResponse.sse(...) with plain-text (non-JSON) payloads derived from other
+            users' input; CVE-2026-59314 requires building a Content-Disposition header via
+            ContentDisposition.Builder#filename(String, Charset) from unsanitized user-supplied input.
+            This codebase does not use functional SSE routes or user-controlled Content-Disposition
+            filenames. Revisit at the Spring Boot 4 migration.
+   ]]></notes>
+        <cve>CVE-2026-59313</cve>
+        <cve>CVE-2026-59314</cve>
+    </suppress>
 </suppressions>
