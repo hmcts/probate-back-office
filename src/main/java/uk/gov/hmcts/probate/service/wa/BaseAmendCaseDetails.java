@@ -20,8 +20,8 @@ public abstract class BaseAmendCaseDetails {
 
     private final WaTaskService waTaskService;
 
-    protected void setHandOffReasons(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        responseCaseData.setWaHandOffReasonList(Collections.emptyList());
+    protected void setHandoffReasons(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+        responseCaseData.setWaHandoffReasonList(Collections.emptyList());
 
         if (waTaskService.getHandOffPredicate().test(callbackRequest)) {
 
@@ -37,8 +37,8 @@ public abstract class BaseAmendCaseDetails {
                     .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason)
                     ).toList();
 
-            responseCaseData.setWaHandOffReasonList(newHandOffReasons);
-            log.info("New handOffReasons added: {}", responseCaseData.getWaHandOffReasonList());
+            responseCaseData.setWaHandoffReasonList(newHandOffReasons);
+            log.info("New handOffReasons added: {}", responseCaseData.getWaHandoffReasonList());
         }
     }
 

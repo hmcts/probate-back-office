@@ -22,6 +22,6 @@ public class AmendCaseDetailsForReadyToIssue extends BaseAmendCaseDetails implem
     @Override
     public void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         setCreateTask(callbackRequest, responseCaseData);
-        setHandOffReasons(callbackRequest, responseCaseData);
+        setHandoffReasons(callbackRequest, responseCaseData);
     }
 }
