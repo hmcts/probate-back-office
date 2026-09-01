@@ -106,7 +106,7 @@ public class PaymentsService {
     }
 
     public boolean isPaymentSuccessByCaseId(String caseId) {
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
         PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
 
