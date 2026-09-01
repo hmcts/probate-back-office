@@ -34,4 +34,17 @@
         <cve>CVE-2026-62380</cve>
         <cve>CVE-2026-54285</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
+   ]]></notes>
+        <cve>CVE-2026-54285</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+           Spring framework CVEs
+   ]]></notes>
+        <cve>CVE-2026-59313</cve>
+        <cve>CVE-2026-59314</cve>
+    </suppress>
 </suppressions>
