@@ -517,6 +517,9 @@ public class CaseData extends CaseDataParent {
     private final String deceasedAdoptedIn;
     private final String deceasedAdoptionInEnglandOrWales;
     private final String deceasedAdoptedOut;
+    private final String applicantAdoptedDeceasedIn;
+    private final String applicantAdoptionDeceasedInEnglandOrWales;
+    private final String applicantAdoptedDeceasedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;

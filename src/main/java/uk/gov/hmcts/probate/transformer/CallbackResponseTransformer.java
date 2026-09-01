@@ -992,9 +992,9 @@ public class CallbackResponseTransformer {
     private void clearParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
         responseCaseDataBuilder.deceasedAnyOtherParentAlive(null);
-        responseCaseDataBuilder.deceasedAdoptedIn(null);
-        responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
-        responseCaseDataBuilder.deceasedAdoptedOut(null);
+        responseCaseDataBuilder.applicantAdoptedDeceasedIn(null);
+        responseCaseDataBuilder.applicantAdoptionDeceasedInEnglandOrWales(null);
+        responseCaseDataBuilder.applicantAdoptedDeceasedOut(null);
     }
 
     private void clearSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
@@ -1611,6 +1611,9 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
+            .applicantAdoptedDeceasedIn(caseData.getApplicantAdoptedDeceasedIn())
+            .applicantAdoptionDeceasedInEnglandOrWales(caseData.getApplicantAdoptionDeceasedInEnglandOrWales())
+            .applicantAdoptedDeceasedOut(caseData.getApplicantAdoptedDeceasedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
             .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
