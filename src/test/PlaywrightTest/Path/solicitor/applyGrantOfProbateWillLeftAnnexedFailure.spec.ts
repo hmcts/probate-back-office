@@ -67,6 +67,7 @@ test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed)
     endState = 'Stopped';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedSeparated');
     await solCreateCasePage.admonWillDetailsPage1();
     await solCreateCasePage.admonWillDetailsPage2(updateAddressManually);
     await solCreateCasePage.admonWillDetailsPage3();
