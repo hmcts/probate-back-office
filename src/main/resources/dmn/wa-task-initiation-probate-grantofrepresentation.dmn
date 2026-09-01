@@ -952,7 +952,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1243s53">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Lost Will / Codicil")</text>
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LostWill")</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1dsmkec">
           <text>true</text>
