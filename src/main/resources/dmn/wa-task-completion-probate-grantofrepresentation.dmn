@@ -289,7 +289,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kwrhd0">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0oa94p1">
           <text>"Auto"</text>

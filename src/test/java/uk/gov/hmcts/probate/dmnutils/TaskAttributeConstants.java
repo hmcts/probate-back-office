@@ -208,9 +208,9 @@ public class TaskAttributeConstants {
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
 
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL =
-            "ExamineLostWillOrCodicil";
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
+            "ExamineLostWillOrCodicilCasePrinted";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME
             = "Examine - Lost Will or Codicil";
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
 }

@@ -1301,7 +1301,7 @@
       </rule>
       <rule id="DecisionRule_0p4mvft">
         <inputEntry id="UnaryTests_0lc2hco">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ffo7po">
           <text></text>
@@ -1330,7 +1330,7 @@
       </rule>
       <rule id="DecisionRule_1x9ptg5">
         <inputEntry id="UnaryTests_1rmqtpt">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1r1i6yy">
           <text></text>

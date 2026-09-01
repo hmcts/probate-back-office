@@ -35,7 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBL
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
@@ -83,7 +83,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL
+                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -112,7 +112,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL
+                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -306,7 +306,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL
+                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -415,7 +415,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL
+                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -524,7 +524,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL
+                                        "taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
                                 )
                         )
                 ),
