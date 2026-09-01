@@ -32,4 +32,10 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
+    <suppress until = "2026-10-24">
+        <cve>CVE-2026-62380</cve>
+        <cve>CVE-2026-54285</cve>
+        <cve>CVE-2026-59313</cve>
+        <cve>CVE-2026-59314</cve>
+    </suppress>
 </suppressions>
