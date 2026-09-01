@@ -191,7 +191,7 @@ def versions = [
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '5.3.11',
         serviceAuthVersion              : '5.3.4',
-        springBootVersion               : '3.5.16',
+        springBootVersion               : '4.0.8',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.9.0',
         swaggerAnnotations              : '2.2.54',
