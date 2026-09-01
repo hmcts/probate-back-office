@@ -1272,60 +1272,31 @@
       </rule>
       <rule id="DecisionRule_1hgya8p">
         <inputEntry id="UnaryTests_00drbkk">
-          <text>"ExamineForeignDomicile"</text>
+            <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_055evzw">
-          <text></text>
+            <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0xgkw4o">
-          <text></text>
+            <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1wqtw5y">
-          <text>"ctsc-team-leader"</text>
+            <text>"ctsc-team-leader"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1po8ecr">
-          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+            <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0lkzdlu">
-          <text>"CTSC"</text>
+            <text>"CTSC"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_006vfqt">
-          <text>"SKILL:ABA6:ForeignDomicile"</text>
+            <text>"SKILL:ABA6:InfectedBloodInterimScheme"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1xg1ind">
-          <text>1</text>
+            <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0omt4st">
-          <text>false</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_156224k">
-        <inputEntry id="UnaryTests_081dhv6">
-          <text>"ExamineForeignDomicile"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1r6wdsb">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_12akia7">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_02l873a">
-          <text>"ctsc-team-leader"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0ys4mc4">
-          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_17nh36d">
-          <text>"CTSC"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1u3mzju">
-          <text>"SKILL:ABA6:ForeignDomicile"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0f4qlkz">
-          <text>1</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0sblcdo">
-          <text>false</text>
+            <text>false</text>
         </outputEntry>
       </rule>
     </decisionTable>

@@ -176,7 +176,7 @@
       </rule>
       <rule id="DecisionRule_0op5i8f">
         <inputEntry id="UnaryTests_1gxnsv2">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_18mjnyf">
           <text>"ExamineDoubleProbate"</text>
@@ -281,17 +281,6 @@
           <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0e4vnmo">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0nljxrw">
-        <inputEntry id="UnaryTests_1cyrfbs">
-          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_08fn8lg">
-          <text>"ExamineForeignDomicile"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_17ge409">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
