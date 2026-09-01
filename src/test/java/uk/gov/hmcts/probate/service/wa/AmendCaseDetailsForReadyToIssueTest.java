@@ -86,7 +86,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         processor.process(callbackRequest, responseCaseData);
 
-        assertThat(responseCaseData.getWaHandOffReasonList())
+        assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
                 .extracting(HandoffReason::getCaseHandoffReason)
                 .isEmpty();
@@ -105,7 +105,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(callbackRequest, responseCaseData);
 
-        assertThat(responseCaseData.getWaHandOffReasonList())
+        assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
                 .extracting(HandoffReason::getCaseHandoffReason)
                 .containsExactlyInAnyOrder(
