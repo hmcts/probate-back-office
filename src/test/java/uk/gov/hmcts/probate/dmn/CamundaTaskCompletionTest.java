@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_COMPLETION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingTaskTypeKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AUTO_COMPLETE_MODE;
@@ -208,7 +209,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_MINORITY_INTEREST
-                                )
+                                ),
+                                Map.of()
                         )
                 ),
                 Arguments.of(
@@ -575,7 +577,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(28));
+        assertThat(logic.getRules().size(), is(29));
     }
 
     @ParameterizedTest(name = "event id: {0}")
@@ -586,7 +588,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        resultsMatchUsingTaskTypeKey(dmnDecisionTableResult.getResultList(), expectation);
+        assertThat(dmnDecisionTableResult.getResultList(), containsInAnyOrder(
+                expectation.toArray()
+        ));
     }
-
 }

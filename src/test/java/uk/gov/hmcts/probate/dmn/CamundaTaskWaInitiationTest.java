@@ -2814,4 +2814,5 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
 
     }
+
 }
