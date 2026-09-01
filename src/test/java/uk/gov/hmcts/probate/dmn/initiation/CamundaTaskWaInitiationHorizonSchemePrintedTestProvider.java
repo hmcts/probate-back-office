@@ -2,14 +2,14 @@ package uk.gov.hmcts.probate.dmn.initiation;
 
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
-import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineHorizonSchemePrintedHandOffReason;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineHorizonSchemeCasePrintedHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
@@ -28,8 +28,8 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
         Map<String,Object> lostWillOrCodicilTaskAttributes = Map.of(
-                "taskId", EXAMINE_HORIZON_SCHEME_PRINTED,
-                "name", EXAMINE_HORIZON_SCHEME_PRINTED_TASK_TYPE_NAME,
+                "taskId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
+                "name", EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
@@ -38,14 +38,14 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -77,14 +77,14 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -110,14 +110,14 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -137,14 +137,14 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(

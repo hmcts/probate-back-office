@@ -41,7 +41,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String powerOfAttorneyHandOffReason = "POA";
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
-    protected static final String examineHorizonSchemePrintedHandOffReason = "HorizonScheme";
+    protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,

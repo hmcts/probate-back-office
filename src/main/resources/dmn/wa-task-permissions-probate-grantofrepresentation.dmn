@@ -1301,7 +1301,7 @@
       </rule>
       <rule id="DecisionRule_143i54t">
         <inputEntry id="UnaryTests_11h6tq5">
-          <text>"ExamineHorizonSchemePrinted"</text>
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0084hrf">
           <text></text>
@@ -1330,7 +1330,7 @@
       </rule>
       <rule id="DecisionRule_034eqf4">
         <inputEntry id="UnaryTests_01wn4mj">
-          <text>"ExamineHorizonSchemePrinted"</text>
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_00kb5ca">
           <text></text>

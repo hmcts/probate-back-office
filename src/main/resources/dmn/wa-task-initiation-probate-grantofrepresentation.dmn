@@ -946,7 +946,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1nzuf39">
-          <text>-</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_04x8qbu">
           <text>true</text>
@@ -958,7 +958,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_03shzoe">
-          <text>"ExamineHorizonSchemePrinted"</text>
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_17eb6m0">
           <text>"Examine - Horizon Scheme"</text>

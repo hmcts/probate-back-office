@@ -289,7 +289,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ndzl01">
-          <text>"ExamineHorizonSchemePrinted"</text>
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1v874zf">
           <text>"Auto"</text>
