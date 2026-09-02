@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,6 +35,10 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JUDICIALLY_SEPARATED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.NEVER_MARRIED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.WIDOWED_VALUE;
 
 class CaseDataTransformerTest {
 
@@ -284,9 +287,9 @@ class CaseDataTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         caseDataTransformer.transformFormCaseData(callbackRequestMock);
         assertThat(caseDataMock.getIhtFormEstate(), is("IHT400"));
-        assertThat(caseDataMock.getIhtEstateGrossValue(), CoreMatchers.is(nullValue()));
-        assertThat(caseDataMock.getIhtEstateNetValue(), CoreMatchers.is(nullValue()));
-        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateGrossValue(), is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetValue(), is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(), is(nullValue()));
     }
 
     @Test
@@ -330,7 +333,7 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
-        assertThat(caseDataMock.getIhtFormId(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtFormId(), is(nullValue()));
     }
 
     @Test
@@ -344,7 +347,7 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
-        assertThat(caseDataMock.getIhtFormEstate(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtFormEstate(), is(nullValue()));
     }
 
     @Test
@@ -378,5 +381,97 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(caseDetailsMock);
         assertEquals(deceasedAliasNamesList, caseDetailsMock.getData().getSolsDeceasedAliasNamesList());
+    }
+
+    @Test
+    void shouldClearAllMaritalDetailsWhenNeverMarried() {
+        caseDataMock = CaseData.builder()
+                .deceasedMaritalStatus(NEVER_MARRIED_VALUE)
+                .deceasedSpouseName("Spouse")
+                .dateOfDivorcedCPJudicially("2020-01-01")
+                .deceasedDivorcedInEnglandOrWales(YES)
+                .deceasedMarriedAfterWillOrCodicilDateYN(YES)
+                .deceasedMarriedAfterWillOrCodicilDate("2020-01-01")
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any()))
+                .thenReturn(false);
+
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+
+        assertThat(caseDataMock.getDeceasedSpouseName(), is(nullValue()));
+        assertThat(caseDataMock.getDateOfDivorcedCPJudicially(), is(nullValue()));
+        assertThat(caseDataMock.getDeceasedDivorcedInEnglandOrWales(), is(nullValue()));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDateYN(), is(nullValue()));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDate(), is(nullValue()));
+    }
+
+    @Test
+    void shouldKeepSpouseNameWhenWidowed() {
+        caseDataMock = CaseData.builder()
+                .deceasedMaritalStatus(WIDOWED_VALUE)
+                .deceasedSpouseName("Spouse")
+                .dateOfDivorcedCPJudicially("2020-01-01")
+                .deceasedDivorcedInEnglandOrWales(YES)
+                .deceasedMarriedAfterWillOrCodicilDateYN(YES)
+                .deceasedMarriedAfterWillOrCodicilDate("2020-01-01")
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any()))
+                .thenReturn(false);
+
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+
+        assertThat(caseDataMock.getDeceasedSpouseName(), is("Spouse"));
+        assertThat(caseDataMock.getDateOfDivorcedCPJudicially(), is(nullValue()));
+        assertThat(caseDataMock.getDeceasedDivorcedInEnglandOrWales(), is(nullValue()));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDateYN(), is(YES));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDate(), is("2020-01-01"));
+    }
+
+    @Test
+    void shouldKeepDivorceDetailsWhenDivorced() {
+        caseDataMock = CaseData.builder()
+                .deceasedMaritalStatus(DIVORCED_VALUE)
+                .deceasedSpouseName("Spouse")
+                .dateOfDivorcedCPJudicially("2020-01-01")
+                .deceasedDivorcedInEnglandOrWales(YES)
+                .deceasedMarriedAfterWillOrCodicilDateYN(YES)
+                .deceasedMarriedAfterWillOrCodicilDate("2020-01-01")
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any()))
+                .thenReturn(false);
+
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+
+        assertThat(caseDataMock.getDeceasedSpouseName(), is(nullValue()));
+        assertThat(caseDataMock.getDateOfDivorcedCPJudicially(), is("2020-01-01"));
+        assertThat(caseDataMock.getDeceasedDivorcedInEnglandOrWales(), is(YES));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDateYN(), is(YES));
+        assertThat(caseDataMock.getDeceasedMarriedAfterWillOrCodicilDate(), is("2020-01-01"));
+    }
+
+    @Test
+    void shouldKeepDivorceDetailsWhenJudiciallySeparated() {
+        caseDataMock = CaseData.builder()
+                .deceasedMaritalStatus(JUDICIALLY_SEPARATED_VALUE)
+                .deceasedSpouseName("Spouse")
+                .dateOfDivorcedCPJudicially("2020-01-01")
+                .deceasedDivorcedInEnglandOrWales(YES)
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any()))
+                .thenReturn(false);
+
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+
+        assertThat(caseDataMock.getDeceasedSpouseName(), is(nullValue()));
+        assertThat(caseDataMock.getDateOfDivorcedCPJudicially(), is("2020-01-01"));
+        assertThat(caseDataMock.getDeceasedDivorcedInEnglandOrWales(), is(YES));
     }
 }

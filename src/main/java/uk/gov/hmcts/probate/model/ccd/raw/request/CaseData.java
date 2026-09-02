@@ -360,9 +360,9 @@ public class CaseData extends CaseDataParent {
     private final String paymentReferenceNumber;
     private final Declaration declaration;
     private final LegalStatement legalStatement;
-    private final String deceasedMarriedAfterWillOrCodicilDate;
-    private final String deceasedMarriedAfterWillOrCodicilDateYN;
-    private final String deceasedSpouseName;
+    private String deceasedMarriedAfterWillOrCodicilDate;
+    private String deceasedMarriedAfterWillOrCodicilDateYN;
+    private String deceasedSpouseName;
     private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
     private String primaryApplicantPhoneNumber;
     private final String primaryApplicantNotRequiredToSendDocuments;
@@ -396,7 +396,7 @@ public class CaseData extends CaseDataParent {
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
     private final String dateOfMarriageOrCP;
-    private final String dateOfDivorcedCPJudicially;
+    private String dateOfDivorcedCPJudicially;
     private final String willsOutsideOfUK;
     private final String courtOfDecree;
     private final String willGiftUnderEighteen;
@@ -504,7 +504,7 @@ public class CaseData extends CaseDataParent {
     @Builder.Default
     private final String boGrantReissueSendToBulkPrint = YES;
     private final String boGrantReissueSendToBulkPrintRequested;
-    private final String deceasedDivorcedInEnglandOrWales;
+    private String deceasedDivorcedInEnglandOrWales;
     private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
