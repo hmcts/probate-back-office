@@ -1449,7 +1449,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_04ulqtj">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0b1cyi5">
           <text>"ExamineDeBonisNon"</text>
@@ -1490,7 +1490,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1c5jdop">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "WindrushScheme")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WindrushScheme")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1i1c0wu">
           <text>"ExamineWindrushScheme"</text>
@@ -1513,7 +1513,7 @@ else false</text>
           <text>"BOReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ue4bq8">
-          <text>true</text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_042h453">
           <text></text>
@@ -1531,7 +1531,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0mwfecc">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "FiatWill")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "FiatWill")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ymiwh9">
           <text>"ExamineFiatWill"</text>
@@ -1572,7 +1572,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0snjven">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "IBCA")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBCA")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oi5gj0">
           <text>"ExamineInfectedBloodCompensationAuthority"</text>
@@ -1613,7 +1613,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ssyq25">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "WillCodicilNotated")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WillCodicilNotated")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0rteflu">
           <text>"ExamineWillOrCodicilToBeNotated"</text>
@@ -1654,7 +1654,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_00gl8r6">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "WitnessInterview")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WitnessInterview")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mzdzhe">
           <text>"ExamineWitnessInterview"</text>
@@ -1695,7 +1695,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hgi6p3">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "HorizonScheme")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "HorizonScheme")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0bfhzqo">
           <text>"ExamineHorizonScheme"</text>
@@ -1736,7 +1736,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0x09tqa">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "DoubleProbate")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "DoubleProbate")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0dh01k8">
           <text>"ExamineDoubleProbate"</text>
@@ -1777,7 +1777,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_10v05si">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02e68a3">
           <text>"ExamineIncapacityUnderRule35"</text>
@@ -1818,7 +1818,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0a6pddl">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "LeadingFollowing Grants")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "LeadingFollowing Grants")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0w2mrcz">
           <text>"ExamineLeadingOrFollowingGrants"</text>
@@ -1859,7 +1859,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1es5oiv">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "RectifyWillCodicil")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "RectifyWillCodicil")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1uh85nd">
           <text>"ExamineRectifyWillOrCodicil"</text>
@@ -1900,7 +1900,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0w506je">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "CodicilMis")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "CodicilMis")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0rb753t">
           <text>"ExamineCodicilMisRecital"</text>
@@ -1941,7 +1941,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_079lof9">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "IBIS")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_04egias">
           <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
@@ -1982,7 +1982,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0rbvfb7">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "Section116")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "Section116")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1uzq799">
           <text>"ExamineSection116"</text>
@@ -2023,7 +2023,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0bjeven">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "POA")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "POA")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mckqv9">
           <text>"ExaminePowerOfAttorney"</text>
@@ -2064,7 +2064,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0rfrzcv">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0iupkcx">
           <text>"ExamineResealForeignGrant"</text>
@@ -2105,7 +2105,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1uzhgwf">
-          <text>list contains(additionalData.Data.waHandOffReasonList.value.caseHandoffReason, "IBIS")</text>
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0n7zaw5">
           <text>"ExamineInfectedBloodInterimScheme"</text>
