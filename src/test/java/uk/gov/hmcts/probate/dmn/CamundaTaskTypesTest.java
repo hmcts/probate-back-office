@@ -51,6 +51,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -201,6 +202,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED
                 )
         );
         return Stream.of(

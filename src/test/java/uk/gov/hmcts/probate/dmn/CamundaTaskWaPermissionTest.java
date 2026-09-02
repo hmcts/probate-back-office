@@ -80,6 +80,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITER
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINORITY_INTEREST_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -263,6 +265,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
                 )
         );
     }
