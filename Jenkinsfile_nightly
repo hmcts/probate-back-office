@@ -13,7 +13,7 @@ properties([
         ])
 ])
 
-@Library("Infrastructure@2.4.9") _
+@Library("Infrastructure@2.5.4") _
 
 String product = "probate"
 String component = "back-office"
@@ -35,6 +35,9 @@ def secrets = [
     secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC'),
     secret('wa-ctsc-admin-user-email', 'WA_CTSC_ADMIN_USER_EMAIL'),
     secret('wa-ctsc-admin-password', 'WA_CTSC_ADMIN_USER_PASSWORD')
+  ],
+  'ccd-aat' : [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET'),
   ]
 ]
 
