@@ -513,6 +513,18 @@
           <text>"Examine - Section 116"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_14gmknf">
+        <description>EDBCP</description>
+        <inputEntry id="UnaryTests_1vah4ux">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xvot9x">
+          <text>"ExamineDoubleProbateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_018pegr">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
