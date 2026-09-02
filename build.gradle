@@ -182,7 +182,7 @@ def versions = [
         jsoup                           : '1.23.2',
         launchdarkly                    : '7.15.0',
         lifeEventsClientVersion         : '1.6.0',
-        lombok                          : '1.18.46',
+        lombok                          : '1.18.48',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '8.0.2',
