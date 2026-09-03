@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
@@ -32,6 +33,8 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
     public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceasedWelsh";
     public static final String PARENT_ADOPTED_OUT = "coApplicantParentAdoptedOut";
     public static final String PARENT_ADOPTED_OUT_WELSH = "coApplicantParentAdoptedOutWelsh";
+    public static final String DECEASED_ADOPTED_OUT = "deceasedAdoptedOut";
+    public static final String DECEASED_ADOPTED_OUT_WELSH = "deceasedAdoptedOutWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -51,9 +54,31 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                 addAdoptedOutErrors(errors, isNonParentRelation, details);
                 addParentNotDeceasedErrors(errors, relationshipToDeceased, details);
                 addParentAdoptedOutErrors(errors, relationshipToDeceased, details);
+                addParentAdoptedDeceasedErrors(errors, relationshipToDeceased, details);
             }
         });
         return errors;
+    }
+
+    void addParentAdoptedDeceasedErrors(List<FieldErrorResponse> errors,
+                                    String relationshipToDeceased,
+                                    SolsApplicantFamilyDetails details){
+        if(PARENT.equalsIgnoreCase(relationshipToDeceased)){
+            if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedIn())) {
+                if (NO.equalsIgnoreCase(details.getCoApplicantAdoptionDeceasedInEnglandOrWales())) {
+                    errors.add(businessValidationMessageService.generateError(
+                            BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES));
+                    errors.add(businessValidationMessageService.generateError(
+                            BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
+                }
+            }
+            else if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedOut())) {
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, DECEASED_ADOPTED_OUT));
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, DECEASED_ADOPTED_OUT_WELSH));
+            }
+        }
     }
 
     private void addAdoptedOutsideEnglandOrWalesErrors(List<FieldErrorResponse> errors,
