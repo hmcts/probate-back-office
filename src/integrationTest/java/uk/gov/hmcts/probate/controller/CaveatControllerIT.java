@@ -66,6 +66,8 @@ class CaveatControllerIT {
     private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
     private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
     private static final String ROLLBACK = "/caveat/rollback";
+    private static final String CHANGE_SUBMISSION_DATE = "/caveat/change-submission-date";
+    private static final String VALIDATE_CHANGE_SUBMISSION_DATE = "/caveat/validate-change-submission-date";
 
     @Autowired
     private MockMvc mockMvc;
@@ -489,4 +491,92 @@ class CaveatControllerIT {
         mockMvc.perform(post(ROLLBACK).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void shouldChangeSubmissionDateAndRecalculateExpiryDate() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",");
+
+        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
+        mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.applicationSubmittedDate").value("2024-02-01"))
+                .andExpect(jsonPath("$.data.expiryDate").value("2024-08-01"));
+
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    void shouldRejectFutureSubmissionDate() throws Exception {
+        String submittedDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \""
+                                + submittedDate + "\",");
+
+        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
+        mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Application Submitted Date cannot be in the future"));
+
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    void shouldRejectMissingSubmissionDate() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": null,");
+
+        mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Application Submitted Date cannot be empty"));
+
+        verifyNoInteractions(notificationService, paymentsService);
+    }
+
+    @Test
+    void shouldRejectMissingDateOfDeathForChangeSubmissionDate() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",")
+                .replace("\"deceasedDateOfDeath\": \"2017-12-31\",",
+                        "\"deceasedDateOfDeath\": null,");
+
+        mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Date of death is missing or invalid, so submission date cannot be changed"));
+
+        verifyNoInteractions(notificationService, paymentsService);
+    }
+
+    @Test
+    void shouldRejectFutureDateOfDeathForChangeSubmissionDate() throws Exception {
+        String futureDod = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",")
+                .replace("\"deceasedDateOfDeath\": \"2017-12-31\",",
+                        "\"deceasedDateOfDeath\": \"" + futureDod + "\",");
+
+        mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Date of death is missing or invalid, so submission date cannot be changed"));
+
+        verifyNoInteractions(notificationService, paymentsService);
+    }
+
 }

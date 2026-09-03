@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -51,6 +52,7 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 @Slf4j
 public class PaymentsService {
 
+    private static final String SERVICE_NAME = "Probate";
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
     private static final String SRP_STATUS_PAID = "Paid";
@@ -101,6 +103,17 @@ public class PaymentsService {
 
         log.info("Updated Service Request on caseId:{}", caseId);
 
+    }
+
+    public boolean isPaymentSuccessByCaseId(String caseId) {
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
+        PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
+
+        boolean isPaymentSuccessful = response.getPayments().stream()
+                .anyMatch(payment -> "success".equalsIgnoreCase(payment.getStatus()));
+        log.info("isPaymentSuccessByCaseId case id : {} PaymentSuccessful: {}", caseId, isPaymentSuccessful);
+        return isPaymentSuccessful;
     }
 
     private uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrieveCaseDetailsAsCaseworker(String caseId,

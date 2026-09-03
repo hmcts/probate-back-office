@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -24,28 +26,28 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
-import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
-
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatChangeSubmissionDateValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
@@ -72,6 +74,7 @@ public class CaveatController {
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final CaveatChangeSubmissionDateValidationRule caveatChangeSubmissionDateValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -298,6 +301,33 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> validateAcknowledgement(@RequestBody CaveatCallbackRequest
                                                                                       callbackRequest) {
         caveatAcknowledgementValidationRule.validate(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/change-submission-date")
+    public ResponseEntity<CaveatCallbackResponse> changeSubmissionDate(
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest
+    ) {
+        log.info("change-submission-date case id: {}", caveatCallbackRequest.getCaseDetails().getId());
+        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+        caveatNotificationService.recalculateSubmissionExpiryDate(caveatData);
+        caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.changeSubmissionDate(
+                caveatCallbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
+    @PostMapping(path = "/validate-change-submission-date")
+    public ResponseEntity<CaveatCallbackResponse> validateChangeSubmissionDate(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        log.info("valiate-change-submission-date case id: {}", callbackRequest.getCaseDetails().getId());
+        List<FieldErrorResponse> errors = caveatChangeSubmissionDateValidationRule
+                .validate(callbackRequest.getCaseDetails());
+        if (!errors.isEmpty()) {
+            return ResponseEntity.ok(CaveatCallbackResponse.builder()
+                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                    .build());
+        }
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 }
