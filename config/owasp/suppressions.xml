@@ -45,6 +45,11 @@
         <cve>CVE-2026-59313</cve>
         <cve>CVE-2026-59314</cve>
         <cve>CVE-2026-47892</cve>
+        <cve>CVE-2026-47891</cve>
+        <cve>CVE-2026-47890</cve>
+        <cve>CVE-2026-59282</cve>
+        <cve>CVE-2026-59281</cve>
+        <cve>CVE-2026-59276</cve>
     </suppress>
     <suppress until = "2026-10-24">
         <notes><![CDATA[
@@ -103,5 +108,12 @@
             file name: spring-security-crypto-6.5.11.jar
         ]]></notes>
         <cve>CVE-2026-59270</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: reactor-netty-http-1.2.18.jar
+            file name: reactor-netty-core-1.2.18.jar
+        ]]></notes>
+        <cve>CVE-2026-47874</cve>
     </suppress>
 </suppressions>
