@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-permissions-probate-grantofrepresentation" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_1pr5oic" hitPolicy="RULE ORDER">
       <input id="InputClause_12crj6e" label="Task Type" biodi:width="299" camunda:inputVariable="taskType">
@@ -1296,6 +1296,180 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0omt4st">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ihlh0b">
+        <inputEntry id="UnaryTests_0h0n5d0">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y09dd7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rr614k">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0isziin">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1q79472">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xwh33l">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0e3qnz8">
+          <text>"SKILL:ABA6:FiatWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1umnogx">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kewykf">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xseh7l">
+        <inputEntry id="UnaryTests_0re0cnl">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q4pb19">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e3vnr2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l9eyst">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14bt91u">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18pymja">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rqm64p">
+          <text>"SKILL:ABA6:FiatWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0q6di2p">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a9b5m3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0l7vyqv">
+        <inputEntry id="UnaryTests_0iecjbz">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t9jf4q">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_164pjd3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1utinxk">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0is0rpb">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1973qkd">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qnu1tq">
+          <text>"SKILL:ABA6:ForeignDomicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0letemf">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15u7hpq">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_09p964g">
+        <inputEntry id="UnaryTests_06gidgk">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i9jhdr">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1izfnyl">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wrhv6p">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1086vs5">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bsr0dc">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j6ybvb">
+          <text>"SKILL:ABA6:ForeignDomicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kl0pcl">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z077ib">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nugfu8">
+        <inputEntry id="UnaryTests_0pi5dyn">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1szcaoe">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_16g11ri">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0elfone">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0b3ldnv">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iq6h7o">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05sd0a7">
+          <text>"SKILL:ABA6:IncapacityUnder_Rule35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_041fgrg">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gq1mow">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0r4winc">
+        <inputEntry id="UnaryTests_1tmqqjt">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cxjhug">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rxbk9e">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dj90po">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hdgqof">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01064ly">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p6i3td">
+          <text>"SKILL:ABA6:IncapacityUnder_Rule35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03hzhma">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_176aucb">
           <text>false</text>
         </outputEntry>
       </rule>
