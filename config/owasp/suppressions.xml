@@ -44,11 +44,76 @@
    ]]></notes>
         <cve>CVE-2026-59313</cve>
         <cve>CVE-2026-59314</cve>
-        <cve>CVE-2026-47893</cve>
         <cve>CVE-2026-47892</cve>
+        <cve>CVE-2026-47890</cve>
+        <cve>CVE-2026-47891</cve>
+        <cve>CVE-2026-59281</cve>
+        <cve>CVE-2026-59282</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
         <cve>CVE-2026-59283</cve>
-        <cve>CVE-2026-59284</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
+        <cve>CVE-2026-47893</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
         <cve>CVE-2026-59280</cve>
+    </suppress>
+    <!-- Spring Cloud Commons -->
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-cloud-commons-4.3.3.jar
+            file name: spring-cloud-context-4.3.3.jar
+            file name: spring-cloud-starter-4.3.3.jar
+        ]]></notes>
+        <cve>CVE-2026-59284</cve>
+    </suppress>
+    <!-- Spring Security -->
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-security-crypto-6.5.11.jar
+        ]]></notes>
         <cve>CVE-2026-59270</cve>
+        <cve>CVE-2026-59276</cve>
+    </suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+            Temporary suppression for Reactor Netty CVE-2026-47874
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.projectreactor\.netty/reactor-netty-.*@.*$</packageUrl>
+        <cve>CVE-2026-47874</cve>
     </suppress>
 </suppressions>
