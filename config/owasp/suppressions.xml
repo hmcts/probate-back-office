@@ -27,39 +27,81 @@
     </suppress>
     <suppress until = "2026-10-24">
         <notes><![CDATA[
-   file name: jackson-databind-2.22.0.jar
-   file name: jackson-databind-3.0.1.jar
-   ]]></notes>
-        <cve>CVE-2026-54512</cve>
-        <cve>CVE-2026-54513</cve>
-        <cve>CVE-2026-54514</cve>
-        <cve>CVE-2026-54515</cve>
-        <cve>CVE-2026-54516</cve>
-        <cve>CVE-2026-54517</cve>
-        <cve>CVE-2026-54518</cve>
-        <cve>CVE-2026-54428</cve>
-        <cve>CVE-2026-54399</cve>
-    </suppress>
-    <suppress until = "2026-10-24">
-        <notes><![CDATA[
    file name: httpcore-4.4.16.jar
    ]]></notes>
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <suppress until = "2026-10-24">
+    <suppress>
         <notes><![CDATA[
-   file name: netty@4.2.16
+   file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
    ]]></notes>
-        <cve>CVE-2026-55833</cve>
-        <cve>CVE-2026-44891</cve>
-        <cve>CVE-2026-55831</cve>
+        <cve>CVE-2026-54285</cve>
     </suppress>
     <suppress until = "2026-10-24">
-    <notes><![CDATA[
-   file name: tomcat-embed-core-10.1.57.jar
-   file name: tomcat-embed-websocket-10.1.57.jar
+        <notes><![CDATA[
+           Spring framework CVEs
    ]]></notes>
-        <cve>CVE-2026-66299</cve>
+        <cve>CVE-2026-59313</cve>
+        <cve>CVE-2026-59314</cve>
+        <cve>CVE-2026-47892</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
+        <cve>CVE-2026-59283</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
+        <cve>CVE-2026-47893</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-aop-6.2.19.jar
+            file name: spring-beans-6.2.19.jar
+            file name: spring-context-6.2.19.jar
+            file name: spring-core-6.2.19.jar
+            file name: spring-expression-6.2.19.jar
+            file name: spring-jcl-6.2.19.jar
+            file name: spring-oxm-6.2.19.jar
+            file name: spring-web-6.2.19.jar
+            file name: spring-webmvc-6.2.19.jar
+        ]]></notes>
+        <cve>CVE-2026-59280</cve>
+    </suppress>
+    <!-- Spring Cloud Commons -->
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-cloud-commons-4.3.3.jar
+            file name: spring-cloud-context-4.3.3.jar
+            file name: spring-cloud-starter-4.3.3.jar
+        ]]></notes>
+        <cve>CVE-2026-59284</cve>
+    </suppress>
+    <!-- Spring Security -->
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: spring-security-crypto-6.5.11.jar
+        ]]></notes>
+        <cve>CVE-2026-59270</cve>
     </suppress>
 </suppressions>

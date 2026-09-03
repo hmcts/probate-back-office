@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.4.9")
+@Library("Infrastructure@2.5.4")
 
 String product = "probate"
 String component = "back-office"
@@ -343,7 +343,7 @@ withPipeline("java", product, component) {
     if (env.ENV != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
       echo "CCD definition upload for environment: ${env.ENV}"
-      withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
+      withSubscription(env.ENV in ['ithc', 'perftest'] ? 'qa' : env.ENV == 'prod' ? 'prod' : 'nonprod') {
         withTeamSecrets(pipelineConf, env.ENV) {
           archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
