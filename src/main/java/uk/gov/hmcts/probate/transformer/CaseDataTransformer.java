@@ -22,6 +22,11 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JUDICIALLY_SEPARATED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.NEVER_MARRIED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.WIDOWED_VALUE;
+
 
 @Component
 @RequiredArgsConstructor
@@ -182,6 +187,7 @@ public class CaseDataTransformer {
                 }
             }
         }
+        resetMaritalDetails(caseData);
     }
 
     private void resetIhtFormId(CaseData caseData) {
@@ -233,6 +239,24 @@ public class CaseDataTransformer {
         if (NO.equals(caseDetails.getData().getDeceasedAnyOtherNames())
                 && caseDetails.getData().getSolsDeceasedAliasNamesList() != null) {
             caseDetails.getData().clearSolsDeceasedAliasNamesList();
+        }
+    }
+
+    private void resetMaritalDetails(CaseData caseData) {
+        String maritalStatus = caseData.getDeceasedMaritalStatus();
+        if (!WIDOWED_VALUE.equals(maritalStatus)) {
+            caseData.setDeceasedSpouseName(null);
+        }
+
+        if (!JUDICIALLY_SEPARATED_VALUE.equals(maritalStatus)
+                && !DIVORCED_VALUE.equals(maritalStatus)) {
+            caseData.setDateOfDivorcedCPJudicially(null);
+            caseData.setDeceasedDivorcedInEnglandOrWales(null);
+        }
+
+        if (NEVER_MARRIED_VALUE.equals(maritalStatus)) {
+            caseData.setDeceasedMarriedAfterWillOrCodicilDateYN(null);
+            caseData.setDeceasedMarriedAfterWillOrCodicilDate(null);
         }
     }
 }

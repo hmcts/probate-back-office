@@ -72,6 +72,7 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedWidowed');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(false, true, true);
     await solCreateCasePage.grantOfProbatePage3();
