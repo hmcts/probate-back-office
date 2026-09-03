@@ -111,9 +111,9 @@
     </suppress>
     <suppress until="2026-10-24">
         <notes><![CDATA[
-            Temporary suppression for Netty transitive dependencies
+            Temporary suppression for Reactor Netty CVE-2026-47874
         ]]></notes>
-        <packageUrl regex="true">^pkg:maven/io\.netty/netty-.*@.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/io\.projectreactor\.netty/reactor-netty-.*@.*$</packageUrl>
         <cve>CVE-2026-47874</cve>
     </suppress>
 </suppressions>
