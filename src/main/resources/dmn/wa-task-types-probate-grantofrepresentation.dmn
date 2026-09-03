@@ -67,7 +67,7 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1c631u1">
           <text>"Examine Digital Case - Probate"</text>
-         </outputEntry>
+        </outputEntry>
       </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
@@ -307,6 +307,18 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_16n0d3e">
           <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15ssev2">
+        <description>ELECP</description>
+        <inputEntry id="UnaryTests_0e88j7p">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rg4se1">
+          <text>"ExamineLiteraryEstateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qao1v3">
+          <text>"Examine - Literary Estate"</text>
         </outputEntry>
       </rule>
     </decisionTable>
