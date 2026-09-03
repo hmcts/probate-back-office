@@ -109,4 +109,11 @@
         <cve>CVE-2026-59270</cve>
         <cve>CVE-2026-59276</cve>
     </suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+            Temporary suppression for Netty transitive dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.netty/netty-.*@.*$</packageUrl>
+        <cve>CVE-2026-47874</cve>
+    </suppress>
 </suppressions>
