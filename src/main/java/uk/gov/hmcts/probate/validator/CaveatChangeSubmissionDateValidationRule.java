@@ -10,9 +10,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
@@ -32,14 +30,14 @@ public class CaveatChangeSubmissionDateValidationRule {
     private final BusinessValidationMessageService businessValidationMessageService;
 
     public List<FieldErrorResponse> validate(CaveatDetails caseDetails) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        List<FieldErrorResponse> errors = new ArrayList<>();
         CaveatData caveatData = caseDetails.getData();
 
         LocalDate applicationSubmittedDate = caveatData.getApplicationSubmittedDate();
         if (applicationSubmittedDate == null) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_MISSING));
-            return new ArrayList<>(errors);
+            return errors;
         }
 
         if (applicationSubmittedDate.isAfter(LocalDate.now())) {
@@ -51,7 +49,7 @@ public class CaveatChangeSubmissionDateValidationRule {
         if (dod == null || dod.isAfter(LocalDate.now())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID));
-            return new ArrayList<>(errors);
+            return errors;
         }
 
         if (dod.isAfter(applicationSubmittedDate)) {
@@ -64,7 +62,7 @@ public class CaveatChangeSubmissionDateValidationRule {
                     CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT));
         }
 
-        return new ArrayList<>(errors);
+        return errors;
     }
 
 }
