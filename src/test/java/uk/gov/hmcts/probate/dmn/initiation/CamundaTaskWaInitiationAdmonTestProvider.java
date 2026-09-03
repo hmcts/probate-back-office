@@ -35,7 +35,7 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
         Map<String,Object> examineDigitalCaseAdmonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_ADMON,
                 "name", ADMON_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineDigitalCaseAdmonReadyToIssueTaskAttributes = Map.of(
