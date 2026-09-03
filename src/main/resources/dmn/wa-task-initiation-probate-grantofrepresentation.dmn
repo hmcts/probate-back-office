@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -796,145 +796,250 @@ else false</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_section_116">
-          <inputEntry id="UnaryTests_section_116_event">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_state">
-            <text>"BOReadyToIssue"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_evidence">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_case_type">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_handoff_present">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_handoff_reason">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Section116")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_section_116_legacy_site">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_section_116_task_id">
-            <text>"ExamineSection116"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_section_116_task_name">
-            <text>"Examine - Section 116"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_section_116_delay">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_section_116_process_category">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
-        <rule id="DecisionRule_power_of_attorney">
-          <inputEntry id="UnaryTests_power_of_attorney_event">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_state">
-            <text>"BOReadyToIssue"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_evidence">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_case_type">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_handoff_present">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_handoff_reason">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "POA")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_power_of_attorney_legacy_site">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_power_of_attorney_task_id">
-            <text>"ExaminePowerOfAttorney"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_power_of_attorney_task_name">
-            <text>"Examine - Power of Attorney (POA)"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_power_of_attorney_delay">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_power_of_attorney_process_category">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
-        <rule id="DecisionRule_reseal_foreign_grant">
-          <inputEntry id="UnaryTests_reseal_foreign_grant_event">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_state">
-            <text>"BOReadyToIssue"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_evidence">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_case_type">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_handoff_present">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_handoff_reason">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_reseal_foreign_grant_legacy_site">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_reseal_foreign_grant_task_id">
-            <text>"ExamineResealForeignGrant"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_reseal_foreign_grant_task_name">
-            <text>"Examine - Reseal Foreign Grant"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_reseal_foreign_grant_delay">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_reseal_foreign_grant_process_category">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
-        <rule id="DecisionRule_infected_blood_interim_scheme">
-          <inputEntry id="UnaryTests_infected_blood_interim_event">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_state">
-            <text>"BOReadyToIssue"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_evidence">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_case_type">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_handoff_present">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_handoff_reason">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_infected_blood_interim_legacy_site">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_infected_blood_interim_task_id">
-            <text>"ExamineInfectedBloodInterimScheme"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_infected_blood_interim_task_name">
-            <text>"Examine - Infected Blood Interim Scheme"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_infected_blood_interim_delay">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_infected_blood_interim_process_category">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
+        <inputEntry id="UnaryTests_section_116_event">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_evidence">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_case_type">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_handoff_present">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_handoff_reason">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Section116")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_section_116_legacy_site">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_section_116_task_id">
+          <text>"ExamineSection116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_section_116_task_name">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_section_116_delay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_section_116_process_category">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_power_of_attorney">
+        <inputEntry id="UnaryTests_power_of_attorney_event">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_evidence">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_case_type">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_handoff_present">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_handoff_reason">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "POA")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_power_of_attorney_legacy_site">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_task_id">
+          <text>"ExaminePowerOfAttorney"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_task_name">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_delay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_process_category">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_reseal_foreign_grant">
+        <inputEntry id="UnaryTests_reseal_foreign_grant_event">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_evidence">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_case_type">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_handoff_present">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_handoff_reason">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_legacy_site">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_task_id">
+          <text>"ExamineResealForeignGrant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_task_name">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_delay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_process_category">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_infected_blood_interim_scheme">
+        <inputEntry id="UnaryTests_infected_blood_interim_event">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_evidence">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_case_type">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_handoff_present">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_handoff_reason">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_infected_blood_interim_legacy_site">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_task_id">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_task_name">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_delay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_process_category">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_178l1hf">
+        <inputEntry id="UnaryTests_0sn65eg">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lj5dwq">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mssuy5">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07ir7ti">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j0bmlx">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wrnfmc">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "FiatWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kqhcqt">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ot30tq">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0395w8l">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1110oes">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18xbpor">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01jnunx">
+        <inputEntry id="UnaryTests_0s7j8o4">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0atwnji">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bwrote">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j1y1tr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a0cxky">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ockgdm">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignDomicile")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rtdku4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k3egbt">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16zmgjz">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11813es">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_093j337">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0yoz3m9">
+        <inputEntry id="UnaryTests_00y8yy6">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c5vhrr">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mixcya">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1i65gc9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bbyrjd">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0chrk5a">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wrvt31">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1tr07bw">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0b7levq">
+          <text>"Examine - Incapacity Under Rule 35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a337zi">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1luglf9">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
