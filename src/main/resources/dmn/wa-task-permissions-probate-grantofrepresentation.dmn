@@ -1299,6 +1299,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_19f3acv">
+        <inputEntry id="UnaryTests_1xebcjn">
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hatfpr">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1yr7zb3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0steo1t">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j5itk2">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1eisrnv">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0adghme">
+          <text>"SKILL:ABA6:LeadingFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mk6c2v">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_087kwfh">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nut1ns">
+        <inputEntry id="UnaryTests_171wnxy">
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c50s83">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13t41ps">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t8qski">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1awlwf5">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zshqyp">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qw1rp7">
+          <text>"SKILL:ABA6:LeadingFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08aqy6p">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p844sp">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
