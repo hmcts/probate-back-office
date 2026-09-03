@@ -935,6 +935,41 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+      <rule id="DecisionRule_0akolcg">
+        <inputEntry id="UnaryTests_010m5kt">
+          <text>"boFailQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09t9k6k">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qu23gv">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bkzt4b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pweuys">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06msxx5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ypeeki">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oe2jxn">
+          <text>"RectifyQACase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r1lmh8">
+          <text>"Rectify QA Case"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bkj5mt">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s1suif">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
