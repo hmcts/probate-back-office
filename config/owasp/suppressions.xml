@@ -109,4 +109,11 @@
         ]]></notes>
         <cve>CVE-2026-59270</cve>
     </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: reactor-netty-http-1.2.18.jar
+            file name: reactor-netty-core-1.2.18.jar
+        ]]></notes>
+        <cve>CVE-2026-47874</cve>
+    </suppress>
 </suppressions>
