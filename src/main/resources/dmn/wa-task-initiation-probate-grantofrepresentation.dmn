@@ -935,6 +935,41 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+        <rule id="DecisionRule_1jhl87s">
+          <inputEntry id="UnaryTests_1chysm0">
+            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_0doq2io">
+            <text>"CasePrinted"</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_0c7nlh2">
+            <text>false</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_1erjg06">
+            <text></text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_08rjwaj">
+            <text>true</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_1f00d1b">
+            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "MinorityInterest")</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_0y3jsbb">
+            <text>true</text>
+          </inputEntry>
+          <outputEntry id="LiteralExpression_1qd7z76">
+            <text>"ExamineMinorityInterestCasePrinted"</text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_1te38pl">
+            <text>"Examine - Minority Interest"</text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_1vtcl12">
+            <text></text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_07ssaf9">
+            <text>"case progression"</text>
+          </outputEntry>
+        </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
