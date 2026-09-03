@@ -149,7 +149,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
     } else if("prod" == targetEnv){
-      //WARNING, CHANGING THIS WILL SHUTTER PROD
+      //WARNING, CHANGING THIS WILL SHUTTER PROD - Unshutter
       shutterOption = "false"
     } else {
       shutterOption = "false"
