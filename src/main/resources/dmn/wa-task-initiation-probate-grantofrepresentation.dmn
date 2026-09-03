@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -935,6 +935,111 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+      <rule id="DecisionRule_0hfon8d">
+        <inputEntry id="UnaryTests_1cmjisb">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08u2568">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14d5irc">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kvrhxp">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18h7jg5">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_037ty3s">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LiteraryEstate")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fxad3k">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l445ws">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fjm69u">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0krdn3c">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0asyukx">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0kj7t17">
+        <inputEntry id="UnaryTests_0u3vw39">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ymr4n9">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_127ngkk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06vebqt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l34ns3">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18abp7q">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LostWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fog2fc">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ersx2r">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03tdpmc">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k1qo45">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0njd08r">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kwog8n">
+        <inputEntry id="UnaryTests_07aj6a3">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d45z7a">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07pqx6n">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ly24ul">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k0l299">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m09dxn">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "MinorityInterest")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0esytla">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ytv98k">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zy3vji">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dlnfi4">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1v25hv2">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

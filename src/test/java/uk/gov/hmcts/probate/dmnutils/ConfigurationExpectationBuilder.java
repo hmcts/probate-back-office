@@ -54,6 +54,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 
 public class ConfigurationExpectationBuilder {
 
@@ -93,6 +96,9 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_POWER_OF_ATTORNEY)
                 || conditions.get("taskType").equals(EXAMINE_RESEAL_FOREIGN_GRANT)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
+                || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
+                || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
