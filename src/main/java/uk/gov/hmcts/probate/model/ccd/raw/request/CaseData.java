@@ -380,6 +380,7 @@ public class CaseData extends CaseDataParent {
     private String evidenceHandled;
     private transient String attachDocuments;
     private final String caseType;
+    private final String createTask;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;
