@@ -39,6 +39,13 @@ import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_RESOLUTION;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_MATCHING;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_RAISED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -53,17 +60,15 @@ public class CaveatQueryService {
     private static final String STATE = "state";
     private static final String STATE_KEYWORD = "state.keyword";
     private static final String DATA_EXPIRY_DATE = "data.expiryDate";
-    private static final String CAVEAT_NOT_MATCHED = "CaveatNotMatched";
-    private static final String AWAITING_CAVEAT_RESOLUTION = "AwaitingCaveatResolution";
-    private static final String WARNING_VALIDATION = "WarningValidation";
-    private static final String AWAITING_WARNING_RESPONSE = "AwaitingWarningResponse";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
     private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
     private static final String[] EXPIRABLE_STATES = {
-        CAVEAT_NOT_MATCHED,
-        AWAITING_CAVEAT_RESOLUTION,
-        WARNING_VALIDATION,
-        AWAITING_WARNING_RESPONSE
+            CAVEAT_NOT_MATCHED.getName(),
+            CAVEAT_AWAITING_RESOLUTION.getName(),
+            CAVEAT_WARNING_VALIDATION.getName(),
+            CAVEAT_AWAITING_WARNING_RESPONSE.getName(),
+            CAVEAT_MATCHING.getName(),
+            CAVEAT_RAISED.getName()
     };
 
     private final RestTemplate restTemplate;
