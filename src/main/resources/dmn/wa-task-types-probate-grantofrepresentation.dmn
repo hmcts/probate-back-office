@@ -321,6 +321,18 @@
           <text>"Examine - Double Probate"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0s311t7">
+        <description>EPOACP</description>
+        <inputEntry id="UnaryTests_1xghq61">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d00c0u">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z0t4cw">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
