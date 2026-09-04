@@ -178,13 +178,13 @@ class HseReminderNotificationTest {
     }
 
     @Test
-    void returnsTrueWhenStateIsBOCaseStopped() {
+    void returnsFalseWhenStateIsBOCaseStopped() {
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
         when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
         when(caseDetails.getState()).thenReturn("BOCaseStopped");
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertTrue(result);
+        assertFalse(result);
     }
 }
