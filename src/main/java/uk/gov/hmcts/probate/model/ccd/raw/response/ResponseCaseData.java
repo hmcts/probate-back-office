@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
+import uk.gov.hmcts.probate.model.ccd.raw.DisposedCase;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
@@ -424,4 +425,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String issueEarlySwitch;
     private String hasValidMatches;
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
+
+    private final List<CollectionMember<DisposedCase>> disposedCasesReturn;
 }

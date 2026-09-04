@@ -748,6 +748,14 @@ blobstorage:
     smeeandford: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
     nfi: ${PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING:dummy}
 
+azure:
+  storage:
+    table:
+      connectionString: ${PROBATE_TABLE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+      disposedCasesTable: ${PROBATE_TABLE_STORAGE_CASES_TABLE:DisposedCases}
+      disposedDocumentsTable: ${PROBATE_TABLE_STORAGE_DOCUMENTS_TABLE:DisposedDocuments}
+      partition: ${PROBATE_TABLE_STORAGE_PARTITION:demo}
+
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
 schedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
