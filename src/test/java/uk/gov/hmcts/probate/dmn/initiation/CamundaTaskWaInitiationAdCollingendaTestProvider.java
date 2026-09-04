@@ -47,42 +47,48 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), false),
+                                false, emptyList(), false,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), false),
+                                false, emptyList(), false,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), false),
+                                false, emptyList(), false,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), false),
+                                false, emptyList(), false,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), true),
+                                false, emptyList(), true,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
-                                false, emptyList(), true),
+                                false, emptyList(), true,
+                                emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 )
         );

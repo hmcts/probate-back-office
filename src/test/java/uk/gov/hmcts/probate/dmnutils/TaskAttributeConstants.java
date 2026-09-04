@@ -137,7 +137,9 @@ public class TaskAttributeConstants {
                     + "[Stop Case](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)";
     public static final String DESCRIPTION_EXAMINE_OTHER_CASES =
-            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+            "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boAmendCaseDetailsForReadyToIssue)  "
+                    + "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
                     + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boEscalateToRegistrar)  "

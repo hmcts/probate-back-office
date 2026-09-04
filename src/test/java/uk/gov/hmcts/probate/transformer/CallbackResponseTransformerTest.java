@@ -605,6 +605,8 @@ class CallbackResponseTransformerTest {
     private WorkAllocationToggleService workAllocationToggleService;
     @Mock
     private CreateTaskProcessorFactory createTaskProcessorFactory;
+    @Mock
+    private AmendCaseDetailsForAwaitingDocumentation amendCaseDetailsForAwaitingDocumentation;
 
     @BeforeEach
     public void setup() {
@@ -4960,7 +4962,13 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
-                .thenReturn(Optional.of(new AmendCaseDetailsForAwaitingDocumentation()));
+                .thenReturn(Optional.of(amendCaseDetailsForAwaitingDocumentation));
+        doAnswer(invocation -> {
+            ResponseCaseData responseCaseData = invocation.getArgument(1);
+            responseCaseData.setCreateTask(YES);
+            return null;
+        }).when(amendCaseDetailsForAwaitingDocumentation)
+                .process(any(CallbackRequest.class), any(ResponseCaseData.class));
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(YES, callbackResponse.getData().getCreateTask());

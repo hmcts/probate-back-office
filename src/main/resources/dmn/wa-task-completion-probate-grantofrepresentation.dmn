@@ -33,7 +33,7 @@
       </rule>
       <rule id="DecisionRule_14v68e6">
         <inputEntry id="UnaryTests_1oye7pf">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0b0njdn">
           <text>"ExamineDeBonisNon"</text>
@@ -44,7 +44,7 @@
       </rule>
       <rule id="DecisionRule_0i0u0io">
         <inputEntry id="UnaryTests_1cfgkd3">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1xpi8ow">
           <text>"ExamineFiatWill"</text>
@@ -55,7 +55,7 @@
       </rule>
       <rule id="DecisionRule_04wyp7i">
         <inputEntry id="UnaryTests_1d3kwzs">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ipyedj">
           <text>"ExamineInfectedBloodCompensationAuthority"</text>
@@ -77,7 +77,7 @@
       </rule>
       <rule id="DecisionRule_windrush_completion">
         <inputEntry id="UnaryTests_windrush_completion_events">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_windrush_completion_task">
           <text>"ExamineWindrushScheme"</text>
@@ -110,7 +110,7 @@
       </rule>
       <rule id="DecisionRule_1t7an41">
         <inputEntry id="UnaryTests_130fdt0">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mpikqp">
           <text>"ExamineWillOrCodicilToBeNotated"</text>
@@ -121,7 +121,7 @@
       </rule>
       <rule id="DecisionRule_0e62f4l">
         <inputEntry id="UnaryTests_0eumip0">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ulw3bg">
           <text>"ExamineWitnessInterview"</text>
@@ -132,7 +132,7 @@
       </rule>
       <rule id="DecisionRule_04nn1ks">
         <inputEntry id="UnaryTests_0yd6w75">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1p5xb71">
           <text>"ExamineHorizonScheme"</text>
@@ -176,7 +176,7 @@
       </rule>
       <rule id="DecisionRule_0op5i8f">
         <inputEntry id="UnaryTests_1gxnsv2">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_18mjnyf">
           <text>"ExamineDoubleProbate"</text>
@@ -187,7 +187,7 @@
       </rule>
       <rule id="DecisionRule_1bbpwhx">
         <inputEntry id="UnaryTests_17xg5hg">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1e5htxk">
           <text>"ExamineIncapacityUnderRule35"</text>
@@ -198,7 +198,7 @@
       </rule>
       <rule id="DecisionRule_08n8qwo">
         <inputEntry id="UnaryTests_0rnk7x7">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1c021lg">
           <text>"ExamineLeadingOrFollowingGrants"</text>
@@ -209,7 +209,7 @@
       </rule>
       <rule id="DecisionRule_section_116_completion">
         <inputEntry id="UnaryTests_section_116_completion_events">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_section_116_completion_task">
           <text>"ExamineSection116"</text>
@@ -220,7 +220,7 @@
       </rule>
       <rule id="DecisionRule_power_of_attorney_completion">
         <inputEntry id="UnaryTests_power_of_attorney_completion_events">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_completion_task">
           <text>"ExaminePowerOfAttorney"</text>
@@ -231,7 +231,7 @@
       </rule>
       <rule id="DecisionRule_reseal_foreign_grant_completion">
         <inputEntry id="UnaryTests_reseal_foreign_grant_completion_events">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_reseal_foreign_grant_completion_task">
           <text>"ExamineResealForeignGrant"</text>
@@ -242,7 +242,7 @@
       </rule>
       <rule id="DecisionRule_infected_blood_interim_completion">
         <inputEntry id="UnaryTests_infected_blood_interim_completion_events">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_completion_task">
           <text>"ExamineInfectedBloodInterimScheme"</text>
@@ -253,7 +253,7 @@
       </rule>
       <rule id="DecisionRule_18tqeo6">
         <inputEntry id="UnaryTests_166b02j">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1qbluwa">
           <text>"ExamineRectifyWillOrCodicil"</text>
@@ -264,7 +264,7 @@
       </rule>
       <rule id="DecisionRule_1ciy4dd">
         <inputEntry id="UnaryTests_0qv7wkg">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wwvgis">
           <text>"ExamineCodicilMisRecital"</text>
@@ -275,7 +275,7 @@
       </rule>
       <rule id="DecisionRule_0etppnk">
         <inputEntry id="UnaryTests_0fn2oxz">
-          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_05mydkq">
           <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>

@@ -46,42 +46,48 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), true),
+                            emptyList(), true,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
-                            emptyList(), true),
+                            emptyList(), true,
+                            emptyList()),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             )
         );

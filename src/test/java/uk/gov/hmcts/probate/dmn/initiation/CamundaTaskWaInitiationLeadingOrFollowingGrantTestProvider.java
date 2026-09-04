@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.leadingFollowingGrantsHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
@@ -40,112 +41,128 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",false,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true, 
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",false,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true, 
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",false,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true, 
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",false,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true, 
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(
@@ -158,6 +175,14 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalDataNoHandOffList(),
+                    emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
                     emptyList()
             )
         );

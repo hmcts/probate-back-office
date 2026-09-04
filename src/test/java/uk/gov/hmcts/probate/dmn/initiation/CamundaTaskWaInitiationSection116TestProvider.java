@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.section116HandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
@@ -40,28 +41,32 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         List.of(examineSection116TaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -80,28 +85,32 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         List.of(examineSection116TaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -114,56 +123,64 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         List.of(examineSection116TaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         List.of(examineSection116TaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -171,6 +188,14 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason)),
+                        List.of(examineSection116TaskAttributes)
                 )
         );
     }
