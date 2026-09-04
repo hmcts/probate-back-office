@@ -32,7 +32,7 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                 = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                 "name", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes
