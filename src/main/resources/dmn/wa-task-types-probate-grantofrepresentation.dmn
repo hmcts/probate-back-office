@@ -67,7 +67,7 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1c631u1">
           <text>"Examine Digital Case - Probate"</text>
-         </outputEntry>
+        </outputEntry>
       </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
@@ -307,6 +307,30 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_16n0d3e">
           <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14gmknf">
+        <description>EDBCP</description>
+        <inputEntry id="UnaryTests_1vah4ux">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xvot9x">
+          <text>"ExamineDoubleProbateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_018pegr">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0s311t7">
+        <description>EPOACP</description>
+        <inputEntry id="UnaryTests_1xghq61">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d00c0u">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z0t4cw">
+          <text>"Examine - Power of Attorney (POA)"</text>
         </outputEntry>
       </rule>
     </decisionTable>
