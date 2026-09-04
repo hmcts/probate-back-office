@@ -28,12 +28,16 @@ import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_MATCHING;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_MATCHING;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_RESOLUTION;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_RAISED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
@@ -54,7 +58,9 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
             CAVEAT_NOT_MATCHED.getName(),
             CAVEAT_AWAITING_RESOLUTION.getName(),
             CAVEAT_AWAITING_WARNING_RESPONSE.getName(),
-            CAVEAT_WARNING_VALIDATION.getName()
+            CAVEAT_WARNING_VALIDATION.getName(),
+            CAVEAT_MATCHING.getName(),
+            CAVEAT_RAISED.getName()
     );
 
     @Override
@@ -177,6 +183,8 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
             case CAVEAT_AWAITING_RESOLUTION -> CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
             case CAVEAT_AWAITING_WARNING_RESPONSE -> CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
             case CAVEAT_WARNING_VALIDATION -> CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
+            case CAVEAT_MATCHING -> CAVEAT_EXPIRED_FOR_CAVEAT_MATCHING;
+            case CAVEAT_RAISED -> CAVEAT_EXPIRED_FOR_CAVEAT_RAISED;
             default -> throw new IllegalStateException("Unexpected state for Caveat Auto Expiry: " + caveatState);
         };
     }
