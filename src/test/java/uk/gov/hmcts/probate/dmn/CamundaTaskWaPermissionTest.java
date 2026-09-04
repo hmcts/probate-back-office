@@ -95,6 +95,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOST_WILL_CODICIL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
 
 
 
@@ -339,6 +340,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(POWER_OF_ATTORNEY_SKILL_CODE)
                 )
         );
     }
