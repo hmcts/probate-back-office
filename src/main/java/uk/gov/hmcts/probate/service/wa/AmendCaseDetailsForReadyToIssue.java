@@ -14,8 +14,12 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
 
     @Override
     public void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
-                .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                ? Constants.NO : Constants.YES);
+        boolean stateChanged = !callbackRequest.getCaseDetails().getState()
+                .equals(callbackRequest.getCaseDetailsBefore().getState());
+        boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
+                .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
+
+        responseCaseData.setCreateTask(stateChanged || caseTypeChanged
+                ? Constants.YES : Constants.NO);
     }
 }
