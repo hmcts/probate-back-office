@@ -42,19 +42,22 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String createTaskVar = "createTask";
+    protected static final String waHandoffReasonListVar = "waHandoffReasonList";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
                                                                    List<Map<String,Object>> boHandoffReasonList,
-                                                                   boolean createTask) {
+                                                                   boolean createTask,
+                                                                   List<Map<String,Object>> waHandoffReasonList) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
                         caseTypeVar, caseType,
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
                         boHandoffReasonListVar, boHandoffReasonList,
-                        createTaskVar, createTask
+                        createTaskVar, createTask,
+                        waHandoffReasonListVar, waHandoffReasonList
                 )
         );
     }
@@ -84,7 +87,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(50));
+        assertThat(logic.getRules().size(), is(49));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

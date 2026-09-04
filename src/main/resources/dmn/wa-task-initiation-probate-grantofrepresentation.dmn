@@ -1915,47 +1915,6 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0ft8pqm">
-        <inputEntry id="UnaryTests_1wdxl3v">
-          <text>"boAmendCaseDetailsForReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_14e2hc8">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1jozqzt">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_09gv46c">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0bsny7m">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1rip4zt">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_03ef5cn">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0liosfx">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_079lof9">
-          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_04egias">
-          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_02e6ywi">
-          <text>"Examine - Infected Blood Interim Scheme"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0oemwc4">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1hgfulw">
-          <text>"case progression"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1irpij4">
         <inputEntry id="UnaryTests_0vkddzc">
           <text>"boAmendCaseDetailsForReadyToIssue"</text>
