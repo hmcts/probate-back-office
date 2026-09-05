@@ -85,6 +85,9 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
         = "ExamineWillOrCodicilToBeNotatedCasePrinted";
+    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED
+        = "ExamineRectifyWillOrCodicilCasePrinted";
+    public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";

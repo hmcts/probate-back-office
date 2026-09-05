@@ -42,6 +42,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String willOrCodicilToBeNotatedHandOffReason = "WillCodicilNotated";
+    protected static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
+    protected static final String windrushSchemeHandOffReason = "WindrushScheme";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -82,7 +84,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(26));
+        assertThat(logic.getRules().size(), is(28));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

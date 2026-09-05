@@ -321,6 +321,30 @@
           <text>"Examine - Will or Codicil to be Notated"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0xwe9vt">
+        <description>ERWOCCP</description>
+        <inputEntry id="UnaryTests_16w4d1y">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1w4m6fj">
+          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02kdq3z">
+          <text>"Examine - Rectify a Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01sb44c">
+        <description>EWSCP</description>
+        <inputEntry id="UnaryTests_06n5k08">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15ijj9j">
+          <text>"ExamineWindrushSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07yki9q">
+          <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
