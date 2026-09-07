@@ -1,9 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
