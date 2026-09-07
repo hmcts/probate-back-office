@@ -481,6 +481,7 @@ java:
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
     PROBATE_WA_ENABLED: ${PROBATE_WA_ENABLED}
     PROBATE_GS_ENABLED: ${PROBATE_GS_ENABLED}
+    WA_SERVICE_HOST: http://${SERVICE_NAME}-wa-task-management-api
 
   keyVaults:
     probate:
