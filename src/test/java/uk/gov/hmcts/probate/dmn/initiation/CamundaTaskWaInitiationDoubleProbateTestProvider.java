@@ -69,7 +69,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
+                        additionalData(false, "",true, 
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -97,7 +97,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
+                        additionalData(false, "",true, 
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -125,7 +125,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
+                        additionalData(false, "",true, 
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -153,7 +153,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
+                        additionalData(false, "",true, 
                                 emptyList(), false),
                         emptyList()
                 ),
