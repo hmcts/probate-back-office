@@ -1,11 +1,20 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONPointer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -25,11 +34,16 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.CaveatQueryService.EXPIRABLE_STATES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 
 class CaveatQueryServiceTest {
@@ -161,5 +175,37 @@ class CaveatQueryServiceTest {
                 .thenThrow(new HttpClientErrorException(org.springframework.http.HttpStatus.BAD_REQUEST));
         assertThrows(CaseMatchingException.class,
                 () -> caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, null));
+    }
+
+    @Test
+    void checkExpectedStatesForExpiryInQuery() {
+        caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, null);
+
+        final ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+        verify(restTemplate).postForObject(any(), captor.capture(), eq(ReturnedCaveats.class));
+
+        final Object capturedObject = captor.getValue();
+        if (!(capturedObject instanceof HttpEntity)) {
+            fail("captured object is not a HttpEntity");
+        }
+
+        final HttpEntity httpEntity = (HttpEntity) capturedObject;
+        final Object bodyObject = httpEntity.getBody();
+        if (!(bodyObject instanceof String)) {
+            fail("body object is not a String");
+        }
+
+        final String body = (String) bodyObject;
+        final JSONObject bodyJson = new JSONObject(body);
+
+        final JsonObjectUtils jsonObjectUtils = new JsonObjectUtils();
+        final JSONArray jsonArray = jsonObjectUtils.findArrayInQuery(
+                bodyJson,
+                new JSONPointer("/query/bool/filter/1/terms/state.keyword"));
+        final List<Object> jsonList = jsonArray.toList();
+
+        assertAll(
+                () -> assertThat(jsonList, Matchers.containsInAnyOrder(EXPIRABLE_STATES)),
+                () -> assertThat(jsonList, Matchers.hasSize(6)));
     }
 }
