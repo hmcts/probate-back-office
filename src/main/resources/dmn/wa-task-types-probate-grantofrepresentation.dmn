@@ -405,6 +405,18 @@
           <text>"Examine - Power of Attorney (POA)"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0czxgft">
+        <description>ERFGCP</description>
+        <inputEntry id="UnaryTests_1n7r14g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19ycqtm">
+          <text>"ExamineResealForeignGrantCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tbl7vl">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

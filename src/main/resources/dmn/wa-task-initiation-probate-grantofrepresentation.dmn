@@ -1465,6 +1465,41 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+        <rule id="DecisionRule_1kazjwh">
+          <inputEntry id="UnaryTests_1flujle">
+            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_1pld6st">
+            <text>"CasePrinted"</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_17ljsne">
+            <text>false</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_1pmtwl0">
+            <text></text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_0xzltn2">
+            <text>true</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_1euaasu">
+            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
+          </inputEntry>
+          <inputEntry id="UnaryTests_0k5abi5">
+            <text>true</text>
+          </inputEntry>
+          <outputEntry id="LiteralExpression_0a25rsv">
+            <text>"ExamineResealForeignGrantCasePrinted"</text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_0dznpv3">
+            <text>"Examine - Reseal Foreign Grant"</text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_14isjan">
+            <text></text>
+          </outputEntry>
+          <outputEntry id="LiteralExpression_1cd3s3m">
+            <text>"case progression"</text>
+          </outputEntry>
+        </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
