@@ -310,6 +310,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_177p57w">
+        <description>ELWOCCP</description>
         <inputEntry id="UnaryTests_0t97q98">
           <text></text>
         </inputEntry>
