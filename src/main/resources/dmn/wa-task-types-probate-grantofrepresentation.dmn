@@ -309,6 +309,18 @@
           <text>"Examine - Infected Blood Interim Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_02ad2ak">
+        <description>EDBNCP</description>
+        <inputEntry id="UnaryTests_1xl9exd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l5m8ly">
+          <text>"ExamineDeBonisNonCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dx5ovt">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
