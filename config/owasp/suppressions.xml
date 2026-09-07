@@ -108,6 +108,8 @@
         ]]></notes>
         <cve>CVE-2026-59270</cve>
         <cve>CVE-2026-59276</cve>
+        <cve>CVE-2026-47841</cve>
+        <cve>CVE-2026-47842</cve>
     </suppress>
     <suppress until="2026-10-24">
         <notes><![CDATA[
@@ -116,9 +118,23 @@
         <packageUrl regex="true">^pkg:maven/io\.projectreactor\.netty/reactor-netty-.*@.*$</packageUrl>
         <cve>CVE-2026-47874</cve>
     </suppress>
-    <suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+           file name: spring-data-jpa-3.5.13.jar
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring-data-jpa@.*$</packageUrl>
         <cve>CVE-2026-47834</cve>
-        <cve>CVE-2026-47842</cve>
+    </suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+           file name: spring-security-config-6.5.11.jar
+           file name: spring-security-core-6.5.11.jar
+           file name: spring-security-oauth2-client-6.5.11.jar
+           file name: spring-security-oauth2-core-6.5.11.jar
+           file name: spring-security-oauth2-jose-6.5.11.jar
+           file name: spring-security-web-6.5.11.jar
+        ]]></notes>
         <cve>CVE-2026-47841</cve>
+        <cve>CVE-2026-47842</cve>
     </suppress>
 </suppressions>
