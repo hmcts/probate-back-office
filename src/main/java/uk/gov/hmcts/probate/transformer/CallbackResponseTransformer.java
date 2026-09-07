@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -161,7 +162,7 @@ public class CallbackResponseTransformer {
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
     private final WorkAllocationToggleService workAllocationToggleService;
-    private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
+    private final CreateTaskProcessorFactory createTaskProcessorFactory;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -894,12 +895,8 @@ public class CallbackResponseTransformer {
     private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             responseCaseData.setCreateTask(Constants.NO);
-            if (callbackRequest.getEventId() != null
-                    && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
-                responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
-                        .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                        ? Constants.NO : Constants.YES);
-            }
+            createTaskProcessorFactory.get(callbackRequest.getEventId())
+                    .ifPresent(processor -> processor.process(callbackRequest, responseCaseData));
         }
     }
 

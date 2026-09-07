@@ -64,6 +64,8 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -601,6 +603,8 @@ class CallbackResponseTransformerTest {
     private HasValidMatchesDefaulter hasValidMatchesDefaulter;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
+    @Mock
+    private CreateTaskProcessorFactory createTaskProcessorFactory;
 
     @BeforeEach
     public void setup() {
@@ -4955,6 +4959,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
+                .thenReturn(Optional.of(new AmendCaseDetailsForAwaitingDocumentation()));
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(YES, callbackResponse.getData().getCreateTask());
@@ -4972,6 +4978,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
+                .thenReturn(Optional.empty());
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(NO, callbackResponse.getData().getCreateTask());
     }
