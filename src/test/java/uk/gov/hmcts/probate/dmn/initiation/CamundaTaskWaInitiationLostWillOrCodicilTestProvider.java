@@ -38,27 +38,30 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -77,27 +80,30 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -110,54 +116,61 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)
+                                , true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason)
+                                , true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(

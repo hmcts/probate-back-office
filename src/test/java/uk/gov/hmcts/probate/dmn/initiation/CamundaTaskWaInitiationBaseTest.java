@@ -42,17 +42,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String lostWillOrCodicilHandOffReason = "LostWill";
+    protected static final String createTaskVar = "createTask";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
-                                                                   List<Map<String,Object>> boHandoffReasonList) {
+                                                                   List<Map<String,Object>> boHandoffReasonList,
+                                                                   boolean createTask) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
                         caseTypeVar, caseType,
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
-                        boHandoffReasonListVar, boHandoffReasonList
+                        boHandoffReasonListVar, boHandoffReasonList,
+                        createTaskVar, createTask
                 )
         );
     }
@@ -80,9 +83,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(7));
+        assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(26));
+        assertThat(logic.getRules().size(), is(30));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
