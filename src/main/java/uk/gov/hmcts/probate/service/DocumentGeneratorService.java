@@ -118,7 +118,7 @@ public class DocumentGeneratorService {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Document document;
         if (status == DocumentStatus.FINAL) {
-            log.info("Generating Grant document");
+            log.info("Generating Welsh Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
             decoratePlaceholders(placeholders, caseDetails);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());

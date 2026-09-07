@@ -13,8 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PlaceholderDecorator {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_DEATH_IN_WELSH = "deceasedDateOfDeathInWelsh";
     private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
@@ -29,22 +28,22 @@ public class PlaceholderDecorator {
     public void decorate(Map<String, Object> placeholders, String grantIssuedDate) {
         putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_DEATH, DECEASED_DATE_OF_DEATH_IN_WELSH);
         putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_BIRTH, DECEASED_DATE_OF_BIRTH_IN_WELSH);
-
-        String issuedDate = (String) placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> grantIssuedDate);
-        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH,
-            localDateToWelshStringConverter.convert(LocalDate.parse(issuedDate)));
-
         putWelshDateIfPresent(placeholders, GRANT_REISSUED_DATE, GRANT_REISSUED_DATE_IN_WELSH);
+
+        placeholders.putIfAbsent(GRANT_ISSUED_DATE, grantIssuedDate);
+        putWelshDateIfPresent(placeholders, GRANT_ISSUED_DATE, GRANT_ISSUED_DATE_IN_WELSH);
+
+
     }
 
     public void decorate(Map<String, Object> placeholders) {
-        decorate(placeholders, LocalDate.now().format(dateTimeFormatter));
+        decorate(placeholders, LocalDate.now().format(DATE_FORMATTER));
     }
 
     private void putWelshDateIfPresent(Map<String, Object> placeholders, String sourceKey, String targetKey) {
-        Object dateValue = placeholders.get(sourceKey);
-        if (dateValue != null) {
-            placeholders.put(targetKey, localDateToWelshStringConverter.convert(LocalDate.parse((String) dateValue)));
+        Object value = placeholders.get(sourceKey);
+        if (value instanceof String date) {
+            placeholders.put(targetKey, localDateToWelshStringConverter.convert(LocalDate.parse(date)));
         }
     }
 }
