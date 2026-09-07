@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -1164,6 +1164,82 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0b84lt1">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14tadjt">
+        <inputEntry id="UnaryTests_120do6g">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0in5ala">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_184oe3q">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hnt0fw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13nnzw7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gmeht7">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LostWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1759t58">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0geaarz">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13hjkcw">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18w9hn4">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0eefgkt">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0b97052">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10tpe4b">
+        <inputEntry id="UnaryTests_16c2wl0">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o5z3dy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_194vk72">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13loy1v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kwhbr1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ucdok7">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "HorizonScheme")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oi3f70">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u1if6a">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bvaoyu">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19xmqlh">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17jog9g">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yjnr55">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

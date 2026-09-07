@@ -295,6 +295,28 @@
           <text></text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1xuc0fd">
+        <inputEntry id="UnaryTests_1eb6s7l">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kwrhd0">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oa94p1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0pbj4og">
+        <inputEntry id="UnaryTests_1h35pk4">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0c7xjsu">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ei7cpv">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1tc4cvn">
         <inputEntry id="UnaryTests_021pd0e">
           <text>"boResolveStop"</text>
