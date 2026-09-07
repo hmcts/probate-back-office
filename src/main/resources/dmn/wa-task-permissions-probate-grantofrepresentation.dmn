@@ -1299,6 +1299,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0p4mvft">
+        <inputEntry id="UnaryTests_0lc2hco">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ffo7po">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1f6fw1g">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yhx3qb">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wnr29a">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1d6y9sj">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qvxfgk">
+          <text>"SKILL:ABA6:LostWillCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00yjqo0">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tkkss4">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x9ptg5">
+        <inputEntry id="UnaryTests_1rmqtpt">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r1i6yy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kjzzv2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kud1ni">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dm1mtb">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ag67ro">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wufvnu">
+          <text>"SKILL:ABA6:LostWillCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00aqzln">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18qbbvl">
+          <text>false</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_143i54t">
         <inputEntry id="UnaryTests_11h6tq5">
           <text>"ExamineHorizonSchemeCasePrinted"</text>

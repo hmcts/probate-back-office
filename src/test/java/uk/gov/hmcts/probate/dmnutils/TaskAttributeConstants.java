@@ -114,7 +114,7 @@ public class TaskAttributeConstants {
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
             + "[Issue Grant](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
             + "[Escalate to Registrar](/cases/case-details/"
@@ -127,7 +127,7 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
             "[Amend Case Details](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
                     + "[Issue Grant](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
                     + "[Escalate to Registrar](/cases/case-details/"
@@ -207,6 +207,12 @@ public class TaskAttributeConstants {
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
+
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
+            "ExamineLostWillOrCodicilCasePrinted";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME
+            = "Examine - Lost Will or Codicil";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
 
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";

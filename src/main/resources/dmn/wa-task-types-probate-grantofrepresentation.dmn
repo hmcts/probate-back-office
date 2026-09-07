@@ -309,7 +309,20 @@
           <text>"Examine - Infected Blood Interim Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_177p57w">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_0t97q98">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0i4n1fh">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_051c3rt">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0mowadn">
+      <description>ELWOCCP</description>
         <inputEntry id="UnaryTests_0qgjw9u">
           <text></text>
         </inputEntry>
