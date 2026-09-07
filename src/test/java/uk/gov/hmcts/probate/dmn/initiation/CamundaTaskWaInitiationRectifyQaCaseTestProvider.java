@@ -31,21 +31,21 @@ public class CamundaTaskWaInitiationRectifyQaCaseTestProvider implements Argumen
                         BO_FAIL_QA_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 )
         );
