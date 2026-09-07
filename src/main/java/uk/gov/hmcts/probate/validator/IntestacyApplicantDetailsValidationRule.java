@@ -48,8 +48,7 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                         codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                         codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
                     }
-                }
-                else if (YES.equalsIgnoreCase(applicant.getApplicantAdoptedDeceasedOut())) {
+                } else if (YES.equalsIgnoreCase(applicant.getApplicantAdoptedDeceasedOut())) {
                     codes.add(DECEASED_ADOPTED_OUT);
                     codes.add(DECEASED_ADOPTED_OUT_WELSH);
                 }

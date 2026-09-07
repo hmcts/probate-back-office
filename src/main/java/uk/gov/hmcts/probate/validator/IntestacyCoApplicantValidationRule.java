@@ -81,15 +81,19 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
 
         // can only have main executor and and optional other parent as co applicant
         if (applicantIsParent && parentCoApplicantCount > 1) {
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, TOO_MANY_PARENT_CO_APPLICANTS));
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, TOO_MANY_PARENT_CO_APPLICANTS_WELSH));
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR,
+                    TOO_MANY_PARENT_CO_APPLICANTS));
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR,
+                    TOO_MANY_PARENT_CO_APPLICANTS_WELSH));
         }
     }
 
     void addParentAdoptedDeceasedErrors(List<FieldErrorResponse> errors,
                                     String relationshipToDeceased,
-                                    SolsApplicantFamilyDetails details){
-        if(PARENT.equalsIgnoreCase(relationshipToDeceased)){
+                                    SolsApplicantFamilyDetails details) {
+        if (PARENT.equalsIgnoreCase(relationshipToDeceased)) {
             if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedIn())) {
                 if (NO.equalsIgnoreCase(details.getCoApplicantAdoptionDeceasedInEnglandOrWales())) {
                     errors.add(businessValidationMessageService.generateError(
@@ -97,8 +101,7 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                     errors.add(businessValidationMessageService.generateError(
                             BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
                 }
-            }
-            else if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedOut())) {
+            } else if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedOut())) {
                 errors.add(businessValidationMessageService.generateError(
                         BUSINESS_ERROR, DECEASED_ADOPTED_OUT));
                 errors.add(businessValidationMessageService.generateError(
