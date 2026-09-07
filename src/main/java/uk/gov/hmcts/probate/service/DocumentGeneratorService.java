@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
@@ -116,17 +117,16 @@ public class DocumentGeneratorService {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Document document;
-
         if (status == DocumentStatus.FINAL) {
             log.info("Generating Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
-            placeholderDecorator.decorate(placeholders);
+            decoratePlaceholders(placeholders, caseDetails);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
-            placeholderDecorator.decorate(placeholders);
+            decoratePlaceholders(placeholders, caseDetails);
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         }
 
@@ -374,5 +374,15 @@ public class DocumentGeneratorService {
             status,
             issueType,
             DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
+    }
+
+    private void decoratePlaceholders(Map<String, Object> placeholders, CaseDetails caseDetails) {
+        String grantIssuedDate = caseDetails.getData().getGrantIssuedDate();
+
+        if (StringUtils.isBlank(grantIssuedDate)) {
+            placeholderDecorator.decorate(placeholders);
+        } else {
+            placeholderDecorator.decorate(placeholders, grantIssuedDate);
+        }
     }
 }

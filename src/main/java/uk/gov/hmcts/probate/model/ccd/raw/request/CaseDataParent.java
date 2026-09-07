@@ -109,7 +109,10 @@ public class CaseDataParent {
     private final String reissueDateFormatted = convertDate(reissueDate);
 
     @Getter(lazy = true)
-    private final String grantIssuedDateFormatted = convertDate(grantIssuedDate);
+    private final String grantIssuedDateFormatted =
+        grantIssuedDate != null && !grantIssuedDate.isBlank()
+            ? convertDate(grantIssuedDate)
+            : convertDate(LocalDate.now());
 
     public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {

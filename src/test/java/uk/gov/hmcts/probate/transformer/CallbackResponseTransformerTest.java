@@ -2534,6 +2534,23 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldUseProvidedGrantIssuedDate() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .grantIssuedDate("2024-01-01");
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Collections.singletonList(document), null, null, CASEWORKER_USERINFO);
+        assertEquals("2024-01-01", callbackResponse.getData().getGrantIssuedDate());
+    }
+
+    @Test
     void shouldSetGrantReissuedDateAtReissue() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
