@@ -43,7 +43,6 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
     protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
-    protected static final String incapacityUnderRule35CasePrintedHandOffReason = "ForeignDomicile";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -107,6 +106,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationResealForeignGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationFiatWillCasePrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,

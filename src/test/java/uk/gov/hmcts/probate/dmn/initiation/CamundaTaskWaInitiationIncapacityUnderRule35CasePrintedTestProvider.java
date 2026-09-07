@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
-import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.incapacityUnderRule35CasePrintedHandOffReason;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.incapacityUnderRule35HandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -38,14 +38,14 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -77,14 +77,14 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -110,14 +110,14 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -137,14 +137,14 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35CasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
                         Collections.emptyList()
                 ),
                 Arguments.of(
