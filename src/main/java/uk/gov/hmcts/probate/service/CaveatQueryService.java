@@ -62,7 +62,7 @@ public class CaveatQueryService {
     private static final String DATA_EXPIRY_DATE = "data.expiryDate";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
     private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
-    private static final String[] EXPIRABLE_STATES = {
+    static final String[] EXPIRABLE_STATES = {
             CAVEAT_NOT_MATCHED.getName(),
             CAVEAT_AWAITING_RESOLUTION.getName(),
             CAVEAT_WARNING_VALIDATION.getName(),
