@@ -45,6 +45,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -197,7 +199,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(27));
+        assertThat(logic.getRules().size(), is(28));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
