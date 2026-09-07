@@ -1205,6 +1205,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_10tpe4b">
+        <inputEntry id="UnaryTests_16c2wl0">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o5z3dy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_194vk72">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13loy1v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kwhbr1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ucdok7">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "HorizonScheme")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oi3f70">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u1if6a">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bvaoyu">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19xmqlh">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17jog9g">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yjnr55">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
