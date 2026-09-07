@@ -13,7 +13,7 @@ properties([
         ])
 ])
 
-@Library("Infrastructure@2.5.4") _
+@Library("Infrastructure@2.6.0") _
 
 String product = "probate"
 String component = "back-office"

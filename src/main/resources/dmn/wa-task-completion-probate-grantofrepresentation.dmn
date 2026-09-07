@@ -284,6 +284,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1xuc0fd">
+        <inputEntry id="UnaryTests_1eb6s7l">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kwrhd0">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oa94p1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1n7soue">
         <inputEntry id="UnaryTests_1hmgdlz">
           <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
