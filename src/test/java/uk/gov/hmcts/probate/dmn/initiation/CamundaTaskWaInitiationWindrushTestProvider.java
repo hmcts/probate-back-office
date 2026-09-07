@@ -174,7 +174,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
-                ), //case printed
+                ),  //case printed
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
