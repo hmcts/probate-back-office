@@ -1299,6 +1299,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_084dz6a">
+        <inputEntry id="UnaryTests_1wzt3cx">
+          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_133x4em">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15mp9zx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hwasy5">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kn4yrh">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bvhpy6">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06vd532">
+          <text>"SKILL:ABA6:CodicilMisRecital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_193ugqr">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zxc68o">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ezoyqc">
+        <inputEntry id="UnaryTests_08pfoc1">
+          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01ere7g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0euppon">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bb3m9d">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n8kmxm">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18y78zv">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19sonzx">
+          <text>"SKILL:ABA6:CodicilMisRecital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zljng6">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v7r2ts">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

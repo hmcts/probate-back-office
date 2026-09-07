@@ -935,6 +935,41 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+        <rule id="DecisionRule_1p5p0g6">
+            <inputEntry id="UnaryTests_1fdoy84">
+              <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_0pd0znd">
+              <text>"CasePrinted"</text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_08mfpjb">
+              <text>false</text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_085m0rl">
+              <text></text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_1wiugb8">
+              <text>true</text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_0vn0he3">
+              <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "CodicilMis")</text>
+            </inputEntry>
+            <inputEntry id="UnaryTests_0k1v92g">
+              <text>true</text>
+            </inputEntry>
+            <outputEntry id="LiteralExpression_025ypul">
+              <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+            </outputEntry>
+            <outputEntry id="LiteralExpression_07mw2yj">
+              <text>"Examine - Codicil Mis-Recital"</text>
+            </outputEntry>
+            <outputEntry id="LiteralExpression_15ti5wp">
+              <text></text>
+            </outputEntry>
+            <outputEntry id="LiteralExpression_16jtolv">
+              <text>"case progression"</text>
+            </outputEntry>
+        </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
