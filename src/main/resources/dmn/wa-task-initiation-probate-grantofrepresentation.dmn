@@ -1395,111 +1395,120 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_15m94k1">
-        <inputEntry id="UnaryTests_0m7mx2w">
+      <rule id="DecisionRule_1wb6eqa">
+        <inputEntry id="UnaryTests_00njnnz">
           <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_05ou4ob">
+        <inputEntry id="UnaryTests_17akavn">
           <text>"CasePrinted"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_136ku6l">
+        <inputEntry id="UnaryTests_1koesjn">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0avcdtz">
+        <inputEntry id="UnaryTests_1gy7ji5">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_06cp45y">
+        <inputEntry id="UnaryTests_101pbtn">
           <text>true</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_05mmwto">
+        <inputEntry id="UnaryTests_0sffkv4">
           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DoubleProbate")</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0m38b1i">
+        <inputEntry id="UnaryTests_0xavjah">
           <text>true</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1exz6kt">
+        <inputEntry id="UnaryTests_1je1c4l">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13opcfi">
           <text>"ExamineDoubleProbateCasePrinted"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0w82ewd">
+        <outputEntry id="LiteralExpression_1ei8dzu">
           <text>"Examine - Double Probate"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0uudjfc">
+        <outputEntry id="LiteralExpression_1kxf7b8">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1f0sz2q">
+        <outputEntry id="LiteralExpression_0gx8354">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-        <rule id="DecisionRule_0nlcs6a">
-          <inputEntry id="UnaryTests_1e3ewuw">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1nsl8fb">
-            <text>"CasePrinted"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1d1hi5p">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1iztx19">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_063smum">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_0md9jyr">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "POA")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1pblhhu">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_1gh7kec">
-            <text>"ExaminePowerOfAttorneyCasePrinted"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_00144zu">
-            <text>"Examine - Power of Attorney (POA)"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_1ri3uek">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_02v6i0r">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
-        <rule id="DecisionRule_1kazjwh">
-          <inputEntry id="UnaryTests_1flujle">
-            <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1pld6st">
-            <text>"CasePrinted"</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_17ljsne">
-            <text>false</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1pmtwl0">
-            <text></text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_0xzltn2">
-            <text>true</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_1euaasu">
-            <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
-          </inputEntry>
-          <inputEntry id="UnaryTests_0k5abi5">
-            <text>true</text>
-          </inputEntry>
-          <outputEntry id="LiteralExpression_0a25rsv">
-            <text>"ExamineResealForeignGrantCasePrinted"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_0dznpv3">
-            <text>"Examine - Reseal Foreign Grant"</text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_14isjan">
-            <text></text>
-          </outputEntry>
-          <outputEntry id="LiteralExpression_1cd3s3m">
-            <text>"case progression"</text>
-          </outputEntry>
-        </rule>
+      <rule id="DecisionRule_10v46rz">
+        <inputEntry id="UnaryTests_1w0ji92">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00dgyfh">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tszm4k">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j1qtwq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ljf206">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09rcl5u">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "POA")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rbvwxd">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y890oi">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1udtqwo">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ypcsxl">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gan37a">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gxp7iw">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bidsq3">
+        <inputEntry id="UnaryTests_0ave5me">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fr6qny">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1f8uscg">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1msigww">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fh362t">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g4blec">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12n0vgy">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_164v8nw">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jff2sm">
+          <text>"ExamineResealForeignGrantCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xqujj3">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lnx1rf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kkgo2d">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
