@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.wa;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
@@ -20,6 +21,7 @@ import static java.util.Collections.singletonList;
 import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.CASE_ID;
 import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.JURISDICTION;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 class WaTaskService {
@@ -37,6 +39,9 @@ class WaTaskService {
                 securityUtils.generateServiceToken(),
                 searchTaskRequest
         );
+        log.info("WA task response status: {} for case id {}",
+                taskResponse.getStatusCode(),
+                caseId);
 
         return Optional.ofNullable(taskResponse.getBody())
                 .map(GetTasksResponse::getTasks)

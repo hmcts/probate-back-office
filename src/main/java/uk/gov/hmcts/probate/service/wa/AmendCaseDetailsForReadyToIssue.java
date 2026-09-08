@@ -28,8 +28,8 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
         boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
 
-
-        boolean taskToClosePresent = waTaskService.searchTasks(callbackRequest.getCaseDetails().getId().toString())
+        boolean taskToClosePresent = !caseTypeChanged
+                && waTaskService.searchTasks(callbackRequest.getCaseDetails().getId().toString())
                 .stream()
                 .map(TaskData::getName)
                 .anyMatch(taskToCLose::contains);
