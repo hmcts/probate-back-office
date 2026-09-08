@@ -152,7 +152,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       //WARNING, CHANGING THIS WILL SHUTTER PROD - we need this
       shutterOption = "true"
     } else {
-      shutterOption = "true"
+      shutterOption = "false"
     }
 
     def patterns = []
