@@ -379,4 +379,15 @@ class CaseDataTransformerTest {
         caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(caseDetailsMock);
         assertEquals(deceasedAliasNamesList, caseDetailsMock.getData().getSolsDeceasedAliasNamesList());
     }
+
+    @Test
+    void shouldSetSelectForQAUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setSelectForQAUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getSelectForQAUserIdamId());
+    }
 }

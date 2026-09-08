@@ -1487,7 +1487,8 @@ public class CallbackResponseTransformer {
             .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
-            .createTask(caseData.getCreateTask());
+            .createTask(caseData.getCreateTask())
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
 
         handleDeceasedAliases(
                 builder,
