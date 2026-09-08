@@ -42,6 +42,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String proveForeignWillHandOffReason = "ForeignWill";
+    protected static final String trustCorporationHandOffReason = "TrustCorporation";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -82,7 +83,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(26));
+        assertThat(logic.getRules().size(), is(27));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -104,6 +105,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationPowerOfAttorneyTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResealForeignGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationTrustCorporationTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,

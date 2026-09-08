@@ -970,6 +970,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0k8o5a6">
+        <inputEntry id="UnaryTests_1l6k7zd">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cun17n">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yxuqh9">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13nogko">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vs89hv">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cdor80">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "TrustCorporation")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0x8omve">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00ralke">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hqa1x0">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03it47k">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0runq98">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
