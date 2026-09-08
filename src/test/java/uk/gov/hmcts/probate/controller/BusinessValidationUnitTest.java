@@ -1491,6 +1491,8 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackResponseTransformerMock.clearSiblingFields(callbackRequestMock))
+                .thenReturn(CallbackResponse.builder().data(ResponseCaseData.builder().build()).build());
         ResponseEntity<CallbackResponse> response =
                 underTest.clearSiblingFields(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
