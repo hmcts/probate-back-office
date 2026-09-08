@@ -22,7 +22,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDEN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
-public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider implements ArgumentsProvider {
+public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider implements ArgumentsProvider {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
@@ -39,7 +39,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         List.of(foreignDomicileTaskAttributes)
                 ),
                 Arguments.of(
@@ -47,7 +47,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -81,7 +81,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         List.of(foreignDomicileTaskAttributes)
                 ),
                 Arguments.of(
@@ -89,7 +89,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -117,7 +117,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         List.of(foreignDomicileTaskAttributes)
                 ),
                 Arguments.of(
@@ -125,7 +125,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -147,7 +147,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         List.of(foreignDomicileTaskAttributes)
                 ),
                 Arguments.of(
@@ -155,7 +155,7 @@ public class CamundaTaskWaInitiationForeignDomicileCasePrintedTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
