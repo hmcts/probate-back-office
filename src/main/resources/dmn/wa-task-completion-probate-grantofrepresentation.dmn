@@ -317,6 +317,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1hlngg0">
+        <inputEntry id="UnaryTests_0i17s5r">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gwdq7q">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qmy6px">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

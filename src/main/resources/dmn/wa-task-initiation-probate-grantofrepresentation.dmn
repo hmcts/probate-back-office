@@ -1243,6 +1243,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_06lgf5u">
+        <inputEntry id="UnaryTests_1afw4ri">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xyfxxn">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_135osnt">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15fsjtb">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03pvw8o">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jjir0j">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IBCA")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_076mjwb">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uwqjnj">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0y2x77r">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0znfo30">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16i1fqw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0octng3">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
