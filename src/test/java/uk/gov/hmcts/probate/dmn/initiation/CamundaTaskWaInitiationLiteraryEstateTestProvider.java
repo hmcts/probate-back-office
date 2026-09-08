@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-import java.util.Collections;
+import static java.util.Collections.emptyList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -39,133 +39,133 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
-                        Collections.emptyList()
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         null,
-                        Collections.emptyList()
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
-                        Collections.emptyList()
+                        emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
-                        Collections.emptyList()
+                        emptyList()
                 )
         );
     }
