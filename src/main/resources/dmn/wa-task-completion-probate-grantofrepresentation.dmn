@@ -344,7 +344,7 @@
           <text>"boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1eh5mm6">
-          <text>"ExamineForeignDomicileReadyToIssue"</text>
+          <text>"ExamineForeignDomicile"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0qgsjk7">
           <text>"Auto"</text>

@@ -1533,7 +1533,7 @@
       </rule>
       <rule id="DecisionRule_181u9ny">
         <inputEntry id="UnaryTests_1c5sz46">
-          <text>"ExamineForeignDomicileReadyToIssue"</text>
+          <text>"ExamineForeignDomicile"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1s5h9y9">
           <text></text>
@@ -1562,7 +1562,7 @@
       </rule>
       <rule id="DecisionRule_1y3nqcn">
         <inputEntry id="UnaryTests_1xop8bd">
-          <text>"ExamineForeignDomicileReadyToIssue"</text>
+          <text>"ExamineForeignDomicile"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bqf9ql">
           <text></text>
