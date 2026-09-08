@@ -1310,11 +1310,27 @@ export class SolCreateCasePage extends BasePage {
               .getByText(intestacyDetailsConfig.niece_surviving_parentsText))
               .toBeVisible();
             await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentAdoptedIn`)
+              .getByText(intestacyDetailsConfig.niece_parent_adoptionText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentAdoptionInEnglandOrWales`)
+              .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
           } else {
             await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentDieBeforeDeceased`)
               .getByText(intestacyDetailsConfig.halfNiece_surviving_parentsText))
               .toBeVisible();
             await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentAdoptedIn`)
+              .getByText(intestacyDetailsConfig.niece_parent_adoptionText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentAdoptedOut`)
+              .getByText(intestacyDetailsConfig.niece_parent_adoptedOutText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
           }
 
         } else {
