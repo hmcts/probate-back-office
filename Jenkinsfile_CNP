@@ -149,10 +149,10 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
     } else if("prod" == targetEnv){
-      //WARNING, CHANGING THIS WILL SHUTTER PROD
-      shutterOption = "false"
+      //WARNING, CHANGING THIS WILL SHUTTER PROD - we need this
+      shutterOption = "true"
     } else {
-      shutterOption = "false"
+      shutterOption = "true"
     }
 
     def patterns = []
