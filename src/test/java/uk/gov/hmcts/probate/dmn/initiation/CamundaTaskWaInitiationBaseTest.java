@@ -1,5 +1,10 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
@@ -12,11 +17,6 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTest {
 
@@ -37,17 +37,28 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String invalidHandOffReason = "OtherReason";
     protected static final String incapacityUnderRule35HandOffReason = "IncapacityRule35";
     protected static final String leadingFollowingGrantsHandOffReason = "LeadingFollowing Grants";
+    protected static final String section116HandOffReason = "Section116";
+    protected static final String powerOfAttorneyHandOffReason = "POA";
+    protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
+    protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
+    protected static final String lostWillOrCodicilHandOffReason = "LostWill";
+    protected static final String createTaskVar = "createTask";
+    protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
+    protected static final String examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason = "IBCA";
+    protected static final String literaryEstateHandOffReason = "LiteraryEstate";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
-                                                                   List<Map<String,Object>> boHandoffReasonList) {
+                                                                   List<Map<String,Object>> boHandoffReasonList,
+                                                                   boolean createTask) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
                         caseTypeVar, caseType,
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
-                        boHandoffReasonListVar, boHandoffReasonList
+                        boHandoffReasonListVar, boHandoffReasonList,
+                        createTaskVar, createTask
                 )
         );
     }
@@ -75,9 +86,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(7));
+        assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(18));
+        assertThat(logic.getRules().size(), is(34));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -91,7 +102,17 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35TestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationCodicilMisRecitalTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWindrushTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationSection116TestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationPowerOfAttorneyTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationResealForeignGrantTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationLostWillOrCodicilTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationHorizonSchemePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationLiteraryEstateTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
