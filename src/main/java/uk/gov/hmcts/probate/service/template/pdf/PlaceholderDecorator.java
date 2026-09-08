@@ -29,11 +29,8 @@ public class PlaceholderDecorator {
         putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_DEATH, DECEASED_DATE_OF_DEATH_IN_WELSH);
         putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_BIRTH, DECEASED_DATE_OF_BIRTH_IN_WELSH);
         putWelshDateIfPresent(placeholders, GRANT_REISSUED_DATE, GRANT_REISSUED_DATE_IN_WELSH);
-
         placeholders.putIfAbsent(GRANT_ISSUED_DATE, grantIssuedDate);
         putWelshDateIfPresent(placeholders, GRANT_ISSUED_DATE, GRANT_ISSUED_DATE_IN_WELSH);
-
-
     }
 
     public void decorate(Map<String, Object> placeholders) {
