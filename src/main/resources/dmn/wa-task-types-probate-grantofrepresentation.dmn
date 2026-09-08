@@ -309,39 +309,75 @@
           <text>"Examine - Infected Blood Interim Scheme"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0md9tst">
+      <rule id="DecisionRule_177p57w">
         <description>ELWOCCP</description>
-        <inputEntry id="UnaryTests_1sr63md">
+        <inputEntry id="UnaryTests_0t97q98">
           <text></text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_00xvdv5">
+        <outputEntry id="LiteralExpression_0i4n1fh">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_051c3rt">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0mowadn">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_0qgjw9u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0k3k0jp">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06pqk2o">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ijxawh">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1vyfmh6">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s9bbu6">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13m3f8f">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17b3ebg">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1q5stmm">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02ynw4u">
           <text>"ExamineFiatWillCasePrinted"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0va1yfv">
+        <outputEntry id="LiteralExpression_1ctwlsc">
           <text>"Examine - Fiat Will"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0d1t7nt">
+      <rule id="DecisionRule_033gc31">
         <description>ELWOCCP</description>
-        <inputEntry id="UnaryTests_1166k1q">
+        <inputEntry id="UnaryTests_01np77p">
           <text></text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1lc82lw">
-          <text>"ExamineForeignDomicileCasePrinted"</text>
+        <outputEntry id="LiteralExpression_1icyhu5">
+          <text>"ExamineForeignDomicileReadyToIssue"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1txjk9d">
+        <outputEntry id="LiteralExpression_1i9o895">
           <text>"Examine - Foreign Domicile"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_111xz0f">
+      <rule id="DecisionRule_1j02ou6">
         <description>ELWOCCP</description>
-        <inputEntry id="UnaryTests_0l1pdxp">
+        <inputEntry id="UnaryTests_06wayfn">
           <text></text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0oquz9f">
+        <outputEntry id="LiteralExpression_02hmfxt">
           <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1441lqi">
+        <outputEntry id="LiteralExpression_1uxbgus">
           <text>"Examine - Incapacity Under Rule 35"</text>
         </outputEntry>
       </rule>

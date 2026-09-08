@@ -37,27 +37,31 @@ public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements A
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -76,27 +80,32 @@ public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements A
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),
+                                false
+                        ),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -109,54 +118,60 @@ public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements A
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(

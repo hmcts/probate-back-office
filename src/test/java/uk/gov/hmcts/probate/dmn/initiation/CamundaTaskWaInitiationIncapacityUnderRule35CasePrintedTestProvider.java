@@ -38,27 +38,30 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -77,27 +80,30 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -110,54 +116,60 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         List.of(incapacityUnderRule35TaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
