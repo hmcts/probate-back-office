@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
+import com.github.hmcts.lifeevents.client.model.Status2;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,6 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
@@ -86,14 +86,19 @@ class LifeEventCCDServiceTest {
         final String lastName = "Wobble";
         localDate = LocalDate.of(1900, 1, 1);
 
-        final Deceased deceased = new Deceased();
-        deceased.setForenames("Firstname");
-        deceased.setSurname("LastName");
-        deceased.setSex(Deceased.SexEnum.INDETERMINATE);
-        v1Death = new V1Death();
-        v1Death.setDeceased(deceased);
-        deathRecords = new ArrayList<>();
-        deathRecords.add(v1Death);
+        final Deceased deceased = new Deceased(
+            "Firstname",
+            "LastName",
+            localDate,
+            Deceased.SexEnum.INDETERMINATE);
+        v1Death = new V1Death(
+                1,
+                localDate,
+                deceased,
+                new Status2(false));
+
+        deathRecords = new ArrayList<>(List.of(v1Death));
+        mappedRecords = new ArrayList<>();
 
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getDeceasedForenames()).thenReturn(firstName);
@@ -103,7 +108,6 @@ class LifeEventCCDServiceTest {
         when(deathService.searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate))
             .thenReturn(deathRecords);
 
-        mappedRecords = new ArrayList<>();
 
         when(deathRecordService.mapDeathRecords(any())).thenReturn(mappedRecords);
         securityDTO = SecurityDTO.builder()
@@ -142,7 +146,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(mappedRecords, capturedDeathRecords);
+        assertEquals(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -160,7 +164,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(mappedRecords, capturedDeathRecords);
+        assertEquals(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -213,7 +217,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
             .getValue().getDeathRecords();
-        assertSame(mappedRecords, capturedDeathRecords);
+        assertEquals(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -234,7 +238,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(mappedRecords, capturedDeathRecords);
+        assertEquals(mappedRecords, capturedDeathRecords);
     }
 
     @Test

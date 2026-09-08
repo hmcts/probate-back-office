@@ -50,7 +50,7 @@ export class CaseProgressPage extends SignInPage {
     assert (texts[27] === 'Your application will update through any of these case states as it is reviewed by our team:');
     assert (texts[31] === 'This step is completed by HM Courts and Tribunals Service staff.');
     assert (texts[33] === 'Issue grant of representation');
-    assert (texts[34] === 'The grant will be delivered in the post a few days after issuing.');
+    assert (texts[34] === 'The grant will be delivered by post within 10 working days after it has been issued.');
 
     if (opts.linkText && opts.linkUrl) {
       await expect(this.page.locator('p.govuk-body-s a')).toHaveCount(2);
