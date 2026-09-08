@@ -282,20 +282,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanfs/core@npm:^0.19.1":
-  version: 0.19.1
-  resolution: "@humanfs/core@npm:0.19.1"
-  checksum: 10/270d936be483ab5921702623bc74ce394bf12abbf57d9145a69e8a0d1c87eb1c768bd2d93af16c5705041e257e6d9cc7529311f63a1349f3678abc776fc28523
+"@humanfs/core@npm:^0.19.2":
+  version: 0.19.2
+  resolution: "@humanfs/core@npm:0.19.2"
+  dependencies:
+    "@humanfs/types": "npm:^0.15.0"
+  checksum: 10/c6c0273721ec8df3d36a57c390a11a168d0a2f513d78bceb25165bded4fcb73609b1a317edc6c8f331cefd4b47285dde0b1e6679e08ef7f062232ec14fe05312
   languageName: node
   linkType: hard
 
 "@humanfs/node@npm:^0.16.6":
-  version: 0.16.7
-  resolution: "@humanfs/node@npm:0.16.7"
+  version: 0.16.8
+  resolution: "@humanfs/node@npm:0.16.8"
   dependencies:
-    "@humanfs/core": "npm:^0.19.1"
+    "@humanfs/core": "npm:^0.19.2"
+    "@humanfs/types": "npm:^0.15.0"
     "@humanwhocodes/retry": "npm:^0.4.0"
-  checksum: 10/b3633d3dce898592cac515ba5e6693c78e6be92863541d3eaf2c009b10f52b2fa62ff6e6e06f240f2447ddbe7b5f1890bc34e9308470675c876eee207553a08d
+  checksum: 10/ed01b3c066d9cec7526d139b9e71ca00ee4a30b3b5f5f5c198eb069c3509a3e167e180ba7e1e5a83b9571e906c4908bd20402b47586887452311af7354995e95
+  languageName: node
+  linkType: hard
+
+"@humanfs/types@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@humanfs/types@npm:0.15.0"
+  checksum: 10/dea3cc7fd8f8d4d088ed8d0a9921cf12bd8e1cdf40a6133106b03a6e2aebcc9a6f1771b3643b7ec71baae90d08245db34069dfcc861da8d678662741e6c3c986
   languageName: node
   linkType: hard
 
@@ -1613,7 +1623,7 @@ __metadata:
     dotenv: "npm:^17.4.2"
     dotenv-extended: "npm:^2.9.0"
     eslint: "npm:^10.8.1"
-    eslint-plugin-playwright: "npm:^1.8.3"
+    eslint-plugin-playwright: "npm:^2.0.0"
     html_codesniffer: "npm:^2.5.1"
     husky: "npm:^8.0.3"
     istanbul: "npm:^0.4.5"
@@ -3175,18 +3185,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-playwright@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "eslint-plugin-playwright@npm:1.8.3"
+"eslint-plugin-playwright@npm:^2.0.0":
+  version: 2.11.0
+  resolution: "eslint-plugin-playwright@npm:2.11.0"
   dependencies:
-    globals: "npm:^13.23.0"
+    globals: "npm:^17.3.0"
   peerDependencies:
     eslint: ">=8.40.0"
-    eslint-plugin-jest: ">=25"
-  peerDependenciesMeta:
-    eslint-plugin-jest:
-      optional: true
-  checksum: 10/8a0b9f51ba1eb09e64e15452cc78ab7fc82a68e45a432185acc2851eb0ad67b683e9bb2ca9ac9791267608ca0ceb0fca2b551868d494831e1ed62b2c566c099e
+  checksum: 10/2ada36903b2f5c03056b9f15a906e38adcea80a8500520af4a81e1d6033c981763c53322b5e6e48dd779332eab6a8651a6eadbbe539c7a200a4786ab0ed3e36f
   languageName: node
   linkType: hard
 
@@ -3996,15 +4002,6 @@ __metadata:
     once: "npm:^1.3.0"
     path-is-absolute: "npm:^1.0.0"
   checksum: 10/4a1f2401329d94b5c25c6ac16276aceccc52b865bd9b2b9198da21fc937d021bfd87463ae44de9a9e4794894a49bc619ebaf7e5b12182bcf97e2ceb68ae116d7
-  languageName: node
-  linkType: hard
-
-"globals@npm:^13.23.0":
-  version: 13.24.0
-  resolution: "globals@npm:13.24.0"
-  dependencies:
-    type-fest: "npm:^0.20.2"
-  checksum: 10/62c5b1997d06674fc7191d3e01e324d3eda4d65ac9cc4e78329fa3b5c4fd42a0e1c8722822497a6964eee075255ce21ccf1eec2d83f92ef3f06653af4d0ee28e
   languageName: node
   linkType: hard
 
@@ -7226,13 +7223,6 @@ __metadata:
   version: 4.26.0
   resolution: "type-fest@npm:4.26.0"
   checksum: 10/f5fe86d2c3db693f7154c8ab0d228a89394e4c446f2ed30ea3b61afaea9757c87c4e79475ef8d6f5fafbd7a4efd302e3b0237d9657dd425228f20a27feee3aef
-  languageName: node
-  linkType: hard
-
-"type-fest@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "type-fest@npm:0.20.2"
-  checksum: 10/8907e16284b2d6cfa4f4817e93520121941baba36b39219ea36acfe64c86b9dbc10c9941af450bd60832c8f43464974d51c0957f9858bc66b952b66b6914cbb9
   languageName: node
   linkType: hard
 
