@@ -32,6 +32,11 @@ class AmendCaseDetailsForReadyToIssueTest {
     @InjectMocks
     private AmendCaseDetailsForReadyToIssue processor;
 
+    private final List<String> taskToCLose = List.of("ExamineDigitalCaseProbate",
+            "ExamineDigitalCaseIntestacy",
+            "ExamineDigitalCaseAdmonWill",
+            "ExamineDigitalCaseAdColligendaBona");
+
     @Test
     void shouldReturnCorrectEventId() {
         assertThat(processor.getEventId())
@@ -45,7 +50,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation"
         );
         when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
-                List.of("ExamineDigitalCaseProbate")))
+                        taskToCLose))
                 .thenReturn(false);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
@@ -57,7 +62,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
-                        List.of("ExamineDigitalCaseProbate"));
+                        taskToCLose);
     }
 
     @Test
@@ -67,7 +72,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation"
         );
         when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
-                List.of("ExamineDigitalCaseProbate")))
+                taskToCLose))
                 .thenReturn(true);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
@@ -78,7 +83,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .isEqualTo(Constants.YES);
         verify(waTaskService)
                 .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
-                        List.of("ExamineDigitalCaseProbate"));
+                        taskToCLose);
     }
 
     @Test
