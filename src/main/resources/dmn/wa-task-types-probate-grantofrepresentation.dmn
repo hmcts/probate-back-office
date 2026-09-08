@@ -321,6 +321,30 @@
           <text>"Examine - Lost Will or Codicil"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0mowadn">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_0qgjw9u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0k3k0jp">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06pqk2o">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ijxawh">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1vyfmh6">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s9bbu6">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13m3f8f">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

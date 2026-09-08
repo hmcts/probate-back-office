@@ -170,6 +170,10 @@ public class TaskAttributeConstants {
     public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";
     public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE = "SKILL:ABA6:InfectedBloodInterimScheme";
     public static final String CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE = "SKILL:ABA6:CodicilMisRecital";
+    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED =
+            "ExamineInfectedBloodCompensationAuthorityCasePrinted";
+    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE =
+            "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
@@ -213,4 +217,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME
             = "Examine - Lost Will or Codicil";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+
+    public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
+    public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
+    public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
 }

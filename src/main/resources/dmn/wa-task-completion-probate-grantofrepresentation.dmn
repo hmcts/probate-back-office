@@ -284,6 +284,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1n7soue">
+        <inputEntry id="UnaryTests_1hmgdlz">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0nb2nwv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09zk775">
+          <text></text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1xuc0fd">
         <inputEntry id="UnaryTests_1eb6s7l">
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
@@ -295,15 +306,26 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1n7soue">
-        <inputEntry id="UnaryTests_1hmgdlz">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+      <rule id="DecisionRule_0pbj4og">
+        <inputEntry id="UnaryTests_1h35pk4">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0nb2nwv">
-          <text></text>
+        <outputEntry id="LiteralExpression_0c7xjsu">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_09zk775">
-          <text></text>
+        <outputEntry id="LiteralExpression_1ei7cpv">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hlngg0">
+        <inputEntry id="UnaryTests_0i17s5r">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gwdq7q">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qmy6px">
+          <text>"Auto"</text>
         </outputEntry>
       </rule>
     </decisionTable>
