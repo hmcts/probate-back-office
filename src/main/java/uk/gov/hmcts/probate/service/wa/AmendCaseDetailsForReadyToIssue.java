@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskData;
 
 import java.util.List;
 
@@ -29,10 +28,8 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
 
         boolean taskToClosePresent = !caseTypeChanged
-                && waTaskService.searchTasks(callbackRequest.getCaseDetails().getId().toString())
-                .stream()
-                .map(TaskData::getName)
-                .anyMatch(taskToCLose::contains);
+                && waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                taskToCLose);
 
         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
                 ? Constants.YES : Constants.NO);

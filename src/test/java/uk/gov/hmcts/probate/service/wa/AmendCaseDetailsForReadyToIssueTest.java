@@ -11,7 +11,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +26,8 @@ class AmendCaseDetailsForReadyToIssueTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
+    @Mock
+    private WaTaskService waTaskService;
 
     @InjectMocks
     private AmendCaseDetailsForReadyToIssue processor;
@@ -38,6 +44,9 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation",
                 "GrantOfRepresentation"
         );
+        when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                List.of("ExamineDigitalCaseProbate")))
+                .thenReturn(false);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
@@ -45,6 +54,31 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
+
+        verify(waTaskService)
+                .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                        List.of("ExamineDigitalCaseProbate"));
+    }
+
+    @Test
+    void shouldSetCreateTaskToNoWhenCaseTypesAreSameWithTaskToClosePresent() {
+        setUpCallbackRequest(
+                "GrantOfRepresentation",
+                "GrantOfRepresentation"
+        );
+        when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                List.of("ExamineDigitalCaseProbate")))
+                .thenReturn(true);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+
+        processor.process(callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(Constants.YES);
+        verify(waTaskService)
+                .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                        List.of("ExamineDigitalCaseProbate"));
     }
 
     @Test
@@ -59,6 +93,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);
+        verifyNoInteractions(waTaskService);
     }
 
     private void setUpCallbackRequest(

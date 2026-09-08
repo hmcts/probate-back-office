@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,9 @@ class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
 
-    public Set<TaskData> searchTasks(String caseId) {
+    public boolean isTaskPresent(String caseId,
+                                 @NonNull List<String> taskNames) {
+
         SearchTaskRequest searchTaskRequest = new SearchTaskRequest(asList(
                 new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList("PROBATE")),
                 new SearchParameterList(CASE_ID, SearchOperator.IN, singletonList(caseId))
@@ -47,6 +50,7 @@ class WaTaskService {
                 .map(GetTasksResponse::getTasks)
                 .stream()
                 .flatMap(List::stream)
-                .collect(Collectors.toSet());
+                .map(TaskData::getName)
+                .anyMatch(taskNames::contains);
     }
 }
