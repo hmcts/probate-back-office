@@ -1281,38 +1281,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0xdj9uv">
-        <inputEntry id="UnaryTests_0jelj02">
+      <rule id="DecisionRule_1u1czbf">
+        <inputEntry id="UnaryTests_19pgxd6">
           <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1uzwee2">
+        <inputEntry id="UnaryTests_0o4f4o7">
           <text>"CasePrinted"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0ozvk07">
+        <inputEntry id="UnaryTests_12mdp0b">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1hqz6s8">
+        <inputEntry id="UnaryTests_1kb98kb">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_02glbqp">
+        <inputEntry id="UnaryTests_1aqahzk">
           <text>true</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1j8iq20">
+        <inputEntry id="UnaryTests_1g8w83b">
           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LeadingFollowing Grants")</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_01ph7gn">
+        <inputEntry id="UnaryTests_0pqg2xn">
           <text>true</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1xtl8nf">
+        <inputEntry id="UnaryTests_0dsc9lg">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gpep81">
           <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0tq0343">
+        <outputEntry id="LiteralExpression_0arao14">
           <text>"Examine - Leading or following Grants"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0nqlpqm">
+        <outputEntry id="LiteralExpression_0i5i45c">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_05zibke">
+        <outputEntry id="LiteralExpression_0si3bmn">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
