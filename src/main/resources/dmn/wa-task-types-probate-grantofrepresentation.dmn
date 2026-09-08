@@ -345,6 +345,42 @@
           <text>"Examine - Infected Blood Compensation Authority"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_17b3ebg">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1q5stmm">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02ynw4u">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ctwlsc">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_033gc31">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_01np77p">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1icyhu5">
+          <text>"ExamineForeignDomicileReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i9o895">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j02ou6">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_06wayfn">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02hmfxt">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uxbgus">
+          <text>"Examine - Incapacity Under Rule 35"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
