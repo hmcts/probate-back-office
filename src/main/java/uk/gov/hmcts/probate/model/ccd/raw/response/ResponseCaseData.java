@@ -43,10 +43,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -460,4 +459,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String childAlive;
     private final String isApplicantParentDeceasedChild;
     private final String anyLivingWholeBloodSiblings;
+    private String createTask;
 }
