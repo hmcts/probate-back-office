@@ -226,14 +226,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_FIAT_WILL_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Fiat Will";
     public static final String EXAMINE_FIAT_WILL_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:FiatWill";
 
-    public static final String EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED = "ExamineForeignDomicile";
-    public static final String EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Foreign Domicile";
-    public static final String EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_READY_TO_ISSUE = "ExamineForeignDomicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME = "Examine - Foreign Domicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
 
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
             = "ExamineIncapacityUnderRule35CasePrinted";
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED_TASK_TYPE_NAME
             = "Examine - Incapacity Under Rule 35";
-    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED_SKILL_CODE
-            = "SKILL:ABA6:IncapacityUnder_Rule35";
 }

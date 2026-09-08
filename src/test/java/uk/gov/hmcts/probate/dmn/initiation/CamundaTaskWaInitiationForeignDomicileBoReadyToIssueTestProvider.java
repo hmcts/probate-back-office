@@ -16,8 +16,8 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -28,8 +28,8 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
         Map<String,Object> foreignDomicileTaskAttributes = Map.of(
-                "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
-                "name", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED_TASK_TYPE_NAME,
+                "taskId", EXAMINE_FOREIGN_DOMICILE_READY_TO_ISSUE,
+                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
