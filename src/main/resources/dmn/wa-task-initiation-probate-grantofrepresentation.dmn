@@ -1304,7 +1304,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dsc9lg">
-          <text>true</text>
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0gpep81">
           <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
