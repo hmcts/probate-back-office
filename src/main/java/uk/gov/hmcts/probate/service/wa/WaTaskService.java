@@ -14,8 +14,6 @@ import uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterList;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
