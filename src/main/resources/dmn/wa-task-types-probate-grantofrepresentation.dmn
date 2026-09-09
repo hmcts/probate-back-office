@@ -381,6 +381,18 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1aq5pp2">
+        <description>EMICP</description>
+        <inputEntry id="UnaryTests_1uaew50">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05nf1gs">
+          <text>"ResolveRegistrarEscalationReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1unhsx4">
+          <text>"Resolve Registrar Escalation - Referral"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

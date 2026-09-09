@@ -55,6 +55,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -2746,20 +2750,57 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> resolveRegistrarEscalationReferralScenarios() {
+
+        Map<String,Object> resolveRegistrarEscalationReferralTaskAttributes = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRAL,
+                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        additionalData(false, "", false, Collections.emptyList()),
+                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        additionalData(true, "", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        null,
+                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        additionalDataNoHandOffList(),
+                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(35));
+        assertThat(logic.getRules().size(), is(36));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
-        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
+        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
+        "resolveRegistrarEscalationReferralScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

@@ -229,4 +229,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
+
+    public static final String DECISION_MAKING_WORK_TYPE_PROBATE = "decision_making_work";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT = "boEscalateToRegistrar";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE = "BORegistrarEscalation";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL = "ResolveRegistrarEscalationReferral";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME =
+            "Resolve Registrar Escalation - Referral";
 }
+

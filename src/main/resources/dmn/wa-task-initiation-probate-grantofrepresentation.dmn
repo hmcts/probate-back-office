@@ -1395,6 +1395,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ju7ao2">
+        <inputEntry id="UnaryTests_01hxscn">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g1cyuf">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f9en7c">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qgroef">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bzbgv2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kbyjml">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0odqh9v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00acoxp">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09gjx4a">
+          <text>"ResolveRegistrarEscalationReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mf4qwb">
+          <text>"Resolve Registrar Escalation - Referral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1na7o9g">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_082117l">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

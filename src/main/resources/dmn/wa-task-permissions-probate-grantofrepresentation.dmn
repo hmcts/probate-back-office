@@ -1647,6 +1647,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_057qzy8">
+        <inputEntry id="UnaryTests_1mhw02f">
+          <text>"ResolveRegistrarEscalationReferral"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q7u5yy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00g36bx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07jcuij">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x939sl">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04k9m52">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_073g41y">
+          <text>"SKILL:ABA6:MinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iqa7gg">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1renxq5">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1jp5p00">
+        <inputEntry id="UnaryTests_0368m4i">
+          <text>"ResolveRegistrarEscalationReferral"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z4cgl7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0io5f9s">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ll6dae">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0g821f8">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14it6ey">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1doa2rr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ucq5bk">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p52sqz">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
