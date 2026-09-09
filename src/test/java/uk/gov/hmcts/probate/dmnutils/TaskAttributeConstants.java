@@ -82,6 +82,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
     public static final String EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED = "ExamineCodicilMisRecitalCasePrinted";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL = "ExamineRectifyWillOrCodicil";
+    public static final String EXAMINE_TRUST_CORPORATION_CASE_PRINTED = "ExamineTrustCorporationCasePrinted";
 
     public static final String EXAMINE_LITERARY_ESTATE = "ExamineLiteraryEstate";
     public static final String EXAMINE_MINORITY_INTEREST = "ExamineMinorityInterest";
@@ -238,6 +239,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME
             = "Examine - Will or Codicil to be Notated";
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
+    public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -252,6 +254,8 @@ public class TaskAttributeConstants {
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
+    public static final String TRUST_CORPORATION_SKILL_CODE = "SKILL:ABA6:TrustCorporation";
+
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
