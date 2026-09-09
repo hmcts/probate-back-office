@@ -381,6 +381,18 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0fts7ky">
+        <description>ETCCP</description>
+        <inputEntry id="UnaryTests_1yh60jd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06piemd">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r9w1vn">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
