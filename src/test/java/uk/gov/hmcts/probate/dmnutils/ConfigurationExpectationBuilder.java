@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
@@ -65,7 +67,7 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_WORKING_DAYS_OF_WEEK, WORK_TYPE, ROLE_CATEGORY,
             DUE_DATE_INTERVAL_DAYS,
             ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, DESCRIPTION, PRIORITY_DATE_ORIGIN_REF, DUE_DATE_ORIGIN,
-            DUE_DATE_TIME
+            DUE_DATE_TIME, ASSIGNEE
     );
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
@@ -100,7 +102,7 @@ public class ConfigurationExpectationBuilder {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
-        } else if (conditions.containsValue(CASE_PRINTED_STATE) && conditions.containsKey("taskType")
+        } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(RECTIFY_QA_CASE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_RESOLVE_STOP, true);
         } else {
@@ -119,6 +121,12 @@ public class ConfigurationExpectationBuilder {
                 .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
                         DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
                 .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
+
+        if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(RECTIFY_QA_CASE))) {
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        }
+
         return builder;
     }
 

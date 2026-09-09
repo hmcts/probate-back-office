@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
@@ -323,6 +323,23 @@
           <text>"[Resolve Stop](/cases/case-details/${[CASE_REFERENCE]}/trigger/boResolveStop)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gkjtwk">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1lme0zm">
+        <inputEntry id="UnaryTests_1bkx56r">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bzykb1">
+          <text>"RectifyQACase"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_197mdrw">
+          <text>"assignee"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bsxynh">
+          <text>caseData.selectForQAUserIdamId</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1770kso">
           <text>true</text>
         </outputEntry>
       </rule>
