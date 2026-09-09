@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_FAIL_QA_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
@@ -29,14 +29,14 @@ public class CamundaTaskWaInitiationRectifyQaCaseTestProvider implements Argumen
         return Stream.of(
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
-                        CASE_PRINTED_STATE,
+                        BO_CASE_STOPPED,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
-                        CASE_PRINTED_STATE,
+                        BO_CASE_STOPPED,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
