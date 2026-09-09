@@ -345,6 +345,42 @@
           <text>"Examine - Infected Blood Compensation Authority"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ans9gm">
+        <description>ELOFGCP</description>
+        <inputEntry id="UnaryTests_1xvr3if">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15z0jzc">
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e1ycx1">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15ssev2">
+        <description>ELECP</description>
+        <inputEntry id="UnaryTests_0e88j7p">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rg4se1">
+          <text>"ExamineLiteraryEstateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qao1v3">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qjwaq0">
+        <description>EMICP</description>
+        <inputEntry id="UnaryTests_00qny4r">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0as95g9">
+          <text>"ExamineMinorityInterestCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tn802i">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
