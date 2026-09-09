@@ -86,7 +86,7 @@
   {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "relationship", "FieldType": "DynamicRadioList", "ElementLabel": "What is the co-applicant’s relationship to the deceased?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "applicantRelationshipToDeceased", "FieldType": "Text", "FieldShowCondition": "applicantRelationshipToDeceased=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
 
-  {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "coApplicantAdoptedIn", "FieldType": "YesOrNo", "ElementLabel": "Was the co-applicant adopted in to the family?", "FieldShowCondition": "relationship!=\"parent\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "coApplicantAdoptedIn", "FieldType": "YesOrNo", "ElementLabel": "Was the co-applicant adopted in to the family?", "FieldShowCondition": "relationship!=\"parent\" AND relationship!=\"\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "coApplicantAdoptionInEnglandOrWales", "FieldType": "YesOrNo", "ElementLabel": "Did the adoption take place in England or Wales?", "FieldShowCondition": "relationship!=\"parent\" AND coApplicantAdoptedIn=\"Yes\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "SolsApplicantFamilyDetails", "ListElementCode": "coApplicantAdoptedOut", "FieldType": "YesOrNo", "ElementLabel": "Was the co-applicant adopted out of the family?", "FieldShowCondition": "relationship!=\"parent\" AND coApplicantAdoptedIn=\"No\"", "SecurityClassification": "Public"},
 
