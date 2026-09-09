@@ -93,12 +93,12 @@ class TaskListControllerIT {
     }
 
     @Test
-    void shouldSetSelectForQAUserIdamIdWhenEventIdIsBOFailQA() throws Exception {
+    void shouldSetSelectForQAUserIdamIdWhenEventIdIsBoSelectForQA() throws Exception {
         caseDataBuilder = CaseData.builder().evidenceHandled(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState(CASE_CLOSED_STATE);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        callbackRequest.setEventId("BOFailQA");
+        callbackRequest.setEventId("boSelectForQA");
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
         mockMvc.perform(post("/tasklist/update")

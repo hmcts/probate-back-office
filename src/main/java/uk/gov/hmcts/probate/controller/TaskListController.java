@@ -24,7 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/tasklist")
 public class TaskListController {
 
-    private static final String BO_FAIL_QA_EVENT = "boFailQA";
+    private static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
     private final UserInfoService userInfoService;
@@ -33,7 +33,7 @@ public class TaskListController {
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
 
-        if (BO_FAIL_QA_EVENT.equalsIgnoreCase(request.getEventId())) {
+        if (BO_SELECT_FOR_QA_EVENT.equalsIgnoreCase(request.getEventId())) {
             caseworkerInfo.ifPresent(userInfo -> {
                 String idamUserId = userInfo.getUid();
                 log.info("selectForQAUserIdamId set to: {}", idamUserId);
