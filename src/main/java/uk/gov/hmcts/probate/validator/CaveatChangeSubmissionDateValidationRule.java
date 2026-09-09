@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CaveatChangeSubmissionDateValidationRule {
 
     public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE = "applicationSubmittedDateIsInTheFuture";
@@ -57,7 +60,12 @@ public class CaveatChangeSubmissionDateValidationRule {
                     CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD));
         }
 
-        if (!paymentsService.isPaymentSuccessByCaseId(caseDetails.getId().toString())) {
+        // [DTSPB-5898] Allow manual/legacy confirmed paid cases when payment API has no linked record.
+        boolean isPaymentSuccess = paymentsService.isPaymentSuccessByCaseId(caseDetails.getId().toString());
+        boolean isPaymentTaken = YES.equalsIgnoreCase(caveatData.getPaymentTaken());
+//        log.info("[DTSPB-5898] validate-change-submission-date case id: {} paymentSuccess: {} paymentTaken: {}",
+//                caseDetails.getId(), isPaymentSuccess, isPaymentTaken);
+        if (!isPaymentSuccess && !isPaymentTaken) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT));
         }
