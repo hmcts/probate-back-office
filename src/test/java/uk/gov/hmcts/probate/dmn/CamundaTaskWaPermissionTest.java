@@ -324,7 +324,8 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     }
 
 
-    private static List<Map<String, Object>> getCtscExaminePermissionsWithAutoAssign(String skillCode, boolean autoAssignable) {
+    private static List<Map<String, Object>> getCtscExaminePermissionsWithAutoAssign(String skillCode,
+                                                                                     boolean autoAssignable) {
 
         Map<String, Object> basePermissions = Map.of(
                 "name", "ctsc",
