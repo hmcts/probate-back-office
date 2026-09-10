@@ -1,11 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
@@ -35,14 +31,17 @@ import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
@@ -51,10 +50,10 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
@@ -120,13 +119,13 @@ public class DocumentGeneratorService {
         if (status == DocumentStatus.FINAL) {
             log.info("Generating Welsh Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
-            decoratePlaceholders(placeholders, caseDetails);
+            placeholderDecorator.decorate(placeholders, caseDetails.getData().getGrantIssuedDate());
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
-            decoratePlaceholders(placeholders, caseDetails);
+            placeholderDecorator.decorate(placeholders, caseDetails.getData().getGrantIssuedDate());
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         }
 
@@ -374,15 +373,5 @@ public class DocumentGeneratorService {
             status,
             issueType,
             DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
-    }
-
-    private void decoratePlaceholders(Map<String, Object> placeholders, CaseDetails caseDetails) {
-        String grantIssuedDate = caseDetails.getData().getGrantIssuedDate();
-
-        if (StringUtils.isBlank(grantIssuedDate)) {
-            placeholderDecorator.decorate(placeholders);
-        } else {
-            placeholderDecorator.decorate(placeholders, grantIssuedDate);
-        }
     }
 }

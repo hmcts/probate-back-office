@@ -52,6 +52,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -162,6 +163,7 @@ public class CallbackResponseTransformer {
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
     private final WorkAllocationToggleService workAllocationToggleService;
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
+    private final Clock clock;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -440,7 +442,7 @@ public class CallbackResponseTransformer {
         }
         String grantIssuedDate = caseData.getGrantIssuedDate();
         if (StringUtils.isBlank(grantIssuedDate)) {
-            grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
+            grantIssuedDate = dateTimeFormatter.format(LocalDate.now(clock));
         }
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)

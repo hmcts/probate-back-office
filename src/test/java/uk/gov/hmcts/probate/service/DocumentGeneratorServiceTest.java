@@ -345,7 +345,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -367,7 +367,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -389,7 +389,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -411,7 +411,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -433,7 +433,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -455,7 +455,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -477,7 +477,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -499,7 +499,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -521,7 +521,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -543,7 +543,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -565,7 +565,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -587,7 +587,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test

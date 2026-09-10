@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -110,7 +111,7 @@ public class CaseDataParent {
 
     @Getter(lazy = true)
     private final String grantIssuedDateFormatted =
-        grantIssuedDate != null && !grantIssuedDate.isBlank()
+            StringUtils.isNotBlank(grantIssuedDate)
             ? convertDate(grantIssuedDate)
             : convertDate(LocalDate.now());
 
