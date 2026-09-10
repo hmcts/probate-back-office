@@ -53,6 +53,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
     protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
     protected static final String trustCorporationHandOffReason = "TrustCorporation";
+    protected static final String foreignDomicileHandOffReason = "ForeignDomicile";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -128,6 +129,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationTrustCorporationTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
