@@ -337,7 +337,8 @@
           <text>"assignee"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bsxynh">
-          <text>caseData.selectForQAUserIdamId</text>
+          <text>if (caseData.selectForQAUserIdamId != null) then caseData.selectForQAUserIdamId
+else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1770kso">
           <text>true</text>
