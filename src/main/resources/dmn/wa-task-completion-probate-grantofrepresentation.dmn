@@ -366,9 +366,20 @@
           <text>"registrarsDecision"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1xvenw8">
-          <text>"ResolveRegistrarEscalationReferral"</text>
+          <text>"ResolveRegistrarEscalationReferrals"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1t202fd">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ciwiue">
+        <inputEntry id="UnaryTests_0nmijes">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1angv4y">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tex7rl">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

@@ -55,10 +55,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -2750,38 +2751,86 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    static Stream<Arguments> resolveRegistrarEscalationReferralScenarios() {
+    static Stream<Arguments> resolveRegistrarEscalationReferralsScenarios() {
 
-        Map<String,Object> resolveRegistrarEscalationReferralTaskAttributes = Map.of(
-                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRAL,
-                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME,
+        Map<String,Object> referralsTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> ordersTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
         return Stream.of(
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
                         additionalData(false, "", false, Collections.emptyList()),
-                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                        List.of(referralsTask, ordersTask)
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
                         additionalData(true, "", false, Collections.emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
                         null,
-                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                        List.of(referralsTask, ordersTask)
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT,
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE,
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
-                        List.of(resolveRegistrarEscalationReferralTaskAttributes)
+                        List.of(referralsTask, ordersTask)
+                )
+        );
+    }
+
+    static Stream<Arguments> resolveRegistrarEscalationOrdersScenarios() {
+
+        Map<String,Object> referralsTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> ordersTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", false, Collections.emptyList()),
+                        List.of(referralsTask, ordersTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        List.of(referralsTask, ordersTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        List.of(referralsTask, ordersTask)
                 )
         );
     }
@@ -2792,7 +2841,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(36));
+        assertThat(logic.getRules().size(), is(37));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -2800,7 +2849,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
         "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
-        "resolveRegistrarEscalationReferralScenarios"})
+        "resolveRegistrarEscalationReferralsScenarios", "resolveRegistrarEscalationOrdersScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

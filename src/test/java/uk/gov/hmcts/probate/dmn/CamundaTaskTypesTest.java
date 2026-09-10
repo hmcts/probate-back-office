@@ -67,8 +67,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
@@ -205,8 +207,12 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED
                 ),
                 Map.of(
-                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME,
-                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_REFERRAL
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_ORDERS
                 )
         );
         return Stream.of(
@@ -222,7 +228,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(32));
+        assertThat(logic.getRules().size(), is(33));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

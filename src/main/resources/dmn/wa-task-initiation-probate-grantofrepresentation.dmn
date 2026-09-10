@@ -1400,7 +1400,7 @@ else false</text>
           <text>"boEscalateToRegistrar"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1g1cyuf">
-          <text>"BORegistrarEscalation"</text>
+          <text>"CasePrinted","BOReadyToIssue","BOCaseQA"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0f9en7c">
           <text>false</text>
@@ -1421,15 +1421,53 @@ else false</text>
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_09gjx4a">
-          <text>"ResolveRegistrarEscalationReferral"</text>
+          <text>"ResolveRegistrarEscalationReferrals"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0mf4qwb">
-          <text>"Resolve Registrar Escalation - Referral"</text>
+          <text>"Resolve Registrar Escalation - Referrals"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1na7o9g">
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_082117l">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0z84upo">
+        <inputEntry id="UnaryTests_1nz5qdm">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11nl71u">
+          <text>"CasePrinted","BOReadyToIssue","BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lmm5gc">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ut1fwq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01gvwcj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mkumwg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xb1sb0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14h9isf">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ueua9t">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06mxy2t">
+          <text>"Resolve Registrar Escalation - Orders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1en5cyv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06fi8sy">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

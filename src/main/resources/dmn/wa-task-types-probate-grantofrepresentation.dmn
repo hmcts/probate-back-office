@@ -382,15 +382,27 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1aq5pp2">
-        <description>EMICP</description>
+        <description>RRERBOCP</description>
         <inputEntry id="UnaryTests_1uaew50">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_05nf1gs">
-          <text>"ResolveRegistrarEscalationReferral"</text>
+          <text>"ResolveRegistrarEscalationReferrals"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1unhsx4">
-          <text>"Resolve Registrar Escalation - Referral"</text>
+          <text>"Resolve Registrar Escalation - Referrals"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13o9rlz">
+        <description>RREOBOCP</description>
+        <inputEntry id="UnaryTests_0jvt1sz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nzcv9m">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fyawrk">
+          <text>"Resolve Registrar Escalation - Orders"</text>
         </outputEntry>
       </rule>
     </decisionTable>

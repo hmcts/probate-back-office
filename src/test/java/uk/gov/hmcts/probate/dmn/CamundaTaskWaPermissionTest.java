@@ -75,7 +75,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
@@ -266,7 +267,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRAL,
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
                         DUMMY_CASE_DATA,
                         List.of(
                                 Map.of(
@@ -274,8 +275,27 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                                         "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
                                         "roleCategory", ROLE_CATEGORY_CTSC,
                                         "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", MINORITY_INTEREST_SKILL_CODE
+                                        "autoAssignable", false
+                                ),
+                                Map.of(
+                                        "name", "ctsc-team-leader",
+                                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                                        "roleCategory", ROLE_CATEGORY_CTSC,
+                                        "assignmentPriority", 1,
+                                        "autoAssignable", false
+                                )
+                        )
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                        DUMMY_CASE_DATA,
+                        List.of(
+                                Map.of(
+                                        "name", "ctsc",
+                                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                                        "roleCategory", ROLE_CATEGORY_CTSC,
+                                        "assignmentPriority", 1,
+                                        "autoAssignable", false
                                 ),
                                 Map.of(
                                         "name", "ctsc-team-leader",
@@ -311,7 +331,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(60));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

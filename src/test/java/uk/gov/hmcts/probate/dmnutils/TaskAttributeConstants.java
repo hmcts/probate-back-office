@@ -149,10 +149,13 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_REGISTRAR_DECISION =
+            "[Registrar's Decision](/cases/case-details/${[CASE_REFERENCE]}/trigger/registrarsDecision)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
+    public static final String BO_CASE_QA = "BOCaseQA";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -231,10 +234,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
 
     public static final String DECISION_MAKING_WORK_TYPE_PROBATE = "decision_making_work";
-    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_EVENT = "boEscalateToRegistrar";
-    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_STATE = "BORegistrarEscalation";
-    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL = "ResolveRegistrarEscalationReferral";
-    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRAL_TASK_TYPE_NAME =
-            "Resolve Registrar Escalation - Referral";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_EVENT = "boEscalateToRegistrar";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRALS = "ResolveRegistrarEscalationReferrals";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_ORDERS = "ResolveRegistrarEscalationOrders";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME =
+            "Resolve Registrar Escalation - Referrals";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME =
+            "Resolve Registrar Escalation - Orders";
 }
 
