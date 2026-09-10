@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-import java.util.Collections;
+import static java.util.Collections.emptyList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,10 +23,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 public class CamundaTaskWaInitiationTrustCorporationTestProvider implements ArgumentsProvider {
-    @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String, Object> examineTrustCorporationTaskAttributes = Map.of(
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+
+        Map<String,Object> examineTrustCorporationTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
                 "processCategories", "case progression"
@@ -37,149 +38,133 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
                         List.of(examineTrustCorporationTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        additionalDataNoHandOffList(),
+                        emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        List.of(examineTrustCorporationTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        List.of(examineTrustCorporationTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
+                        HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         null,
-                        Collections.emptyList()
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        List.of(examineTrustCorporationTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
-                        Collections.emptyList()
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        List.of(examineTrustCorporationTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        List.of(examineTrustCorporationTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
                 )
         );
     }

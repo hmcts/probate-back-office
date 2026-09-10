@@ -4,11 +4,11 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
@@ -18,17 +18,20 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 
 public class CamundaTaskWaInitiationProveForeignWillTestProvider implements ArgumentsProvider {
-
+    
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String, Object> examineProveForeignWillTaskAttributes = Map.of(
+
+        Map<String,Object> examineProveForeignWillTaskAttributes = Map.of(
                 "taskId", EXAMINE_PROVE_FOREIGN_WILL,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
@@ -39,151 +42,138 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
                         List.of(examineProveForeignWillTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        List.of(examineProveForeignWillTaskAttributes)
+                                emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
+                        additionalDataNoHandOffList(),
+                        emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        List.of(examineProveForeignWillTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        List.of(examineProveForeignWillTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
+                        HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         null,
-                        Collections.emptyList()
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        List.of(examineProveForeignWillTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
-                        Collections.emptyList()
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        List.of(examineProveForeignWillTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        List.of(examineProveForeignWillTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
                 )
-
         );
     }
 }
