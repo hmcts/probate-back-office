@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
   <decision id="wa-task-types-probate-grantofrepresentation" name="Task Types DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_17knzal" hitPolicy="COLLECT">
       <input id="Input_1">
@@ -307,6 +307,78 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_16n0d3e">
           <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_177p57w">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_0t97q98">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0i4n1fh">
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_051c3rt">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0mowadn">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_0qgjw9u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0k3k0jp">
+          <text>"ExamineHorizonSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06pqk2o">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ijxawh">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1vyfmh6">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s9bbu6">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13m3f8f">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ans9gm">
+        <description>ELOFGCP</description>
+        <inputEntry id="UnaryTests_1xvr3if">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15z0jzc">
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e1ycx1">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15ssev2">
+        <description>ELECP</description>
+        <inputEntry id="UnaryTests_0e88j7p">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rg4se1">
+          <text>"ExamineLiteraryEstateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qao1v3">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qjwaq0">
+        <description>EMICP</description>
+        <inputEntry id="UnaryTests_00qny4r">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0as95g9">
+          <text>"ExamineMinorityInterestCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tn802i">
+          <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0zisixc">

@@ -51,7 +51,7 @@
         <cve>CVE-2026-59281</cve>
         <cve>CVE-2026-59282</cve>
     </suppress>
-    <suppress until="2026-10-24">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
             file name: spring-aop-6.2.19.jar
             file name: spring-beans-6.2.19.jar
@@ -65,7 +65,7 @@
         ]]></notes>
         <cve>CVE-2026-59283</cve>
     </suppress>
-    <suppress until="2026-10-24">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
             file name: spring-aop-6.2.19.jar
             file name: spring-beans-6.2.19.jar
@@ -79,7 +79,7 @@
         ]]></notes>
         <cve>CVE-2026-47893</cve>
     </suppress>
-    <suppress until="2026-10-24">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
             file name: spring-aop-6.2.19.jar
             file name: spring-beans-6.2.19.jar
@@ -94,7 +94,7 @@
         <cve>CVE-2026-59280</cve>
     </suppress>
     <!-- Spring Cloud Commons -->
-    <suppress until="2026-10-24">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
             file name: spring-cloud-commons-4.3.3.jar
             file name: spring-cloud-context-4.3.3.jar
@@ -102,40 +102,47 @@
         ]]></notes>
         <cve>CVE-2026-59284</cve>
     </suppress>
-    <!-- Spring Data JPA -->
-    <suppress until="2026-10-24">
-        <notes><![CDATA[
-            file name: spring-data-jpa-3.5.13.jar
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring-data-jpa@.*$</packageUrl>
-        <cve>CVE-2026-47834</cve>
-    </suppress>
     <!-- Spring Security -->
-    <suppress until="2026-10-24">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
             file name: spring-security-crypto-6.5.11.jar
         ]]></notes>
         <cve>CVE-2026-59270</cve>
         <cve>CVE-2026-59276</cve>
-    </suppress>
-    <suppress until="2026-10-24">
-        <notes><![CDATA[
-            file name: spring-security-config-6.5.11.jar
-            file name: spring-security-core-6.5.11.jar
-            file name: spring-security-oauth2-client-6.5.11.jar
-            file name: spring-security-oauth2-core-6.5.11.jar
-            file name: spring-security-oauth2-jose-6.5.11.jar
-            file name: spring-security-web-6.5.11.jar
-        ]]></notes>
         <cve>CVE-2026-47841</cve>
         <cve>CVE-2026-47842</cve>
     </suppress>
-    <!-- Reactor Netty -->
     <suppress until="2026-10-24">
         <notes><![CDATA[
             Temporary suppression for Reactor Netty CVE-2026-47874
         ]]></notes>
         <packageUrl regex="true">^pkg:maven/io\.projectreactor\.netty/reactor-netty-.*@.*$</packageUrl>
+        <cve>CVE-2026-47874</cve>
+    </suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+           file name: spring-data-jpa-3.5.13.jar
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring-data-jpa@.*$</packageUrl>
+        <cve>CVE-2026-47834</cve>
+    </suppress>
+    <suppress until="2026-10-24">
+        <notes><![CDATA[
+           file name: spring-security-config-6.5.11.jar
+           file name: spring-security-core-6.5.11.jar
+           file name: spring-security-oauth2-client-6.5.11.jar
+           file name: spring-security-oauth2-core-6.5.11.jar
+           file name: spring-security-oauth2-jose-6.5.11.jar
+           file name: spring-security-web-6.5.11.jar
+        ]]></notes>
+        <cve>CVE-2026-47841</cve>
+        <cve>CVE-2026-47842</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            file name: reactor-netty-http-1.2.18.jar
+            file name: reactor-netty-core-1.2.18.jar
+        ]]></notes>
         <cve>CVE-2026-47874</cve>
     </suppress>
 </suppressions>

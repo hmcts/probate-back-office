@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.5.4")
+@Library("Infrastructure@2.6.0")
 
 String product = "probate"
 String component = "back-office"
@@ -149,8 +149,8 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
     } else if("prod" == targetEnv){
-      //WARNING, CHANGING THIS WILL SHUTTER PROD
-      shutterOption = "false"
+      //WARNING, CHANGING THIS WILL SHUTTER PROD - we need this
+      shutterOption = "true"
     } else {
       shutterOption = "false"
     }
@@ -357,7 +357,7 @@ withPipeline("java", product, component) {
   onMaster() {
     env.ENV='aat'
     env.PROBATE_WA_ENABLED = false
-    env.PROBATE_GS_ENABLED = false
+    env.PROBATE_GS_ENABLED = true
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
