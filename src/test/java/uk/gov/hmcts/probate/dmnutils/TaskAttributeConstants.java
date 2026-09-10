@@ -209,10 +209,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
-    public static final String EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME = "Examine - Literary Estate";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME = "Examine - Lost Will or Codicil";
-    public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
-
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -238,5 +235,4 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
     public static final String LITERARY_ESTATE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String LOST_WILL_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
-    public static final String MINORITY_INTEREST_SKILL_CODE = "SKILL:ABA6:MinorityInterest";
 }
