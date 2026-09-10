@@ -269,7 +269,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RECTIFY_QA_CASE,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(null)
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
                 )
         );
     }
@@ -323,13 +323,15 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 .forEach(i -> assertThat(output.get(i).getOutputName(), is(outputColumnIds.get(i))));
     }
 
-    private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
+
+    private static List<Map<String, Object>> getCtscExaminePermissionsWithAutoAssign(String skillCode, boolean autoAssignable) {
+
         Map<String, Object> basePermissions = Map.of(
                 "name", "ctsc",
                 "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
                 "roleCategory", ROLE_CATEGORY_CTSC,
                 "assignmentPriority", 1,
-                "autoAssignable", false
+                "autoAssignable", autoAssignable
         );
 
         Map<String, Object> teamLeaderPermissions = Map.of(
@@ -337,7 +339,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                 "roleCategory", ROLE_CATEGORY_CTSC,
                 "assignmentPriority", 1,
-                "autoAssignable", false
+                "autoAssignable", autoAssignable
         );
 
         if (skillCode != null) {
@@ -349,6 +351,10 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         }
 
         return List.of(basePermissions, teamLeaderPermissions);
+    }
+
+    private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
+        return getCtscExaminePermissionsWithAutoAssign(skillCode, false);
     }
 
 }

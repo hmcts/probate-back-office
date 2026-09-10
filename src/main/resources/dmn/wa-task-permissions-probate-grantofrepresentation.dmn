@@ -1673,7 +1673,7 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0zqpk3r">
-          <text>false</text>
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1qz9dn9">
@@ -1702,7 +1702,7 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p8oiv8">
-          <text>false</text>
+          <text>true</text>
         </outputEntry>
       </rule>
     </decisionTable>
