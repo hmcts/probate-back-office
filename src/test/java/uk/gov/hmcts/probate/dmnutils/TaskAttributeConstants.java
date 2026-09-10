@@ -50,7 +50,7 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_DUE_DATE_NON_WORKING_CALENDAR
         = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
     public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
-    public static final String DEFAULT_ASSIGNEE = "dc71e8b6-909d-4aef-b22e-f44a125e3cea";
+    public static final String DEFAULT_ASSIGNEE = "someIdamId";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
     public static final String EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE = "ExamineDigitalCaseProbateReadyToIssue";
