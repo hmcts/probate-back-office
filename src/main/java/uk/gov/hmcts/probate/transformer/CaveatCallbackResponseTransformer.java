@@ -229,10 +229,7 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse changeSubmissionDate(CaveatCallbackRequest caveatCallbackRequest) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
-                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformResponseWithNoChanges(caveatCallbackRequest);
     }
 
     public CaveatCallbackResponse transformResponseWithOrgPolicy(CaveatCallbackRequest caveatCallbackRequest) {
