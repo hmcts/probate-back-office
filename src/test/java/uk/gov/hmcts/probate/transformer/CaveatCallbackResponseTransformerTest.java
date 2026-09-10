@@ -769,6 +769,18 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldChangeSubmissionDateWithNoAdditionalTransformations() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse expected = underTest.transformResponseWithNoChanges(caveatCallbackRequestMock);
+        CaveatCallbackResponse caveatCallbackResponse = underTest.changeSubmissionDate(caveatCallbackRequestMock);
+
+        assertEquals(expected, caveatCallbackResponse);
+    }
+
+    @Test
     void shouldTransformResponseWithOrgPolicyForSols() {
         caveatDataBuilder.applicationType(SOLICITOR);
         caveatDataBuilder.paperForm("No");
