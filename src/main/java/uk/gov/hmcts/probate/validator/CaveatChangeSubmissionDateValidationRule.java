@@ -63,8 +63,6 @@ public class CaveatChangeSubmissionDateValidationRule {
         // [DTSPB-5898] Allow manual/legacy confirmed paid cases when payment API has no linked record.
         boolean isPaymentSuccess = paymentsService.isPaymentSuccessByCaseId(caseDetails.getId().toString());
         boolean isPaymentTaken = YES.equalsIgnoreCase(caveatData.getPaymentTaken());
-//        log.info("[DTSPB-5898] validate-change-submission-date case id: {} paymentSuccess: {} paymentTaken: {}",
-//                caseDetails.getId(), isPaymentSuccess, isPaymentTaken);
         if (!isPaymentSuccess && !isPaymentTaken) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT));
