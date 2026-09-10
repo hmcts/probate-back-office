@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,8 +60,9 @@ class CaveatChangeSubmissionDateValidationRuleTest {
 
     @Test
     void shouldReturnErrorsWhenSubmissionDateIsInFuture() {
+        LocalDate today = LocalDate.now();
         CaveatData data = CaveatData.builder()
-                .applicationSubmittedDate(LocalDate.now().plusDays(1))
+                .applicationSubmittedDate(today.plusDays(1))
                 .deceasedDateOfDeath(LocalDate.of(2024, 1, 1))
                 .build();
 
@@ -100,9 +100,10 @@ class CaveatChangeSubmissionDateValidationRuleTest {
 
     @Test
     void shouldReturnErrorsWhenDodInFuture() {
+        LocalDate today = LocalDate.now();
         CaveatData data = CaveatData.builder()
                 .applicationSubmittedDate(LocalDate.of(2024, 1, 1))
-                .deceasedDateOfDeath(LocalDate.now().plusDays(1))
+                .deceasedDateOfDeath(today.plusDays(1))
                 .build();
 
         when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(true);
@@ -126,7 +127,7 @@ class CaveatChangeSubmissionDateValidationRuleTest {
 
     @Test
     void shouldReturnErrorWhenPaymentMissingAndPaymentTakenIsNotYes() {
-        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        LocalDate today = LocalDate.now();
         CaveatData data = CaveatData.builder()
                 .applicationSubmittedDate(today.minusDays(1))
                 .deceasedDateOfDeath(today.minusDays(2))
@@ -141,7 +142,7 @@ class CaveatChangeSubmissionDateValidationRuleTest {
 
     @Test
     void shouldNotReturnErrorWhenPaymentTakenIsYesAndNoPaymentRecordFound() {
-        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        LocalDate today = LocalDate.now();
         CaveatData data = CaveatData.builder()
                 .applicationSubmittedDate(today.minusDays(1))
                 .deceasedDateOfDeath(today.minusDays(2))
