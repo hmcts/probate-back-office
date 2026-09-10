@@ -1433,6 +1433,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0kewu5p">
+        <inputEntry id="UnaryTests_1sd8e9v">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0d76wix">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0m8q56t">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0x13y9z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0owejdy">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ylxjjt">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignDomicile")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00yencx">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zrlchp">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wzt2ht">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13e6iyd">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1945eeq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04x5f9r">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

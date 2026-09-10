@@ -82,6 +82,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINORITY_INTEREST_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FOREIGN_DOMICILE_SKILL_CODE;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -270,6 +272,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(TRUST_CORPORATION_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(FOREIGN_DOMICILE_SKILL_CODE)
                 )
         );
     }
@@ -296,7 +303,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(60));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
