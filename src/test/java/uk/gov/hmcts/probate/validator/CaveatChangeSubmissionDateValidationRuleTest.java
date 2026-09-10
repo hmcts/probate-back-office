@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,6 +43,8 @@ class CaveatChangeSubmissionDateValidationRuleTest {
                 "dod-missing-en");
         stubMessage(CaveatChangeSubmissionDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_MISSING,
                 "submitted-missing-en");
+        stubMessage(CaveatChangeSubmissionDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_MISSING_PAYMENT,
+                "payment-missing-en");
     }
 
     @Test
@@ -119,6 +122,36 @@ class CaveatChangeSubmissionDateValidationRuleTest {
         List<FieldErrorResponse> errors = underTest.validate(new CaveatDetails(data, LAST_MODIFIED, 1L));
 
         assertEquals(List.of("submitted-missing-en"), errors.stream().map(FieldErrorResponse::getMessage).toList());
+    }
+
+    @Test
+    void shouldReturnErrorWhenPaymentMissingAndPaymentTakenIsNotYes() {
+        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        CaveatData data = CaveatData.builder()
+                .applicationSubmittedDate(today.minusDays(1))
+                .deceasedDateOfDeath(today.minusDays(2))
+                .paymentTaken("No")
+                .build();
+
+        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(false);
+        List<FieldErrorResponse> errors = underTest.validate(new CaveatDetails(data, LAST_MODIFIED, 1L));
+
+        assertEquals(List.of("payment-missing-en"), errors.stream().map(FieldErrorResponse::getMessage).toList());
+    }
+
+    @Test
+    void shouldNotReturnErrorWhenPaymentTakenIsYesAndNoPaymentRecordFound() {
+        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        CaveatData data = CaveatData.builder()
+                .applicationSubmittedDate(today.minusDays(1))
+                .deceasedDateOfDeath(today.minusDays(2))
+                .paymentTaken("Yes")
+                .build();
+
+        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(false);
+        List<FieldErrorResponse> errors = underTest.validate(new CaveatDetails(data, LAST_MODIFIED, 1L));
+
+        assertEquals(0, errors.size());
     }
 
     private void stubMessage(String code, String message) {
