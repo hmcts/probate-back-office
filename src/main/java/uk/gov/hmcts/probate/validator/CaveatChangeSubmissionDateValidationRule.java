@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class CaveatChangeSubmissionDateValidationRule {
     public List<FieldErrorResponse> validate(CaveatDetails caseDetails) {
         List<FieldErrorResponse> errors = new ArrayList<>();
         CaveatData caveatData = caseDetails.getData();
+        LocalDate today = LocalDate.now(ZoneOffset.UTC);
 
         LocalDate applicationSubmittedDate = caveatData.getApplicationSubmittedDate();
         if (applicationSubmittedDate == null) {
@@ -43,13 +45,13 @@ public class CaveatChangeSubmissionDateValidationRule {
             return errors;
         }
 
-        if (applicationSubmittedDate.isAfter(LocalDate.now())) {
+        if (applicationSubmittedDate.isAfter(today)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE));
         }
 
         LocalDate dod = caveatData.getDeceasedDateOfDeath();
-        if (dod == null || dod.isAfter(LocalDate.now())) {
+        if (dod == null || dod.isAfter(today)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID));
             return errors;
