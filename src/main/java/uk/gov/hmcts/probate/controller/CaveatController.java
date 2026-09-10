@@ -47,7 +47,6 @@ import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
@@ -325,7 +324,7 @@ public class CaveatController {
                 .validate(callbackRequest.getCaseDetails());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(CaveatCallbackResponse.builder()
-                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                    .errors(errors.stream().map(FieldErrorResponse::getMessage).toList())
                     .build());
         }
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
