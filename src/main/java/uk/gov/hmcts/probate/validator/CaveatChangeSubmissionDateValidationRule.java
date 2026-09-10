@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class CaveatChangeSubmissionDateValidationRule {
     public List<FieldErrorResponse> validate(CaveatDetails caseDetails) {
         List<FieldErrorResponse> errors = new ArrayList<>();
         CaveatData caveatData = caseDetails.getData();
-        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        LocalDate today = LocalDate.now();
 
         LocalDate applicationSubmittedDate = caveatData.getApplicationSubmittedDate();
         if (applicationSubmittedDate == null) {
