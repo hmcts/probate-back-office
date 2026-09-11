@@ -93,6 +93,25 @@ class TaskListControllerIT {
     }
 
     @Test
+    void shouldSetSelectForQAUserIdamIdWhenEventIdIsBoSelectForQA() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boSelectForQA");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/tasklist/update")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(caseDataTransformer).setSelectForQAUserIdamId(any(), any());
+    }
+
+    @Test
     void taskListUpdateCasePrintedShouldTransformEvidenceHandled() throws Exception {
 
         String taskListPayload = testUtils.getStringFromFile("standingSearchPayload.json");

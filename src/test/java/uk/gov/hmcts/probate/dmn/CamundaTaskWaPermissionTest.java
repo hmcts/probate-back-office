@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -55,6 +56,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTORNEY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
@@ -263,6 +265,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
+                ),
+                Arguments.of(
+                        RECTIFY_QA_CASE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
                 )
         );
     }
@@ -289,7 +296,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(56));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -316,25 +323,39 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 .forEach(i -> assertThat(output.get(i).getOutputName(), is(outputColumnIds.get(i))));
     }
 
+
+    private static List<Map<String, Object>> getCtscExaminePermissionsWithAutoAssign(String skillCode,
+                                                                                     boolean autoAssignable) {
+
+        Map<String, Object> basePermissions = Map.of(
+                "name", "ctsc",
+                "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                "roleCategory", ROLE_CATEGORY_CTSC,
+                "assignmentPriority", 1,
+                "autoAssignable", autoAssignable
+        );
+
+        Map<String, Object> teamLeaderPermissions = Map.of(
+                "name", "ctsc-team-leader",
+                "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                "roleCategory", ROLE_CATEGORY_CTSC,
+                "assignmentPriority", 1,
+                "autoAssignable", autoAssignable
+        );
+
+        if (skillCode != null) {
+            basePermissions = new HashMap<>(basePermissions);
+            basePermissions.put("authorisations", skillCode);
+
+            teamLeaderPermissions = new HashMap<>(teamLeaderPermissions);
+            teamLeaderPermissions.put("authorisations", skillCode);
+        }
+
+        return List.of(basePermissions, teamLeaderPermissions);
+    }
+
     private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
-        return List.of(
-                Map.of(
-                        "name", "ctsc",
-                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", skillCode
-                ),
-                Map.of(
-                        "name", "ctsc-team-leader",
-                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", skillCode
-                )
-       );
+        return getCtscExaminePermissionsWithAutoAssign(skillCode, false);
     }
 
 }

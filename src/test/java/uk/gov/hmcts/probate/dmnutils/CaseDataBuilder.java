@@ -44,4 +44,9 @@ public class CaseDataBuilder {
         caseData.put("isUrgent", "Yes");
         return this;
     }
+
+    public CaseDataBuilder setSelectForQAUserIdamId(String idamId) {
+        caseData.put("selectForQAUserIdamId", idamId);
+        return this;
+    }
 }
