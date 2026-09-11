@@ -6,5 +6,5 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 public interface CreateTaskProcessor {
     String getEventId();
 
-    void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData);
+    void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData);
 }

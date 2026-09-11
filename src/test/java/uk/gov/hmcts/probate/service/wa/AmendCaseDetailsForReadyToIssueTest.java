@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AmendCaseDetailsForReadyToIssueTest {
+
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -31,6 +32,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     @InjectMocks
     private AmendCaseDetailsForReadyToIssue processor;
+
+    private static final String authToken = "authToken";
 
     private final List<String> taskToCLose = List.of("ExamineDigitalCaseProbate",
             "ExamineDigitalCaseIntestacy",
@@ -49,19 +52,20 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation",
                 "GrantOfRepresentation"
         );
-        when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
-                        taskToCLose))
+        when(waTaskService.isTaskPresent(authToken,
+                callbackRequest.getCaseDetails().getId().toString(),
+                taskToCLose))
                 .thenReturn(false);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
 
         verify(waTaskService)
-                .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                         taskToCLose);
     }
 
@@ -71,18 +75,18 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation",
                 "GrantOfRepresentation"
         );
-        when(waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+        when(waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                 taskToCLose))
                 .thenReturn(true);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);
         verify(waTaskService)
-                .isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                         taskToCLose);
     }
 
@@ -94,7 +98,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);

@@ -878,7 +878,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
+                                      String authToken) {
         ResponseCaseData responseCaseData = getResponseCaseData(
                 callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(),
@@ -887,16 +888,16 @@ public class CallbackResponseTransformer {
         ).build();
 
         //Setting task creation flag as mid event doesnt persist
-        setTaskCreation(callbackRequest, responseCaseData);
+        setTaskCreation(authToken, callbackRequest, responseCaseData);
 
         return transformResponse(responseCaseData);
     }
 
-    private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             responseCaseData.setCreateTask(Constants.NO);
             createTaskProcessorFactory.get(callbackRequest.getEventId())
-                    .ifPresent(processor -> processor.process(callbackRequest, responseCaseData));
+                    .ifPresent(processor -> processor.process(authToken, callbackRequest, responseCaseData));
         }
     }
 

@@ -13,7 +13,7 @@ public class AmendCaseDetailsForAwaitingDocumentation implements CreateTaskProce
     }
 
     @Override
-    public void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
                 ? Constants.NO : Constants.YES);

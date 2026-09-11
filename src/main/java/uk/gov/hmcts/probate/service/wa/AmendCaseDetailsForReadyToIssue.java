@@ -23,12 +23,12 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
     }
 
     @Override
-    public void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
 
         boolean taskToClosePresent = !caseTypeChanged
-                && waTaskService.isTaskPresent(callbackRequest.getCaseDetails().getId().toString(),
+                && waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                 taskToCLose);
 
         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent

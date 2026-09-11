@@ -27,7 +27,8 @@ class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
 
-    public boolean isTaskPresent(String caseId,
+    public boolean isTaskPresent(String authToken,
+                                 String caseId,
                                  @NonNull List<String> taskNames) {
 
         SearchTaskRequest searchTaskRequest = new SearchTaskRequest(asList(
@@ -36,13 +37,19 @@ class WaTaskService {
         ));
 
         ResponseEntity<GetTasksResponse<TaskData>> taskResponse = waApi.searchWithCriteria(
-                securityUtils.getCaseworkerToken(),
+                authToken,
                 securityUtils.generateServiceToken(),
                 searchTaskRequest
         );
         log.info("WA task response status: {} for case id {}",
                 taskResponse.getStatusCode(),
                 caseId);
+
+        //TODO: REMOVE THIS
+        log.info("WA task response status: {} for case id {}",
+                Optional.ofNullable(taskResponse.getBody())
+                        .map(GetTasksResponse::getTasks)
+                        .stream().toList());
 
         return Optional.ofNullable(taskResponse.getBody())
                 .map(GetTasksResponse::getTasks)
