@@ -381,6 +381,18 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_015in9z">
+        <description>EWICP</description>
+        <inputEntry id="UnaryTests_0h9vafa">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ccnnrh">
+          <text>"ExamineWitnessInterviewCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1manzf2">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
