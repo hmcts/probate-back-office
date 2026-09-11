@@ -243,7 +243,8 @@ class CaveatControllerUnitTest {
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
         CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
 
-        when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(request)).thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(request))
+                .thenReturn(caveatCallbackResponse);
 
         ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
 
