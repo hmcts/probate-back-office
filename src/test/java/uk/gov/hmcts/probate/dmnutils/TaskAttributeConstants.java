@@ -232,6 +232,4 @@ public class TaskAttributeConstants {
 
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
             = "ExamineIncapacityUnderRule35CasePrinted";
-    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED_TASK_TYPE_NAME
-            = "Examine - Incapacity Under Rule 35";
 }

@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
@@ -29,7 +29,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
 
         Map<String,Object> incapacityUnderRule35TaskAttributes = Map.of(
                 "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
-                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED_TASK_TYPE_NAME,
+                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 

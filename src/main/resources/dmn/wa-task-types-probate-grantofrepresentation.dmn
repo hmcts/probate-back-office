@@ -378,7 +378,7 @@
           <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1uxbgus">
-          <text>"Examine - Incapacity Under Rule 35"</text>
+          <text>"Examine - Incapacity under rule 35"</text>
         </outputEntry>
       </rule>
     </decisionTable>
