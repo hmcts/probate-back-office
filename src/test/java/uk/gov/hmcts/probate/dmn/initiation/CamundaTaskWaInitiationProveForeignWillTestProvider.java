@@ -28,7 +28,6 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
         Map<String,Object> examineProveForeignWillTaskAttributes = Map.of(
                 "taskId", EXAMINE_PROVE_FOREIGN_WILL,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
