@@ -1397,7 +1397,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ate6dk">
         <inputEntry id="UnaryTests_05ymew6">
-          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"serviceRequestPaymentSuccess", "handleEvidence", "attachScannedDocs", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vbvspz">
           <text>"CasePrinted"</text>
@@ -1435,7 +1435,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0kewu5p">
         <inputEntry id="UnaryTests_1sd8e9v">
-          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "applyforGrantPaperApplicationMan", "createCase", "paymentSuccessApp", "createCasePaymentSuccess", "handleEvidence", "attachScannedDocs", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0d76wix">
           <text>"CasePrinted"</text>
