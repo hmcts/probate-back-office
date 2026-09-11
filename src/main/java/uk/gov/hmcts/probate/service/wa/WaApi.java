@@ -23,7 +23,7 @@ public interface WaApi {
     @Operation(description = "Retrieve a list of Task resources identified by set of search criteria.",
             security = {@SecurityRequirement(name = SERVICE_AUTHORIZATION), @SecurityRequirement(name = AUTHORIZATION)})
     @PostMapping(
-            value = "/task/search-for-completable",
+            value = "/task",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<GetTasksResponse<TaskData>> searchWithCriteria(
