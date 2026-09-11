@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.util.FileUtils;
 
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 class HmrcFileServiceTest {
@@ -40,10 +43,11 @@ class HmrcFileServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
+    private DateFormatterService dateFormatterService = Mockito.mock(DateFormatterService.class);
     private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker =
             Mockito.mock(ExceptedEstateDateOfDeathChecker.class);
     private HmrcFileService hmrcFileService =
-        new HmrcFileService(new TextFileBuilderService(), fileExtractDateFormatter, expectedEstateDateOfDeathChecker);
+            new HmrcFileService(new TextFileBuilderService(), expectedEstateDateOfDeathChecker, dateFormatterService);
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseDataSolictor;
     private CaseData.CaseDataBuilder caseDataPersonal;
@@ -302,12 +306,16 @@ class HmrcFileServiceTest {
                 .childrenUnderEighteenSurvived("1")
                 .childrenOverEighteenSurvived("2");
 
-        when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
-        when(fileExtractDateFormatter.formatDataDate(ihtDod)).thenReturn(("17-AUG-2023"));
-        when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
-        when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDate))).thenReturn("24-OCT-2018");
-        when(fileExtractDateFormatter.formatDataDate(
-                LocalDate.parse(grantIssuedDateAfterIht))).thenReturn("24-OCT-2023");
+        when(dateFormatterService.formatDateSafely(eq(dod), any(DateTimeFormatter.class)))
+                .thenReturn("17-AUG-2018");
+        when(dateFormatterService.formatDateSafely(eq(ihtDod), any(DateTimeFormatter.class)))
+                .thenReturn("17-AUG-2023");
+        when(dateFormatterService.formatDateSafely(eq(dob), any(DateTimeFormatter.class)))
+                .thenReturn("20-OCT-1940");
+        when(dateFormatterService.formatDateSafely(eq(grantIssuedDate), any(DateTimeFormatter.class)))
+                .thenReturn("24-OCT-2018");
+        when(dateFormatterService.formatDateSafely(eq(grantIssuedDateAfterIht), any(DateTimeFormatter.class)))
+                .thenReturn("24-OCT-2023");
         when(fileExtractDateFormatter.getHmrcFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
     }
 
