@@ -105,15 +105,16 @@ public class PaymentsService {
 
     }
 
-    public boolean isPaymentSuccessByCaseId(String caseId) {
+    public boolean hasSuccessfulPaymentByCaseId(String caseId) {
         SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
         PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
 
-        boolean isPaymentSuccessful = response.getPayments().stream()
+        boolean hasSuccessfulPayment = response.getPayments().stream()
                 .anyMatch(payment -> "success".equalsIgnoreCase(payment.getStatus()));
-        log.info("isPaymentSuccessByCaseId case id : {} PaymentSuccessful: {}", caseId, isPaymentSuccessful);
-        return isPaymentSuccessful;
+        log.info("hasSuccessfulPaymentByCaseId case id : {} hasSuccessfulPayment: {}",
+                caseId, hasSuccessfulPayment);
+        return hasSuccessfulPayment;
     }
 
     private uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrieveCaseDetailsAsCaseworker(String caseId,
