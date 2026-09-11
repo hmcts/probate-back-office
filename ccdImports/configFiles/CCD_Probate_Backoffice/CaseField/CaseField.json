@@ -577,5 +577,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantSameParentsAsDeceased", "Label": "Did the applicant share both the same parents as the deceased?", "FieldType": "FixedList", "FieldTypeParameter": "sameParentFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyLivingParents", "Label": "Were there any living parents of the deceased at the time of their death?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyLivingWholeBloodSiblings", "Label": "Were there any living whole blood siblings of the deceased at the time of their death?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyLivingWholeBloodSiblings", "Label": "Were there any living whole blood siblings of the deceased at the time of their death?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
