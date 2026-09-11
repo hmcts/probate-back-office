@@ -57,6 +57,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDEN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
@@ -94,6 +96,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         caseTypeVar, caseType,
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
                         boHandoffReasonListVar, boHandoffReasonList
+                )
+        );
+    }
+
+    private static Map<String, Map<String, Object>> additionalDataWithEscalationReason(
+            boolean evidenceHandled, String escalationReason) {
+        return Map.of(
+                "Data", Map.of(
+                        evidenceHandledVar, evidenceHandled,
+                        caseTypeVar, "",
+                        caseHandedOffToLegacySiteVar, false,
+                        boHandoffReasonListVar, Collections.emptyList(),
+                        "registrarEscalateReason", escalationReason
                 )
         );
     }
@@ -2760,48 +2775,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
-        Map<String,Object> ordersTask = Map.of(
-                "taskId", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                "name", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
-                "processCategories", "case progression"
-        );
-
         return Stream.of(
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "", false, Collections.emptyList()),
-                        List.of(referralsTask, ordersTask)
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
                 ),
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "", false, Collections.emptyList()),
+                        additionalDataWithEscalationReason(true, REGISTRAR_ESCALATION_REASON_REFERRALS),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        "someOtherEvent",
                         BO_REGISTRAR_ESCALATION,
-                        null,
-                        List.of(referralsTask, ordersTask)
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        BO_REGISTRAR_ESCALATION,
-                        additionalDataNoHandOffList(),
-                        List.of(referralsTask, ordersTask)
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        Collections.emptyList()
                 )
         );
     }
 
     static Stream<Arguments> resolveRegistrarEscalationOrdersScenarios() {
 
-        Map<String,Object> referralsTask = Map.of(
-                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
-                "processCategories", "case progression"
-        );
-
         Map<String,Object> ordersTask = Map.of(
                 "taskId", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
                 "name", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
@@ -2812,26 +2809,20 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "", false, Collections.emptyList()),
-                        List.of(referralsTask, ordersTask)
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_ORDERS),
+                        List.of(ordersTask)
                 ),
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "", false, Collections.emptyList()),
+                        additionalDataWithEscalationReason(true, REGISTRAR_ESCALATION_REASON_ORDERS),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        "someOtherEvent",
                         BO_REGISTRAR_ESCALATION,
-                        null,
-                        List.of(referralsTask, ordersTask)
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        BO_REGISTRAR_ESCALATION,
-                        additionalDataNoHandOffList(),
-                        List.of(referralsTask, ordersTask)
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_ORDERS),
+                        Collections.emptyList()
                 )
         );
     }
@@ -2840,7 +2831,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(8));
+        assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
         assertThat(logic.getRules().size(), is(37));
     }
