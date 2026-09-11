@@ -40,6 +40,11 @@ public class TaskAttributeConstants {
     public static final String ROLE_CATEGORY_JUDICIAL = "JUDICIAL";
     public static final String ROLE_CATEGORY_CTSC = "CTSC";
 
+    public static final String GOP_CASE_TYPE = "gop";
+    public static final String ADMON_WILL_CASE_TYPE = "admonWill";
+    public static final String INTESTACY_CASE_TYPE = "intestacy";
+    public static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
+
     public static final String DEFAULT_MINOR_PRIORITY = "500";
     public static final String DEFAULT_MAJOR_PRIORITY = "5000";
     public static final String URGENT_MAJOR_PRIORITY = "2000";
