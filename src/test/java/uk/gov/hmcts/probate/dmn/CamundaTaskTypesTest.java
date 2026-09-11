@@ -68,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -201,6 +202,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED
+                ),
+                Map.of(
+                    "taskTypeName", "Review SME Referral",
+                    "taskTypeId", REVIEW_SME_REFERRAL
                 )
         );
         return Stream.of(
@@ -216,7 +221,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(31));
+        assertThat(logic.getRules().size(), is(32));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

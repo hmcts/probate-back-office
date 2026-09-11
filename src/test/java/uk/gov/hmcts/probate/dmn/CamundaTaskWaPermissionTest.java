@@ -58,6 +58,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_SME_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
@@ -263,6 +266,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
+                ),
+                Arguments.of(
+                        REVIEW_SME_REFERRAL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_SME_SKILL_CODE)
                 )
         );
     }
@@ -289,7 +297,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(56));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
