@@ -38,6 +38,7 @@
    ]]></notes>
         <cve>CVE-2026-54285</cve>
     </suppress>
+    <!-- Spring Framework 6.2.19 -->
     <suppress until = "2026-10-24">
         <notes><![CDATA[
            Spring framework CVEs
@@ -49,6 +50,13 @@
         <cve>CVE-2026-47891</cve>
         <cve>CVE-2026-59281</cve>
         <cve>CVE-2026-59282</cve>
+        <cve>CVE-2026-47883</cve>
+        <cve>CVE-2026-47884</cve>
+        <cve>CVE-2026-47885</cve>
+        <cve>CVE-2026-47886</cve>
+        <cve>CVE-2026-47887</cve>
+        <cve>CVE-2026-47888</cve>
+        <cve>CVE-2026-47889</cve>
     </suppress>
     <suppress until = "2026-10-24">
         <notes><![CDATA[
