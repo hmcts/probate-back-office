@@ -106,7 +106,7 @@ public class ExecutorsTransformer {
         builder.solsIdentifiedNotApplyingExecsCcdCopy(execsNotApplyingNames);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>>  createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = getExecsApplying(caseData);
@@ -151,6 +151,11 @@ public class ExecutorsTransformer {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
+        } else if (caseData.getSolsIntestacyExecutorList() != null
+                && !caseData.getSolsIntestacyExecutorList().isEmpty()) {
+            // Add intestacy solicitor executor list
+            execsApplying.addAll(executorListMapperService
+                    .mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData));
         }
     }
 
@@ -213,6 +218,7 @@ public class ExecutorsTransformer {
     // Clear the solicitor executor lists (on solicitor completion)
     public void clearSolicitorExecutorLists(CaseData caseData) {
         Optional.ofNullable(caseData.getSolsAdditionalExecutorList()).ifPresent(List::clear);
+        Optional.ofNullable(caseData.getSolsIntestacyExecutorList()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(List::clear);
