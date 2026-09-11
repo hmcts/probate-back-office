@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
+import uk.gov.hmcts.probate.model.wa.RequestContext;
 import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -31,10 +32,12 @@ class WaTaskService {
                                  String caseId,
                                  @NonNull List<String> taskNames) {
 
-        SearchTaskRequest searchTaskRequest = new SearchTaskRequest(asList(
-                new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList("PROBATE")),
-                new SearchParameterList(CASE_ID, SearchOperator.IN, singletonList(caseId))
-        ));
+        SearchTaskRequest searchTaskRequest = new SearchTaskRequest(
+                RequestContext.AVAILABLE_TASKS,
+                asList(
+                    new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList("PROBATE")),
+                    new SearchParameterList(CASE_ID, SearchOperator.IN, singletonList(caseId)))
+        );
 
         ResponseEntity<GetTasksResponse<TaskData>> taskResponse = waApi.searchWithCriteria(
                 authToken,
@@ -55,7 +58,7 @@ class WaTaskService {
                 .map(GetTasksResponse::getTasks)
                 .stream()
                 .flatMap(List::stream)
-                .map(TaskData::getName)
+                .map(TaskData::getType)
                 .anyMatch(taskNames::contains);
     }
 }
