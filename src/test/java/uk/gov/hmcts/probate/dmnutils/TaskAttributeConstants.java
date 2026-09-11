@@ -155,7 +155,7 @@ public class TaskAttributeConstants {
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
-    public static final String BO_CASE_QA = "BOCaseQA";
+    public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";

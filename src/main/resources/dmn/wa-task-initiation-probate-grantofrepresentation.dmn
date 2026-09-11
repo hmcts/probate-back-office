@@ -1400,7 +1400,7 @@ else false</text>
           <text>"boEscalateToRegistrar"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1g1cyuf">
-          <text>"CasePrinted","BOReadyToIssue","BOCaseQA"</text>
+          <text>"BORegistrarEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0f9en7c">
           <text>false</text>
@@ -1438,7 +1438,7 @@ else false</text>
           <text>"boEscalateToRegistrar"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_11nl71u">
-          <text>"CasePrinted","BOReadyToIssue","BOCaseQA"</text>
+          <text>"BORegistrarEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0lmm5gc">
           <text>false</text>

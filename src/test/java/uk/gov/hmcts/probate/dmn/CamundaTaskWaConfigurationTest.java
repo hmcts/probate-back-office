@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -353,29 +353,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                                        "state", CASE_PRINTED_STATE))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
-                                .build()
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                        Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                                                "state", READY_TO_ISSUE_STATE))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
-                                .build()
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                        Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
-                                                "state", BO_CASE_QA))
+                                        "state", BO_REGISTRAR_ESCALATION))
                                 .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
                                 .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
                                 .build()
@@ -386,29 +364,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                                                "state", CASE_PRINTED_STATE))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
-                                .build()
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                        Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                                                "state", READY_TO_ISSUE_STATE))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
-                                .build()
-                ),
-                Arguments.of(
-                        RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                        Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
-                                                "state", BO_CASE_QA))
+                                                "state", BO_REGISTRAR_ESCALATION))
                                 .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
                                 .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
                                 .build()
