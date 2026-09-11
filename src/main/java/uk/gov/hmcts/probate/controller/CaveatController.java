@@ -311,8 +311,8 @@ public class CaveatController {
         CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
         caveatNotificationService.recalculateSubmissionExpiryDate(caveatData);
         caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(
-                caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse =
+                caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
