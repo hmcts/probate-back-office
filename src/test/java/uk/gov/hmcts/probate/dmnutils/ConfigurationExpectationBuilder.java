@@ -14,6 +14,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_E
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
@@ -48,6 +52,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 
 
 public class ConfigurationExpectationBuilder {
@@ -70,6 +79,35 @@ public class ConfigurationExpectationBuilder {
             Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
+        if (conditions.containsValue(READY_TO_ISSUE_STATE)
+                && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
+                || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
+                || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
+                || conditions.get("taskType").equals(EXAMINE_DOUBLE_PROBATE)
+                || conditions.get("taskType").equals(EXAMINE_INCAPACITY_UNDER_RULE_35)
+                || conditions.get("taskType").equals(EXAMINE_LEADING_OR_FOLLOWING_GRANTS)
+                || conditions.get("taskType").equals(EXAMINE_CODICIL_MIS_RECITAL)
+                || conditions.get("taskType").equals(EXAMINE_RECTIFY_WILL_OR_CODICIL)
+                || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
+                || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
+                || conditions.get("taskType").equals(EXAMINE_HORIZON_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_SECTION_116)
+                || conditions.get("taskType").equals(EXAMINE_POWER_OF_ATTORNEY)
+                || conditions.get("taskType").equals(EXAMINE_RESEAL_FOREIGN_GRANT)
+                || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME)
+            )) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
+        } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_SME_REFERRAL, true)
+                    .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
+        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
+        } else {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
+        }
         builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
@@ -83,28 +121,6 @@ public class ConfigurationExpectationBuilder {
                 .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
                         DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
                 .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
-
-        if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType")
-                && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
-                || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
-                || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
-                || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
-                || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
-                || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
-                || conditions.get("taskType").equals(EXAMINE_HORIZON_SCHEME)
-            )) {
-            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
-        } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
-                && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
-            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_SME_REFERRAL, true)
-                    .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
-        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
-            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
-        } else {
-            builder.expectedValue(DESCRIPTION,
-                            DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
-        }
-
         return builder;
     }
 

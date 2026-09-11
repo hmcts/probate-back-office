@@ -28,9 +28,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         "%s (%s) does not appear to be a valid email address";
     private static final String SUCCESS = "SUCCESS";
     private static final String WARNINGS = "WARNINGS";
-    private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
-    private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
-    private static final String SOLICITOR_EMAIL_MISSING = "Solictor email address (solsSolicitorEmail) is mandatory.";
     private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
     private static final String PA1A = "PA1A";
     private static final String PA1P = "PA1P";
@@ -93,14 +90,15 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
-        RestAssured.given()
+        String actualResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(bodyText)
             .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(422)
-            .and().body(containsString(containsText));
+            .and().extract().body().asString();
+        JSONAssert.assertEquals(containsText, actualResponse, JSONCompareMode.STRICT);
     }
 
     private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) {
@@ -383,14 +381,15 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void transformExceptionPostUnprocessed(String bodyText, String containsText) {
-        RestAssured.given()
+        String actualResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(422)
-            .and().body(containsString(containsText));
+            .and().extract().body().asString();
+        JSONAssert.assertEquals(containsText, actualResponse, JSONCompareMode.STRICT);
     }
 
     private void transformExceptionPostForbidden(String bodyText) {

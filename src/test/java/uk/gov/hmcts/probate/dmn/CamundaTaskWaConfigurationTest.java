@@ -32,15 +32,34 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -58,21 +77,21 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
@@ -86,7 +105,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                           Map.of("state", READY_TO_ISSUE_STATE, "taskType", EXAMINE_DE_BONIS_NON)).build()
                 ),
@@ -95,7 +114,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
                         .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("taskType", EXAMINE_FIAT_WILL, "state", READY_TO_ISSUE_STATE)).build()
                 ),
@@ -104,7 +123,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
                         .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
                                     "state", READY_TO_ISSUE_STATE)).build()
@@ -124,14 +143,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                             .isUrgent()
                             .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder
                                 .examineDigitalCaseExpectationsForConditions(
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
@@ -171,16 +190,157 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                                Map.of("taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder
                                 .examineDigitalCaseExpectationsForConditions(
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                    HANDLE_EVIDENCE_EVENT,
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DOUBLE_PROBATE,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_SECTION_116,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_SECTION_116, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_POWER_OF_ATTORNEY,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_POWER_OF_ATTORNEY, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_RESEAL_FOREIGN_GRANT,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_RESEAL_FOREIGN_GRANT, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME, "state", READY_TO_ISSUE_STATE))
+                            .build()
+                ),
+                Arguments.of(
+                        EXAMINE_CODICIL_MIS_RECITAL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_CODICIL_MIS_RECITAL,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                )
             ),
             Arguments.of(
                     REVIEW_SME_REFERRAL,
