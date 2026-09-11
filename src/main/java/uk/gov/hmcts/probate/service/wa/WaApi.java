@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,10 @@ public interface WaApi {
 
     @Operation(description = "Retrieve a list of Task resources identified by set of search criteria.",
             security = {@SecurityRequirement(name = SERVICE_AUTHORIZATION), @SecurityRequirement(name = AUTHORIZATION)})
-    @PostMapping
+    @PostMapping(
+            value = "/task/search-for-completable",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<GetTasksResponse<TaskData>> searchWithCriteria(
             @Parameter(hidden = true) @RequestHeader(AUTHORIZATION) String authToken,
             @Parameter(hidden = true) @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuthToken,
