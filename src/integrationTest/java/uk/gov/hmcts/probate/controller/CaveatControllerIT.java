@@ -498,7 +498,7 @@ class CaveatControllerIT {
                 .replace("\"deceasedAnyOtherNames\": \"No\",",
                         "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",");
 
-        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1542274092932452")).thenReturn(true);
         mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -517,12 +517,30 @@ class CaveatControllerIT {
                         "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \""
                                 + submittedDate + "\",");
 
-        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1542274092932452")).thenReturn(true);
         mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("Application Submitted Date cannot be in the future"));
+
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    void shouldAllowValidSubmissionDateWhenPaymentRecordMissingButPaymentTakenYes() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\","
+                                + "\n      \"paymentTaken\": \"Yes\",");
+
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1542274092932452")).thenReturn(false);
+        mockMvc.perform(post(VALIDATE_CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.applicationSubmittedDate").value("2024-02-01"))
+                .andExpect(jsonPath("$.errors").doesNotExist());
 
         verifyNoInteractions(notificationService);
     }
