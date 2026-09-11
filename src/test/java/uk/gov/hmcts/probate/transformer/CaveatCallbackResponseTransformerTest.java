@@ -768,6 +768,7 @@ class CaveatCallbackResponseTransformerTest {
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
+
     @Test
     void shouldTransformResponseWithOrgPolicyForSols() {
         caveatDataBuilder.applicationType(SOLICITOR);
