@@ -39,4 +39,7 @@ public class ApplicantFamilyDetails {
     private final String halfBloodNieceOrNephewAdoptedIn;
     private final String halfBloodNieceOrNephewAdoptionInEnglandOrWales;
     private final String halfBloodNieceOrNephewAdoptedOut;
+    private final String coApplicantAdoptedDeceasedIn;
+    private final String coApplicantAdoptionDeceasedInEnglandOrWales;
+    private final String coApplicantAdoptedDeceasedOut;
 }
