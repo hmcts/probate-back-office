@@ -322,7 +322,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mowadn">
-        <description>ELWOCCP</description>
+        <description>EHSCP</description>
         <inputEntry id="UnaryTests_0qgjw9u">
           <text></text>
         </inputEntry>
@@ -334,7 +334,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ijxawh">
-        <description>ELWOCCP</description>
+        <description>EIBCACP</description>
         <inputEntry id="UnaryTests_1vyfmh6">
           <text></text>
         </inputEntry>
