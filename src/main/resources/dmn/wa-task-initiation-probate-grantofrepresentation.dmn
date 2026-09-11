@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -1392,6 +1392,44 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a7znpr">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1expmii">
+        <inputEntry id="UnaryTests_08t4je7">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19p1nbg">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nskecl">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ucqz9d">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09vl23q">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ljin73">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Section116")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mchg5v">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0odd93o">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06p9wj6">
+          <text>"ExamineSection116CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cgyoul">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i2203j">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pes2q0">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
