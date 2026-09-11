@@ -59,6 +59,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -338,6 +341,28 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LITERARY_ESTATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LITERARY_ESTATE, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                        Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL, "state", READY_TO_ISSUE_STATE))
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_MINORITY_INTEREST,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_MINORITY_INTEREST, "state", READY_TO_ISSUE_STATE)).build()
                 )
         );
     }

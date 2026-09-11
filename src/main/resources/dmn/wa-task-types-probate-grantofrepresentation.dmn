@@ -381,6 +381,42 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0mj7pzz">
+        <description>ELE</description>
+        <inputEntry id="UnaryTests_19kl9n0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1yce0d2">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hbk454">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1lkcfyv">
+        <description>ELWOC</description>
+        <inputEntry id="UnaryTests_1nv10ag">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17rr4c1">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xwtmv4">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tqqzjv">
+        <description>EMI</description>
+        <inputEntry id="UnaryTests_02cwq8e">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_082nou5">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13dzky2">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
