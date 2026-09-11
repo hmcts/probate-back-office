@@ -36,7 +36,7 @@ class WaTaskService {
         ));
 
         ResponseEntity<GetTasksResponse<TaskData>> taskResponse = waApi.searchWithCriteria(
-                securityUtils.getAuthorisation(),
+                securityUtils.getCaseworkerToken(),
                 securityUtils.generateServiceToken(),
                 searchTaskRequest
         );
