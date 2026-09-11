@@ -40,6 +40,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE;
@@ -55,11 +57,13 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTORNEY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
@@ -263,6 +267,16 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_PROVE_FOREIGN_WILL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROVE_FOREIGN_WILL_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_TRUST_CORPORATION,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(TRUST_CORPORATION_SKILL_CODE)
                 )
         );
     }
@@ -289,7 +303,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(56));
+        assertThat(logic.getRules().size(), is(60));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

@@ -381,6 +381,30 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0zisixc">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_00psrl4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11fj62e">
+          <text>"ExamineProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ic4hv5">
+          <text>"Examine - Prove a foreign will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q6epz4">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_1y7884l">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dzzk9u">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ikcf63">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

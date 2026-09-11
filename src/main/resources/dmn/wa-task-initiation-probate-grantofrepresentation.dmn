@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -1392,6 +1392,82 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a7znpr">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0phl3xd">
+        <inputEntry id="UnaryTests_0vuho2y">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mx1wbn">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gnx297">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bub3wm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uoeitm">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1blyea6">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12t5c1g">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b6br6n">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12hkylp">
+          <text>"ExamineProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_182svze">
+          <text>"Examine - Prove a foreign will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lpc351">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a8eko0">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_037numm">
+        <inputEntry id="UnaryTests_0kmmgfd">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yggc5t">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15adu82">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fcmb38">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xnk4iz">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kvc6bv">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "TrustCorporation")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ash7r8">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b43rcq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0upjdj0">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10ds4ku">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0o07hnu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a78v98">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

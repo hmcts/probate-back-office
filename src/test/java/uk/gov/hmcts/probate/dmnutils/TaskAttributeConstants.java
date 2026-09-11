@@ -87,6 +87,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
+    public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -181,6 +183,8 @@ public class TaskAttributeConstants {
     public static final String MINORITY_INTEREST_SKILL_CODE = "SKILL:ABA6:MinorityInterest";
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
     public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
+    public static final String PROVE_FOREIGN_WILL_SKILL_CODE = "SKILL:ABA6:ProveForeignWill";
+    public static final String TRUST_CORPORATION_SKILL_CODE = "SKILL:ABA6:TrustCorporation";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -206,6 +210,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a foreign will";
+    public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
