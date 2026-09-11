@@ -74,7 +74,7 @@ class FetchDraftCaseServiceTest {
                         .total(1)
                         .cases(List.of(caseDetails))
                         .build());
-        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1")).thenReturn(true);
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
@@ -96,7 +96,7 @@ class FetchDraftCaseServiceTest {
                         .cases(List.of(caseDetails))
                         .build());
 
-        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1")).thenReturn(true);
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
@@ -152,8 +152,8 @@ class FetchDraftCaseServiceTest {
                         .total(0)
                         .cases(Collections.emptyList())
                         .build());
-        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(true);
-        when(paymentsService.isPaymentSuccessByCaseId("2")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("2")).thenReturn(true);
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
@@ -193,7 +193,7 @@ class FetchDraftCaseServiceTest {
                         .cases(List.of(caseDetails))
                         .build());
 
-        when(paymentsService.isPaymentSuccessByCaseId("1")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1")).thenReturn(true);
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))

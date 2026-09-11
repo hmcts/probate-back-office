@@ -243,7 +243,7 @@ class CaveatControllerUnitTest {
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
         CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
 
-        when(caveatCallbackResponseTransformer.changeSubmissionDate(request)).thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(request)).thenReturn(caveatCallbackResponse);
 
         ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
 
@@ -279,7 +279,7 @@ class CaveatControllerUnitTest {
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
         CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
 
-        when(paymentsService.isPaymentSuccessByCaseId("1000")).thenReturn(true);
+        when(paymentsService.hasSuccessfulPaymentByCaseId("1000")).thenReturn(true);
         List<FieldErrorResponse> errors = List.of(
                 FieldErrorResponse.builder().message("error-1").build(),
                 FieldErrorResponse.builder().message("error-2").build()
