@@ -367,6 +367,8 @@ ccd:
 
   ccd-user-profile-importer:
     image: hmctsprod.azurecr.io/ccd/user-profile-importer:latest
+    # forces before-hook-creation delete policy so a failed hook Job doesn't block the next retry
+    debug: true
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
       - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
