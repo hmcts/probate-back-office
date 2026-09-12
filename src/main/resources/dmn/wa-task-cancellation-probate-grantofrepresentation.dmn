@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -65,6 +65,29 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0uoiclz">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18rfvfi">
+        <inputEntry id="UnaryTests_10n6bt1">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02nw57z">
+          <text>"boWithdrawApplicationForCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ay7v1h">
+          <text>"BOCaseClosed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01fza3h">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1girmx5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1363cqw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jqjnv5">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
