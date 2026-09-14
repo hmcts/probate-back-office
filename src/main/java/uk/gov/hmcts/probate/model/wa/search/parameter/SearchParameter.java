@@ -1,6 +1,6 @@
-package uk.gov.hmcts.probate.service.wa.search.parameter;
+package uk.gov.hmcts.probate.model.wa.search.parameter;
 
-import uk.gov.hmcts.probate.service.wa.search.SearchOperator;
+import uk.gov.hmcts.probate.model.wa.search.SearchOperator;
 
 
 public interface SearchParameter<T> {

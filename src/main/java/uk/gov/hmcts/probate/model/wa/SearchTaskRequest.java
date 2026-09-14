@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameter;
+import uk.gov.hmcts.probate.model.wa.search.parameter.SearchParameter;
 
 import java.util.List;
 

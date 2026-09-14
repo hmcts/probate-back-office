@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
-import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
+import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
 import uk.gov.hmcts.probate.model.wa.TaskData;
+import uk.gov.hmcts.probate.model.wa.response.GetTasksCompletableResponse;
+import uk.gov.hmcts.probate.model.wa.response.GetTasksResponse;
 
 @FeignClient(name = "wa-api", url = "${wa.provider.client.url}", configuration = FeignClientConfiguration.class)
 public interface WaApi {
@@ -30,5 +32,16 @@ public interface WaApi {
             @Parameter(hidden = true) @RequestHeader(AUTHORIZATION) String authToken,
             @Parameter(hidden = true) @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuthToken,
             @Valid @RequestBody SearchTaskRequest searchTaskRequest
+    );
+
+
+    @Operation(description = "Retrieve a list of Task resources identified by set of search"
+            + " criteria that are eligible for automatic completion",
+            security = {@SecurityRequirement(name = SERVICE_AUTHORIZATION), @SecurityRequirement(name = AUTHORIZATION)})
+    @PostMapping(path = "/task/search-for-completable")
+    public ResponseEntity<GetTasksCompletableResponse<TaskData>> searchWithCriteriaForAutomaticCompletion(
+            @Parameter(hidden = true) @RequestHeader(AUTHORIZATION) String authToken,
+            @Parameter(hidden = true) @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuthToken,
+            @RequestBody SearchEventAndCase searchEventAndCase
     );
 }

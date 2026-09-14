@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.wa.search;
+package uk.gov.hmcts.probate.model.wa.search;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -6,14 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
-import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
+import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
+import uk.gov.hmcts.probate.model.wa.response.GetTasksCompletableResponse;
+import uk.gov.hmcts.probate.model.wa.response.GetTasksResponse;
 import uk.gov.hmcts.probate.model.wa.RequestContext;
 import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.wa.search.SearchOperator;
-import uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes;
-import uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterList;
+import uk.gov.hmcts.probate.model.wa.search.SearchOperator;
+import uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes;
+import uk.gov.hmcts.probate.model.wa.search.parameter.SearchParameterList;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +23,8 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
-import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.CASE_ID;
-import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.JURISDICTION;
+import static uk.gov.hmcts.probate.model.wa.search.parameter.SearchParameterKey.CASE_ID;
+import static uk.gov.hmcts.probate.model.wa.search.parameter.SearchParameterKey.JURISDICTION;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +32,52 @@ import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKe
 class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
+
+    public boolean isTaskPresent(String authToken,
+                                 String caseId,
+                                 String eventId,
+                                 @NonNull List<TaskTypes> taskNames) {
+        SearchEventAndCase searchEventAndCase = new SearchEventAndCase(
+                caseId,
+                eventId,
+                PROBATE.name(),
+                "grantofrepresentation"
+        );
+
+        //TODO: REMOVE THIS
+        ObjectMapper mapper = new ObjectMapper();
+        log.info("WA task search EventAndCase request: {} for case id {} authtoken {} s2s token {}",
+                mapper.writeValueAsString(searchEventAndCase),
+                caseId,
+                authToken,
+                securityUtils.generateServiceToken());
+
+        ResponseEntity<GetTasksCompletableResponse<TaskData>> taskResponse =
+                waApi.searchWithCriteriaForAutomaticCompletion(
+                        authToken,
+                        securityUtils.generateServiceToken(),
+                        searchEventAndCase);
+
+        log.info("WA task response status: {} for case id {}",
+                taskResponse.getStatusCode(),
+                caseId);
+
+        //TODO: REMOVE THIS
+        log.info("WA task response status: {} for case id {}",
+                Optional.ofNullable(taskResponse.getBody())
+                        .map(GetTasksCompletableResponse::getTasks)
+                        .stream().toList());
+
+
+        return Optional.ofNullable(taskResponse.getBody())
+                .map(GetTasksCompletableResponse::getTasks)
+                .stream()
+                .flatMap(List::stream)
+                .map(TaskData::getType)
+                .map(TaskTypes::fromValue)
+                .flatMap(Optional::stream)
+                .anyMatch(taskNames::contains);
+    }
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,

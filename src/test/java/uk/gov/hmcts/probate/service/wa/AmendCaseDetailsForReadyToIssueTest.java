@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes;
+import uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
-import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
+import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
 @ExtendWith(MockitoExtension.class)
 class AmendCaseDetailsForReadyToIssueTest {

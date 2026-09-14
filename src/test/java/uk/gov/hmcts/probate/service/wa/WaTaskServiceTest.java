@@ -6,11 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
+import uk.gov.hmcts.probate.model.wa.response.GetTasksResponse;
 import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes;
+import uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.wa.search.parameter;
+package uk.gov.hmcts.probate.model.wa.search.parameter;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

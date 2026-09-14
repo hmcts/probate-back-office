@@ -1,23 +1,22 @@
-package uk.gov.hmcts.probate.service.wa.search.parameter;
+package uk.gov.hmcts.probate.model.wa.search.parameter;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import uk.gov.hmcts.probate.service.wa.search.SearchOperator;
-
-import java.util.List;
+import uk.gov.hmcts.probate.model.wa.search.SearchOperator;
 
 @EqualsAndHashCode
 @ToString
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public class SearchParameterList implements SearchParameter<List<String>> {
+public class SearchParameterBoolean implements SearchParameter<Boolean> {
 
     private final SearchParameterKey key;
     private final SearchOperator operator;
-    private final List<String> values;
+    private final boolean values;
 
     @JsonCreator
-    public SearchParameterList(SearchParameterKey key, SearchOperator operator, List<String> values) {
+    public SearchParameterBoolean(SearchParameterKey key, SearchOperator operator, boolean values) {
         this.key = key;
         this.operator = operator;
         this.values = values;
@@ -34,7 +33,8 @@ public class SearchParameterList implements SearchParameter<List<String>> {
     }
 
     @Override
-    public List<String> getValues() {
+    @JsonProperty("value")
+    public Boolean getValues() {
         return values;
     }
 }

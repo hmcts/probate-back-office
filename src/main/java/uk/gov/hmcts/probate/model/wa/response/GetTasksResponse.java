@@ -1,7 +1,8 @@
-package uk.gov.hmcts.probate.model.wa;
+package uk.gov.hmcts.probate.model.wa.response;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import uk.gov.hmcts.probate.model.wa.TaskData;
 
 import java.util.List;
 
