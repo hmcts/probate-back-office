@@ -40,6 +40,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE;
@@ -263,6 +264,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(WITNESS_INTERVIEW_SKILL_CODE)
                 )
         );
     }
@@ -289,7 +295,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(56));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

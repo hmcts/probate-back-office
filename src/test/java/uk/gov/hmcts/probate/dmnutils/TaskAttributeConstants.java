@@ -87,6 +87,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
+    public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -206,6 +207,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
+    public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
