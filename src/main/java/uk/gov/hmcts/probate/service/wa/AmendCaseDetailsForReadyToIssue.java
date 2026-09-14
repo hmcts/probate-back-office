@@ -17,6 +17,9 @@ import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGIT
 @RequiredArgsConstructor
 @Component
 public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
+
+    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
+            = "boAmendCaseDetailsForAwaitingDocumentation";
     private final WaTaskService waTaskService;
     private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -36,7 +39,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
         boolean taskToClosePresent = !caseTypeChanged
                 && waTaskService.isTaskPresent(authToken,
                 callbackRequest.getCaseDetails().getId().toString(),
-                "boAmendCaseDetailsForAwaitingDocumentation",
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 taskToCLose);
 
 

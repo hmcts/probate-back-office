@@ -26,6 +26,8 @@ import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGIT
 @ExtendWith(MockitoExtension.class)
 class AmendCaseDetailsForReadyToIssueTest {
 
+    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
+            = "boAmendCaseDetailsForAwaitingDocumentation";
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -59,6 +61,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         );
         when(waTaskService.isTaskPresent(authToken,
                 callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 taskToCLose))
                 .thenReturn(false);
 
@@ -71,6 +74,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
     }
 
@@ -81,6 +85,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation"
         );
         when(waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 taskToCLose))
                 .thenReturn(true);
 
@@ -92,6 +97,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .isEqualTo(Constants.YES);
         verify(waTaskService)
                 .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
     }
 
