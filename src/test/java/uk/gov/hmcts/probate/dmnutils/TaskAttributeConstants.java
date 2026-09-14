@@ -241,7 +241,7 @@ public class TaskAttributeConstants {
             "Resolve Registrar Escalation - Referrals";
     public static final String RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME =
             "Resolve Registrar Escalation - Orders";
-    public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "Referrals";
-    public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "Orders";
+    public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
+    public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
 }
 
