@@ -10,14 +10,11 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_CLOSED;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_GRANT_ISSUED;
 
 @Service
 public class HseReminderNotification implements NotificationStrategy {
@@ -27,7 +24,7 @@ public class HseReminderNotification implements NotificationStrategy {
     private static final String HSE_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send HSE reminder";
     private static final String HSE_ES_QUERY_PATH = "templates/elasticsearch/caseMatching/hse_reminder_query.json";
     private static final String EVIDENCE_HANDLED_DATE = "evidenceHandledDate";
-    private static final List<String> EXCLUDED_STATES = List.of(STATE_BO_GRANT_ISSUED, STATE_BO_CASE_CLOSED);
+    private static final String REQUIRED_STATE = "CasePrinted";
     private final NotificationService notificationService;
 
     @Setter
@@ -104,6 +101,6 @@ public class HseReminderNotification implements NotificationStrategy {
     }
 
     private boolean isValidState(String state) {
-        return EXCLUDED_STATES.stream().noneMatch(state::equals);
+        return REQUIRED_STATE.equals(state);
     }
 }
