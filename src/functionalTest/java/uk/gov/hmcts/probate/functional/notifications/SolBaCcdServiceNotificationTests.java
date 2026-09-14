@@ -182,16 +182,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifyPersonalApplicantDocumentReceivedContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", DOCUMENTS_RECEIVED,
-                EMAIL_NOTIFICATION_URL);
+        sendEmail("personalPayloadNotifications.json", DOCUMENTS_RECEIVED, EMAIL_NOTIFICATION_URL);
     }
 
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorApplicantDocumentReceivedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED,
-                    EMAIL_NOTIFICATION_URL);
+        sendEmail("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -342,14 +339,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyPersonalApplicantGrantReceivedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
+        sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
+        sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -358,7 +353,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document = sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
+        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -367,8 +362,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document = sendEmailForCaseStopped(payload, CASE_STOPPED,
-                EMAIL_NOTIFICATION_URL);
+        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -377,15 +371,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotificationsSpecialCharacters.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document =
-                sendEmailForCaseStopped(payload, CASE_STOPPED,
-                        EMAIL_NOTIFICATION_URL);
+        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifyPersonalApplicantRequestInformationEmailContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST,
-                EMAIL_NOTIFICATION_URL);
+        sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -403,25 +394,23 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertNull(jsonPath.get("data.grantAwaitingDocumentationNotificationDate"));
     }
 
-    private String sendEmail(String fileName, String url, String jsonDocumentUrl) throws IOException {
+    private void sendEmail(String fileName, String url, String jsonDocumentUrl) throws IOException {
         final ResponseBody body = validatePostSuccess(fileName, url);
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String documentUrl = jsonPath.get(jsonDocumentUrl);
 
-        final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
-        return document;
+        utils.downloadPdfAndParseToString(documentUrl);
     }
 
-    private String sendEmailForCaseStopped(String fileName, String url, String jsonDocumentUrl) throws IOException,
+    private void sendEmailForCaseStopped(String fileName, String url, String jsonDocumentUrl) throws IOException,
             InterruptedException {
         final ResponseBody body = validatePostSuccessForCaseStopped(fileName, url);
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String documentUrl = jsonPath.get(jsonDocumentUrl);
 
-        final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
-        return document;
+        utils.downloadPdfAndParseToString(documentUrl);
     }
 
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile,
