@@ -59,6 +59,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_SELECT_FOR_QA_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -338,6 +341,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_PROBATE,
+                                        "state", BO_CASE_QA_STATE)).build()
                 )
         );
     }
@@ -348,7 +359,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(17, logic.getRules().size());
+        assertEquals(19, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

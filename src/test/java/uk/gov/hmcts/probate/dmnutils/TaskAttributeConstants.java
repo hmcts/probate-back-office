@@ -27,12 +27,14 @@ public class TaskAttributeConstants {
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";
+    public static final String GOP_CASE_TYPE = "gop";
 
     public static final String APPLICATIONS_WORK_TYPE_PROBATE = "applications";
     public static final String ROUTINE_WORK_TYPE = "routine_work";
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
     public static final String ACCESS_WORK_TYPE = "access_requests";
+    public static final String REVIEW_CASE_WORK_TYPE = "review_case";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -87,6 +89,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
+    public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -149,10 +152,20 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_REVIEW_QA_CASE_PROBATE =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Fail QA](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boFailQA)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
+    public static final String BO_CASE_QA_STATE = "BOCaseQA";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -181,6 +194,7 @@ public class TaskAttributeConstants {
     public static final String MINORITY_INTEREST_SKILL_CODE = "SKILL:ABA6:MinorityInterest";
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
     public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
+    public static final String PROBATE_QA_SKILL_CODE = "SKILL:ABA6:ProbateQA";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -206,6 +220,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
+    public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -216,6 +231,8 @@ public class TaskAttributeConstants {
     public static final String CHANGE_STATE_EVENT = "changeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
+    public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
+    public static final String BO_FAIL_QA_EVENT = "boFailQA";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
