@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @Controller
@@ -61,6 +62,43 @@ public class WaTaskContoller {
                             !paramCallbackRequest.getCaseDetails().getData().getCaseType()
                                     .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
 
+            );
+
+            encodedClientContext
+                    .ifPresent(value -> {
+                        log.debug("Updated case id's {} client context {}",
+                                callbackRequest.getCaseDetails().getId(),
+                                new String(Base64.getDecoder().decode(value)));
+                        responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
+                    });
+            return responseBuilder.body(CallbackResponse.builder().build());
+        }
+        return ResponseEntity.ok(CallbackResponse.builder().build());
+    }
+
+    @PostMapping(path = "/evidence-handled/updateClientContext",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            logRequest(request.getRequestURI(), callbackRequest);
+
+            if (bindingResult.hasErrors()) {
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+                throw new BadRequestException("Invalid payload", bindingResult);
+            }
+
+            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
+            Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
+                    clientContext,
+                    callbackRequest,
+                    paramCallbackRequest -> paramCallbackRequest.getCaseDetails().getData()
+                            .getEvidenceHandled().equals(NO)
             );
 
             encodedClientContext
