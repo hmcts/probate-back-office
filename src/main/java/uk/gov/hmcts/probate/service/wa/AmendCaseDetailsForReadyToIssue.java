@@ -8,14 +8,19 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
+import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
 @RequiredArgsConstructor
 @Component
 public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
     private final WaTaskService waTaskService;
-    private final List<String> taskToCLose = List.of("ExamineDigitalCaseProbate",
-            "ExamineDigitalCaseIntestacy",
-            "ExamineDigitalCaseAdmonWill",
-            "ExamineDigitalCaseAdColligendaBona");
+    private final List<String> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE.getValue(),
+            EXAMINE_DIGITAL_CASE_INTESTACY.getValue(),
+            EXAMINE_DIGITAL_CASE_ADMON_WILL.getValue(),
+            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA.getValue());
 
     @Override
     public String getEventId() {
@@ -30,6 +35,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
         boolean taskToClosePresent = !caseTypeChanged
                 && waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                 taskToCLose);
+
 
         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
                 ? Constants.YES : Constants.NO);

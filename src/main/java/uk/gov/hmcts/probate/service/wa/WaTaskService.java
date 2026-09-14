@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.CASE_ID;
 import static uk.gov.hmcts.probate.service.wa.search.parameter.SearchParameterKey.JURISDICTION;
 
@@ -36,9 +37,11 @@ class WaTaskService {
         SearchTaskRequest searchTaskRequest = new SearchTaskRequest(
                 RequestContext.AVAILABLE_TASKS,
                 asList(
-                    new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList("PROBATE")),
+                    new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList(PROBATE.name())),
                     new SearchParameterList(CASE_ID, SearchOperator.IN, singletonList(caseId)))
         );
+
+        //TODO: REMOVE THIS
         ObjectMapper mapper = new ObjectMapper();
         log.info("WA task search request: {} for case id {}",
                 mapper.writeValueAsString(searchTaskRequest),
