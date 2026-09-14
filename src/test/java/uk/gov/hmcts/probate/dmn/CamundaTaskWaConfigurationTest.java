@@ -59,6 +59,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -337,6 +340,30 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 )
         );

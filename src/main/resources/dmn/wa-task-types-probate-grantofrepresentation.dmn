@@ -381,6 +381,42 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_14gmknf">
+        <description>EDBCP</description>
+        <inputEntry id="UnaryTests_1vah4ux">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xvot9x">
+          <text>"ExamineDoubleProbateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_018pegr">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0s311t7">
+        <description>EPOACP</description>
+        <inputEntry id="UnaryTests_1xghq61">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d00c0u">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z0t4cw">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0czxgft">
+        <description>ERFGCP</description>
+        <inputEntry id="UnaryTests_1n7r14g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19ycqtm">
+          <text>"ExamineResealForeignGrantCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tbl7vl">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
