@@ -175,7 +175,7 @@ def versions = [
         commonsValidator                : '1.11.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '9.5.2',
-        feignVersion                    : '13.14',
+        feignVersion                    : '13.15',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.22.2',
