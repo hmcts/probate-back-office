@@ -86,7 +86,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTATE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOST_WILL_CODICIL_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINORITY_INTEREST_SKILL_CODE;
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
