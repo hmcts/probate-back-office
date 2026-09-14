@@ -1647,6 +1647,122 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0y6jedq">
+        <inputEntry id="UnaryTests_07fdsm8">
+          <text>"ExamineProveForeignWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hygaju">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lx4c64">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_002s011">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jmuo9j">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p7veq4">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12tqg5i">
+          <text>"SKILL:ABA6:ProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1urbxkb">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qw7jnc">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0q6wivf">
+        <inputEntry id="UnaryTests_01d2isd">
+          <text>"ExamineProveForeignWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vvxgsj">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12xkptu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yx3np1">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c9lont">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p0topd">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_168nn2w">
+          <text>"SKILL:ABA6:ProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11h9ahc">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17wf2g7">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tpb51a">
+        <inputEntry id="UnaryTests_1m0uuf0">
+          <text>"ExamineTrustCorporation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_170mlif">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09dt8an">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05vz6mn">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01xtf24">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ao7q82">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kfflyp">
+          <text>"SKILL:ABA6:TrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dn4w83">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gg85rf">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0t5qs0s">
+        <inputEntry id="UnaryTests_09298fg">
+          <text>"ExamineTrustCorporation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0eimojw">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1devxus">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fetcpl">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01eze3r">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lnijit">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oblw75">
+          <text>"SKILL:ABA6:TrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12rm0b4">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c9a0q4">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
