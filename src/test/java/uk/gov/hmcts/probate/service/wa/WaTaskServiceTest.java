@@ -36,14 +36,14 @@ class WaTaskServiceTest {
 
     @Test
     void shouldReturnTrueWhenTaskIsPresent() {
-        String authToken = "auth-token";
-        String caseId = "123456";
-        String serviceToken = "service-token";
-
         TaskData task = new TaskData();
         task.setType("ExamineDigitalCaseProbate");
 
         GetTasksResponse<TaskData> response = new GetTasksResponse<>(List.of(task), 1);
+
+        String authToken = "auth-token";
+        String caseId = "123456";
+        String serviceToken = "service-token";
 
         when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteria(
