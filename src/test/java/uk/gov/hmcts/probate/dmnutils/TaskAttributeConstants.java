@@ -33,6 +33,7 @@ public class TaskAttributeConstants {
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
     public static final String ACCESS_WORK_TYPE = "access_requests";
+    public static final String DECISION_MAKING_WORK_WORK_TYPE = "decision_making_work";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -87,6 +88,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
+    public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -149,10 +151,14 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
+            "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/handleEvidence)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
+    public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -229,4 +235,5 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
+    public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
 }
