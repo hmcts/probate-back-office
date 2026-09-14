@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.probate.model.wa.GetTasksResponse;
 import uk.gov.hmcts.probate.model.wa.RequestContext;
 import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
@@ -38,6 +39,10 @@ class WaTaskService {
                     new SearchParameterList(JURISDICTION, SearchOperator.IN, singletonList("PROBATE")),
                     new SearchParameterList(CASE_ID, SearchOperator.IN, singletonList(caseId)))
         );
+        ObjectMapper mapper = new ObjectMapper();
+        log.info("WA task search request: {} for case id {}",
+                mapper.writeValueAsString(searchTaskRequest),
+                caseId);
 
         ResponseEntity<GetTasksResponse<TaskData>> taskResponse = waApi.searchWithCriteria(
                 authToken,
