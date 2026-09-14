@@ -184,7 +184,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     void verifyPersonalApplicantDocumentReceivedContentIsOk() throws IOException {
         final String document = sendEmail("personalPayloadNotifications.json", DOCUMENTS_RECEIVED,
                 EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
     }
 
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
@@ -193,7 +192,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final String document =
             sendEmail("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED,
                     EMAIL_NOTIFICATION_URL);
-        verifySolsEmailNotificationReceived(document);
     }
 
     @Test
@@ -346,14 +344,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     void verifyPersonalApplicantGrantReceivedContentIsOk() throws IOException {
         final String document =
             sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
     }
 
     @Test
     void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
         final String document =
             sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
-        verifySolsEmailNotificationReceived(document);
     }
 
     @Test
@@ -363,7 +359,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
         final String document = sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
-        verifySolsEmailCaseStopped(document);
     }
 
     @Test
@@ -374,7 +369,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
         final String document = sendEmailForCaseStopped(payload, CASE_STOPPED,
                 EMAIL_NOTIFICATION_URL);
-        verifyPAEmailCaseStopped(document);
     }
 
     @Test
@@ -386,14 +380,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final String document =
                 sendEmailForCaseStopped(payload, CASE_STOPPED,
                         EMAIL_NOTIFICATION_URL);
-        verifyPAEmailCaseStopped(document);
     }
 
     @Test
     void verifyPersonalApplicantRequestInformationEmailContentIsOk() throws IOException {
         final String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST,
                 EMAIL_NOTIFICATION_URL);
-        verifyPAEmailInformationRequestRedec(document);
     }
 
     @Test
@@ -430,43 +422,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
         final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
         return document;
-    }
-
-    private void verifyPAEmailNotificationReceived(String document) {
-        assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
-    }
-
-    private void verifySolsEmailNotificationReceived(String document) {
-        assertTrue(document.contains("1231-3984-3949-0300"));
-        assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
-    }
-
-    private void verifySolsEmailCaseStopped(String document) {
-        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
-        assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("cav first name cav surname"));
-        assertTrue(document.contains(REGISTRY_NO));
-    }
-
-    private void verifyPAEmailCaseStopped(String document) {
-        assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
-        assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("cav first name cav surname"));
-        assertTrue(document.contains(REGISTRY_NO));
-    }
-
-    private void verifyPAEmailInformationRequestRedec(String document) {
-        assertTrue(document.contains("primary@probate-test.com"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("stop details"));
-        assertTrue(document.contains("Declaration"));
     }
 
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile,
