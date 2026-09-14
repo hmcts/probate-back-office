@@ -85,6 +85,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     private static final String incapacityUnderRule35HandOffReason = "IncapacityRule35";
     private static final String leadingFollowingGrantsHandOffReason = "LeadingFollowing Grants";
     private static final String windrushSchemeHandOffReason = "WindrushScheme";
+    private static final String registrarEscalateReason = "registrarEscalateReason";
 
     private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -108,7 +109,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         caseTypeVar, "",
                         caseHandedOffToLegacySiteVar, false,
                         boHandoffReasonListVar, Collections.emptyList(),
-                        "registrarEscalateReason", escalationReason
+                        registrarEscalateReason, escalationReason
                 )
         );
     }
