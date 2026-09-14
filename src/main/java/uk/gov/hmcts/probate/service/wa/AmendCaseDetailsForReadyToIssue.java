@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import static uk.gov.hmcts.probate.service.wa.search.enums.TaskTypes.EXAMINE_DIG
 @Component
 public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
     private final WaTaskService waTaskService;
-    private final List<String> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE.getValue(),
-            EXAMINE_DIGITAL_CASE_INTESTACY.getValue(),
-            EXAMINE_DIGITAL_CASE_ADMON_WILL.getValue(),
-            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA.getValue());
+    private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+            EXAMINE_DIGITAL_CASE_INTESTACY,
+            EXAMINE_DIGITAL_CASE_ADMON_WILL,
+            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
 
     @Override
     public String getEventId() {
