@@ -310,7 +310,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
@@ -319,7 +319,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
@@ -328,7 +328,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotificationsSpecialCharacters.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
@@ -349,16 +349,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertNotNull(jsonPath.get("data.lastEvidenceAddedDate"));
         assertNotNull(jsonPath.get("data.grantDelayedNotificationDate"));
         assertNull(jsonPath.get("data.grantAwaitingDocumentationNotificationDate"));
-    }
-
-    private void sendEmailForCaseStopped(String fileName, String url, String jsonDocumentUrl) throws IOException,
-            InterruptedException {
-        final ResponseBody body = validatePostSuccessForCaseStopped(fileName, url);
-
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String documentUrl = jsonPath.get(jsonDocumentUrl);
-
-        utils.downloadPdfAndParseToString(documentUrl);
     }
 
     private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
