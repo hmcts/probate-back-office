@@ -6,11 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.probate.model.wa.response.GetTasksResponse;
-import uk.gov.hmcts.probate.model.wa.SearchTaskRequest;
+import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
+import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskServiceTest {
-
+    public static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
     @Mock
     private WaApi waApi;
 
@@ -39,22 +39,25 @@ class WaTaskServiceTest {
         TaskData task = new TaskData();
         task.setType("ExamineDigitalCaseProbate");
 
-        GetTasksResponse<TaskData> response = new GetTasksResponse<>(List.of(task), 1);
+        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
+                false,
+                List.of(task));
 
         String authToken = "auth-token";
         String caseId = "123456";
         String serviceToken = "service-token";
 
         when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteria(
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
                 eq(authToken),
                 eq(serviceToken),
-                any(SearchTaskRequest.class)))
+                any(SearchEventAndCase.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
                 authToken,
                 caseId,
+                EVENT_TO_MONITOR,
                 List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
@@ -66,18 +69,22 @@ class WaTaskServiceTest {
         TaskData task = new TaskData();
         task.setType("ExamineDigitalCaseProbate");
 
-        GetTasksResponse<TaskData> response = new GetTasksResponse<>(List.of(task), 1);
+        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
+                false,
+                List.of(task));
+
 
         when(securityUtils.generateServiceToken()).thenReturn("service-token");
-        when(waApi.searchWithCriteria(
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
-                any(SearchTaskRequest.class)))
+                any(SearchEventAndCase.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
                 "auth-token",
                 "123456",
+                EVENT_TO_MONITOR,
                 List.of(TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY)
         );
 
@@ -87,15 +94,16 @@ class WaTaskServiceTest {
     @Test
     void shouldReturnFalseWhenResponseBodyIsNull() {
         when(securityUtils.generateServiceToken()).thenReturn("service-token");
-        when(waApi.searchWithCriteria(
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
-                any(SearchTaskRequest.class)))
+                any(SearchEventAndCase.class)))
                 .thenReturn(ResponseEntity.ok(null));
 
         boolean result = waTaskService.isTaskPresent(
                 "auth-token",
                 "123456",
+                EVENT_TO_MONITOR,
                 List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
@@ -104,18 +112,22 @@ class WaTaskServiceTest {
 
     @Test
     void shouldReturnFalseWhenTasksListIsEmpty() {
-        GetTasksResponse<TaskData> response = new GetTasksResponse<>(Collections.emptyList(), 0);
+        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
+                false,
+                Collections.emptyList());
+
 
         when(securityUtils.generateServiceToken()).thenReturn("service-token");
-        when(waApi.searchWithCriteria(
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
-                any(SearchTaskRequest.class)))
+                any(SearchEventAndCase.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
                 "auth-token",
                 "123456",
+                EVENT_TO_MONITOR,
                 List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
@@ -127,18 +139,22 @@ class WaTaskServiceTest {
         TaskData task = new TaskData();
         task.setType("UnknownTaskType");
 
-        GetTasksResponse<TaskData> response = new GetTasksResponse<>(List.of(task), 1);
+        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
+                false,
+                List.of(task)
+        );
 
         when(securityUtils.generateServiceToken()).thenReturn("service-token");
-        when(waApi.searchWithCriteria(
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
-                any(SearchTaskRequest.class)))
+                any(SearchEventAndCase.class)))
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
                 "auth-token",
                 "123456",
+                EVENT_TO_MONITOR,
                 List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 

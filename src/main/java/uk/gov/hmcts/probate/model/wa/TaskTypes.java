@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.wa.search.enums;
+package uk.gov.hmcts.probate.model.wa;
 
 import java.util.Arrays;
 import java.util.Optional;

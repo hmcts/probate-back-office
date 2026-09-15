@@ -5,21 +5,21 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.model.wa.search.enums.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
 @RequiredArgsConstructor
 @Component
 public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
 
-    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
-            = "boAmendCaseDetailsForAwaitingDocumentation";
+    private static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
+    private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
     private final WaTaskService waTaskService;
     private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -28,7 +28,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
 
     @Override
     public String getEventId() {
-        return "boAmendCaseDetailsForReadyToIssue";
+        return BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
         boolean taskToClosePresent = !caseTypeChanged
                 && waTaskService.isTaskPresent(authToken,
                 callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                EVENT_TO_MONITOR,
                 taskToCLose);
 
 
