@@ -41,7 +41,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                             "boWithdrawApplicationForCasePrinted",
                             "CasePrinted",
                             "BOCaseClosed",
-                            null,
+                            "case progression",
                             "Cancel"
                     )
                 ),
@@ -71,7 +71,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "boWithdrawApplicationForReadyToIssue",
                                 "BOReadyToIssue",
                                 "BOCaseClosed",
-                                null,
+                                "case progression",
                                 "Cancel"
                         )
                 ),
