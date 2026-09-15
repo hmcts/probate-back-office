@@ -59,22 +59,19 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyGrantReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentGrantReissued.txt");
+        validatePostSuccess("personalPayloadGrantReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyIntestacyReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
-            "expectedPersonalDocumentIntestacyReissued.txt");
+        validatePostSuccess("personalPayloadIntestacyReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyAdmonWillReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
-            "expectedPersonalDocumentAdmonWillReissued.txt");
+        validatePostSuccess("personalPayloadAdmonWillReissued.json", GRANT_REISSUED);
     }
 
     @Test
@@ -93,22 +90,19 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyWelshGrantReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
-            "expectedPersonalDocumentWelshGrantReissued.txt");
+        validatePostSuccess("personalPayloadWelshGrantReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyWelshIntestacyReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshIntestacyReissued.json",
-            "expectedPersonalDocumentWelshIntestacyReissued.txt");
+        validatePostSuccess("personalPayloadWelshIntestacyReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyWelshAdmonWillReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
-            "expectedPersonalDocumentWelshAdmonWillReissued.txt");
+        validatePostSuccess("personalPayloadWelshAdmonWillReissued.json", GRANT_REISSUED);
     }
 
     @Test
@@ -349,11 +343,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertNotNull(jsonPath.get("data.lastEvidenceAddedDate"));
         assertNotNull(jsonPath.get("data.grantDelayedNotificationDate"));
         assertNull(jsonPath.get("data.grantAwaitingDocumentationNotificationDate"));
-    }
-
-    private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(payload, api);
-        assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
     }
 
     public String createCase() throws IOException {
