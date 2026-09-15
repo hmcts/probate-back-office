@@ -87,8 +87,11 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -602,6 +605,9 @@ class CallbackResponseTransformerTest {
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
 
+    @Mock
+    private Clock clock;
+
     @BeforeEach
     public void setup() {
 
@@ -1030,6 +1036,9 @@ class CallbackResponseTransformerTest {
             any(ResponseCaseData.ResponseCaseDataBuilder.class)))
             .thenAnswer(invocation -> invocation.getArgument(1));
         ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
+
+        when(clock.getZone()).thenReturn(ZoneId.of("Europe/London"));
+        when(clock.instant()).thenReturn(Instant.parse("2026-09-10T12:00:00Z"));
     }
 
     @Test
@@ -2541,6 +2550,23 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+    }
+
+    @Test
+    void shouldUseProvidedGrantIssuedDate() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .grantIssuedDate("2024-01-01");
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Collections.singletonList(document), null, null, CASEWORKER_USERINFO);
+        assertEquals("2024-01-01", callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
