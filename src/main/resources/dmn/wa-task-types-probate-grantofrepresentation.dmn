@@ -381,6 +381,30 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0fts7ky">
+        <description>ETCCP</description>
+        <inputEntry id="UnaryTests_1yh60jd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06piemd">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r9w1vn">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qo86kf">
+        <description>EFDCP</description>
+        <inputEntry id="UnaryTests_1j10us1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1fbaqm3">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jyi8qc">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
