@@ -4,15 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
@@ -32,6 +35,10 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
     public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceasedWelsh";
     public static final String PARENT_ADOPTED_OUT = "coApplicantParentAdoptedOut";
     public static final String PARENT_ADOPTED_OUT_WELSH = "coApplicantParentAdoptedOutWelsh";
+    public static final String DECEASED_ADOPTED_OUT = "deceasedAdoptedOut";
+    public static final String DECEASED_ADOPTED_OUT_WELSH = "deceasedAdoptedOutWelsh";
+    public static final String TOO_MANY_PARENT_CO_APPLICANTS = "tooManyParentCoApplicants";
+    public static final String TOO_MANY_PARENT_CO_APPLICANTS_WELSH = "tooManyParentCoApplicantsWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -51,9 +58,56 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                 addAdoptedOutErrors(errors, isNonParentRelation, details);
                 addParentNotDeceasedErrors(errors, relationshipToDeceased, details);
                 addParentAdoptedOutErrors(errors, relationshipToDeceased, details);
+                addParentAdoptedDeceasedErrors(errors, relationshipToDeceased, details);
             }
+            addTooManyCoApplicantErrors(errors, ccdData);
         });
         return errors;
+    }
+
+    void addTooManyCoApplicantErrors(
+            List<FieldErrorResponse> errors,
+            CCDData ccdData) {
+
+        boolean applicantIsParent = PARENT.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased());
+        long parentCoApplicantCount = ccdData.getExecutors().stream()
+                .map(uk.gov.hmcts.probate.model.ccd.Executor::getApplicantFamilyDetails)
+                .filter(Objects::nonNull)
+                .map(SolsApplicantFamilyDetails::getRelationship)
+                .filter(Objects::nonNull)
+                .map(DynamicRadioList::getValueCode)
+                .filter(PARENT::equalsIgnoreCase)
+                .count();
+
+        // can only have main executor and and optional other parent as co applicant
+        if (applicantIsParent && parentCoApplicantCount > 1) {
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR,
+                    TOO_MANY_PARENT_CO_APPLICANTS));
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR,
+                    TOO_MANY_PARENT_CO_APPLICANTS_WELSH));
+        }
+    }
+
+    void addParentAdoptedDeceasedErrors(List<FieldErrorResponse> errors,
+                                    String relationshipToDeceased,
+                                    SolsApplicantFamilyDetails details) {
+        if (PARENT.equalsIgnoreCase(relationshipToDeceased)) {
+            if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedIn())) {
+                if (NO.equalsIgnoreCase(details.getCoApplicantAdoptionDeceasedInEnglandOrWales())) {
+                    errors.add(businessValidationMessageService.generateError(
+                            BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES));
+                    errors.add(businessValidationMessageService.generateError(
+                            BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
+                }
+            } else if (YES.equalsIgnoreCase(details.getCoApplicantAdoptedDeceasedOut())) {
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, DECEASED_ADOPTED_OUT));
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, DECEASED_ADOPTED_OUT_WELSH));
+            }
+        }
     }
 
     private void addAdoptedOutsideEnglandOrWalesErrors(List<FieldErrorResponse> errors,

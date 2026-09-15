@@ -170,6 +170,9 @@ public class CCDDataTransformer {
                 .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
                 .primaryApplicantAdoptedOut(caseData.getPrimaryApplicantAdoptedOut())
                 .anyLivingWholeBloodSiblings(caseData.getWholeBloodSiblingsDiedBeforeDeceased())
+                .applicantAdoptedDeceasedIn(caseData.getApplicantAdoptedDeceasedIn())
+                .applicantAdoptionDeceasedInEnglandOrWales(caseData.getApplicantAdoptionDeceasedInEnglandOrWales())
+                .applicantAdoptedDeceasedOut(caseData.getApplicantAdoptedDeceasedOut())
                 .build();
     }
 

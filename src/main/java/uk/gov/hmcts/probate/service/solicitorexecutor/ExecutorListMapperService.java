@@ -270,6 +270,12 @@ public class ExecutorListMapperService {
                                             .getCoApplicantAdoptedOut());
                             break;
                         case PARENT:
+                            builder.coApplicantAdoptedDeceasedIn(solsApplicantFamilyDetails.getCoApplicantAdoptedIn())
+                                    .coApplicantAdoptedDeceasedOut(
+                                            solsApplicantFamilyDetails.getCoApplicantAdoptedOut())
+                                    .coApplicantAdoptionDeceasedInEnglandOrWales(
+                                            solsApplicantFamilyDetails
+                                                    .getCoApplicantAdoptionDeceasedInEnglandOrWales());
                             break;
                         default:
                             throw new IllegalArgumentException(
