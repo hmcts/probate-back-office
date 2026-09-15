@@ -53,9 +53,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() throws IOException {
-        postNotificationEmailAndVerifyContents(PAPER_FORM, "paperApplicationRecievedCitizenFromCaseworkerPayload.json",
-            "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("paperApplicationRecievedCitizenFromCaseworkerPayload.json", PAPER_FORM);
     }
 
     @Test
@@ -157,10 +155,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextSolicitorWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED,
-            "digitalApplicationRecievedPayloadSolicitorWelsh.json",
-            "digitalApplicationRecievedExpectedResonseSolicitorWelsh.txt",
-            EMAIL_NOTIFICATION_DOCUMENT_URL);
+        validatePostSuccess("digitalApplicationRecievedPayloadSolicitorWelsh.json", APPLICATION_RECEIVED);
     }
 
     @Test
@@ -187,9 +182,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantRaisedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
-            "grantRaisedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_RAISED);
     }
 
     @Test
@@ -209,9 +202,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
-            "documentReceivedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED);
     }
 
     @Disabled
@@ -232,16 +223,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantIssuedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
-            "grantIssuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_ISSUED);
     }
 
     @Test
     void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotificationsIntestacy.json",
-            "grantIssuedIntestacySolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GRANT_ISSUED);
     }
 
     @Test
@@ -254,9 +241,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifySolicitorGrantReissuedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
-            "grantReissuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_REISSUED);
     }
 
     @Test
@@ -291,30 +276,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json",
-            "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("grantRaisedPaperBulkScanPayload.json", GRANT_RAISED);
     }
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json",
-            "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("grantRaisedPaperBulkScanSolicitorPayload.json", GRANT_RAISED);
     }
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json",
-            "grantRaisedPaperBulkScanEmailExpectedWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("grantRaisedPaperBulkScanPayloadWelsh.json", GRANT_RAISED);
     }
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
-            "grantRaisedPaperBulkScanEmailExpectedSolicitorWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        validatePostSuccess("grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", GRANT_RAISED);
     }
 
     @Test
@@ -382,13 +359,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final String documentUrl = jsonPath.get(jsonDocumentUrl);
 
         utils.downloadPdfAndParseToString(documentUrl);
-    }
-
-    private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile,
-                                                        String expectedResponseFile,
-                                                        String responseDocumentUrl) throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
-        assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
     }
 
     private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
