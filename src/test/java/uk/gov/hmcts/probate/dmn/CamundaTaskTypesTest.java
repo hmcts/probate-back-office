@@ -8,7 +8,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
@@ -55,6 +57,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -204,6 +208,18 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", DE_BONIS_NON_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DE_BONIS_NON_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", RECTIFY_QA_CASE_TASK_TYPE_NAME,
+                        "taskTypeId", RECTIFY_QA_CASE
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,

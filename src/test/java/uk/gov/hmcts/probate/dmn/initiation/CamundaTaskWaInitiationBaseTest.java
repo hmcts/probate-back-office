@@ -115,6 +115,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationLiteraryEstateTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationMinorityInterestTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
