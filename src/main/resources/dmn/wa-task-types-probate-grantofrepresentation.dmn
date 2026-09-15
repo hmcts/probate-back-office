@@ -381,42 +381,6 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0mj7pzz">
-        <description>ELE</description>
-        <inputEntry id="UnaryTests_19kl9n0">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1yce0d2">
-          <text>"ExamineLiteraryEstate"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1hbk454">
-          <text>"Examine - Literary Estate"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1lkcfyv">
-        <description>ELWOC</description>
-        <inputEntry id="UnaryTests_1nv10ag">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_17rr4c1">
-          <text>"ExamineLostWillOrCodicil"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1xwtmv4">
-          <text>"Examine - Lost Will or Codicil"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1tqqzjv">
-        <description>EMI</description>
-        <inputEntry id="UnaryTests_02cwq8e">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_082nou5">
-          <text>"ExamineMinorityInterest"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_13dzky2">
-          <text>"Examine - Minority Interest"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_045q7cr">
         <description>ECMRCP</description>
         <inputEntry id="UnaryTests_1h491v7">
@@ -451,6 +415,42 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_0mr64kp">
           <text>"Rectify QA Case"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06uyf6t">
+        <description>ELE</description>
+        <inputEntry id="UnaryTests_0324o7n">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gzvhtm">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0r1hf4h">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bdvh14">
+        <description>ELWOC</description>
+        <inputEntry id="UnaryTests_0aog89z">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10uohhl">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_150ktey">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uddtzi">
+        <description>EMI</description>
+        <inputEntry id="UnaryTests_0l7j6pv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kmvhd5">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wd7dxq">
+          <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
     </decisionTable>
