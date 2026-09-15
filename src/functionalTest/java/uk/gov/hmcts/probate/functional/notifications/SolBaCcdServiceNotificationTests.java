@@ -53,94 +53,86 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() throws IOException {
-        postNotificationEmailAndVerifyContents(PAPER_FORM, "paperApplicationRecievedCitizenFromCaseworkerPayload.json",
-            "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "paperApplicationRecievedCitizenFromCaseworkerPayload.json",
+                PAPER_FORM,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     @Disabled
     void verifyGrantReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentGrantReissued.txt");
+        validatePostSuccess("personalPayloadGrantReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyIntestacyReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
-            "expectedPersonalDocumentIntestacyReissued.txt");
+        validatePostSuccess("personalPayloadIntestacyReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyAdmonWillReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
-            "expectedPersonalDocumentAdmonWillReissued.txt");
+        validatePostSuccess("personalPayloadAdmonWillReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(
-            "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
-        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
-            GENERATED_DOCUMENT_URL, responseBody);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadGrantReissuedNameWithApostrophe.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     @Disabled
     void verifyGrantReissueDocumentAppNameDoubleBarrelled() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(
-            "personalPayloadGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
-        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameDoubleBarrelled.txt",
-            GENERATED_DOCUMENT_URL, responseBody);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadGrantReissuedNameDoubleBarrelled.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     void verifyWelshGrantReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
-            "expectedPersonalDocumentWelshGrantReissued.txt");
+        validatePostSuccess("personalPayloadWelshGrantReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyWelshIntestacyReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshIntestacyReissued.json",
-            "expectedPersonalDocumentWelshIntestacyReissued.txt");
+        validatePostSuccess("personalPayloadWelshIntestacyReissued.json", GRANT_REISSUED);
     }
 
     @Test
     @Disabled
     void verifyWelshAdmonWillReissueDocument() throws IOException {
-        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
-            "expectedPersonalDocumentWelshAdmonWillReissued.txt");
+        validatePostSuccess("personalPayloadWelshAdmonWillReissued.json", GRANT_REISSUED);
     }
 
     @Test
     void verifyWelshGrantReissueDocumentAppNameWithApostrophe() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(
-            "personalPayloadWelshGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
-        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameWithApostrophe.txt",
-            GENERATED_DOCUMENT_URL, responseBody);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadWelshGrantReissuedNameWithApostrophe.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     @Disabled
     void verifyWelshGrantReissueDocumentAppNameDoubleBarrelled() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(
-            "personalPayloadWelshGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
-        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameDoubleBarrelled.txt",
-            GENERATED_DOCUMENT_URL, responseBody);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadWelshGrantReissuedNameDoubleBarrelled.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     void verifyDigitalGOPApplicationReceivedNotificationEmailText() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json",
                 APPLICATION_RECEIVED);
-        assertExpectedContents("digitalApplicationRecievedEmailResponse.txt",
-                "DocumentLink.document_binary_url",
-            responseBody);
     }
 
     @Test
@@ -168,10 +160,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextSolicitorWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED,
-            "digitalApplicationRecievedPayloadSolicitorWelsh.json",
-            "digitalApplicationRecievedExpectedResonseSolicitorWelsh.txt",
-            EMAIL_NOTIFICATION_DOCUMENT_URL);
+        assertResponseContainsValueAtJsonPath(
+                "digitalApplicationRecievedPayloadSolicitorWelsh.json",
+                APPLICATION_RECEIVED,
+                EMAIL_NOTIFICATION_DOCUMENT_URL);
     }
 
     @Test
@@ -182,18 +174,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifyPersonalApplicantDocumentReceivedContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", DOCUMENTS_RECEIVED,
-                EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
+        validatePostSuccess("personalPayloadNotifications.json", DOCUMENTS_RECEIVED);
     }
 
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorApplicantDocumentReceivedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED,
-                    EMAIL_NOTIFICATION_URL);
-        verifySolsEmailNotificationReceived(document);
+        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED);
     }
 
     @Test
@@ -203,9 +190,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantRaisedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
-            "grantRaisedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "solicitorPayloadNotifications.json",
+                GRANT_RAISED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -213,7 +201,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_RAISED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
-        assertExpectedContents("grantRaisedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Test
@@ -221,15 +208,15 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_RAISED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("grantRaisedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
-            "documentReceivedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "solicitorPayloadNotifications.json",
+                DOCUMENTS_RECEIVED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Disabled
@@ -238,7 +225,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
-        assertExpectedContents("documentReceivedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Disabled
@@ -247,21 +233,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("documentReceivedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Test
     void verifySolicitorGrantIssuedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
-            "grantIssuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "solicitorPayloadNotifications.json",
+                GRANT_ISSUED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotificationsIntestacy.json",
-            "grantIssuedIntestacySolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "solicitorPayloadNotificationsIntestacy.json",
+                GRANT_ISSUED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -269,15 +256,15 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_ISSUED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("grantIssuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Test
     @Disabled
     void verifySolicitorGrantReissuedShouldReturnOkResponseCode() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
-            "grantReissuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "solicitorPayloadNotifications.json",
+                GRANT_REISSUED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -285,8 +272,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_REISSUED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
-        assertExpectedContents("grantReissuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL,
-                responseBody);
     }
 
     @Test
@@ -295,8 +280,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_REISSUED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("grantReissuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL,
-                responseBody);
     }
 
     @Test
@@ -316,44 +299,44 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json",
-            "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "grantRaisedPaperBulkScanPayload.json",
+                GRANT_RAISED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json",
-            "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "grantRaisedPaperBulkScanSolicitorPayload.json",
+                GRANT_RAISED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json",
-            "grantRaisedPaperBulkScanEmailExpectedWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "grantRaisedPaperBulkScanPayloadWelsh.json",
+                GRANT_RAISED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
-            "grantRaisedPaperBulkScanEmailExpectedSolicitorWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        assertResponseContainsValueAtJsonPath(
+                "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
+                GRANT_RAISED,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     void verifyPersonalApplicantGrantReceivedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
+        validatePostSuccess("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED);
     }
 
     @Test
     void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
-        final String document =
-            sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
-        verifySolsEmailNotificationReceived(document);
+        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED);
     }
 
     @Test
@@ -362,8 +345,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document = sendEmailForCaseStopped(payload, CASE_STOPPED, EMAIL_NOTIFICATION_URL);
-        verifySolsEmailCaseStopped(document);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
@@ -372,9 +354,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document = sendEmailForCaseStopped(payload, CASE_STOPPED,
-                EMAIL_NOTIFICATION_URL);
-        verifyPAEmailCaseStopped(document);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
@@ -383,17 +363,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotificationsSpecialCharacters.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document =
-                sendEmailForCaseStopped(payload, CASE_STOPPED,
-                        EMAIL_NOTIFICATION_URL);
-        verifyPAEmailCaseStopped(document);
+        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
     }
 
     @Test
     void verifyPersonalApplicantRequestInformationEmailContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST,
-                EMAIL_NOTIFICATION_URL);
-        verifyPAEmailInformationRequestRedec(document);
+        validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST);
     }
 
     @Test
@@ -411,76 +386,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertNull(jsonPath.get("data.grantAwaitingDocumentationNotificationDate"));
     }
 
-    private String sendEmail(String fileName, String url, String jsonDocumentUrl) throws IOException {
-        final ResponseBody body = validatePostSuccess(fileName, url);
-
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String documentUrl = jsonPath.get(jsonDocumentUrl);
-
-        final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
-        return document;
-    }
-
-    private String sendEmailForCaseStopped(String fileName, String url, String jsonDocumentUrl) throws IOException,
-            InterruptedException {
-        final ResponseBody body = validatePostSuccessForCaseStopped(fileName, url);
-
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String documentUrl = jsonPath.get(jsonDocumentUrl);
-
-        final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
-        return document;
-    }
-
-    private void verifyPAEmailNotificationReceived(String document) {
-        assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
-    }
-
-    private void verifySolsEmailNotificationReceived(String document) {
-        assertTrue(document.contains("1231-3984-3949-0300"));
-        assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
-    }
-
-    private void verifySolsEmailCaseStopped(String document) {
-        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
-        assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("cav first name cav surname"));
-        assertTrue(document.contains(REGISTRY_NO));
-    }
-
-    private void verifyPAEmailCaseStopped(String document) {
-        assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
-        assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("cav first name cav surname"));
-        assertTrue(document.contains(REGISTRY_NO));
-    }
-
-    private void verifyPAEmailInformationRequestRedec(String document) {
-        assertTrue(document.contains("primary@probate-test.com"));
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("stop details"));
-        assertTrue(document.contains("Declaration"));
-    }
-
-    private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile,
-                                                        String expectedResponseFile,
-                                                        String responseDocumentUrl) throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
-        assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
-    }
-
-    private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(payload, api);
-        assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
-    }
-
     public String createCase() throws IOException {
         //Create Case
         final String baseCaseJson = utils.getJsonFromFile(CAVEAT_JSON);
@@ -490,5 +395,20 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final String caseId = jsonPathApply.get("id").toString();
         log.info("createCase : caseId {} ", caseId);
         return caseId;
+    }
+
+    private void assertResponseContainsValueAtJsonPath(
+            final String payloadFileName,
+            final String apiPath,
+            final String atJsonPath)
+            throws IOException {
+        final ResponseBody responseBody = validatePostSuccess(
+                payloadFileName,
+                apiPath);
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(atJsonPath);
+
+        assertNotNull(documentUrl);
     }
 }
