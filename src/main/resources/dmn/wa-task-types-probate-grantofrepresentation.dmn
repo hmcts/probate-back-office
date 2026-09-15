@@ -381,6 +381,18 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_045q7cr">
+        <description>ECMRCP</description>
+        <inputEntry id="UnaryTests_1h491v7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cii8vf">
+          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wu3c6z">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
