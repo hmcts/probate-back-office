@@ -85,6 +85,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINORITY_INTEREST_SKILL_CODE;
 
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTATE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOST_WILL_CODICIL_SKILL_CODE;
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -282,6 +287,21 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         RECTIFY_QA_CASE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissionsWithAutoAssign(null, true)
+                ),
+                Arguments.of(
+                        EXAMINE_LITERARY_ESTATE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(LITERARY_ESTATE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(LOST_WILL_CODICIL_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_MINORITY_INTEREST,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
                 )
         );
     }
@@ -308,7 +328,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(62));
+        assertThat(logic.getRules().size(), is(68));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
