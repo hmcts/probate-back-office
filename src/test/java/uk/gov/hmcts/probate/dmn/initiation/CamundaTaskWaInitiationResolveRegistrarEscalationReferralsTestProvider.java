@@ -50,6 +50,62 @@ public class CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvi
                         additionalData(false, "", false, Collections.emptyList(), false,
                                 REGISTRAR_ESCALATION_REASON_REFERRALS),
                         emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "gop", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "gop", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "intestacy", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "intestacy", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "adColligendaBona", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "admonWill", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "admonWill", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
                 )
         );
 
