@@ -27,6 +27,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
@@ -269,6 +270,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
                 )
         );
     }
@@ -295,7 +301,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(60));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
