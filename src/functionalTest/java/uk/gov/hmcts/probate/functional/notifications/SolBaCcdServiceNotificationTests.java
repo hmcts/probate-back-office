@@ -131,8 +131,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyDigitalGOPApplicationReceivedNotificationEmailText() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json",
-                APPLICATION_RECEIVED);
+        assertResponseContainsValueAtJsonPath(
+                "digitalApplicationRecievedPayload.json",
+                APPLICATION_RECEIVED,
+                EMAIL_NOTIFICATION_DOCUMENT_URL);
     }
 
     @Test
