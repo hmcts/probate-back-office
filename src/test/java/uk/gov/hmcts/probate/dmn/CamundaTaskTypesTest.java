@@ -8,7 +8,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
@@ -51,13 +53,18 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
@@ -65,8 +72,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -83,7 +91,6 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -219,6 +226,30 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED
                 ),
                 Map.of(
+                        "taskTypeName", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", DE_BONIS_NON_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DE_BONIS_NON_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", RECTIFY_QA_CASE_TASK_TYPE_NAME,
+                        "taskTypeId", RECTIFY_QA_CASE
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_LITERARY_ESTATE
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_LOST_WILL_OR_CODICIL
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_MINORITY_INTEREST
+                ),
+                Map.of(
                         "taskTypeName", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
                 ),
@@ -230,6 +261,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeName", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED
                 )
+
         );
         return Stream.of(
                 Arguments.of(
@@ -244,7 +276,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(34));
+        assertThat(logic.getRules().size(), is(37));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
