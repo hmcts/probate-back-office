@@ -3,16 +3,19 @@ package uk.gov.hmcts.probate.transformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 class HasValidMatchesDefaulterTest {
     private HasValidMatchesDefaulter hasValidMatchesDefaulter;
@@ -23,13 +26,7 @@ class HasValidMatchesDefaulterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "Grant of Representation",
-        "Caveat",
-        "Legacy CAVEAT",
-        "Legacy LEGACY APPLICATION",
-        "Legacy LEGACY GRANT"
-    })
+    @MethodSource("caseTypes")
     void returnsYesWhenValidMatchExists(String caseType) {
         CaseMatch validMatch = CaseMatch.builder()
                 .id("someId")
@@ -46,11 +43,23 @@ class HasValidMatchesDefaulterTest {
         assertEquals(YES, hasValidMatchesDefaulter.defaultHasValidMatches(caseData));
     }
 
+    static Stream<String> caseTypes() {
+        return Stream.of(
+                CaseType.GRANT_OF_REPRESENTATION.getName(),
+                CaseType.CAVEAT.getName(),
+                CaseType.WILL_LODGEMENT.getName(),
+                LegacyCaseType.CAVEAT.getName(),
+                LegacyCaseType.GRANT_OF_REPRESENTATION.getName(),
+                LegacyCaseType.GRANT_OF_REPRESENTATION_DERIVED.getName(),
+                LegacyCaseType.WILL_LODGEMENT.getName()
+        );
+    }
+
     @Test
     void returnsNoWhenNoValidMatchExists() {
         CaseMatch nonMatch = CaseMatch.builder()
                 .id("someId")
-                .type("Grant of Representation")
+                .type(CaseType.GRANT_OF_REPRESENTATION.getName())
                 .valid(NO)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, nonMatch);
@@ -72,7 +81,7 @@ class HasValidMatchesDefaulterTest {
     void returnsNoWhenTypeIsNotValid() {
         CaseMatch invalidMatch = CaseMatch.builder()
                 .id("someId")
-                .type("Will Lodgement")
+                .type(CaseType.STANDING_SEARCH.getName())
                 .valid(YES)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, invalidMatch);

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -29,6 +30,8 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
+
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
@@ -68,6 +71,7 @@ public class CaveatController {
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -76,9 +80,20 @@ public class CaveatController {
         throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
-
         return ResponseEntity.ok(caveatCallbackResponse);
     }
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> setCaveatSupplementaryData(
+            @Valid @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                caveatCallbackRequest.getCaseDetails().getId().toString());
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+                .build();
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
 
     @PostMapping(path = "/setCaseSubmissionDate")
     public ResponseEntity<CaveatCallbackResponse> setCaseSubmissionDateForSolicitorCases(

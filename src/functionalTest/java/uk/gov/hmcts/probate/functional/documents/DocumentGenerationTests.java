@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -63,7 +63,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final List paragraphDetails = jsonPath.get("data.paragraphDetails");
         final String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
 
-        assertEquals(paragraphDetails.size(), 3);
+        assertEquals(3, paragraphDetails.size());
         assertEquals(templateName, ParagraphCode.MissInfoWill.getTemplateName());
     }
 
@@ -80,7 +80,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(response.asString());
         response.then().assertThat().statusCode(200);
-        assertEquals(jsonPath.get("data.ihtReferenceNumber"), "ONLINE-123434");
+        assertEquals("ONLINE-123434", jsonPath.get("data.ihtReferenceNumber"));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
 
         final JsonPath jsonPath = JsonPath.from(response.asString());
-        assertEquals(jsonPath.get("data.reprintDocument.list_items[0].label"), "Grant");
-        assertEquals(jsonPath.get("data.reprintDocument.list_items[0].code"), "WelshGrantFileName");
+        assertEquals("Grant", jsonPath.get("data.reprintDocument.list_items[0].label"));
+        assertEquals("WelshGrantFileName", jsonPath.get("data.reprintDocument.list_items[0].code"));
     }
 
     @Test
@@ -105,9 +105,9 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .body(jsonAsString)
             .when().post(DEFAULT_PRINT_VALUES)
             .andReturn();
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
         JsonPath jsonPath = JsonPath.from(response.asString());
-        assertEquals(jsonPath.get("data.ihtReferenceNumber"), "ONLINE-123434");
+        assertEquals("ONLINE-123434", jsonPath.get("data.ihtReferenceNumber"));
     }
 
     @Test
@@ -121,7 +121,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final ResponseBody responseBody =
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
+        assertEquals("IHT205", jsonPath.get("data.ihtFormId"));
         assertNull(jsonPath.get("data.errors"));
     }
 
@@ -145,7 +145,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
                 PREVIEW_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
+        assertEquals("IHT205", jsonPath.get("data.ihtFormId"));
         assertNull(jsonPath.get("data.errors"));
     }
 
@@ -166,7 +166,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .body(getJsonFromFile("/document/rePrint.json"))
             .when().post(RE_PRINT)
             .andReturn();
-        assertEquals(response.statusCode(), 403);
+        assertEquals(403, response.statusCode());
 
     }
 

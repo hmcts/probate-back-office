@@ -29,6 +29,8 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -99,8 +101,8 @@ public class IdamApiConsumerTest {
         return new PactDslJsonBody()
                 .stringType("uid", "1111-2222-3333-4567")
                 .stringValue("sub", "ia-caseofficer@fake.hmcts.net")
-                .stringValue("givenName", "Case")
-                .stringValue("familyName", "Officer")
+                .stringValue("given_name", "Case")
+                .stringValue("family_name", "Officer")
                 .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("caseworker-ia-legalrep-solicitor"), 1)
                 .stringType("IDAM_ADMIN_USER", "idamAdminUser");
     }
@@ -116,11 +118,19 @@ public class IdamApiConsumerTest {
     @PactTestFor(pactMethod = "generatePactFragmentUserInfo")
     public void verifyIdamPactUserInfo() {
         UserInfo userInfo = idamApi.retrieveUserInfo(AUTH_TOKEN);
-        assertNotNull(userInfo.getUid());
-        assertNotNull(userInfo.getSub());
-        assertNotNull(userInfo.getGivenName());
-        assertNotNull(userInfo.getFamilyName());
-        assertNotNull(userInfo.getRoles());
+        assertAll(
+            () -> assertEquals("1111-2222-3333-4567", userInfo.getUid()),
+            () -> assertEquals(
+                "ia-caseofficer@fake.hmcts.net",
+                userInfo.getSub()
+            ),
+            () -> assertEquals("Case", userInfo.getGivenName()),
+            () -> assertEquals("Officer", userInfo.getFamilyName()),
+            () -> assertEquals(
+                1,
+                userInfo.getRoles().size()
+            )
+        );
     }
 
     @Test

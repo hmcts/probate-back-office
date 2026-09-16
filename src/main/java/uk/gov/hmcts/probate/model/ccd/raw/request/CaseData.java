@@ -380,6 +380,8 @@ public class CaseData extends CaseDataParent {
     private String evidenceHandled;
     private transient String attachDocuments;
     private final String caseType;
+    private final String createTask;
+    private String selectForQAUserIdamId;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;
@@ -634,6 +636,7 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
     private LocalDate firstStopReminderSentDate;
+    private LocalDate firstRedecReminderSentDate;
     private final String evidenceHandledDate;
 
     private TTL ttl;
@@ -648,6 +651,8 @@ public class CaseData extends CaseDataParent {
      * This is only intended for use during migrations and should not be persisted into the case record.
      */
     private final String migrationCallbackMetadata;
+
+    private final String caseNameHmctsInternal;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

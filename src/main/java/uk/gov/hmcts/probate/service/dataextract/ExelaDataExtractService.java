@@ -26,7 +26,8 @@ public class ExelaDataExtractService {
             performExelaExtractForDate(fromDate);
         } else {
             log.info("Exela data extract initiated for dates from-to: {}-{}", fromDate, toDate);
-            List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinDateRangeExela(fromDate, toDate);
+            List<ReturnedCaseDetails> cases =
+                    caseQueryService.findCasesWithGrantIssuedDateRange("Excela",fromDate, toDate);
             log.info("Found {} cases with dated document for Exela", cases.size());
 
             sendExelaEmail(cases);
@@ -37,7 +38,7 @@ public class ExelaDataExtractService {
 
     public void performExelaExtractForDate(String date) {
         log.info("Exela data extract initiated for date: {}", date);
-        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("Exela", date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithGrantIssuedDate("Exela", date);
         log.info("Found {} cases with dated document for Exela", cases.size());
 
         sendExelaEmail(cases);

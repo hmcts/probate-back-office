@@ -14,6 +14,7 @@ public class CaveatCallbackResponse {
 
     @JsonProperty(value = "data")
     private ResponseCaveatData caveatData;
+    private String state;
     private List<String> errors;
     private List<String> warnings;
 

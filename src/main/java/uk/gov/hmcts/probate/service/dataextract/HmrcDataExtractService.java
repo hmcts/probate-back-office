@@ -27,16 +27,17 @@ public class HmrcDataExtractService {
 
     private final EmailWithFileService emailWithFileService;
 
-    public void performHmrcExtractFromDate(String fromDate, String toDate) {
+    public void performHmrcExtractForDateRange(String fromDate, String toDate) {
         try {
             if (fromDate.equals(toDate)) {
-                performHmrcExtract(fromDate);
+                performHmrcExtractForDate(fromDate);
             } else {
                 log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
                 List<ReturnedCaseDetails> casesFound =
-                    caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
-                log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
+                    caseQueryService.findCasesWithGrantIssuedDateRange("HMRC",fromDate, toDate);
+                log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}"
+                                + ", cases found: {}",
                     fromDate, toDate, casesFound.size());
 
                 uploadHmrcFile(fromDate, toDate, casesFound);
@@ -48,10 +49,10 @@ public class HmrcDataExtractService {
         }
     }
 
-    private void performHmrcExtract(String date) {
+    private void performHmrcExtractForDate(String date) {
         log.info("HMRC data extract initiated for date: {}", date);
 
-        List<ReturnedCaseDetails> casesFound = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("HMRC", date);
+        List<ReturnedCaseDetails> casesFound = caseQueryService.findCasesWithGrantIssuedDate("HMRC", date);
         log.info("Cases found for HMRC data extract initiated for date: {}, cases found: {}", date, casesFound.size());
 
         uploadHmrcFile(date, date, casesFound);

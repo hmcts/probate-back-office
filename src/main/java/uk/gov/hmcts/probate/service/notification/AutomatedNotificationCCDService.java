@@ -152,7 +152,12 @@ public class AutomatedNotificationCCDService {
                     .probateNotificationsGenerated(notifications)
                     .firstStopReminderSentDate(LocalDate.now())
                     .build();
+            case FIRST_REDEC_REMINDER -> GrantOfRepresentationData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .firstRedecReminderSentDate(LocalDate.now())
+                    .build();
             case SECOND_STOP_REMINDER,
+                 SECOND_REDEC_REMINDER,
                  HSE_REMINDER,
                  DORMANT_WARNING,
                  UNSUBMITTED_APPLICATION,

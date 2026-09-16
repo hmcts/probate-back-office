@@ -4,12 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
@@ -38,6 +41,9 @@ class TemplateServiceIT {
 
     @Autowired
     private TemplateService templateService;
+
+    @MockitoBean
+    FeatureToggleService featureToggleServiceMock;
 
     @Test
     void getDocumentsReceivedPA() {
@@ -274,7 +280,7 @@ class TemplateServiceIT {
 
     @Test
     void getCaveatRaisedPA() {
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, "oxford",
             LanguagePreference.ENGLISH);
         assertEquals("pa-caveat-raised", response);
@@ -286,7 +292,7 @@ class TemplateServiceIT {
 
     @Test
     void getCaveatRaisedSols() {
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford",
             LanguagePreference.ENGLISH);
         assertEquals("sols-caveat-raised", response);
@@ -298,11 +304,16 @@ class TemplateServiceIT {
 
     @Test
     void getSolsCaveatRaised() {
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
             CTSC, LanguagePreference.ENGLISH);
 
         assertEquals("solicitor-caveat-raised", response);
+
+        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
+                CTSC, LanguagePreference.WELSH);
+
+        assertEquals("solicitor-caveat-raised-welsh", responseWelsh);
     }
 
     @Test

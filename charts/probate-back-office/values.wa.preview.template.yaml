@@ -79,7 +79,7 @@ wa:
         OPEN_ID_IDAM_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         ALLOWED_JURISDICTIONS: wa,ia,sscs,civil,publiclaw,privatelaw,employment,st_cic,probate
-        ALLOWED_CASE_TYPES: asylum,wacasetype,sscs,civil,generalapplication,care_supervision_epo,prlapps,privatelaw_exceptionrecord,et_englandwales,et_scotland,benefit,criminalinjuriescompensation,GrantOfRepresentation
+        ALLOWED_CASE_TYPES: asylum,wacasetype,sscs,civil,generalapplication,care_supervision_epo,prlapps,privatelaw_exceptionrecord,et_englandwales,et_scotland,benefit,criminalinjuriescompensation,grantofrepresentation
         MANDATORY_TASK_FIELD_CHECK_ENABLED: true
 
   wa-task-monitor:
@@ -200,7 +200,6 @@ xui-webapp:
       SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       JURISDICTIONS: PROBATE
-      LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
       FEATURE_REDIS_ENABLED: false
       FEATURE_APP_INSIGHTS_ENABLED: false
       FEATURE_SECURE_COOKIE_ENABLED: false
@@ -228,6 +227,8 @@ xui-webapp:
           - mc-idam-client-secret
           - system-user-name
           - system-user-password
+          - name: launch-darkly-client-id-onboarding
+            alias: LAUNCH_DARKLY_CLIENT_ID
 
 ccd-message-publisher:
   enabled: true

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,17 +9,23 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(SpringExtension.class)
 class StandingSearchControllerUnitTest {
@@ -37,6 +44,12 @@ class StandingSearchControllerUnitTest {
     @Mock
     private StandingSearchCallbackResponse standingSearchCallbackResponse;
 
+    @Mock
+    CcdSupplementaryDataService ccdSupplementaryDataService;
+
+    @Mock
+    private CaseDetails caseDetailsMock;
+
     private StandingSearchController standingSearchController;
 
     @BeforeEach
@@ -46,7 +59,7 @@ class StandingSearchControllerUnitTest {
         when(standingSearchDetails.getData()).thenReturn(standingSearchData);
 
         standingSearchController = new StandingSearchController(standingSearchCallbackResponseTransformer,
-                documentGeneratorService);
+                documentGeneratorService, ccdSupplementaryDataService);
     }
 
     @Test
@@ -81,4 +94,29 @@ class StandingSearchControllerUnitTest {
         assertEquals(standingSearchCallbackResponse, response.getBody());
     }
 
+
+    @Test
+    void shouldSubmitSupplementaryData() {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(standingSearchDetails);
+        when(standingSearchDetails.getId())
+                .thenReturn(1000L);
+        ResponseEntity<StandingSearchCallbackResponse> response =
+                standingSearchController.setSupplementaryData(callbackRequest);
+        verify(ccdSupplementaryDataService)
+                .submitSupplementaryDataToCcd("1000");
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowNullPointerExceptionWhenCaseDetailsIsNull() {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> standingSearchController.setSupplementaryData(callbackRequest)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
+    }
 }
+

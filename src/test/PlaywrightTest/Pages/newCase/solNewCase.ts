@@ -42,6 +42,8 @@ export class SolCreateCasePage extends BasePage {
   readonly deceasedAddressCountyLocator = this.page.locator("#deceasedAddress__detailCounty");
   readonly deceasedAddressPostCodeLocator = this.page.locator("#deceasedAddress__detailPostCode");
   readonly deceasedAddressCountryLocator = this.page.locator("#deceasedAddress__detailCountry");
+  readonly languagePreferenceWelshYesLocator = this.page.locator("#languagePreferenceWelsh_Yes");
+  readonly languagePreferenceWelshNoLocator = this.page.locator("#languagePreferenceWelsh_No");
   readonly completeApplicationSubmitButton = this.page.getByRole("button", {name: "Close and return to case details",});
   readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
   readonly paymentHistoryTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
@@ -367,6 +369,18 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
+    //Add the new question here:
+    const languagePreferenceWelshMap = {
+      Yes: this.languagePreferenceWelshYesLocator,
+      No: this.languagePreferenceWelshNoLocator,
+      Ydw: this.languagePreferenceWelshYesLocator,
+      "Nac ydw": this.languagePreferenceWelshNoLocator,
+    } as const;
+
+    await languagePreferenceWelshMap[
+      applicationDetailsConfig.page2_languagePreferenceWelsh as "Yes" | "No" | "Ydw" | "Nac ydw"
+      ].check();
+
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -853,7 +867,7 @@ export class SolCreateCasePage extends BasePage {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
     } else {
-      await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).not.toBeVisible();
+      await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeHidden();
     }
     await this.page.locator('#dispenseWithNotice_No').scrollIntoViewIfNeeded();
     await expect(this.page.locator('#dispenseWithNotice_No')).toBeVisible();
@@ -864,6 +878,37 @@ export class SolCreateCasePage extends BasePage {
     }
     await this.tctTypeLocator.focus();
     await this.tctTypeLocator.click();
+    await expect(this.tctTrustCorpLocator).toBeVisible();
+    await this.tctTrustCorpLocator.click();
+    await expect(this.othersRenouncingLocator).toBeVisible();
+    await this.othersRenouncingLocator.click();
+    await this.additionalApplyingPartnersLocator.focus();
+    await this.additionalApplyingPartnersLocator.click();
+    await expect(this.additionalExecutorsLocator).toBeVisible();
+    await this.noAdditionalPartnersLocator.click();
+    await expect(this.additionalExecutorsLocator).toBeHidden();
+    await this.tctTrustCorpLocator.focus();
+    await this.tctTrustCorpLocator.click();
+    await expect(this.trusCorpNameLocator).toBeVisible();
+    await this.trusCorpNameLocator.fill(grantOfProbateConfig.page2_nameOfTrustCorp);
+    await this.trustCorpPostcodeLinkLocator.click()
+    await this.trustCorpAddressLine1Locator.fill(grantOfProbateConfig.address_line1);
+    await this.trustCorpAddressLine2Locator.fill(grantOfProbateConfig.address_line2);
+    await this.trustCorpAddressLine3Locator.fill(grantOfProbateConfig.address_line3);
+    await this.trustCorpPostTownLocator.fill(grantOfProbateConfig.address_town)
+    await this.trustCorpCountyLocator.fill(grantOfProbateConfig.address_county);
+    await this.trustCorpPostcodeLocator.fill(grantOfProbateConfig.address_postcode);
+    await this.trustCorpCountryLocator.fill(grantOfProbateConfig.address_country);
+
+    await expect(this.anyOtherPartnersTextLocator).toBeVisible();
+    await this.anyOtherApplyingPartnersTcLocator.focus();
+    await this.anyOtherApplyingPartnersTcLocator.click();
+    await expect(this.addPersonLocator).toBeVisible();
+    await this.addExecutorsTcLocator.click();
+    await this.addExecutorFirstnameLocator.fill(grantOfProbateConfig.page2_executorFirstName);
+    await this.addExecutorLastnameLocator.fill(grantOfProbateConfig.page2_executorSurname);
+    await this.addExecutorTcPositionLocator.fill(grantOfProbateConfig.page2_positionInTrustCorp)
+    await this.probatePractitionerPositionLocator.fill(grantOfProbateConfig.page2_positionInTrust);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -881,7 +926,7 @@ export class SolCreateCasePage extends BasePage {
     const opts = ['TCTPartSuccPowerRes', 'TCTPartPowerRes', 'TCTSolePrinSucc', 'TCTSolePrin', 'TCTPartSuccAllRenouncing',
       'TCTPartAllRenouncing', 'TCTTrustCorpResWithSDJ', 'TCTTrustCorpResWithApp', 'TCTPartSuccOthersRenouncing', 'TCTPartOthersRenouncing', 'TCTNoT'];
       for (let i = 0; i < opts.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
+
       await this.verifyTitleAndClearingTypeOptionPage(opts[i]);
     }
   }
@@ -1084,7 +1129,7 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestTabConfig.fields.length; i++) {
       if (serviceRequestTabConfig.fields[i] && serviceRequestTabConfig.fields[i] !== '') {
-        await expect(this.page.getByText(serviceRequestTabConfig.fields[i]).first()).toBeVisible(); // eslint-disable-line no-await-in-loop
+        await expect(this.page.getByText(serviceRequestTabConfig.fields[i]).first()).toBeVisible();
       }
     }
 
@@ -1247,7 +1292,7 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByText('Your cases')).toBeVisible();
     await this.navigateToCase(caseRef, false, caseType);
     await expect(this.page.getByRole('heading', { name: nocConfig.nocVerifyText })).toBeVisible();
-    await expect(this.page.getByText(caseRef)).not.toBeVisible();
+    await expect(this.page.getByText(caseRef)).toBeHidden();
   }
 
   async navigateToCase(caseRef: string, useWaitInUrl?: boolean, caseType?: string) {
@@ -1362,7 +1407,7 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.caseViewTextLocator).toBeVisible();
     await this.caseReferenceLocator.click();
     await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
-    await expect(this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]')).not.toBeVisible();
+    await expect(this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]')).toBeHidden();
   }
 
   async shareCaseDelete(caseIdShareCase, caseRef) {

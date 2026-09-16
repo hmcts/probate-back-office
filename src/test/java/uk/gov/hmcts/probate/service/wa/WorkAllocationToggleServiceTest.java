@@ -16,12 +16,24 @@ class WorkAllocationToggleServiceTest {
     @Test
     void isProbateWAToggleEnabled() {
         ReflectionTestUtils.setField(workAllocationToggleService, "probateWAEnabled", true);
-        assertTrue(workAllocationToggleService.isProbateWAEnabledToggleOn());
+        assertTrue(workAllocationToggleService.isProbateWAEnabled());
     }
 
     @Test
     void isProbateWAToggleDisabled() {
         ReflectionTestUtils.setField(workAllocationToggleService, "probateWAEnabled", false);
-        assertFalse(workAllocationToggleService.isProbateWAEnabledToggleOn());
+        assertFalse(workAllocationToggleService.isProbateWAEnabled());
+    }
+
+    @Test
+    void isProbateGSToggleEnabled() {
+        ReflectionTestUtils.setField(workAllocationToggleService, "probateGSEnabled", true);
+        assertTrue(workAllocationToggleService.isProbateGSEnabled());
+    }
+
+    @Test
+    void isProbateGSoggleDisabled() {
+        ReflectionTestUtils.setField(workAllocationToggleService, "probateGSEnabled", false);
+        assertFalse(workAllocationToggleService.isProbateGSEnabled());
     }
 }

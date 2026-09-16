@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEventsResponse;
@@ -17,10 +17,11 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class AuditEventServiceTest {
 
     private static final String USER_TOKEN = "USER_TOKEN";

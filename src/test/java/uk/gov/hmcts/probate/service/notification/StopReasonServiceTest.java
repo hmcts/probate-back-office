@@ -624,4 +624,16 @@ class StopReasonServiceTest {
                 stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
                         "Resolutions"));
     }
+
+    @Test
+    void returnsMappedDescriptionForRedecNotificationSent() {
+        StopReasonCode stopReasonCodes = new StopReasonCode();
+        stopReasonCodes.setRedecNotificationSent("Redeclaration of the legal statement required");
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
+
+        assertEquals("Redeclaration of the legal statement required",
+                stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
+                        "redecNotificationSent"));
+    }
+
 }

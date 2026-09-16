@@ -131,10 +131,10 @@ public class FeeService {
         }
 
         if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
-            if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
-                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
+            if (featureToggleService.isNewFee2026Enabled()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFee2026Keyword());
             } else {
-                builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
             }
         }
 

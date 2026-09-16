@@ -158,6 +158,12 @@ public class DataMigrationController {
         log.info("GrantOfRepresentation {} data migration for case: {}", migrationOperation, caseId);
 
         CallbackResponse response = callbackResponseTransformer.updateTaskList(migrated, Optional.empty());
+        String stateBefore = callbackRequest.getCaseDetailsBefore().getState();
+        String stateAfter = callbackRequest.getCaseDetails().getState();
+        if (!stateAfter.equals(stateBefore)) {
+            log.info("GrantOfRepresentation {} {} changing state id to {}", migrationOperation, caseId, stateAfter);
+            response.setState(stateAfter);
+        }
         return ResponseEntity.ok(response);
     }
 
@@ -226,6 +232,12 @@ public class DataMigrationController {
 
         log.info("{} Data migration for case: {}", migrationOperation, caseId);
         CaveatCallbackResponse response = caveatCallbackResponseTransformer.transformResponseWithNoChanges(migrated);
+        String stateBefore = callbackRequest.getCaseDetailsBefore().getState();
+        String stateAfter = callbackRequest.getCaseDetails().getState();
+        if (!stateAfter.equals(stateBefore)) {
+            log.info("Caveat {} {} changing state id to {}", migrationOperation, caseId, stateAfter);
+            response.setState(stateAfter);
+        }
         return ResponseEntity.ok(response);
     }
 
