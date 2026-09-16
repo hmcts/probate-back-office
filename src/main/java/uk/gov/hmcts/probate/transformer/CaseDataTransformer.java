@@ -245,4 +245,8 @@ public class CaseDataTransformer {
             caseDetails.getData().clearSolsDeceasedAliasNamesList();
         }
     }
+
+    public void setSelectForQAUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setSelectForQAUserIdamId(idamUserId);
+    }
 }

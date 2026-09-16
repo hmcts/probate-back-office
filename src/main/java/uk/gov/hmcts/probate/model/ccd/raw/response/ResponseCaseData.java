@@ -460,4 +460,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String isApplicantParentDeceasedChild;
     private final String anyLivingWholeBloodSiblings;
     private String createTask;
+    private String selectForQAUserIdamId;
 }

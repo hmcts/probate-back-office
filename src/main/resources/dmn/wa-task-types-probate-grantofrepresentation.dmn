@@ -405,6 +405,18 @@
           <text>"Examine - De Bonis Non"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1iod70h">
+        <description>RQAC</description>
+        <inputEntry id="UnaryTests_1dpugfq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03mjb2g">
+          <text>"RectifyQACase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mr64kp">
+          <text>"Rectify QA Case"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

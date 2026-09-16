@@ -1639,7 +1639,8 @@ public class CallbackResponseTransformer {
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
             .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
-            .createTask(caseData.getCreateTask());
+            .createTask(caseData.getCreateTask())
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
 
         handleDeceasedAliases(
                 builder,
