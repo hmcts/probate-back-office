@@ -22,8 +22,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
@@ -36,8 +40,12 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
@@ -60,6 +68,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -341,6 +352,76 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
+                        EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        RECTIFY_QA_CASE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().setSelectForQAUserIdamId(DEFAULT_ASSIGNEE).build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", RECTIFY_QA_CASE,
+                                        "state", BO_CASE_STOPPED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LITERARY_ESTATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LITERARY_ESTATE, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                        Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL, "state", READY_TO_ISSUE_STATE))
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_MINORITY_INTEREST,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_MINORITY_INTEREST, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
                         EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
@@ -357,7 +438,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(17, logic.getRules().size());
+        assertEquals(19, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
