@@ -62,19 +62,28 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyGrantReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadGrantReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadGrantReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     @Disabled
     void verifyIntestacyReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadIntestacyReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadIntestacyReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     @Disabled
     void verifyAdmonWillReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadAdmonWillReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadAdmonWillReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
@@ -97,19 +106,29 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyWelshGrantReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadWelshGrantReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadWelshGrantReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
+
     }
 
     @Test
     @Disabled
     void verifyWelshIntestacyReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadWelshIntestacyReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadWelshAdmonWillReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
     @Disabled
     void verifyWelshAdmonWillReissueDocument() throws IOException {
-        validatePostSuccess("personalPayloadWelshAdmonWillReissued.json", GRANT_REISSUED);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadWelshAdmonWillReissued.json",
+                GRANT_REISSUED,
+                GENERATED_DOCUMENT_URL);
     }
 
     @Test
