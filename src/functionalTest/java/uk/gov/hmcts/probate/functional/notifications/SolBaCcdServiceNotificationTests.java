@@ -389,7 +389,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyPersonalApplicantRequestInformationEmailContentIsOk() throws IOException {
-        validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST);
+        assertResponseContainsValueAtJsonPath(
+                "personalPayloadNotifications.json",
+                INFORMATION_REQUEST,
+                EMAIL_NOTIFICATION_URL);
     }
 
     @Test
