@@ -1,10 +1,5 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
-
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
@@ -17,6 +12,11 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTest {
 
@@ -47,6 +47,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason = "IBCA";
     protected static final String literaryEstateHandOffReason = "LiteraryEstate";
     protected static final String minorityInterestHandOffReason = "MinorityInterest";
+    protected static final String examineProveForeignWill = "ForeignWill";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -89,7 +90,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(38));
+        assertThat(logic.getRules().size(), is(39));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -116,6 +117,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationLiteraryEstateTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationMinorityInterestTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
