@@ -71,7 +71,11 @@ class WaTaskContollerUnitTest {
     void shouldNotCompleteTheExistingTaskAndNoNewTaskCreated() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
         when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseDataBefore.getCaseType()).thenReturn("gop");
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         when(taskUtils.setTaskCompletion(
@@ -107,8 +111,11 @@ class WaTaskContollerUnitTest {
     void shouldCompleteTheExistingTaskAndNewTaskCreated() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getEvidenceHandled()).thenReturn(NO);
+        when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseDataBefore.getCaseType()).thenReturn("intestacy");
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         when(taskUtils.setTaskCompletion(
