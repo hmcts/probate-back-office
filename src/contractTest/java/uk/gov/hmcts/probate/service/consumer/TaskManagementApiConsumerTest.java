@@ -10,7 +10,6 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.google.common.collect.ImmutableMap;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +27,8 @@ import uk.gov.hmcts.probate.service.wa.WaApi;
 import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -73,12 +74,14 @@ public class TaskManagementApiConsumerTest {
                 = waApi.searchWithCriteriaForAutomaticCompletion(
                 AUTH_TOKEN,
                 SERVICE_AUTH_TOKEN,
-                new SearchEventAndCase("1617708245335311",
-                        "requestRespondentEvidence",
-                        "IA",
-                        "Asylum")
+                new SearchEventAndCase("1789150518978844",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "PROBATE",
+                        "grantofrepresentation")
         );
-        Assertions.assertNotNull(responseEntity);
+        assertNotNull(responseEntity);
+        assertThat(responseEntity.getStatusCodeValue())
+                .isEqualTo(HttpStatus.OK.value());
     }
 
     private Map<String, String> getTaskManagementServiceResponseHeaders() {
@@ -93,10 +96,10 @@ public class TaskManagementApiConsumerTest {
 
     private PactDslJsonBody creteSearchEventCaseRequest() {
         return new PactDslJsonBody()
-                .stringType("case_id", "1617708245335311")
-                .stringValue("event_id", "requestRespondentEvidence")
-                .stringValue("case_jurisdiction", "IA")
-                .stringValue("case_type", "Asylum");
+                .stringType("case_id", "1789150518978844")
+                .stringValue("event_id", "boAmendCaseDetailsForAwaitingDocumentation")
+                .stringValue("case_jurisdiction", "PROBATE")
+                .stringValue("case_type", "grantofrepresentation");
     }
 
     private DslPart createResponseForGetTask() {
@@ -105,30 +108,30 @@ public class TaskManagementApiConsumerTest {
                         .booleanType("task_required_for_event", false)
                         .minArrayLike("tasks", 1, 1,
                                 task -> task
-                                        .stringType("id", "4d4b6fgh-c91f-433f-92ac-e456ae34f72a")
-                                        .stringType("name", "Review the appeal")
+                                        .stringType("id", "c6719957-ae0c-11f1-8492-b65ccab2630f")
+                                        .stringType("name", "Examine Digital Case - Probate")
                                         .stringType("assignee", "10bac6bf-80a7-4c81-b2db-516aba826be6")
-                                        .stringType("type", "ReviewTheAppeal")
+                                        .stringType("type", "ExamineDigitalCaseProbate")
                                         .stringType("task_state", "assigned")
                                         .stringType("task_system", "SELF")
                                         .stringType("security_classification", "PUBLIC")
                                         .stringType("task_title", "Review the appeal")
                                         .datetime("due_date", "yyyy-MM-dd'T'HH:mm:ssZ")
                                         .datetime("created_date", "yyyy-MM-dd'T'HH:mm:ssZ")
-                                        .stringType("location_name", "Taylor House")
-                                        .stringType("location", "765324")
+                                        .stringType("location_name", "London")
+                                        .stringType("location", "London")
                                         .stringType("execution_type", "Case Management Task")
                                         .stringType("jurisdiction", "IA")
                                         .stringType("region", "1")
-                                        .stringType("case_type_id", "Asylum")
-                                        .stringType("case_id", "1617708245335311")
-                                        .stringType("case_category", "refusalOfHumanRights")
+                                        .stringType("case_type_id", "grantofrepresentation")
+                                        .stringType("case_id", "1789150518978844")
+                                        .stringType("case_category", "Probate")
                                         .stringType("case_name", "Bob Smith")
                                         .booleanType("auto_assigned", true)
                                         .booleanType("warnings", false)
-                                        .stringType("work_type_id", "hearing_work")
-                                        .stringType("work_type_label", "Hearing work")
-                                        .stringType("role_category", "LEGAL_OPERATIONS")
+                                        .stringType("work_type_id", "applications")
+                                        .stringType("work_type_label", "Applications")
+                                        .stringType("role_category", "CTSC")
                                         .stringType("description", "a description")
                                         .stringType("next_hearing_id", "nextHearingId")
                                         .datetime("next_hearing_date", "yyyy-MM-dd'T'HH:mm:ssZ")
