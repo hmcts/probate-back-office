@@ -94,14 +94,15 @@ public class WaTaskContoller {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            String evidenceHandled = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
-            log.info("evidenceHandled value: {}", evidenceHandled);
+            String evidenceHandled1 = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
+            log.info("evidenceHandled value: {}", evidenceHandled1);
 
             ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
             Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
                     clientContext,
                     callbackRequest,
-                    _ -> {
+                    paramCallbackRequest -> {
+                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
                         log.info("Evaluating evidenceHandled value: {}", evidenceHandled);
                         return NO.equals(evidenceHandled);
                     }
