@@ -35,14 +35,6 @@ class WaTaskService {
                 "grantofrepresentation"
         );
 
-        //TODO: REMOVE THIS
-        ObjectMapper mapper = new ObjectMapper();
-        log.info("WA task search EventAndCase request: {} for case id {} authtoken {} s2s token {}",
-                mapper.writeValueAsString(searchEventAndCase),
-                caseId,
-                authToken,
-                securityUtils.generateServiceToken());
-
         ResponseEntity<GetTasksCompletableResponse<TaskData>> taskResponse =
                 waApi.searchWithCriteriaForAutomaticCompletion(
                         authToken,
@@ -52,13 +44,6 @@ class WaTaskService {
         log.info("WA task response status: {} for case id {}",
                 taskResponse.getStatusCode(),
                 caseId);
-
-        //TODO: REMOVE THIS
-        log.info("WA task response status: {} for case id {}",
-                Optional.ofNullable(taskResponse.getBody())
-                        .map(GetTasksCompletableResponse::tasks)
-                        .stream().toList());
-
 
         return Optional.ofNullable(taskResponse.getBody())
                 .map(GetTasksCompletableResponse::tasks)
