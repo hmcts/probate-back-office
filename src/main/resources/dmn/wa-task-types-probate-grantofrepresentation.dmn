@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
   <decision id="wa-task-types-probate-grantofrepresentation" name="Task Types DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_17knzal" hitPolicy="COLLECT">
       <input id="Input_1">
@@ -381,8 +381,80 @@
           <text>"Examine - Minority Interest"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_045q7cr">
+        <description>ECMRCP</description>
+        <inputEntry id="UnaryTests_1h491v7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cii8vf">
+          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wu3c6z">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02ad2ak">
+        <description>EDBNCP</description>
+        <inputEntry id="UnaryTests_1xl9exd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l5m8ly">
+          <text>"ExamineDeBonisNonCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dx5ovt">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1iod70h">
+        <description>RQAC</description>
+        <inputEntry id="UnaryTests_1dpugfq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03mjb2g">
+          <text>"RectifyQACase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mr64kp">
+          <text>"Rectify QA Case"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06uyf6t">
+        <description>ELE</description>
+        <inputEntry id="UnaryTests_0324o7n">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gzvhtm">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0r1hf4h">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bdvh14">
+        <description>ELWOC</description>
+        <inputEntry id="UnaryTests_0aog89z">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10uohhl">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_150ktey">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uddtzi">
+        <description>EMI</description>
+        <inputEntry id="UnaryTests_0l7j6pv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kmvhd5">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wd7dxq">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1aq5pp2">
-        <description>RRERBOCP</description>
+        <description>RRERCP</description>
         <inputEntry id="UnaryTests_1uaew50">
           <text></text>
         </inputEntry>
@@ -394,7 +466,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_13o9rlz">
-        <description>RREOBOCP</description>
+        <description>RREOCP</description>
         <inputEntry id="UnaryTests_0jvt1sz">
           <text></text>
         </inputEntry>
