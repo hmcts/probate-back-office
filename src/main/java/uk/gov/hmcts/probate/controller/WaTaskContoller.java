@@ -58,9 +58,11 @@ public class WaTaskContoller {
             Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
                     clientContext,
                     callbackRequest,
-                    paramCallbackRequest ->
-                            !paramCallbackRequest.getCaseDetails().getData().getCaseType()
-                                    .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
+                    paramCallbackRequest -> {
+                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
+                        log.info("Evaluating evidenceHandled value: {}", evidenceHandled);
+                        return NO.equals(evidenceHandled);
+                    }
 
             );
 
