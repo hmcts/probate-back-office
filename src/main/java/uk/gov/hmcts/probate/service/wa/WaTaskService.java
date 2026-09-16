@@ -5,10 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
+import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
-import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 
