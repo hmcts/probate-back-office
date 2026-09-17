@@ -94,9 +94,15 @@ public class WaTaskContoller {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            log.info("case id's {} client context {}",
-                    callbackRequest.getCaseDetails().getId(),
-                    new String(Base64.getDecoder().decode(clientContext)));
+            if (clientContext != null && !clientContext.isEmpty()) {
+                try {
+                    log.info("case id's {} client context {}",
+                            callbackRequest.getCaseDetails().getId(),
+                            new String(Base64.getDecoder().decode(clientContext)));
+                } catch (IllegalArgumentException e) {
+                    log.info("Invalid Base64 input: {}",clientContext);
+                }
+            }
 
             String evidenceHandled1 = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
             log.info("evidenceHandled value: {}", evidenceHandled1);
