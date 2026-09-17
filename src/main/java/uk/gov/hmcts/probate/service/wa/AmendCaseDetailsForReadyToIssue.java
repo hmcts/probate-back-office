@@ -35,7 +35,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
 
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-         boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
+        boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
 
         boolean taskToClosePresent = !caseTypeChanged
@@ -49,7 +49,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
                 caseTypeChanged,
                 taskToClosePresent);
 
-         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
+        responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
                 ? Constants.YES : Constants.NO);
     }
 }
