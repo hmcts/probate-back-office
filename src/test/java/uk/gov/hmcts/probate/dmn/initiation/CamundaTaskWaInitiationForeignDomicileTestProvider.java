@@ -21,9 +21,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_R
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_FROM_BULK_SCAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PAYMENT_SUCCESS_APP_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_PAYMENT_SUCCESS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
@@ -275,108 +272,6 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                 ),
                 Arguments.of(
                         APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalDataNoHandOffList(),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
-                ),
-                Arguments.of(
-                        CREATE_CASE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                emptyList(), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalDataNoHandOffList(),
-                        emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                emptyList(), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalDataNoHandOffList(),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_PAYMENT_SUCCESS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
-                ),
-                Arguments.of(
-                        CREATE_PAYMENT_SUCCESS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_PAYMENT_SUCCESS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_PAYMENT_SUCCESS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                emptyList(), false),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CREATE_PAYMENT_SUCCESS_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
