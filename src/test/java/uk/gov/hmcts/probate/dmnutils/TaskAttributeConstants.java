@@ -27,6 +27,7 @@ public class TaskAttributeConstants {
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";
+    public static final String ASSIGNEE = "assignee";
 
     public static final String APPLICATIONS_WORK_TYPE_PROBATE = "applications";
     public static final String ROUTINE_WORK_TYPE = "routine_work";
@@ -40,6 +41,11 @@ public class TaskAttributeConstants {
     public static final String ROLE_CATEGORY_JUDICIAL = "JUDICIAL";
     public static final String ROLE_CATEGORY_CTSC = "CTSC";
 
+    public static final String GOP_CASE_TYPE = "gop";
+    public static final String ADMON_WILL_CASE_TYPE = "admonWill";
+    public static final String INTESTACY_CASE_TYPE = "intestacy";
+    public static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
+
     public static final String DEFAULT_MINOR_PRIORITY = "500";
     public static final String DEFAULT_MAJOR_PRIORITY = "5000";
     public static final String URGENT_MAJOR_PRIORITY = "2000";
@@ -50,6 +56,7 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_DUE_DATE_NON_WORKING_CALENDAR
         = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
     public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
+    public static final String DEFAULT_ASSIGNEE = "someIdamId";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
     public static final String EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE = "ExamineDigitalCaseProbateReadyToIssue";
@@ -59,6 +66,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
             = "ExamineDigitalCaseIntestacyReadyToIssue";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
+    public static final String EXAMINE_DE_BONIS_NON_CASE_PRINTED = "ExamineDeBonisNonCasePrinted";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
             = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
@@ -72,8 +80,11 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED =
             "ExamineInfectedBloodInterimSchemeCasePrinted";
     public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
+    public static final String EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED = "ExamineCodicilMisRecitalCasePrinted";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL = "ExamineRectifyWillOrCodicil";
 
+    public static final String EXAMINE_LITERARY_ESTATE = "ExamineLiteraryEstate";
+    public static final String EXAMINE_MINORITY_INTEREST = "ExamineMinorityInterest";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
         = "ExamineWillOrCodicilToBeNotated";
@@ -88,6 +99,14 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
+    public static final String RECTIFY_QA_CASE = "RectifyQACase";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
+    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
+        = "ExamineWillOrCodicilToBeNotatedCasePrinted";
+    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED
+        = "ExamineRectifyWillOrCodicilCasePrinted";
+    public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
+    public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
@@ -151,6 +170,9 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_BO_RESOLVE_STOP =
+            "[Resolve Stop](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boResolveStop)";
     public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
             "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/handleEvidence)";
@@ -158,6 +180,7 @@ public class TaskAttributeConstants {
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
+    public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
@@ -212,6 +235,11 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
+    public static final String RECTIFY_QA_CASE_TASK_TYPE_NAME = "Rectify QA Case";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME = "Examine - Lost Will or Codicil";
+    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME
+            = "Examine - Will or Codicil to be Notated";
+    public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -222,10 +250,10 @@ public class TaskAttributeConstants {
     public static final String CHANGE_STATE_EVENT = "changeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
+    public static final String BO_FAIL_QA_EVENT = "boFailQA";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
-
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME
@@ -235,5 +263,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
+    public static final String LITERARY_ESTATE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
+    public static final String LOST_WILL_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
     public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
 }

@@ -7,8 +7,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
@@ -20,6 +24,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -58,6 +63,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 
 public class ConfigurationExpectationBuilder {
 
@@ -66,7 +74,7 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_WORKING_DAYS_OF_WEEK, WORK_TYPE, ROLE_CATEGORY,
             DUE_DATE_INTERVAL_DAYS,
             ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, DESCRIPTION, PRIORITY_DATE_ORIGIN_REF, DUE_DATE_ORIGIN,
-            DUE_DATE_TIME
+            DUE_DATE_TIME, ASSIGNEE
     );
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
@@ -111,6 +119,9 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_POWER_OF_ATTORNEY)
                 || conditions.get("taskType").equals(EXAMINE_RESEAL_FOREIGN_GRANT)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
+                || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
+                || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
@@ -119,8 +130,16 @@ public class ConfigurationExpectationBuilder {
                     .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
+        } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(RECTIFY_QA_CASE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_RESOLVE_STOP, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
+        }
+
+        if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(RECTIFY_QA_CASE))) {
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         }
 
         return builder;
