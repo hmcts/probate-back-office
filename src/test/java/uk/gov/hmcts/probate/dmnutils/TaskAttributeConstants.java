@@ -108,6 +108,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
+    public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -217,6 +218,7 @@ public class TaskAttributeConstants {
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
     public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String INTESTACY_QA_SKILL_CODE = "SKILL:ABA6:IntestacyQA";
+    public static final String ADMON_QA_SKILL_CODE = "SKILL:ABA6:AdmonQA";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -248,6 +250,7 @@ public class TaskAttributeConstants {
             = "Examine - Will or Codicil to be Notated";
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
     public static final String REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME = "Review QA Case - Intestacy";
+    public static final String REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME = "Review QA Case - Admon";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
