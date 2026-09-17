@@ -66,6 +66,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -255,6 +259,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
                 )
 
         );
@@ -271,7 +283,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(41));
+        assertThat(logic.getRules().size(), is(43));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
