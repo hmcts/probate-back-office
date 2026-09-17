@@ -359,7 +359,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(76));
+        assertThat(logic.getRules().size(), is(78));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
