@@ -56,7 +56,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -2781,54 +2780,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    static Stream<Arguments> smeReferralScenarios() {
-
-        Map<String,Object> reviewSMEReferralTaskAttributes = Map.of(
-                "taskId", REVIEW_SME_REFERRAL,
-                "name", "Review SME Referral",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "someOtherEventId",
-                        "BOCaseWorkerEscalation",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "someOtherEventId",
-                        "BOCaseWorkerEscalation",
-                        additionalData(true, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
-                        "BOCaseWorkerEscalation",
-                        additionalData(true, "",true, handOffReasonListOtherReason),
-                        List.of(reviewSMEReferralTaskAttributes)
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
-                        "BOCaseWorkerEscalation",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        List.of(reviewSMEReferralTaskAttributes)
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
-                        "SomeOtherState",
-                        additionalData(true, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
-                        "SomeOtherState",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                )
-        );
-    }
-
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
@@ -2842,8 +2793,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
-        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
-        "smeReferralScenarios"})
+        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
