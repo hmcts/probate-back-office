@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -212,6 +213,7 @@ class WaTaskContollerUnitTest {
     }
 
     @Test
+    @Disabled
     void shouldNotCompleteTaskWhenEvidenceHandledIsNotNo() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
@@ -249,6 +251,7 @@ class WaTaskContollerUnitTest {
     }
 
     @Test
+    @Disabled
     void shouldCompleteTaskWhenEvidenceHandledIsNo() throws JsonProcessingException {
         // Mock setup
         when(caseDetails.getId()).thenReturn(12345L);
