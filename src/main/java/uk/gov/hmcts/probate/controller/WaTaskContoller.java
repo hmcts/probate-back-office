@@ -85,7 +85,6 @@ public class WaTaskContoller {
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
-        log.info("inside updateClientContextEvidenceHandled");
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);
 
@@ -94,30 +93,15 @@ public class WaTaskContoller {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            if (clientContext != null && !clientContext.isEmpty()) {
-                try {
-                    log.info("case id's {} client context {}",
-                            callbackRequest.getCaseDetails().getId(),
-                            new String(Base64.getDecoder().decode(clientContext)));
-                } catch (IllegalArgumentException e) {
-                    log.info("Invalid Base64 input: {}",clientContext);
-                }
-            }
-
-            String evidenceHandled1 = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
-            log.info("evidenceHandled value: {}", evidenceHandled1);
-
             ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
             Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
                     clientContext,
                     callbackRequest,
                     paramCallbackRequest -> {
                         String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        log.info("Evaluating evidenceHandled value: {}", evidenceHandled);
                         return NO.equals(evidenceHandled);
                     }
             );
-            log.info("after setCompletion() updateClientContextEvidenceHandled");
             encodedClientContext
                     .ifPresent(value -> {
                         log.debug("Updated case id's {} client context {}",
@@ -125,7 +109,6 @@ public class WaTaskContoller {
                                 new String(Base64.getDecoder().decode(value)));
                         responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                     });
-            log.info("after ifPresent() updateClientContextEvidenceHandled");
             return responseBuilder.body(CallbackResponse.builder().build());
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
