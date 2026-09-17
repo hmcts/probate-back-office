@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.wa;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -14,6 +15,7 @@ import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
@@ -33,7 +35,7 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
 
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
+         boolean caseTypeChanged = !callbackRequest.getCaseDetails().getData().getCaseType()
                 .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
 
         boolean taskToClosePresent = !caseTypeChanged
@@ -42,8 +44,12 @@ public class AmendCaseDetailsForReadyToIssue implements CreateTaskProcessor {
                 EVENT_TO_MONITOR,
                 taskToCLose);
 
+        log.info("case id {}: caseTypeChanged {} and taskToClosePresent {}",
+                callbackRequest.getCaseDetails().getId(),
+                caseTypeChanged,
+                taskToClosePresent);
 
-        responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
+         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
                 ? Constants.YES : Constants.NO);
     }
 }

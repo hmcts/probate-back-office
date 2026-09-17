@@ -59,6 +59,8 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation",
                 "GrantOfRepresentation"
         );
+        when(caseDetails.getId())
+                .thenReturn(12345L);
         when(waTaskService.isTaskPresent(authToken,
                 callbackRequest.getCaseDetails().getId().toString(),
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
@@ -84,6 +86,8 @@ class AmendCaseDetailsForReadyToIssueTest {
                 "GrantOfRepresentation",
                 "GrantOfRepresentation"
         );
+        when(caseDetails.getId())
+                .thenReturn(12345L);
         when(waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 taskToCLose))
