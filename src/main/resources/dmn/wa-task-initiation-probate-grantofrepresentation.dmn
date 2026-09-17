@@ -1775,6 +1775,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1expmii">
+        <inputEntry id="UnaryTests_08t4je7">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19p1nbg">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nskecl">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ucqz9d">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09vl23q">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ljin73">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Section116")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mchg5v">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0odd93o">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06p9wj6">
+          <text>"ExamineSection116CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cgyoul">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i2203j">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pes2q0">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

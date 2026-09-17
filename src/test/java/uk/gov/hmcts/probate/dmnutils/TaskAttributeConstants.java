@@ -106,6 +106,7 @@ public class TaskAttributeConstants {
         = "ExamineRectifyWillOrCodicilCasePrinted";
     public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
+    public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
