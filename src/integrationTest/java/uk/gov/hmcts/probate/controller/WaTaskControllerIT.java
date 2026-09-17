@@ -123,4 +123,72 @@ public class WaTaskControllerIT {
                         .content(invalidRequest))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void shouldUpdateClientContextEvidenceHandledWhenProbateWaIsEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskEvidenceHandledNo.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/evidence-handled/updateClientContext")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
+                        .content(payload))
+                .andExpect(status().isOk())
+                .andExpect(header().string(
+                        CLIENT_CONTEXT_HEADER_PARAMETER,
+                        encodedString.get()));
+    }
+
+    @Test
+    void shouldNotUpdateClientContextEvidenceHandledWhenProbateWaIsNotEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskEvidenceHandledNo.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(false);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/evidence-handled/updateClientContext")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
+                        .content(payload))
+                .andExpect(status().isOk())
+                .andExpect(header().doesNotExist(
+                        CLIENT_CONTEXT_HEADER_PARAMETER));
+
+        verify(taskUtils, never())
+                .setTaskCompletion(isA(String.class), isA(CallbackRequest.class), any());
+    }
+
+    @Test
+    void shouldReturnBadRequestForInvalidPayloadEvidenceHandled() throws Exception {
+
+        String invalidRequest = """
+                {
+                  "case_details": {
+                    "jurisdiction": "PROBATE",
+                    "case_data": {
+                    }
+                   }
+                }
+            """;
+
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        mockMvc.perform(post("/waTaskContoller/evidence-handled/updateClientContext")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequest))
+                .andExpect(status().isBadRequest());
+    }
 }
