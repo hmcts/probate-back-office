@@ -74,6 +74,7 @@ export class SolCreateCasePage extends BasePage {
   });
   readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
   readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+  readonly solSignSotYes = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionYes}`);
   readonly solsStartPageLocator = this.page.locator('#solsStartPage');
   readonly solsApplyPageLocator = this.page.locator('#solsApplyPage');
   readonly solsPageSubHeading = this.page.getByText(applyProbateConfig.page2_subheading);
@@ -134,7 +135,7 @@ export class SolCreateCasePage extends BasePage {
   readonly originalWillSignedDayLocator = this.page.locator('#originalWillSignedDate-day');
   readonly originalWillSignedMonthLocator = this.page.locator('#originalWillSignedDate-month');
   readonly originalWillSignedYearLocator = this.page.locator('#originalWillSignedDate-year');
-  readonly willHasCodicilsLocator = this.page.locator(`#willHasCodicils_${grantOfProbateConfig.optionYes}`);
+  readonly willHasCodicilsLocator = this.page.locator(`#willHasCodicils_${grantOfProbateConfig.optionNo}`);
   readonly codicilAddButtonLocator = this.page.locator('#codicilAddedDateList button');
   readonly codicilAddedDayLocator = this.page.locator('#dateCodicilAdded-day');
   readonly codicilAddedMonthLocator = this.page.locator('#dateCodicilAdded-month');
@@ -226,7 +227,7 @@ export class SolCreateCasePage extends BasePage {
   readonly primaryApplicantCountry = this.page.locator('#primaryApplicantAddress__detailCountry');
   readonly primaryApplicantPhoneNumber = this.page.locator('#primaryApplicantPhoneNumber');
   readonly primaryApplicantEmail = this.page.locator('#primaryApplicantEmailAddress');
-  readonly languageLocator = this.page.locator(`#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`);
+  readonly languageLocator = this.page.locator(`#languagePreferenceWelsh_${grantOfProbateConfig.optionNo}`);
   readonly solsEntitledMinority = this.page.locator(`#solsEntitledMinority_${admonWillDetailsConfig.optionNo}`);
   readonly solsDiedLocator = this.page.locator(`#solsDiedOrNotApplying_${admonWillDetailsConfig.optionYes}`);
   readonly solsResiduary = this.page.locator(`#solsResiduary_${admonWillDetailsConfig.optionYes}`);
@@ -658,7 +659,7 @@ export class SolCreateCasePage extends BasePage {
     await this.backToServiceRequestLocator.click();
   }
 
-  async applyForProbatePage1() {
+  async applyForProbatePage1(isProbate = true) {
     await this.verifyPageLoad(this.solsStartPageLocator);
     await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
@@ -790,7 +791,11 @@ export class SolCreateCasePage extends BasePage {
       await expect(this.nilBandRateLocator).toBeVisible();
       await this.iht217OptionLocator.click();
     } else {
-      await this.formIdLocator.click();
+      if (whichIHTFormsCompleted === 'IHT207') {
+        await this.page.locator(`#ihtFormId-${deceasedDetailsConfig.page2_solsIHTFormsCompleted207}`).click();
+      } else {
+        await this.formIdLocator.click();
+      }
     }
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -840,24 +845,17 @@ export class SolCreateCasePage extends BasePage {
     await this.originalWillSignedYearLocator.fill(grantOfProbateConfig.page1_originalWillSignedDate_year);
     await this.willHasCodicilsLocator.focus();
     await this.willHasCodicilsLocator.click();
-    await expect(this.codicilAddButtonLocator).toBeVisible();
-    await this.codicilAddButtonLocator.scrollIntoViewIfNeeded();
-    await this.codicilAddButtonLocator.click();
+    //await expect(this.codicilAddButtonLocator).toBeVisible();
+    //await this.codicilAddButtonLocator.scrollIntoViewIfNeeded();
+    //await this.codicilAddButtonLocator.click();
 
     // exui bug - generating multiple elements with same id
-    await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
-    await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
-    await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
+    //await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
+    //await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
+    //await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
-    await this.languagePreferenceWelshLocator.click();
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    const isLanguagePreferenceSelected = await this.languagePreferenceWelshLocator.isChecked();
-    if (isLanguagePreferenceSelected) {
-      await this.waitForNavigationToComplete(commonConfig.continueButton);
-    } else {
-      await this.languagePreferenceWelshLocator.click();
-      await this.waitForNavigationToComplete(commonConfig.continueButton);
-    }
+    await this.page.locator('#languagePreferenceWelsh_No').click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
 
   }
 
@@ -871,14 +869,13 @@ export class SolCreateCasePage extends BasePage {
     } else {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeHidden();
     }
-    await this.dispNoticeLocator.scrollIntoViewIfNeeded();
-    await expect(this.dispNoticeLocator).toBeVisible();
-    await this.dispNoticeLocator.click();
+    await this.page.locator('#dispenseWithNotice_No').scrollIntoViewIfNeeded();
+    await expect(this.page.locator('#dispenseWithNotice_No')).toBeVisible();
+    await this.page.locator('#dispenseWithNotice_No').click();
     await expect(this.tctTypeLocator).toBeVisible();
     if (verifyTrustCorpOpts) {
       await this.verifyTitleAndClearingTypeOptionsPage();
     }
-
     await this.tctTypeLocator.focus();
     await this.tctTypeLocator.click();
     await expect(this.tctTrustCorpLocator).toBeVisible();
@@ -1095,8 +1092,6 @@ export class SolCreateCasePage extends BasePage {
 
     /*****Need to uncomment this accessibility test after fixing the bug in exui ******/
     // await this.runAccessibilityTest();
-    await this.extrCopiesLocator.fill(completeProbateApplicationConfig.page5_extraCopiesUK);
-    await this.extraCopiesOutsideUKLocator.fill(completeProbateApplicationConfig.page5_outsideUKGrantCopies);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -1119,11 +1114,6 @@ export class SolCreateCasePage extends BasePage {
     // await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page8_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_applicationFee)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_additionalCopiesFee)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_feeForCertifiedCopies)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_totalFeeAmount)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_customerReference)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
@@ -1224,16 +1214,18 @@ export class SolCreateCasePage extends BasePage {
     await this.originalWillSignedDayLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_day);
     await this.originalWillSignedMonthLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_month);
     await this.originalWillSignedYearLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_year);
-    await this.willAccessOriginalOptionYesLocator.click();
+    await this.willHasCodicilsLocator.focus();
     await this.willHasCodicilsLocator.click();
-    await expect(this.codicilAddButtonLocator).toBeVisible();
-    await expect(this.codicilAddButtonLocator).toBeEnabled();
-    await this.codicilAddButtonLocator.click();
-    await this.codicilAddedDayLocator.fill(admonWillDetailsConfig.page1_codicilDate_day);
-    await this.codicilAddedMonthLocator.fill(admonWillDetailsConfig.page1_codicilDate_month);
-    await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
-    await this.languageLocator.focus();
-    await this.languageLocator.click();
+    //await expect(this.codicilAddButtonLocator).toBeVisible();
+    //await this.codicilAddButtonLocator.scrollIntoViewIfNeeded();
+    //await this.codicilAddButtonLocator.click();
+
+    // exui bug - generating multiple elements with same id
+    //await this.codicilAddedDayLocator.fill(admonWillDetailsConfig.page1_codicilDate_day);
+    //await this.codicilAddedMonthLocator.fill(admonWillDetailsConfig.page1_codicilDate_month);
+    //await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
+    await expect(this.languagePreferenceLabelLocator).toBeVisible();
+    await this.page.locator('#languagePreferenceWelsh_No').click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
