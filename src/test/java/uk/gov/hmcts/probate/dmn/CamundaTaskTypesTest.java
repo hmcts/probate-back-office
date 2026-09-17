@@ -66,6 +66,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
@@ -256,6 +258,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_SECTION_116_CASE_PRINTED
                 ),
                 Map.of(
                     "taskTypeName", "Review SME Referral",
