@@ -22,7 +22,6 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
@@ -252,126 +251,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "value", Map.of("caseHandoffReason", "OtherReason")
             )
     );
-
-    static Stream<Arguments> witnessInterviewScenarios() {
-
-        Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
-                "taskId", EXAMINE_WITNESS_INTERVIEW,
-                "name", "Examine - Witness Interview",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWitnessInterview),
-                        List.of(examineWitnessInterviewTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWitnessInterview),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWitnessInterview),
-                        List.of(examineWitnessInterviewTaskAttributes)
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWitnessInterview),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWitnessInterview),
-                        List.of(examineWitnessInterviewTaskAttributes)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWitnessInterview),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWitnessInterview),
-                        List.of(examineWitnessInterviewTaskAttributes)
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWitnessInterview),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        null,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalDataNoHandOffList(),
-                        Collections.emptyList()
-                )
-        );
-    }
 
     static Stream<Arguments> horizonSchemeScenarios() {
 
@@ -1083,7 +962,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({
-        "witnessInterviewScenarios", "horizonSchemeScenarios","adColligendaBonaScenarios",
+        "horizonSchemeScenarios","adColligendaBonaScenarios",
         "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
