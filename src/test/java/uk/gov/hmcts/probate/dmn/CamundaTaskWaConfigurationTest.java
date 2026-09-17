@@ -22,6 +22,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_SELECT_FOR_QA_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
@@ -71,6 +73,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -428,6 +431,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_INTESTACY,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_INTESTACY,
+                                        "state", BO_CASE_QA_STATE)).build()
                 )
         );
     }
@@ -438,7 +449,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(19, logic.getRules().size());
+        assertEquals(21, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

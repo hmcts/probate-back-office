@@ -93,6 +93,36 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "BOReadyToIssue",
                                 "BOReadyToIssue"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseQA",
+                                "BOCaseClosed",
+                                "case progression",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "someInvalidEvent",
+                                "BOCaseQA",
+                                "BOCaseClosed"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseClosed",
+                                "BOCaseClosed"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseQA",
+                                "BOCaseQA"
+                        )
                 )
         );
     }

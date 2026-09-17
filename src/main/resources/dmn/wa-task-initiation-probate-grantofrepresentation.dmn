@@ -1775,6 +1775,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0a84lt7">
+        <inputEntry id="UnaryTests_1k3tb0t">
+          <text>"boSelectForQA", "boResolveStop", "resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0noq639">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a7erm8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c3rqwr">
+          <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lybf0c">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wh6cwm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17ojm4b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i8nm92">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_155jez5">
+          <text>"ReviewQACaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_161pv3x">
+          <text>"Review QA Case - Intestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wtoizg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03eyske">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
