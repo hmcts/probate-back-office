@@ -1511,7 +1511,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0vzgm35">
         <inputEntry id="UnaryTests_1pfezcn">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence", "attachScannedDocs","boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess","applyforGrantPaperApplicationMan","createCase","paymentSuccessApp","createCasePaymentSuccess"</text>
+          <text>"handleEvidence", "attachScannedDocs","boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1p3ssiw">
           <text>"CasePrinted"</text>

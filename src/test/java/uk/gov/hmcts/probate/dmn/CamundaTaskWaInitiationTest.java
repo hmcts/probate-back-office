@@ -28,9 +28,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_FROM_BULK_SCAN_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_PAYMENT_SUCCESS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
@@ -57,7 +55,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PAYMENT_SUCCESS_APP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -2773,30 +2770,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
         return Stream.of(
                 Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true, handOffReasonListProveForeignWill),
@@ -2818,108 +2791,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        null,
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -2929,6 +2800,156 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListProveForeignWill),
+                        List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false, handOffReasonListProveForeignWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListProveForeignWill),
+                        List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false, handOffReasonListProveForeignWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListProveForeignWill),
+                        List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false, handOffReasonListProveForeignWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListProveForeignWill),
+                        List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false, handOffReasonListProveForeignWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         SERVICE_REQUEST_PAYMENT_SUCCESS,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true, handOffReasonListProveForeignWill),
@@ -2953,102 +2974,17 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
+                        additionalDataNoHandOffList(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        CREATE_CASE,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        PAYMENT_SUCCESS_APP,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_PAYMENT_SUCCESS,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListProveForeignWill),
-                        List.of(examineHorizonSchemeTaskAttributes)
-                ),
-                Arguments.of(
-                        CREATE_CASE_PAYMENT_SUCCESS,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",false, handOffReasonListProveForeignWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_PAYMENT_SUCCESS,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_PAYMENT_SUCCESS,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList()),
+                        null,
                         Collections.emptyList()
                 )
-
         );
     }
 

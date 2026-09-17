@@ -236,9 +236,6 @@ public class TaskAttributeConstants {
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
     public static final String SERVICE_REQUEST_PAYMENT_SUCCESS = "serviceRequestPaymentSuccess";
-    public static final String CREATE_CASE = "createCase";
-    public static final String PAYMENT_SUCCESS_APP = "paymentSuccessApp";
-    public static final String CREATE_CASE_PAYMENT_SUCCESS = "createCasePaymentSuccess";
 
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
