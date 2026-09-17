@@ -424,5 +424,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String hasValidMatches;
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private String createTask;
+    private String selectForQAUserIdamId;
     private List<CollectionMember<HandoffReason>> waHandoffReasonList;
 }

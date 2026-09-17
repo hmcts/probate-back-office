@@ -31,6 +31,8 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     @InjectMocks
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
+    private static final String authToken = "authToken";
+
     @Test
     void shouldReturnCorrectEventId() {
         assertThat(processor.getEventId())
@@ -46,7 +48,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
@@ -62,7 +64,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);

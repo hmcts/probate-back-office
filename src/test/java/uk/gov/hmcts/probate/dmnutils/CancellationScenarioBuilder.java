@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -12,13 +13,14 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
     public Map<String,String> cancelWithProperties(String eventId,
                                                    String fromState,
                                                    String toState, String processCategories, String action) {
-        return Map.of(
-                "event", eventId,
-                "fromState", fromState,
-                "state", toState,
-                "action", action,
-                "processCategories", processCategories
-        );
+        HashMap<String, String> properties = new HashMap<>();
+        properties.put("event", eventId);
+        properties.put("fromState", fromState);
+        properties.put("state", toState);
+        properties.put("processCategories", processCategories);
+        properties.put("action", action);
+
+        return properties;
     }
 
     public Map<String,String> invalidEventOrStateEntryMap(String eventId,

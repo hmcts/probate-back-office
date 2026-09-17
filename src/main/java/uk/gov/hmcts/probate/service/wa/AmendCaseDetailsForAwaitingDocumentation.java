@@ -9,11 +9,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 @RequiredArgsConstructor
 @Component
 public class AmendCaseDetailsForAwaitingDocumentation implements CreateTaskProcessor {
+
+    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
+            = "boAmendCaseDetailsForAwaitingDocumentation";
+
     private final WaTaskService waTaskService;
 
     @Override
     public String getEventId() {
-        return "boAmendCaseDetailsForAwaitingDocumentation";
+        return BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION;
     }
 
     @Override

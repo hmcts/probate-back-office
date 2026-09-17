@@ -168,7 +168,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/validate-further-evidence", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
         furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty()));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty(), ""));
     }
 
     @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -194,7 +194,7 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
+            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
         }
         return ResponseEntity.ok(response);
     }
@@ -363,7 +363,7 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
         validateIHT400Date(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
     }
 
     @PostMapping(path = "/sols-default-iht400421Page", produces = {APPLICATION_JSON_VALUE})
@@ -374,6 +374,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCaseDetails(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
         HttpServletRequest request) {
@@ -384,7 +385,7 @@ public class BusinessValidationController {
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
+            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty(), authToken);
         }
 
         return ResponseEntity.ok(response);
@@ -467,7 +468,7 @@ public class BusinessValidationController {
 
         caseEscalatedService.setCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo);
+        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, "");
 
         return ResponseEntity.ok(response);
     }
@@ -707,7 +708,7 @@ public class BusinessValidationController {
 
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, ""));
     }
 
     @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_VALUE, produces = {
