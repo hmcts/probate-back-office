@@ -34,12 +34,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_MATCHING;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_RESOLUTION;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_MATCHING;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_RAISED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION;
 
 @ExtendWith(SpringExtension.class)
@@ -199,6 +203,66 @@ class CaveatExpiryServiceImplTest {
                         .lastModified(LocalDateTime.now().minusDays(2))
                         .build())
                 .build());
+
+        caveatExpiryService.expireCaveats(EXPIRY_DATE);
+
+        verify(securityUtils).setSecurityContextUserAsScheduler();
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), eq(false), any()
+        );
+    }
+
+    @Test
+    void shouldUseCaveatMatching() {
+        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
+        List<ReturnedCaveatDetails> firstPage = List.of(
+                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, CAVEAT_MATCHING, 1L));
+        when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
+                .thenReturn(firstPage)
+                .thenReturn(List.of());
+        when(coreCaseDataApi.startEventForCaseWorker(any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(StartEventResponse.builder()
+                        .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_MATCHING.getName())
+                        .token(TOKEN)
+                        .caseDetails(CaseDetails.builder()
+                                .id(1L)
+                                .state(CAVEAT_MATCHING.getName())
+                                .data(new HashMap<>(Map.of(
+                                        "expiryDate", "2019-01-11"
+                                )))
+                                .lastModified(LocalDateTime.now().minusDays(2))
+                                .build())
+                        .build());
+
+        caveatExpiryService.expireCaveats(EXPIRY_DATE);
+
+        verify(securityUtils).setSecurityContextUserAsScheduler();
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), eq(false), any()
+        );
+    }
+
+    @Test
+    void shouldUseCaveatRaised() {
+        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
+        List<ReturnedCaveatDetails> firstPage = List.of(
+                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, CAVEAT_RAISED, 1L));
+        when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
+                .thenReturn(firstPage)
+                .thenReturn(List.of());
+        when(coreCaseDataApi.startEventForCaseWorker(any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(StartEventResponse.builder()
+                        .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_RAISED.getName())
+                        .token(TOKEN)
+                        .caseDetails(CaseDetails.builder()
+                                .id(1L)
+                                .state(CAVEAT_RAISED.getName())
+                                .data(new HashMap<>(Map.of(
+                                        "expiryDate", "2019-01-11"
+                                )))
+                                .lastModified(LocalDateTime.now().minusDays(2))
+                                .build())
+                        .build());
 
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
 
