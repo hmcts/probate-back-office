@@ -233,6 +233,10 @@ public class CaveatNotificationService {
         caveatData.setExpiryDate(baseDate.plusMonths(CAVEAT_LIFESPAN));
     }
 
+    public void recalculateSubmissionExpiryDate(CaveatData caveatData) {
+        setCaveatExpiryDate(caveatData);
+    }
+
     public void setPaymentTaken(CaveatCallbackRequest request) {
         CaveatData caveatData = request.getCaseDetails().getData();
         caveatData.setPaymentTaken(YES);
