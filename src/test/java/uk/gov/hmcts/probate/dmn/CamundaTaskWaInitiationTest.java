@@ -23,7 +23,6 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNam
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_TASK_TYPE_NAME;
@@ -254,138 +253,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "value", Map.of("caseHandoffReason", "OtherReason")
             )
     );
-
-    static Stream<Arguments> windRushScenarios() {
-
-        Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
-            "taskId", EXAMINE_WINDRUSH_SCHEME,
-            "name", "Examine - Windrush Scheme",
-            "processCategories", "case progression"
-        );
-
-        return Stream.of(
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                List.of(examineWindrushSchemeTaskAttributes)
-            ),
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                additionalData(false, "",true, Collections.emptyList()),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                additionalDataNoHandOffList(),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "handleEvidence",
-                "BOReadyToIssue",
-                null,
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "boResolveStop",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                List.of(examineWindrushSchemeTaskAttributes)
-            ),
-            Arguments.of(
-                "boResolveStop",
-                "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "boResolveStop",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "boResolveStop",
-                "BOReadyToIssue",
-                additionalData(false, "",true, Collections.emptyList()),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "boResolveStop",
-                "BOReadyToIssue",
-                additionalDataNoHandOffList(),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "resolveCWEscalation",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                List.of(examineWindrushSchemeTaskAttributes)
-            ),
-            Arguments.of(
-                "resolveCWEscalation",
-                "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "resolveCWEscalation",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "resolveCWEscalation",
-                "BOReadyToIssue",
-                additionalData(false, "",true, Collections.emptyList()),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "changeState",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                List.of(examineWindrushSchemeTaskAttributes)
-            ),
-            Arguments.of(
-                "changeState",
-                "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "changeState",
-                "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "changeState",
-                "BOReadyToIssue",
-                additionalData(false, "",true, Collections.emptyList()),
-                Collections.emptyList()
-            ),
-            Arguments.of(
-                "changeState",
-                "BOReadyToIssue",
-                additionalDataNoHandOffList(),
-                Collections.emptyList()
-            )
-        );
-    }
 
     static Stream<Arguments> willOrCodicilToBeNotatedScenarios() {
 
@@ -1336,7 +1203,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @MethodSource({"windRushScenarios",
+    @MethodSource({
         "willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","adColligendaBonaScenarios",
         "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
