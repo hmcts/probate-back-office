@@ -250,9 +250,6 @@ public class TaskAttributeConstants {
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
-    public static final String CREATE_CASE_EVENT = "createCase";
-    public static final String PAYMENT_SUCCESS_APP_EVENT = "paymentSuccessApp";
-    public static final String CREATE_PAYMENT_SUCCESS_EVENT = "createCasePaymentSuccess";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
