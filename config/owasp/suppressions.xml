@@ -152,4 +152,7 @@
         ]]></notes>
         <cve>CVE-2026-47874</cve>
     </suppress>
+    <suppress until = "2026-10-24">
+        <cve>CVE-2026-89044</cve>
+    </suppress>
 </suppressions>
