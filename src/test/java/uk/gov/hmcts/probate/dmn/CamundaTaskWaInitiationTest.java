@@ -229,6 +229,17 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             )
     );
 
+    private static final List<Map<String,Object>> handOffReasonListLiteraryEstate = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "LiteraryEstate")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
     private static final List<Map<String,Object>> handOffReasonListPowerOfAttorney = List.of(
             Map.of(
                     "id", "df3be732-2172-49da-80fe-cad8586e4928",
@@ -240,10 +251,32 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             )
     );
 
+    private static final List<Map<String,Object>> handOffReasonListLostWill = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "LostWill")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
     private static final List<Map<String,Object>> handOffReasonListResealForeignGrant = List.of(
             Map.of(
                     "id", "df3be732-2172-49da-80fe-cad8586e4928",
                     "value", Map.of("caseHandoffReason", "ResealForeignGrant")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
+    private static final List<Map<String,Object>> handOffReasonListMinorityInterest = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "MinorityInterest")
             ),
             Map.of(
                     "id", "df3be732-2172-49da-80fe-cad8586e4928",
@@ -2835,7 +2868,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(46));
+        assertThat(logic.getRules().size(), is(48));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

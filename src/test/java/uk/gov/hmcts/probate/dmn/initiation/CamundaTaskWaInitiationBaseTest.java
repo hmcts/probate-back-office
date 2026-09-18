@@ -42,6 +42,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String resealForeignGrantHandOffReason = "ResealForeignGrant";
     protected static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
     protected static final String lostWillOrCodicilHandOffReason = "LostWill";
+    protected static final String witnessInterviewHandOffReason = "WitnessInterview";
     protected static final String createTaskVar = "createTask";
     protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
     protected static final String examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason = "IBCA";
@@ -103,7 +104,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(46));
+        assertThat(logic.getRules().size(), is(48));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -131,6 +132,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationMinorityInterestTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationWitnessInterviewTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationOrdersTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
