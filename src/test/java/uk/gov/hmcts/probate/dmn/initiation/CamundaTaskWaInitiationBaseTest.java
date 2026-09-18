@@ -44,7 +44,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String lostWillOrCodicilHandOffReason = "LostWill";
     protected static final String witnessInterviewHandOffReason = "WitnessInterview";
     protected static final String createTaskVar = "createTask";
-    protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
+    protected static final String horizonSchemeCasePrintedHandOffReason = "HorizonScheme";
     protected static final String literaryEstateHandOffReason = "LiteraryEstate";
     protected static final String minorityInterestHandOffReason = "MinorityInterest";
     protected static final String willOrCodicilToBeNotatedHandOffReason = "WillCodicilNotated";
