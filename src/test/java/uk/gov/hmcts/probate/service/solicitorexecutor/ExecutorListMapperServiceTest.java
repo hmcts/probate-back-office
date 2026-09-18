@@ -403,9 +403,9 @@ class ExecutorListMapperServiceTest {
         assertEquals(EXEC_NAME, applying.getApplyingExecutorName());
         assertEquals(EXEC_ADDRESS, applying.getApplyingExecutorAddress());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeNieceOrNephewParentDieBeforeDeceased());
-        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedIn());
-        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptionInEnglandOrWales());
-        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedOut());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeNieceOrNephewParentAdoptedIn());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeNieceOrNephewParentAdoptionInEnglandOrWales());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeNieceOrNephewParentAdoptedOut());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedIn());
         assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptionInEnglandOrWales());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedOut());
@@ -449,9 +449,9 @@ class ExecutorListMapperServiceTest {
         assertEquals(EXEC_NAME, applying.getApplyingExecutorName());
         assertEquals(EXEC_ADDRESS, applying.getApplyingExecutorAddress());
         assertEquals(YES, applying.getApplicantFamilyDetails().getHalfNieceOrNephewParentDieBeforeDeceased());
-        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptedIn());
-        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptionInEnglandOrWales());
-        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptedOut());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfNieceOrNephewParentAdoptedIn());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfNieceOrNephewParentAdoptionInEnglandOrWales());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfNieceOrNephewParentAdoptedOut());
         assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptedIn());
         assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptionInEnglandOrWales());
         assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptedOut());
