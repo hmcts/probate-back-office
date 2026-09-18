@@ -69,6 +69,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -256,6 +260,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED
                 ),
                 Map.of(
+                        "taskTypeName", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_SECTION_116_CASE_PRINTED
+                ),
+                Map.of(
                         "taskTypeName", EXAMINE_FIAT_WILL_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_FIAT_WILL_CASE_PRINTED
                 ),
@@ -282,7 +294,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(43));
+        assertThat(logic.getRules().size(), is(45));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

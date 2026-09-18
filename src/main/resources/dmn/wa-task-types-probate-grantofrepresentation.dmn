@@ -489,6 +489,30 @@
           <text>"Examine - Windrush Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_015in9z">
+        <description>EWICP</description>
+        <inputEntry id="UnaryTests_0h9vafa">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ccnnrh">
+          <text>"ExamineWitnessInterviewCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1manzf2">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fdtj7u">
+        <description>ES116CP</description>
+        <inputEntry id="UnaryTests_08pxkwt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10aps6x">
+          <text>"ExamineSection116CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1g0ebdh">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_17b3ebg">
         <description>ELWOCCP</description>
         <inputEntry id="UnaryTests_1q5stmm">
