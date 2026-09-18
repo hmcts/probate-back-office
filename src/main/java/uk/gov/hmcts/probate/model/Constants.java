@@ -222,6 +222,8 @@ public final class Constants {
             DOC_TYPE_CHERISHED,
             DOC_TYPE_OTHER));
 
+    public static final String CLIENT_CONTEXT_HEADER_PARAMETER = "client-context";
+
     private Constants() {
     }
 }

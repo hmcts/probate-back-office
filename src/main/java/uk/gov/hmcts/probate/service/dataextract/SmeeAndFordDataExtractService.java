@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
@@ -28,6 +29,7 @@ public class SmeeAndFordDataExtractService {
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
     private final SmeeAndFordDataExtractStrategy smeeAndFordDataExtractStrategy;
+    private final FeatureToggleService featureToggleService;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
@@ -66,7 +68,21 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
-                notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+                boolean isSmeeAndFordEmailNotificationDisabled =
+                    featureToggleService.isSmeeAndFordEmailNotificationDisabled();
+                log.info(
+                    "LaunchDarkly flag probate-disable-smee-ford-email is enabled: {}",
+                    isSmeeAndFordEmailNotificationDisabled
+                );
+                if (isSmeeAndFordEmailNotificationDisabled) {
+                    log.info("Skipping Smee & Ford email notification because "
+                        + "probate-disable-smee-ford-email flag in LaunchDarkly feature is true.");
+                } else {
+                    notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+
+                }
+
+
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),

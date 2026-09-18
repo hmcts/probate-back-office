@@ -191,6 +191,11 @@ public class CaveatData {
     private ChangeOrganisationRequest changeOrganisationRequestField;
     private List<String> paymentConfirmCheckbox;
 
+    /**
+     * This is only intended for use during migrations and should not be persisted into the case record.
+     */
+    private String migrationCallbackMetadata;
+
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
     }

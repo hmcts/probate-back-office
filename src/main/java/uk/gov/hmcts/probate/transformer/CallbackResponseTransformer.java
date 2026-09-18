@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
@@ -40,6 +41,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -106,6 +108,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -156,6 +159,9 @@ public class CallbackResponseTransformer {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
+    private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final WorkAllocationToggleService workAllocationToggleService;
+    private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -234,7 +240,9 @@ public class CallbackResponseTransformer {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
-
+        if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
+            cd.getData().setEvidenceHandled(YES);
+        }
         ResponseCaseData responseCaseData =
                 getResponseCaseData(cd,
                         callbackRequest.getEventId(),
@@ -308,6 +316,7 @@ public class CallbackResponseTransformer {
         ResponseCaseData responseCaseData =
             getResponseCaseData(caseDetails, callbackRequest.getEventId(), Optional.empty(),false)
                 .executorsApplyingNotifications(exec)
+                .firstRedecReminderSentDate(null)
                 .build();
 
         return transformResponse(responseCaseData);
@@ -340,12 +349,28 @@ public class CallbackResponseTransformer {
                     .expectedResponseDate(null)
                     .documentUploadIssue(null);
         }
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            responseCaseDataBuilder
+                    .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCaseworkerUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getCwDocumentUploadedList();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        UploadDocument uploadedDoc = caseData.getCwDocumentUpload();
+        if (uploadedDoc != null) {
+            currentUploads.add(new CollectionMember<>(null, uploadedDoc));
+        }
+        return currentUploads;
     }
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
@@ -860,7 +885,22 @@ public class CallbackResponseTransformer {
                 false
         ).build();
 
+        //Setting task creation flag as mid event doesnt persist
+        setTaskCreation(callbackRequest, responseCaseData);
+
         return transformResponse(responseCaseData);
+    }
+
+    private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            responseCaseData.setCreateTask(Constants.NO);
+            if (callbackRequest.getEventId() != null
+                    && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
+                responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
+                        .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
+                        ? Constants.NO : Constants.YES);
+            }
+        }
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -1444,7 +1484,11 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
+            .createTask(caseData.getCreateTask())
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
 
         handleDeceasedAliases(
                 builder,
@@ -2260,5 +2304,19 @@ public class CallbackResponseTransformer {
                 .orgPolicyReference(null)
                 .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                 .build();
+    }
+
+    public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
+                                                   Optional<UserInfo> caseworkerInfo) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(caseDetails,
+                        callbackRequest.getEventId(),
+                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        false);
+        responseCaseDataBuilder.hasValidMatches(
+                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
+        );
+        return transformResponse(responseCaseDataBuilder.build());
     }
 }

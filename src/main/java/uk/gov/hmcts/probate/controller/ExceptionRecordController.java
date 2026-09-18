@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,7 +41,6 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Manage bulk scanning exception record data")
@@ -54,8 +51,17 @@ public class ExceptionRecordController {
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private final ObjectMapper objectMapper;
-    @Autowired
-    ExceptionRecordService erService;
+    private final ExceptionRecordService erService;
+
+    public ExceptionRecordController(OCRPopulatedValueMapper ocrPopulatedValueMapper,
+                                     OCRToCCDMandatoryField ocrToCCDMandatoryField,
+                                     ObjectMapper objectMapper,
+                                     ExceptionRecordService erService) {
+        this.ocrPopulatedValueMapper = ocrPopulatedValueMapper;
+        this.ocrToCCDMandatoryField = ocrToCCDMandatoryField;
+        this.objectMapper = objectMapper;
+        this.erService = erService;
+    }
 
     @Operation(summary = "Transforms OCR data to case data",
         description = "Will return errors if the transformation is unsuccessful.")
@@ -76,7 +82,6 @@ public class ExceptionRecordController {
             erRequest.getFormType(), erRequest.getExceptionRecordId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> warnings = ocrToCCDMandatoryField
             .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()),
                 formType);
@@ -93,6 +98,8 @@ public class ExceptionRecordController {
 
         log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType,
             erRequest.getExceptionRecordId());
+
+        SuccessfulTransformationResponse callbackResponse;
         switch (formType) {
             case PA8A:
                 callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);

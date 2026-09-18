@@ -68,6 +68,15 @@ public enum DocumentType {
     @JsonProperty("email")
     EMAIL("email"),
 
+    @JsonProperty("pa1Form")
+    PA1_FORM("pa1Form"),
+
+    @JsonProperty("affidavits")
+    AFFIDAVITS("affidavits"),
+
+    @JsonProperty("witnessQuestionnaires")
+    WITNESS_QUESTIONNAIRES("witnessQuestionnaires"),
+
     @JsonProperty("IHT")
     IHT("IHT"),
 
@@ -219,6 +228,7 @@ public enum DocumentType {
     }
 
     private static Map<String, DocumentType> map = new HashMap<>();
+
     static {
         for (DocumentType s : DocumentType.values()) {
             map.put(s.name(), s);

@@ -10,6 +10,7 @@ import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
+import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.RetentionPeriodDuration;
 import uk.gov.service.notify.SendEmailResponse;
@@ -38,6 +39,9 @@ class EmailWithFileServiceTest {
     private NotificationClient notificationClient;
 
     @Mock
+    private NotificationClientProvider notificationClientProvider;
+
+    @Mock
     private EmailAddresses emailAddresses;
 
     @Mock
@@ -51,6 +55,7 @@ class EmailWithFileServiceTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
+        when(notificationClientProvider.getClient()).thenReturn(notificationClient);
     }
 
     @AfterEach

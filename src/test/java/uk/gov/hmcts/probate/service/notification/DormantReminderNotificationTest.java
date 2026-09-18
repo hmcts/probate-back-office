@@ -15,6 +15,8 @@ import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -174,5 +176,31 @@ class DormantReminderNotificationTest {
         boolean result = underTest.accepts().test(caseDetails);
 
         assertEquals(true, result);
+    }
+
+    @Test
+    void acceptsShouldReturnFalseWhenisBoImportedState()  throws NotificationClientException {
+        when(caseDetails.getState()).thenReturn("12345");
+        when(notificationService.isBoImportedStateBeforeDormant(caseDetails.getId().toString())).thenReturn(true);
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getState()).thenReturn("Dormant");
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "2023-09-30T00:00:00"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void acceptsShouldReturnTrueWhenisNotBoImportedState()  throws NotificationClientException {
+        when(caseDetails.getState()).thenReturn("12345");
+        when(notificationService.isBoImportedStateBeforeDormant(caseDetails.getId().toString())).thenReturn(false);
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getState()).thenReturn("Dormant");
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "2023-09-30T00:00:00"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertTrue(result);
     }
 }

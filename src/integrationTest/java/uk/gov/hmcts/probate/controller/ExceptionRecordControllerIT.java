@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -108,8 +109,12 @@ class ExceptionRecordControllerIT {
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString(
-                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+                .andExpect(content().json("""
+            {
+              "warnings": ["test warning"],
+              "errors": ["OCR fields could not be mapped to a case"]
+            }
+            """));
     }
 
     @Test
@@ -259,7 +264,6 @@ class ExceptionRecordControllerIT {
                 .andExpect(content().string(containsString("Form type 'null' not found")));
     }
 
-
     @Test
     void testWarningsPopulateListAndReturnOkWithWarningsResponseStatePreviousEndPoint() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
@@ -267,8 +271,12 @@ class ExceptionRecordControllerIT {
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString(
-                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+                .andExpect(content().json("""
+            {
+              "warnings": ["test warning"],
+              "errors": ["OCR fields could not be mapped to a case"]
+            }
+            """));
     }
 
     @Test
@@ -510,26 +518,32 @@ class ExceptionRecordControllerIT {
 
     @Test
     void shouldNotUpdateCaseForIncorrectJourneyClassification() throws Exception {
+        String expectedWarning =
+                "OCR Data Mapping Error: This Exception Record can not be created as a case update "
+                        + "for case:1542274092932452";
 
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload
                 .replace("SUPPLEMENTARY_EVIDENCE_WITH_OCR", JourneyClassification.SUPPLEMENTARY_EVIDENCE.name()))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString(
-                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case update "
-                    + "for case:1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(jsonPath("$.warnings[0]").value(expectedWarning))
+            .andExpect(jsonPath("$.errors[0]")
+                    .value("OCR fields could not be mapped to a case"));
     }
 
     @Test
     void shouldNotUpdateCaseForIncorrectFormType() throws Exception {
+        String expectedWarning =
+                "OCR Data Mapping Error: This Exception Record form currently has no case mapping "
+                        + "for case: 1542274092932452";
 
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload.replace("\"form_type\": \"PA8A\"", "\"form_type\": \"PA1A\""))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString(
-                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping "
-                    + "for case: 1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(jsonPath("$.warnings[0]").value(expectedWarning))
+            .andExpect(jsonPath("$.errors[0]")
+                    .value("OCR fields could not be mapped to a case"));
     }
 }

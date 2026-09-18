@@ -10,6 +10,7 @@
   "withdrawApplication": "Withdraw application",
   "amendCaseDetails": "Amend case details",
   "stopCase": "Stop case",
+  "requestInformation": "Request information",
   "rePrintCase": "Reprint document",
   "selectMultipleRecords": "Select from multiple records",
   "manuallyVerifyLev": "'Trigger LEV api lookup",

@@ -141,7 +141,7 @@ public class HandOffLegacyServiceTest {
     }
 
     @Test
-    void caseHandedOffFlagReturnTrueWhenAppTypeIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
+    void caseHandedOffFlagReturnFalseWhenAppTypeIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
         caseDataBuilder
             .caseHandedOffToLegacySite(null)
             .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
@@ -150,11 +150,11 @@ public class HandOffLegacyServiceTest {
             .solsApplicantRelationshipToDeceased("ChildAdopted");
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
+        assertEquals(false, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
     }
 
     @Test
-    void handedOffFlagReturnTrueWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
+    void handedOffFlagReturnFalseWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null)
             .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
             .applicationType(PERSONAL)
@@ -163,7 +163,7 @@ public class HandOffLegacyServiceTest {
             .primaryApplicantAdoptionInEnglandOrWales(YES);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
+        assertEquals(false, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
     }
 
     @Test
@@ -269,7 +269,7 @@ public class HandOffLegacyServiceTest {
     }
 
     @Test
-    void handOffReasonExtendedIntestacyWhenAppIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
+    void noHandOffReasonExtendedIntestacyWhenAppIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
         caseDataBuilder
                 .caseHandedOffToLegacySite(null)
                 .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
@@ -279,12 +279,11 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.EXTENDED_INTESTACY,
-                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(0, handoffReasonsList.size());
     }
 
     @Test
-    void handOffReasonExtendedIntestacyWhenAppIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
+    void noHandOffReasonExtendedIntestacyWhenAppIsPACaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null)
                 .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
                 .applicationType(PERSONAL)
@@ -294,8 +293,7 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.EXTENDED_INTESTACY,
-                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(0, handoffReasonsList.size());
     }
 
     @Test

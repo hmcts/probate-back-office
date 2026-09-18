@@ -14,6 +14,7 @@ output/
 /output/**
 functional-output/
 /pacts/
+yarn-error.log
 
 ### STS ###
 .apt_generated
@@ -22,6 +23,7 @@ functional-output/
 .project
 .settings
 .springBeans
+.profile
 
 ### IntelliJ IDEA ###
 .idea
@@ -59,20 +61,5 @@ src/test/end-to-end/.env
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/test-results/
-/playwright-report/
 /blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
 src/test/PlaywrightTest/.env

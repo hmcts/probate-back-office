@@ -17,7 +17,10 @@ import jakarta.validation.constraints.NotBlank;
 public class NotificationsProperties {
 
     @NotBlank
-    private String govNotifyApiKey;
+    private String govNotifyApiKeyPrimary;
+
+    @NotBlank
+    private String govNotifyApiKeySecondary;
 
     @Valid
     private NotificationTemplates templates;

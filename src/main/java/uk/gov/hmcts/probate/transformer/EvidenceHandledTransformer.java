@@ -30,4 +30,8 @@ public class EvidenceHandledTransformer {
     public void updateEvidenceHandledToNo(CaseData data) {
         data.setEvidenceHandled(NO);
     }
+
+    public void updateEvidenceHandledToYes(CaseData data) {
+        data.setEvidenceHandled(YES);
+    }
 }

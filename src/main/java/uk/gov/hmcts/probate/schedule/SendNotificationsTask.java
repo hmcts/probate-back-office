@@ -10,8 +10,10 @@ import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.notification.DeclarationNotSignedNotification;
 import uk.gov.hmcts.probate.service.notification.DormantReminderNotification;
 import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
+import uk.gov.hmcts.probate.service.notification.FirstRedecReminderNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
+import uk.gov.hmcts.probate.service.notification.SecondRedecReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.UnsubmittedApplicationNotification;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -23,8 +25,10 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 import static uk.gov.hmcts.probate.model.NotificationType.DECLARATION_NOT_SIGNED;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
@@ -36,7 +40,9 @@ public class SendNotificationsTask implements Runnable {
     private final FeatureToggleService featureToggleService;
     private final Clock clock;
     private final FirstStopReminderNotification firstStopReminderNotification;
+    private final FirstRedecReminderNotification firstRedecReminderNotification;
     private final SecondStopReminderNotification secondStopReminderNotification;
+    private final SecondRedecReminderNotification secondRedecReminderNotification;
     private final HseReminderNotification hseReminderNotification;
     private final DormantWarningNotification dormantWarningNotification;
     private final DormantReminderNotification dormantReminderNotification;
@@ -57,7 +63,9 @@ public class SendNotificationsTask implements Runnable {
             FeatureToggleService featureToggleService,
             Clock clock,
             FirstStopReminderNotification firstStopReminderNotification,
+            FirstRedecReminderNotification firstRedecReminderNotification,
             SecondStopReminderNotification secondStopReminderNotification,
+            SecondRedecReminderNotification secondRedecReminderNotification,
             HseReminderNotification hseReminderNotification,
             DormantWarningNotification dormantWarningNotification,
             DormantReminderNotification dormantReminderNotification,
@@ -76,7 +84,9 @@ public class SendNotificationsTask implements Runnable {
         this.featureToggleService = featureToggleService;
         this.clock = clock;
         this.firstStopReminderNotification = firstStopReminderNotification;
+        this.firstRedecReminderNotification = firstRedecReminderNotification;
         this.secondStopReminderNotification = secondStopReminderNotification;
+        this.secondRedecReminderNotification = secondRedecReminderNotification;
         this.hseReminderNotification = hseReminderNotification;
         this.dormantWarningNotification = dormantWarningNotification;
         this.dormantReminderNotification = dormantReminderNotification;
@@ -128,6 +138,12 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Perform Send First Stop Reminder started");
                 automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_STOP_REMINDER);
                 log.info("Perform Send First Stop Reminder finished");
+
+                log.info("Calling Send First Redec Reminder for date {}", firstStopReminderDate);
+                log.info("Perform Send First Redec Reminder started");
+                firstRedecReminderNotification.setReferenceDate(LocalDate.parse(firstStopReminderDate));
+                automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_REDEC_REMINDER);
+                log.info("Perform Send First Redec Reminder finished");
             }
         } catch (ApiClientException e) {
             log.error("API client exception during Send First Stop Reminder", e);
@@ -145,6 +161,12 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Perform Send Second Stop Reminder started");
                 automatedNotificationService.sendNotification(secondStopReminderDate, SECOND_STOP_REMINDER);
                 log.info("Perform Send Second Stop Reminder finished");
+
+                log.info("Calling Send Second Redec Reminder for date {}", secondStopReminderDate);
+                log.info("Perform Send Second Redec Reminder started");
+                secondRedecReminderNotification.setReferenceDate(LocalDate.parse(secondStopReminderDate));
+                automatedNotificationService.sendNotification(secondStopReminderDate, SECOND_REDEC_REMINDER);
+                log.info("Perform Send Second Redec Reminder finished");
             }
         } catch (ApiClientException e) {
             log.error("API client exception during Send Second Stop Reminder", e);

@@ -71,6 +71,7 @@ public class StopReasonService {
             case "PowerOfAttorney" -> stopReasonCodes.getPowerOfAttorney();
             case "Renunciation" -> stopReasonCodes.getRenunciation();
             case "Resolutions" -> stopReasonCodes.getResolutions();
+            case "redecNotificationSent" -> stopReasonCodes.getRedecNotificationSent();
             default -> stopReasonCode;
         };
     }

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.service.notify.NotificationClient;
 
 @RequiredArgsConstructor
 @Configuration
@@ -19,7 +18,6 @@ public class HealthConfiguration {
     private final RestTemplate restTemplate;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FeeServiceConfiguration feeServiceConfiguration;
-    private final NotificationClient notificationClient;
 
     @Value("${idam.service.host}")
     private String idamServiceHost;
@@ -29,6 +27,9 @@ public class HealthConfiguration {
 
     @Value("${core_case_data.api.url}")
     private String ccdApiUrl;
+
+    @Value("${notifications.govNotifyBaseUrl}")
+    private String notifyBaseUrl;
 
     @Bean
     public SolsHealthIndicator pdfServiceHealthIndicator() {
@@ -52,7 +53,7 @@ public class HealthConfiguration {
 
     @Bean
     public SolsHealthIndicator notificationHealthIndicator() {
-        return new SolsHealthIndicator(notificationClient.getBaseUrl(), restTemplate, STATUS_ENDPOINT);
+        return new SolsHealthIndicator(notifyBaseUrl, restTemplate, STATUS_ENDPOINT);
     }
 
     @Bean

@@ -66,6 +66,9 @@ class AutomatedNotificationCCDServiceTest {
     private FirstStopReminderNotification firstStopReminderNotificationStrategy;
 
     @Mock
+    private FirstRedecReminderNotification firstRedecReminderNotificationStrategy;
+
+    @Mock
     private SecondStopReminderNotification secondStopReminderNotificationStrategy;
 
     @Mock
@@ -192,6 +195,58 @@ class AutomatedNotificationCCDServiceTest {
         assertEquals(sentEmail.getDocumentFileName(),
                 cd.getProbateNotificationsGenerated().getFirst().getValue().getDocumentFileName());
         assertNull(cd.getFirstStopReminderSentDate());
+    }
+
+    Stream<NotificationStrategy> notificationStrategiesExceptFirstRedecReminder() {
+        return Stream.of(
+                dormantWarningNotificationStrategy
+        );
+    }
+
+    @Test
+    void shouldSetFirstRedecReminderSentDateIfFirstRedecReminder() {
+        stubNotificationStrategy(
+                firstRedecReminderNotificationStrategy,
+                NotificationType.FIRST_REDEC_REMINDER
+        );
+
+        Document sentEmail = createMockDocument("newEmail.pdf");
+
+        underTest
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        firstRedecReminderNotificationStrategy, startEvent);
+
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
+
+        assertNotNull(cd.getProbateNotificationsGenerated());
+        assertEquals(1, cd.getProbateNotificationsGenerated().size());
+        assertEquals(sentEmail.getDocumentFileName(),
+                cd.getProbateNotificationsGenerated().getFirst().getValue().getDocumentFileName());
+        assertEquals(LocalDate.now(), cd.getFirstRedecReminderSentDate());
+    }
+
+    @Test
+    void shouldNotSetFirstRedecReminderSentDateIfNotFirstRedecReminder() {
+        stubNotificationStrategy(
+                dormantWarningNotificationStrategy,
+                NotificationType.DORMANT_WARNING
+        );
+
+        Document sentEmail = createMockDocument("newEmail.pdf");
+
+        underTest
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        dormantWarningNotificationStrategy, startEvent);
+
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
+
+        assertNotNull(cd.getProbateNotificationsGenerated());
+        assertEquals(1, cd.getProbateNotificationsGenerated().size());
+        assertEquals(sentEmail.getDocumentFileName(),
+                cd.getProbateNotificationsGenerated().getFirst().getValue().getDocumentFileName());
+        assertNull(cd.getFirstRedecReminderSentDate());
     }
 
     @Test

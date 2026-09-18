@@ -8,6 +8,7 @@
   "schedule": ["after 8am and before 2pm every weekday"],
   "ignoreDeps": [
     "com.github.hmcts:probate-commons",
-    "com.github.hmcts:probate-pact-commons"
+    "com.github.hmcts:probate-pact-commons",
+    "aac-manage-case-assignment"
   ]
 }

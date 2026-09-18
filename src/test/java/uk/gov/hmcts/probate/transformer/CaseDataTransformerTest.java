@@ -34,6 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class CaseDataTransformerTest {
@@ -110,6 +111,22 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
 
         verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandledYes() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToYes(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandledNo() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledNo(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToNo(caseDataMock);
     }
 
     @Test
@@ -361,5 +378,16 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(caseDetailsMock);
         assertEquals(deceasedAliasNamesList, caseDetailsMock.getData().getSolsDeceasedAliasNamesList());
+    }
+
+    @Test
+    void shouldSetSelectForQAUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setSelectForQAUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getSelectForQAUserIdamId());
     }
 }

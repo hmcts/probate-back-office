@@ -41,7 +41,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
 
     private static final String todaysDateWelsh = LocalDate.now().format(
-            DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("cy", "GB")));
+            DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.of("cy", "GB")));
 
     protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile)
         throws IOException {
