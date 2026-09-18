@@ -80,9 +80,6 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                                 false, emptyList(), true),
                         List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
                 ),
-
-
-
                 Arguments.of(
                         "someOtherEventId",
                         "CasePrinted",
