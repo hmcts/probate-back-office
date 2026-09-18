@@ -232,13 +232,13 @@ public class ExecutorListMapperService {
                                     .wholeBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
                             break;
                         case WHOLE_BLOOD_NIECE_OR_NEPHEW:
-                            builder.wholeBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                            builder.wholeNieceOrNephewParentDieBeforeDeceased(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentDieBeforeDeceased())
-                                    .wholeBloodSiblingAdoptedIn(solsApplicantFamilyDetails
+                                    .wholeNieceOrNephewParentAdoptedIn(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentAdoptedIn())
-                                    .wholeBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                    .wholeNieceOrNephewParentAdoptionInEnglandOrWales(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentAdoptionInEnglandOrWales())
-                                    .wholeBloodSiblingAdoptedOut(solsApplicantFamilyDetails
+                                    .wholeNieceOrNephewParentAdoptedOut(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentAdoptedOut())
                                     .wholeBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
                                             .getCoApplicantAdoptedIn())
@@ -254,13 +254,13 @@ public class ExecutorListMapperService {
                                     .halfBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
                             break;
                         case HALF_BLOOD_NIECE_OR_NEPHEW:
-                            builder.halfBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                            builder.halfNieceOrNephewParentDieBeforeDeceased(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentDieBeforeDeceased())
-                                    .halfBloodSiblingAdoptedIn(solsApplicantFamilyDetails
+                                    .halfNieceOrNephewParentAdoptedIn(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentAdoptedIn())
-                                    .halfBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                    .halfNieceOrNephewParentAdoptionInEnglandOrWales(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentAdoptionInEnglandOrWales())
-                                    .halfBloodSiblingAdoptedOut(solsApplicantFamilyDetails
+                                    .halfNieceOrNephewParentAdoptedOut(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentAdoptedOut())
                                     .halfBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
                                             .getCoApplicantAdoptedIn())

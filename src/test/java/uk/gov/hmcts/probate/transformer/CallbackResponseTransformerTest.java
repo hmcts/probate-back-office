@@ -5088,7 +5088,7 @@ class CallbackResponseTransformerTest {
                 .deceasedAdoptionInEnglandOrWales(YES)
                 .applicantSameParentsAsDeceased(YES)
                 .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased(NO)
+                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
                 .wholeBloodNiecesAndNephewsSurvived(YES)
                 .wholeBloodSiblingsOverEighteen(YES)
                 .wholeBloodNiecesAndNephewsOverEighteen(YES)
@@ -5269,6 +5269,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
 
         assertNotNull(callbackResponse.getData().getOtherHalfBloodSiblings());
+        assertNotNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
     }
 
     @Test

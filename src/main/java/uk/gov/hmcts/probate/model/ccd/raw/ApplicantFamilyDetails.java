@@ -20,7 +20,6 @@ public class ApplicantFamilyDetails {
     private final String wholeBloodSiblingAdoptedIn;
     private final String wholeBloodSiblingAdoptionInEnglandOrWales;
     private final String wholeBloodSiblingAdoptedOut;
-    private final String wholeBloodSiblingDiedBeforeDeceased;
     private final String wholeNieceOrNephewParentDieBeforeDeceased;
     private final String wholeNieceOrNephewParentAdoptionInEnglandOrWales;
     private final String wholeNieceOrNephewParentAdoptedIn;
@@ -31,7 +30,6 @@ public class ApplicantFamilyDetails {
     private final String halfBloodSiblingAdoptedIn;
     private final String halfBloodSiblingAdoptionInEnglandOrWales;
     private final String halfBloodSiblingAdoptedOut;
-    private final String halfBloodSiblingDiedBeforeDeceased;
     private final String halfNieceOrNephewParentDieBeforeDeceased;
     private final String halfNieceOrNephewParentAdoptionInEnglandOrWales;
     private final String halfNieceOrNephewParentAdoptedIn;
