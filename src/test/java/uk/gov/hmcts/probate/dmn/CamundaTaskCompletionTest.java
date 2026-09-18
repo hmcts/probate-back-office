@@ -225,10 +225,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_FOREIGN_DOMICILE
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
                                 )
                         )
@@ -327,6 +323,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_MINORITY_INTEREST
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FOREIGN_DOMICILE
                                 ),
                                 Map.of()
                         )
