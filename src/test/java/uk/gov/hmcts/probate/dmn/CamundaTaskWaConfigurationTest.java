@@ -22,6 +22,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
@@ -72,6 +76,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -437,6 +445,28 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_SECTION_116_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
+                                        "state", BO_REGISTRAR_ESCALATION))
+                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
+                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
+                                .build()
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                        Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                                                "state", BO_REGISTRAR_ESCALATION))
+                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
+                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
+                                .build()
                 )
         );
     }
@@ -447,7 +477,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(19, logic.getRules().size());
+        assertEquals(21, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
