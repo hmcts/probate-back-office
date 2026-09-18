@@ -5088,7 +5088,7 @@ class CallbackResponseTransformerTest {
                 .deceasedAdoptionInEnglandOrWales(YES)
                 .applicantSameParentsAsDeceased(YES)
                 .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased(YES)
+                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
                 .wholeBloodNiecesAndNephewsSurvived(YES)
                 .wholeBloodSiblingsOverEighteen(YES)
                 .wholeBloodNiecesAndNephewsOverEighteen(YES)
@@ -5180,7 +5180,7 @@ class CallbackResponseTransformerTest {
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(WHOLE_SIBLING)
                 .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased(YES)
+                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
                 .wholeBloodNiecesAndNephewsSurvived(YES)
                 .wholeBloodSiblingsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
@@ -5213,7 +5213,7 @@ class CallbackResponseTransformerTest {
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased(YES)
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
                 .halfBloodNiecesAndNephewsSurvived(YES)
                 .halfBloodSiblingsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
@@ -5244,7 +5244,7 @@ class CallbackResponseTransformerTest {
     void shouldNotClearFieldsWhenSameParentsOptionIsUnchanged() {
         caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased(YES)
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
                 .halfBloodNiecesAndNephewsSurvived(YES)
                 .halfBloodSiblingsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
@@ -5252,7 +5252,7 @@ class CallbackResponseTransformerTest {
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased(YES)
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
                 .halfBloodNiecesAndNephewsSurvived(YES)
                 .halfBloodSiblingsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
