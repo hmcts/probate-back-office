@@ -74,6 +74,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -1097,6 +1098,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", REVIEW_SME_REFERRAL
                                 ),
                                 Map.of()
+                        )
+                ),
+                Arguments.of(
+                        "boNotifyRedeclarationSOT",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REDECLARATION
+                                )
                         )
                 )
         );

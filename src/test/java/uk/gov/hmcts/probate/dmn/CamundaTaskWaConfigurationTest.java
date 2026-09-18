@@ -84,6 +84,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -540,6 +542,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                             Map.of("taskType", REVIEW_SME_REFERRAL,
                                     "state", BO_CASE_WORKER_ESCALATION)).build()
             )
+                ),
+                Arguments.of(
+                        REDECLARATION,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REDECLARATION,
+                                        "state", BO_CASE_STOPPED_AWAIT_REDEC_STATE)).build()
+                )
         );
     }
 
