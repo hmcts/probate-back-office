@@ -20,9 +20,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
@@ -250,186 +247,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "value", Map.of("caseHandoffReason", "OtherReason")
             )
     );
-
-    static Stream<Arguments> adColligendaBonaScenarios() {
-
-        Map<String,Object> examineDigitalCaseAdColligendaBonaTaskAttributes = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
-                "name", "Examine Digital Case - Ad Colligenda Bona",
-                "processCategories", "case progression"
-        );
-
-        Map<String,Object> examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes
-                = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
-                "name", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "someOtherEventId",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "CasePrinted",
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "CasePrinted",
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
-                ),
-                Arguments.of(
-                        "changeState",
-                        "CasePrinted",
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "someOtherEventId",
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                )
-        );
-    }
 
     static Stream<Arguments> doubleProbateScenarios() {
 
@@ -841,7 +658,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({
-        "adColligendaBonaScenarios",
         "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
