@@ -64,6 +64,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -2862,13 +2865,43 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> reviewRegistrarDecisionScenarios() {
+
+        Map<String,Object> reviewRegistrarTask = Map.of(
+                "taskId", REVIEW_REGISTRAR_DECISION,
+                "name", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        REVIEW_REGISTRAR_DECISION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REVIEW_REGISTRAR_DECISION),
+                        List.of(reviewRegistrarTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(true, REVIEW_REGISTRAR_DECISION),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "someOtherEvent",
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REVIEW_REGISTRAR_DECISION),
+                        Collections.emptyList()
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(48));
+        assertThat(logic.getRules().size(), is(50));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -2876,7 +2909,8 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
         "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
-        "resolveRegistrarEscalationReferralsScenarios", "resolveRegistrarEscalationOrdersScenarios"})
+        "resolveRegistrarEscalationReferralsScenarios", "resolveRegistrarEscalationOrdersScenarios",
+    "reviewRegistrarDecisionScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

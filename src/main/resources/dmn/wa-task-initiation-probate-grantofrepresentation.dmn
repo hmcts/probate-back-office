@@ -2042,6 +2042,88 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1jgld8w">
+        <inputEntry id="UnaryTests_1041mdx">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hu0v57">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ik0g2u">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11kh8zz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rh8tg9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ny61x7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1sbtsio">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0eet8vk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05w6rq6">
+          <text>"orders"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1h0jhcw">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bvb6hv">
+          <text>"Resolve Registrar Escalation - Orders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c9jfnd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w4iawl">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0b7cd57">
+        <inputEntry id="UnaryTests_03lpaiu">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0woy6rp">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nwgzpq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fgpn1n">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uhejbh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19ixp7i">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hew9jh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ggggct">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eck39l">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yyjon5">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yi9p81">
+          <text>"Review Registrar's Decision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cp9dwu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kea84h">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

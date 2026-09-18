@@ -274,4 +274,7 @@ public class TaskAttributeConstants {
             "Resolve Registrar Escalation - Orders";
     public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
     public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
+    public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
+    public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
+    public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
 }
