@@ -402,13 +402,59 @@ class ExecutorListMapperServiceTest {
         assertEquals(EXEC_SURNAME, applying.getApplyingExecutorLastName());
         assertEquals(EXEC_NAME, applying.getApplyingExecutorName());
         assertEquals(EXEC_ADDRESS, applying.getApplyingExecutorAddress());
-        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodSiblingDiedBeforeDeceased());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeNieceOrNephewParentDieBeforeDeceased());
         assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedIn());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptionInEnglandOrWales());
         assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedOut());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedIn());
         assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptionInEnglandOrWales());
         assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedOut());
+    }
+
+    @Test
+    void mapsHalfBloodNieceOrNephewFamilyDetails() {
+        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
+                .code(HALF_BLOOD_NIECE_OR_NEPHEW)
+                .label(HALF_BLOOD_NIECE_OR_NEPHEW)
+                .build();
+        DynamicRadioList radioList = DynamicRadioList.builder()
+                .listItems(List.of(radioListElement))
+                .value(radioListElement)
+                .build();
+        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
+                .relationship(radioList)
+                .halfNieceOrNephewParentDieBeforeDeceased(YES)
+                .halfNieceOrNephewParentAdoptedIn(NO)
+                .halfNieceOrNephewParentAdoptionInEnglandOrWales(YES)
+                .halfNieceOrNephewParentAdoptedOut(NO)
+                .coApplicantAdoptedIn(YES)
+                .coApplicantAdoptionInEnglandOrWales(NO)
+                .coApplicantAdoptedOut(YES)
+                .build();
+        IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                .additionalExecForenames(EXEC_FIRST_NAME)
+                .additionalExecLastname(EXEC_SURNAME)
+                .additionalExecAddress(EXEC_ADDRESS)
+                .solsApplicantFamilyDetails(familyDetails)
+                .build();
+        CaseData caseData = CaseData.builder()
+                .solsIntestacyExecutorList(List.of(new CollectionMember<>(EXEC_ID, additionalExecutor)))
+                .build();
+
+        AdditionalExecutorApplying applying =
+                underTest.mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData).getFirst().getValue();
+
+        assertEquals(EXEC_FIRST_NAME, applying.getApplyingExecutorFirstName());
+        assertEquals(EXEC_SURNAME, applying.getApplyingExecutorLastName());
+        assertEquals(EXEC_NAME, applying.getApplyingExecutorName());
+        assertEquals(EXEC_ADDRESS, applying.getApplyingExecutorAddress());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfNieceOrNephewParentDieBeforeDeceased());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptedIn());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptionInEnglandOrWales());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodSiblingAdoptedOut());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptedIn());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptionInEnglandOrWales());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getHalfBloodNieceOrNephewAdoptedOut());
     }
 
     @Test

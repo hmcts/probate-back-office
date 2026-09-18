@@ -232,7 +232,7 @@ public class ExecutorListMapperService {
                                     .wholeBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
                             break;
                         case WHOLE_BLOOD_NIECE_OR_NEPHEW:
-                            builder.wholeBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                            builder.wholeNieceOrNephewParentDieBeforeDeceased(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentDieBeforeDeceased())
                                     .wholeBloodSiblingAdoptedIn(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentAdoptedIn())
@@ -254,7 +254,7 @@ public class ExecutorListMapperService {
                                     .halfBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
                             break;
                         case HALF_BLOOD_NIECE_OR_NEPHEW:
-                            builder.halfBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                            builder.halfNieceOrNephewParentDieBeforeDeceased(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentDieBeforeDeceased())
                                     .halfBloodSiblingAdoptedIn(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentAdoptedIn())
