@@ -2285,6 +2285,151 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_057qzy8">
+        <inputEntry id="UnaryTests_1mhw02f">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q7u5yy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00g36bx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07jcuij">
+          <text>"tribunal-caseworker"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x939sl">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04k9m52">
+          <text>"LEGAL_OPERATIONS"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_073g41y">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iqa7gg">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1renxq5">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1jp5p00">
+        <inputEntry id="UnaryTests_0368m4i">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z4cgl7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0io5f9s">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ll6dae">
+          <text>"senior-tribunal-caseworker"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0g821f8">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14it6ey">
+          <text>"LEGAL_OPERATIONS"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1doa2rr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ucq5bk">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p52sqz">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0yp0j5n">
+        <inputEntry id="UnaryTests_04w1t74">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g0ymz5">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zth20n">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1da8mnz">
+          <text>"senior-tribunal-caseworker"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p1d2zh">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1h9oksv">
+          <text>"LEGAL_OPERATIONS"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cqkqwv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10ljujm">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bi7sez">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17980c3">
+        <inputEntry id="UnaryTests_09cr7vf">
+          <text>"ReviewRegistrarDecision"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0erewja">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05op9gd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w4i553">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0o1n019">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i24wij">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01yolvw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t0r14a">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y3ckng">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_09phnp4">
+        <inputEntry id="UnaryTests_0hl05tn">
+          <text>"ReviewRegistrarDecision"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0050b9c">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02j4oiz">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18izvyr">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05fqfsm">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zofrc0">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14twzar">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p22hu5">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17ntfq3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

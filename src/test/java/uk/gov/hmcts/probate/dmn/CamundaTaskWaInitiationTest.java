@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
@@ -55,7 +56,17 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -78,6 +89,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     private static final String incapacityUnderRule35HandOffReason = "IncapacityRule35";
     private static final String leadingFollowingGrantsHandOffReason = "LeadingFollowing Grants";
     private static final String windrushSchemeHandOffReason = "WindrushScheme";
+    private static final String registrarEscalateReason = "registrarEscalateReason";
 
     private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -89,6 +101,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         caseTypeVar, caseType,
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
                         boHandoffReasonListVar, boHandoffReasonList
+                )
+        );
+    }
+
+    private static Map<String, Map<String, Object>> additionalDataWithEscalationReason(
+            boolean evidenceHandled, String escalationReason) {
+        return Map.of(
+                "Data", Map.of(
+                        evidenceHandledVar, evidenceHandled,
+                        caseTypeVar, "",
+                        caseHandedOffToLegacySiteVar, false,
+                        boHandoffReasonListVar, Collections.emptyList(),
+                        registrarEscalateReason, escalationReason
                 )
         );
     }
@@ -2780,20 +2805,112 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> resolveRegistrarEscalationReferralsScenarios() {
+
+        Map<String,Object> referralsTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(true, REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "someOtherEvent",
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> resolveRegistrarEscalationOrdersScenarios() {
+
+        Map<String,Object> ordersTask = Map.of(
+                "taskId", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
+                "name", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_ORDERS),
+                        List.of(ordersTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(true, REGISTRAR_ESCALATION_REASON_ORDERS),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "someOtherEvent",
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REGISTRAR_ESCALATION_REASON_ORDERS),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> reviewRegistrarDecisionScenarios() {
+
+        Map<String,Object> reviewRegistrarTask = Map.of(
+                "taskId", REVIEW_REGISTRAR_DECISION,
+                "name", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        REVIEW_REGISTRAR_DECISION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REVIEW_REGISTRAR_DECISION),
+                        List.of(reviewRegistrarTask)
+                ),
+                Arguments.of(
+                        RESOLVE_REGISTRAR_ESCALATION_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(true, REVIEW_REGISTRAR_DECISION),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "someOtherEvent",
+                        BO_REGISTRAR_ESCALATION,
+                        additionalDataWithEscalationReason(false, REVIEW_REGISTRAR_DECISION),
+                        Collections.emptyList()
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(8));
+        assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(46));
+        assertThat(logic.getRules().size(), is(49));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
-        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
+        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
+        "resolveRegistrarEscalationReferralsScenarios", "resolveRegistrarEscalationOrdersScenarios",
+        "reviewRegistrarDecisionScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

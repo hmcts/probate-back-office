@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-completion-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-completion-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-completion-probate-grantofrepresentation" name="Task completion DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_01re27m" hitPolicy="COLLECT">
       <input id="eventId" label="Event ID" biodi:width="614">
@@ -490,6 +490,39 @@
           <text>"ExamineSection116CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0krmjj6">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18c6roy">
+        <inputEntry id="UnaryTests_14nyvmr">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xvenw8">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t202fd">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ciwiue">
+        <inputEntry id="UnaryTests_0nmijes">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1angv4y">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tex7rl">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01yc2k5">
+        <inputEntry id="UnaryTests_167ls42">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForRegistrarEscalations"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rsio4x">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16m0spe">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

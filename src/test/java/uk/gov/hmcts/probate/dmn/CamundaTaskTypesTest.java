@@ -68,6 +68,12 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -261,6 +267,18 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_SECTION_116_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_SECTION_116_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_ORDERS
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_REGISTRAR_DECISION
                 )
 
         );
@@ -277,7 +295,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(42));
+        assertThat(logic.getRules().size(), is(45));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
