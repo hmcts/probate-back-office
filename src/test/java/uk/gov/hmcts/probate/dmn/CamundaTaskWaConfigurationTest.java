@@ -27,6 +27,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
@@ -478,6 +479,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", REVIEW_REGISTRAR_DECISION,
                                                 "state", BO_REGISTRAR_ESCALATION))
+                                .expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_REGISTRAR_DECISION, true)
                                 .expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                                 .build()
                 )

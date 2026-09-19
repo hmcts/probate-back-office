@@ -174,6 +174,15 @@ public class TaskAttributeConstants {
                     + "/trigger/boResolveStop)";
     public static final String DESCRIPTION_REGISTRAR_DECISION =
             "[Registrar's Decision](/cases/case-details/${[CASE_REFERENCE]}/trigger/registrarsDecision)";
+    public static final String DESCRIPTION_REVIEW_REGISTRAR_DECISION =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForRegistrarEscalations)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";

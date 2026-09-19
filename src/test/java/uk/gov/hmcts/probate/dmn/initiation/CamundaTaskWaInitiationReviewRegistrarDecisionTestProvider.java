@@ -12,10 +12,6 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_REFERRALS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
@@ -36,78 +32,67 @@ public class CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider implemen
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "", false, Collections.emptyList(), false),
                         List.of(reviewRegistrarDecisionTask)
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(true, "", false, Collections.emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "", false, Collections.emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "gop", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "gop", false, Collections.emptyList(), false),
                         List.of(reviewRegistrarDecisionTask)
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "gop", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(true, "gop", false, Collections.emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "intestacy", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "intestacy", false, Collections.emptyList(), false),
                         List.of(reviewRegistrarDecisionTask)
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "intestacy", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(true, "intestacy", false, Collections.emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false),
                         List.of(reviewRegistrarDecisionTask)
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "adColligendaBona", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(true, "adColligendaBona", false, Collections.emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "admonWill", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(false, "admonWill", false, Collections.emptyList(), false),
                         List.of(reviewRegistrarDecisionTask)
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(true, "admonWill", false, Collections.emptyList(), false,
-                                REVIEW_REGISTRAR_DECISION),
+                        additionalData(true, "admonWill", false, Collections.emptyList(), false),
                         emptyList()
                 )
         );

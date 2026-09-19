@@ -517,13 +517,13 @@
       </rule>
       <rule id="DecisionRule_01yc2k5">
         <inputEntry id="UnaryTests_167ls42">
-          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForRegistrarEscalations"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0rsio4x">
           <text>"ReviewRegistrarDecision"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16m0spe">
-          <text></text>
+          <text>"Auto"</text>
         </outputEntry>
       </rule>
     </decisionTable>

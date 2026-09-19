@@ -366,7 +366,7 @@ else ""</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0m08swa">
-          <text>"ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders","ReviewRegistrarDecision"</text>
+          <text>"ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_01pqgq1">
           <text>"description"</text>
@@ -375,6 +375,23 @@ else ""</text>
           <text>"[Registrar's Decision](/cases/case-details/${[CASE_REFERENCE]}/trigger/registrarsDecision)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_07vjgem">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0kqt4nw">
+        <inputEntry id="UnaryTests_1r5j6l4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_037eo6d">
+          <text>"ReviewRegistrarDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vih3jf">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0by2fgl">
+          <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForRegistrarEscalations)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uyd3u3">
           <text>true</text>
         </outputEntry>
       </rule>
