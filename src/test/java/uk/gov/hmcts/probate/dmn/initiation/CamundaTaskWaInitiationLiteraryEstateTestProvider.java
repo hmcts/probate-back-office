@@ -17,9 +17,11 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 
@@ -30,6 +32,12 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
 
         Map<String,Object> examineLiteraryEstateCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
+                "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(
+                "taskId", EXAMINE_LITERARY_ESTATE,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -164,6 +172,138 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ), //ready to issue
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateTaskAttributes)
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        null,
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
                 )
