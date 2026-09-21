@@ -310,7 +310,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '6.2.0-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.4'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.3.0'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   //Camunda WA
