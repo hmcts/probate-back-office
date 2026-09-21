@@ -28,7 +28,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.ADOPTED_OUT;
-import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.SIBLING_NOT_DIED;
 import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.DECEASED_CHILD_DEAD;
 
 
@@ -60,9 +59,6 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUT))
                 .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUT).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, SIBLING_NOT_DIED))
-                .thenReturn(FieldErrorResponse.builder().code(SIBLING_NOT_DIED).build());
     }
 
     private static Stream<String> relationship() {
@@ -180,23 +176,4 @@ class IntestacyApplicantDetailsValidationRuleTest {
         assertEquals(ADOPTED_OUT, validationErrors.getFirst().getCode());
     }
 
-    @Test
-    void shouldValidateSuccessIfWholeSiblingIsDied() {
-        when(applicantMock.getAnyLivingWholeBloodSiblings()).thenReturn(YES);
-        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SIBLING);
-
-        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
-
-        assertTrue(validationErrors.isEmpty());
-    }
-
-    @Test
-    void shouldValidateFailureIfWholeSiblingIsNotDied() {
-        when(applicantMock.getAnyLivingWholeBloodSiblings()).thenReturn(NO);
-        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SIBLING);
-
-        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
-
-        assertEquals(SIBLING_NOT_DIED, validationErrors.getFirst().getCode());
-    }
 }

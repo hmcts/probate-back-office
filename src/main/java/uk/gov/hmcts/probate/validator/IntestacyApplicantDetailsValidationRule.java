@@ -14,7 +14,6 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
-import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -30,8 +29,6 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
     public static final String DECEASED_ADOPTED_OUT_WELSH = "deceasedAdoptedOutWelsh";
     public static final String PARENT_ADOPTED_OUT = "parentAdoptedOut";
     public static final String PARENT_ADOPTED_OUT_WELSH = "parentAdoptedOutWelsh";
-    public static final String SIBLING_NOT_DIED = "siblingNotDied";
-    public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDiedWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -52,12 +49,6 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                     codes.add(DECEASED_ADOPTED_OUT);
                     codes.add(DECEASED_ADOPTED_OUT_WELSH);
                 }
-            }
-
-            if (SIBLING.equalsIgnoreCase(relationshipToDeceased) && NO
-                    .equalsIgnoreCase(applicant.getAnyLivingWholeBloodSiblings())) {
-                codes.add(SIBLING_NOT_DIED);
-                codes.add(SIBLING_NOT_DIED_WELSH);
             }
 
             if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)

@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
@@ -27,6 +28,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationR
 import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.LIVING_DESCENDANTS;
 import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.LIVING_PARENTS;
+import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.LIVING_WHOLE_SIBLING;
 
 @ExtendWith(SpringExtension.class)
 class IntestacyDeceasedDetailsValidationRuleTest {
@@ -59,6 +61,9 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, LIVING_PARENTS))
                 .thenReturn(FieldErrorResponse.builder().code(LIVING_PARENTS).build());
+
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, LIVING_WHOLE_SIBLING))
+                .thenReturn(FieldErrorResponse.builder().code(LIVING_WHOLE_SIBLING).build());
     }
 
     @Test
@@ -167,6 +172,26 @@ class IntestacyDeceasedDetailsValidationRuleTest {
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
         assertEquals(LIVING_PARENTS, validationErrors.getFirst().getCode());
+    }
+
+    @Test
+    void shouldValidateSuccessIfHalfSiblingHasNoLivingWholeBloodSiblings() {
+        when(deceasedMock.getApplicantSameParentsAsDeceased()).thenReturn(HALF_SIBLING);
+        when(deceasedMock.getAnyLivingWholeBloodSiblings()).thenReturn(NO);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    @Test
+    void shouldValidateFailureIfHalfSiblingHasLivingWholeBloodSiblings() {
+        when(deceasedMock.getApplicantSameParentsAsDeceased()).thenReturn(HALF_SIBLING);
+        when(deceasedMock.getAnyLivingWholeBloodSiblings()).thenReturn(YES);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(LIVING_WHOLE_SIBLING, validationErrors.getFirst().getCode());
     }
 
     @Test
