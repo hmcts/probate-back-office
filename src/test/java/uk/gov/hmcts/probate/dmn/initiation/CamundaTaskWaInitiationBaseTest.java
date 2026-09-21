@@ -44,13 +44,14 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String lostWillOrCodicilHandOffReason = "LostWill";
     protected static final String witnessInterviewHandOffReason = "WitnessInterview";
     protected static final String createTaskVar = "createTask";
-    protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
-    protected static final String examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason = "IBCA";
+    protected static final String horizonSchemeCasePrintedHandOffReason = "HorizonScheme";
     protected static final String literaryEstateHandOffReason = "LiteraryEstate";
     protected static final String minorityInterestHandOffReason = "MinorityInterest";
     protected static final String willOrCodicilToBeNotatedHandOffReason = "WillCodicilNotated";
     protected static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
     protected static final String windrushSchemeHandOffReason = "WindrushScheme";
+    protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
+    protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
     protected static final String examineProveForeignWill = "ForeignWill";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
@@ -94,7 +95,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(50));
+        assertThat(logic.getRules().size(), is(53));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -123,6 +124,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWitnessInterviewTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationFiatWillCasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
