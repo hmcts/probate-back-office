@@ -73,6 +73,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -438,6 +439,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         BO_SELECT_FOR_QA_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", REVIEW_QA_CASE_INTESTACY,
+                                        "state", BO_CASE_QA_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_ADMON,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_ADMON,
                                         "state", BO_CASE_QA_STATE)).build()
                 )
         );

@@ -36,8 +36,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
@@ -61,10 +59,12 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
-
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 
 public class ConfigurationExpectationBuilder {
 
@@ -76,6 +76,13 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_TIME, ASSIGNEE
     );
 
+    // Review QA Case tasks share one description and the review_case work type.
+    // Add each new sibling (Probate, Ad Colligenda Bona) here when it lands.
+    private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
+            REVIEW_QA_CASE_INTESTACY,
+            REVIEW_QA_CASE_ADMON
+    );
+
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
 
     public static ConfigurationExpectationBuilder defaultExpectations() {
@@ -85,10 +92,10 @@ public class ConfigurationExpectationBuilder {
     public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(
             Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
-        boolean isReviewQaCaseProbate = REVIEW_QA_CASE_INTESTACY.equals(conditions.get("taskType"));
+        boolean isReviewQaCase = conditions.containsKey("taskType")
+                && REVIEW_QA_CASE_TASK_TYPES.contains(conditions.get("taskType"));
 
-
-        if (isReviewQaCaseProbate) {
+        if (isReviewQaCase) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
                     .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
@@ -122,8 +129,7 @@ public class ConfigurationExpectationBuilder {
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
-
-        if (!isReviewQaCaseProbate) {
+        if (!isReviewQaCase) {
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
         }
         builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
@@ -163,4 +169,3 @@ public class ConfigurationExpectationBuilder {
         return this;
     }
 }
-
