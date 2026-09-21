@@ -121,7 +121,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
                 || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
-        )) {
+            )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
