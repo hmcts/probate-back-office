@@ -168,7 +168,7 @@ gitProperties {
 }
 
 def versions = [
-        applicationInsightsVersion      : '3.7.9',
+        applicationInsightsVersion      : '3.7.10',
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.3.0',
         commonsIO                       : '2.22.0',
@@ -310,7 +310,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '6.2.1-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.4'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.3.0'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   //Camunda WA
