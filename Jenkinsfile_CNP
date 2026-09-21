@@ -393,8 +393,8 @@ withPipeline("java", product, component) {
 
   onDemo() {
     env.ENV='demo'
-    env.PROBATE_WA_ENABLED = false
-    env.PROBATE_GS_ENABLED = false
+    env.PROBATE_WA_ENABLED = true
+    env.PROBATE_GS_ENABLED = true
   }
 
   onPerftest() {
