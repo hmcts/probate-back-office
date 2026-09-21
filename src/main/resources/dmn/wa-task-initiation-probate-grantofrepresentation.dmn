@@ -1801,7 +1801,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02h3htr">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineProveForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_050qvny">
           <text>"Examine - Prove a foreign will"</text>

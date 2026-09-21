@@ -487,7 +487,7 @@
           <text>"boIssueGrantForCaseMatching","boStopCaseForCasePrinted","boEscalateToRegistrar","moveToCWEscalation","boSelectForQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_15vy698">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineProveForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gzg9b1">
           <text>"Auto"</text>

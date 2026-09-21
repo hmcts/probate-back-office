@@ -31,7 +31,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
@@ -2797,7 +2797,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     static Stream<Arguments> proveForeignWillScenarios() {
 
         Map<String,Object> examineHorizonSchemeTaskAttributes = Map.of(
-                "taskId", EXAMINE_PROVE_FOREIGN_WILL,
+                "taskId", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );

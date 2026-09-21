@@ -2229,7 +2229,7 @@
       </rule>
       <rule id="DecisionRule_1nstypq">
         <inputEntry id="UnaryTests_01u91gn">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineProveForeignWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1it6mos">
           <text></text>
@@ -2247,7 +2247,7 @@
           <text>"CTSC"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0wyawys">
-          <text>"SKILL:ABA6:ProveForeignWill"</text>
+          <text>"SKILL:ABA6:ForeignWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_18r70ng">
           <text>1</text>
@@ -2258,7 +2258,7 @@
       </rule>
       <rule id="DecisionRule_03x3ha5">
         <inputEntry id="UnaryTests_09rn5tg">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineProveForeignWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dzpk34">
           <text></text>
@@ -2276,7 +2276,7 @@
           <text>"CTSC"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1veqljy">
-          <text>"SKILL:ABA6:ProveForeignWill"</text>
+          <text>"SKILL:ABA6:ForeignWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_03kkeao">
           <text>1</text>
