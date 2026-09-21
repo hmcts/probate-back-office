@@ -400,8 +400,8 @@ withPipeline("java", product, component) {
 
   onPerftest() {
     env.ENV='perftest'
-    env.PROBATE_WA_ENABLED = true
-    env.PROBATE_GS_ENABLED = true
+    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
   }
 
   before('smoketest:preview') {
