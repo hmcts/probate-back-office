@@ -259,4 +259,8 @@ public class CaseDataTransformer {
             caseData.setDeceasedMarriedAfterWillOrCodicilDate(null);
         }
     }
+
+    public void setSelectForQAUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setSelectForQAUserIdamId(idamUserId);
+    }
 }

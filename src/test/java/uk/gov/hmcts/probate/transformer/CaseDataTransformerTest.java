@@ -474,4 +474,15 @@ class CaseDataTransformerTest {
         assertThat(caseDataMock.getDateOfDivorcedCPJudicially(), is("2020-01-01"));
         assertThat(caseDataMock.getDeceasedDivorcedInEnglandOrWales(), is(YES));
     }
+
+    @Test
+    void shouldSetSelectForQAUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setSelectForQAUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getSelectForQAUserIdamId());
+    }
 }

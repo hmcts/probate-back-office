@@ -423,6 +423,7 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
         }
+
         return ResponseEntity.ok(response);
     }
 
