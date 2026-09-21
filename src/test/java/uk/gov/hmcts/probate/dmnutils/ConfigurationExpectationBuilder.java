@@ -16,6 +16,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_B
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
@@ -122,6 +123,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
                 || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
+                || conditions.get("taskType").equals(EXAMINE_FOREIGN_DOMICILE)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")

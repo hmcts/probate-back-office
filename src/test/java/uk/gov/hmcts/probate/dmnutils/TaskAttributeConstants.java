@@ -269,5 +269,16 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
     public static final String LITERARY_ESTATE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String LOST_WILL_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+
+    public static final String EXAMINE_FIAT_WILL_CASE_PRINTED = "ExamineFiatWillCasePrinted";
+    public static final String EXAMINE_FIAT_WILL_TASK_TYPE_NAME = "Examine - Fiat Will";
+    public static final String EXAMINE_FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
+
+    public static final String EXAMINE_FOREIGN_DOMICILE = "ExamineForeignDomicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME = "Examine - Foreign Domicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
+
+    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
+            = "ExamineIncapacityUnderRule35CasePrinted";
     public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
 }
