@@ -5087,6 +5087,7 @@ class CallbackResponseTransformerTest {
                 .deceasedAdoptedIn(YES)
                 .deceasedAdoptionInEnglandOrWales(YES)
                 .applicantSameParentsAsDeceased(YES)
+                .anyLivingWholeBloodSiblings(YES)
                 .otherWholeBloodSiblings(YES)
                 .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
                 .wholeBloodNiecesAndNephewsSurvived(YES)
@@ -5110,6 +5111,7 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
         assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
         assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
         assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
         assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
@@ -5212,6 +5214,7 @@ class CallbackResponseTransformerTest {
         caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING);
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
+                .anyLivingWholeBloodSiblings(YES)
                 .otherHalfBloodSiblings(YES)
                 .halfBloodSiblingsDiedBeforeDeceased("YesSome")
                 .halfBloodNiecesAndNephewsSurvived(YES)
@@ -5230,6 +5233,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
 
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
         assertNull(callbackResponse.getData().getOtherHalfBloodSiblings());
         assertNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
         assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
