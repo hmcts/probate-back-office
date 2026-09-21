@@ -548,6 +548,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0btr9jq">
+        <inputEntry id="UnaryTests_0v1o173">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17qx2hd">
+          <text>"ReviewQACaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xrryrh">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

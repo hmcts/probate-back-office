@@ -65,6 +65,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+
 
 public class ConfigurationExpectationBuilder {
 
@@ -94,9 +98,14 @@ public class ConfigurationExpectationBuilder {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
         boolean isReviewQaCase = conditions.containsKey("taskType")
                 && REVIEW_QA_CASE_TASK_TYPES.contains(conditions.get("taskType"));
+        boolean isReviewQaCaseProbate = REVIEW_QA_CASE_PROBATE.equals(conditions.get("taskType"));
 
         if (isReviewQaCase) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
+                    .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
+        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
+        if (isReviewQaCaseProbate) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE_PROBATE, true)
                     .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
                 && conditions.containsKey("taskType")
@@ -130,6 +139,11 @@ public class ConfigurationExpectationBuilder {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
         if (!isReviewQaCase) {
+            builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
+        }
+        builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
+
+        if (!isReviewQaCaseProbate) {
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
         }
         builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)

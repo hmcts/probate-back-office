@@ -114,6 +114,29 @@
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_18rfvfi">
+        <inputEntry id="UnaryTests_10n6bt1">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02nw57z">
+          <text>"boWithdrawApplicationForCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ay7v1h">
+          <text>"BOCaseClosed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01fza3h">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1girmx5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1363cqw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jqjnv5">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
