@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
@@ -118,7 +117,7 @@ public class ConfigurationExpectationBuilder {
         } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(RECTIFY_QA_CASE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_RESOLVE_STOP, true);
-        } else if (conditions.containsValue(BO_CASE_CLOSED) && conditions.containsKey("taskType")
+        } else if (conditions.containsValue(BO_REGISTRAR_ESCALATION) && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(RESOLVE_REGISTRAR_ESCALATION_REFERRALS)
                 || conditions.get("taskType").equals(RESOLVE_REGISTRAR_ESCALATION_ORDERS))) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true);
@@ -144,6 +143,11 @@ public class ConfigurationExpectationBuilder {
 
         if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(RECTIFY_QA_CASE))) {
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        }
+
+        if (conditions.containsValue(BO_REGISTRAR_ESCALATION) && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(REVIEW_REGISTRAR_DECISION))) {
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         }
 

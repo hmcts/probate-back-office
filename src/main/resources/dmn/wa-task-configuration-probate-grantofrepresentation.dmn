@@ -395,6 +395,24 @@ else ""</text>
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1lv5omn">
+        <inputEntry id="UnaryTests_0i7gzqw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19m9u90">
+          <text>"ReviewRegistrarDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tcpa3o">
+          <text>"assignee"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hldv7n">
+          <text>if (caseData.selectForQAUserIdamId != null) then caseData.selectForQAUserIdamId
+else ""</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mi2w84">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
