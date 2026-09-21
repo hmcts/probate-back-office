@@ -1,10 +1,9 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -14,14 +13,17 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
@@ -39,18 +41,27 @@ class AmendCaseDetailsForReadyToIssueTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Spy
+    @Mock
+    private WaApi waApi;
+    @Mock
+    private SecurityUtils securityUtils;
+
     private WaTaskService waTaskService;
 
-    @InjectMocks
     private AmendCaseDetailsForReadyToIssue processor;
 
-    private static final String authToken = "authToken";
+    private static final String AUTH_TOKEN = "authToken";
 
     private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
+
+    @BeforeEach
+    void setUp() {
+        waTaskService = spy(new WaTaskService(waApi, securityUtils));
+        processor = new AmendCaseDetailsForReadyToIssue(waTaskService);
+    }
 
     @Test
     void shouldReturnCorrectEventId() {
@@ -64,21 +75,23 @@ class AmendCaseDetailsForReadyToIssueTest {
                 CaseType.GRANT_OF_REPRESENTATION.name(),
                 CaseType.GRANT_OF_REPRESENTATION.name()
         );
-        when(waTaskService.isTaskPresent(authToken,
-                callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
-                taskToCLose))
-                .thenReturn(false);
+
+        String caseId = callbackRequest.getCaseDetails().getId().toString();
+
+        doReturn(false)
+                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(authToken, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
-
         verify(waTaskService)
-                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                .getCaseTypePredicate();
+        verify(waTaskService)
+                .isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
     }
@@ -89,36 +102,34 @@ class AmendCaseDetailsForReadyToIssueTest {
                 CaseType.GRANT_OF_REPRESENTATION.name(),
                 CaseType.CAVEAT.name()
         );
-        when(waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
-                taskToCLose))
-                .thenReturn(true);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(authToken, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);
         verify(waTaskService)
-                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                .getCaseTypePredicate();
+        verify(waTaskService, never())
+                .isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
     }
 
     @Test
     void shouldSetCreateTaskToYesWhenCaseTypesAreDifferent() {
-        setUpCallbackRequest(
+        setUpCaseTypeCallbackRequest(
                 "CaveatGrantOfRepresentation",
                 "Caveat"
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(authToken, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);
-        verifyNoInteractions(waTaskService);
+        verify(waTaskService).getCaseTypePredicate();
     }
 
     @Test
@@ -127,10 +138,15 @@ class AmendCaseDetailsForReadyToIssueTest {
                 HandoffReasonId.AD_COLLIGENDA_BONA,
                 HandoffReasonId.AD_COLLIGENDA_BONA
         );
+        String caseId = callbackRequest.getCaseDetails().getId().toString();
+
+        doReturn(false)
+                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
@@ -139,6 +155,9 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
+
+        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
     }
 
     @Test
@@ -147,9 +166,14 @@ class AmendCaseDetailsForReadyToIssueTest {
                 HandoffReasonId.FIAT_WILL,
                 HandoffReasonId.CODICIL_MIS
         );
+        String caseId = callbackRequest.getCaseDetails().getId().toString();
+
+        doReturn(false)
+                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
@@ -159,6 +183,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
     }
 
     private void setUpCaseTypeCallbackRequest(

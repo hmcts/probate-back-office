@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason;
@@ -40,7 +41,8 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason), true),
+                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason), true,
+                                emptyList()),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -49,21 +51,24 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -84,7 +89,8 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -93,21 +99,24 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -122,7 +131,8 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -131,21 +141,24 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -154,7 +167,8 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -163,21 +177,24 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(

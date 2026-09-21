@@ -4964,11 +4964,11 @@ class CallbackResponseTransformerTest {
         when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
                 .thenReturn(Optional.of(amendCaseDetailsForAwaitingDocumentation));
         doAnswer(invocation -> {
-            ResponseCaseData responseCaseData = invocation.getArgument(1);
+            ResponseCaseData responseCaseData = invocation.getArgument(2);
             responseCaseData.setCreateTask(YES);
             return null;
         }).when(amendCaseDetailsForAwaitingDocumentation)
-                .process(any(CallbackRequest.class), any(ResponseCaseData.class));
+                .process(anyString(), any(CallbackRequest.class), any(ResponseCaseData.class));
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(YES, callbackResponse.getData().getCreateTask());

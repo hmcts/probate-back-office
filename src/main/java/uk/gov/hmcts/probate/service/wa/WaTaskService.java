@@ -28,7 +28,7 @@ import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-class WaTaskService {
+public class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
 

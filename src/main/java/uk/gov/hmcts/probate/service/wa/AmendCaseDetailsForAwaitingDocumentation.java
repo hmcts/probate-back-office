@@ -21,7 +21,7 @@ public class AmendCaseDetailsForAwaitingDocumentation implements CreateTaskProce
     }
 
     @Override
-    public void process(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask(waTaskService.getCaseTypePredicate().test(callbackRequest)
                 ? Constants.YES : Constants.NO);
     }

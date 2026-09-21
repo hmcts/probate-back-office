@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineHorizonSchemeCasePrintedHandOffReason;
@@ -39,7 +40,8 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(horizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
@@ -47,21 +49,24 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -81,7 +86,8 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(horizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
@@ -89,21 +95,24 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -117,7 +126,8 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(horizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
@@ -125,21 +135,24 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -147,7 +160,8 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         List.of(horizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
@@ -155,21 +169,24 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
-                                true),
+                                true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(

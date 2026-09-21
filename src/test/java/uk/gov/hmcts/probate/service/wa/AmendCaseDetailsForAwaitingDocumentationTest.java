@@ -1,10 +1,9 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -12,8 +11,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,13 +26,22 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Spy
+    @Mock
+    private WaApi waApi;
+    @Mock
+    private SecurityUtils securityUtils;
+
     private WaTaskService waTaskService;
 
-    @InjectMocks
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
     private static final String authToken = "authToken";
+
+    @BeforeEach
+    void setUp() {
+        waTaskService = spy(new WaTaskService(waApi, securityUtils));
+        processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
+    }
 
     @Test
     void shouldReturnCorrectEventId() {

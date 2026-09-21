@@ -38,28 +38,32 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", false,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -78,28 +82,32 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", false,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -112,56 +120,63 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", false,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                emptyList(), false),
+                                emptyList(), false, emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", false,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                emptyList(), false),
+                                emptyList(), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(

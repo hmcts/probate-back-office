@@ -44,12 +44,13 @@ class WaTaskServiceTest {
     public static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
     @Mock
     private WaApi waApi;
-
+    @Mock
     private CallbackRequest callbackRequest;
     @Mock
     private CaseDetails caseDetails;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
     private CaseDetails caseDetailsBefore;
 
     @InjectMocks

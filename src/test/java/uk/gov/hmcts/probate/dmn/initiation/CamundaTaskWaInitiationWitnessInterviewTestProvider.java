@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
@@ -39,27 +40,31 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList(), false),
+                        additionalData(false, "",true, Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -78,27 +83,31 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList(), false),
+                        additionalData(false, "",true, Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -111,54 +120,62 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList(), false),
+                        additionalData(false, "",true, Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, Collections.emptyList(), false),
+                        additionalData(false, "",true, Collections.emptyList(), false,
+                                emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
