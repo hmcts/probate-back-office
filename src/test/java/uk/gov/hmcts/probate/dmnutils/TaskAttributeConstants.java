@@ -241,7 +241,6 @@ public class TaskAttributeConstants {
             = "Examine - Will or Codicil to be Notated";
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
     public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
-    public static final String EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME = "Examine - Foreign Domicile";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
