@@ -265,44 +265,44 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DE_BONIS_NON
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_FIAT_WILL
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WINDRUSH_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WITNESS_INTERVIEW
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WITNESS_INTERVIEW
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_HORIZON_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_HORIZON_SCHEME
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -383,32 +383,32 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_FIAT_WILL
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WINDRUSH_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WITNESS_INTERVIEW
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WITNESS_INTERVIEW
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_HORIZON_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_HORIZON_SCHEME
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -419,12 +419,12 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -553,7 +553,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boEscalateToRegistrar",
+                       "boEscalateToRegistrar",
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -568,36 +568,36 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DE_BONIS_NON
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_FIAT_WILL
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WINDRUSH_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WITNESS_INTERVIEW
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WITNESS_INTERVIEW
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_HORIZON_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_HORIZON_SCHEME
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -608,12 +608,12 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -757,36 +757,36 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DE_BONIS_NON
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_FIAT_WILL
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WINDRUSH_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_WITNESS_INTERVIEW
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WITNESS_INTERVIEW
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_HORIZON_SCHEME
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_HORIZON_SCHEME
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -797,16 +797,16 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                                 ),
                                 Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DOUBLE_PROBATE
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DOUBLE_PROBATE
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
