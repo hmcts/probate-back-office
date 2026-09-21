@@ -45,7 +45,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         List.of(horizonSchemeTaskAttributes)
                 ),
@@ -53,7 +53,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -87,7 +87,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         List.of(horizonSchemeTaskAttributes)
                 ),
@@ -95,7 +95,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -123,7 +123,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         List.of(horizonSchemeTaskAttributes)
                 ),
@@ -131,7 +131,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -153,7 +153,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         List.of(horizonSchemeTaskAttributes)
                 ),
@@ -161,7 +161,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(examineHorizonSchemeCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
