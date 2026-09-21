@@ -13,7 +13,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
@@ -62,13 +61,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
-
 
 public class ConfigurationExpectationBuilder {
 
@@ -81,10 +78,11 @@ public class ConfigurationExpectationBuilder {
     );
 
     // Review QA Case tasks share one description and the review_case work type.
-    // Add each new sibling (Probate, Ad Colligenda Bona) here when it lands.
+    // Add each new sibling (e.g. Ad Colligenda Bona) here when it lands.
     private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
             REVIEW_QA_CASE_INTESTACY,
-            REVIEW_QA_CASE_ADMON
+            REVIEW_QA_CASE_ADMON,
+            REVIEW_QA_CASE_PROBATE
     );
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
@@ -98,14 +96,9 @@ public class ConfigurationExpectationBuilder {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
         boolean isReviewQaCase = conditions.containsKey("taskType")
                 && REVIEW_QA_CASE_TASK_TYPES.contains(conditions.get("taskType"));
-        boolean isReviewQaCaseProbate = REVIEW_QA_CASE_PROBATE.equals(conditions.get("taskType"));
 
         if (isReviewQaCase) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
-                    .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
-        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
-        if (isReviewQaCaseProbate) {
-            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE_PROBATE, true)
                     .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
                 && conditions.containsKey("taskType")
@@ -128,7 +121,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
                 || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
-            )) {
+        )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
@@ -139,11 +132,6 @@ public class ConfigurationExpectationBuilder {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
         if (!isReviewQaCase) {
-            builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
-        }
-        builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
-
-        if (!isReviewQaCaseProbate) {
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
         }
         builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)

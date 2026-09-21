@@ -18,7 +18,6 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -34,8 +33,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID = "boWithdrawApplicationForReadyToIssue";
     private static final String
             WITHDRAW_APPLICATION_FOR_CASE_STOPPED_EVENT_ID = "boWithdrawApplicationForCaseStopped";
-    private static final String
-            WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID = "boWithdrawApplicationForCaseQA";
     private static final String
             WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID = "boWithdrawApplicationForCaseQA";
 
@@ -67,8 +64,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_STOPPED_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
-                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID)
-                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
@@ -76,7 +71,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     private VariableMap putAllCancellationProperties(VariableMap inputVariables,
-                                                 Map<String, String> cancellationProperties) {
+                                                     Map<String, String> cancellationProperties) {
         if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
             inputVariables.putValue("event", cancellationProperties.get("event"));
             inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
@@ -99,8 +94,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         if ((cancellationProperties.containsValue(CASE_PRINTED_STATE)
                 || cancellationProperties.containsValue(READY_TO_ISSUE_STATE)
                 || cancellationProperties.containsValue(BO_CASE_STOPPED_STATE)
-                || cancellationProperties.containsValue(BO_CASE_QA_STATE))
-                || cancellationProperties.containsValue(READY_TO_ISSUE_STATE)
                 || cancellationProperties.containsValue(BO_CASE_QA_STATE))
                 && cancellationProperties.containsValue(BO_CASE_CLOSED)) {
             Assertions.assertEquals(1, dmnResultList.size());
