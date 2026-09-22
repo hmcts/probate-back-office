@@ -127,12 +127,15 @@ class Dtspb5112CaveatMigrationHandlersTest {
         CaveatCallbackRequest request = mock(CaveatCallbackRequest.class);
         CaveatDetails details = mock(CaveatDetails.class);
         when(request.getCaseDetails()).thenReturn(details);
-        JSONObject migrationData = new JSONObject()
-            .put("originalState", PA_APP_CREATED);
 
-        assertThatThrownBy(() -> new Dtspb5112CloseExistingExpiredCaveatRollback()
-            .migrate(request, migrationData))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Invalid DTSPB-5112 originalState: PAAppCreated");
+        JSONObject migrationData = new JSONObject()
+                .put("originalState", PA_APP_CREATED);
+
+        Dtspb5112CloseExistingExpiredCaveatRollback handler =
+                new Dtspb5112CloseExistingExpiredCaveatRollback();
+
+        assertThatThrownBy(() -> handler.migrate(request, migrationData))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid DTSPB-5112 originalState: PAAppCreated");
     }
 }
