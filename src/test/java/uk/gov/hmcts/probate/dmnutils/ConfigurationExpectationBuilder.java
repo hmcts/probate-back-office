@@ -78,7 +78,6 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_TIME, ASSIGNEE
     );
 
-    // Review QA Case tasks share one description and the review_case work type.
     private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
             REVIEW_QA_CASE_INTESTACY,
             REVIEW_QA_CASE_ADMON,
