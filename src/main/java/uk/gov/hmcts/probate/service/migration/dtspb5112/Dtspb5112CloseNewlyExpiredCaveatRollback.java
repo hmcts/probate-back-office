@@ -16,7 +16,7 @@ public class Dtspb5112CloseNewlyExpiredCaveatRollback implements CaveatMigration
         final CaveatDetails caveatDetails = callbackRequest.getCaseDetails();
         final String originalState = migrationData.getString(ORIGINAL_STATE);
 
-        if (!Dtspb5112CaveatStates.LIVE_STATES.contains(originalState)) {
+        if (originalState == null || !Dtspb5112CaveatStates.LIVE_STATES.contains(originalState)) {
             throw new IllegalArgumentException("Invalid DTSPB-5112 originalState: " + originalState);
         }
 
