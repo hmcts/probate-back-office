@@ -51,6 +51,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String willOrCodicilToBeNotatedHandOffReason = "WillCodicilNotated";
     protected static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
     protected static final String windrushSchemeHandOffReason = "WindrushScheme";
+    protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
+    protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -122,6 +124,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWitnessInterviewTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationFiatWillCasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseIntestacyTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseProbateTestProvider.class)

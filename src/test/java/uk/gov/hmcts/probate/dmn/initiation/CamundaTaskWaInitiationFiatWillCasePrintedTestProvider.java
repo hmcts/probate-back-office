@@ -8,29 +8,27 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
-import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.fiatWillCasePrintedHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
-
-public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvider implements ArgumentsProvider {
+public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements ArgumentsProvider {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-        Map<String,Object> infectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
-                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+        Map<String,Object> fiatWillTaskAttributes = Map.of(
+                "taskId", EXAMINE_FIAT_WILL_CASE_PRINTED,
+                "name", EXAMINE_FIAT_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
@@ -39,16 +37,15 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason), false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
+                                false),
+                        List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -56,7 +53,8 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -82,17 +80,15 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -100,7 +96,9 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),
+                                false
+                        ),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -120,17 +118,15 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -152,17 +148,15 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(fiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
                                 false),
                         Collections.emptyList()
                 ),
@@ -170,7 +164,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
