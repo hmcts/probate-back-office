@@ -474,7 +474,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION,
-                        CaseDataBuilder.defaultWaCase().isUrgent().setSelectForQAUserIdamId(DEFAULT_ASSIGNEE).build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().setEscalateToRegistrarUserIdamId(DEFAULT_ASSIGNEE)
+                                .build(),
                         REVIEW_REGISTRAR_DECISION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", REVIEW_REGISTRAR_DECISION,

@@ -406,7 +406,7 @@ else ""</text>
           <text>"assignee"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0hldv7n">
-          <text>if (caseData.selectForQAUserIdamId != null) then caseData.selectForQAUserIdamId
+          <text>if (caseData.escalateToRegistrarUserIdamId != null) then caseData.escalateToRegistrarUserIdamId
 else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1mi2w84">
