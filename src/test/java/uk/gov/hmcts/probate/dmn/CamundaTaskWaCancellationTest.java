@@ -71,7 +71,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     private VariableMap putAllCancellationProperties(VariableMap inputVariables,
-                                                     Map<String, String> cancellationProperties) {
+                                                 Map<String, String> cancellationProperties) {
         if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
             inputVariables.putValue("event", cancellationProperties.get("event"));
             inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
