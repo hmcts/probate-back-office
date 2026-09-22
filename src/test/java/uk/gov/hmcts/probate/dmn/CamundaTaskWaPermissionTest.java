@@ -121,8 +121,8 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     "roleCategory", ROLE_CATEGORY_CTSC,
                     "assignmentPriority", 1,
                     "autoAssignable", false
-            )
-    );
+                )
+        );
 
 
     @BeforeAll
@@ -198,9 +198,9 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(WITNESS_INTERVIEW_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_HORIZON_SCHEME,
-                        DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(HORIZON_SCHEME_SKILL_CODE)
+                    EXAMINE_HORIZON_SCHEME,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(HORIZON_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
@@ -208,9 +208,9 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
-                        DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DOUBLE_PROBATE,
@@ -423,8 +423,8 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     @ParameterizedTest(name = "task type: {0} case data: {1}")
     @MethodSource("scenarioProvider")
     void given_inputs_should_evaluate_dmn_and_return_expected_rules(String taskType,
-                                                                    String caseData,
-                                                                    List<Map<String, Object>> expectation) {
+                                                                                String caseData,
+                                                                                List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("taskAttributes", Map.of("taskType", taskType));
         inputVariables.putValue("case", caseData);

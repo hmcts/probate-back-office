@@ -54,7 +54,7 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_LOCATION = "336559";
     public static final String DEFAULT_LOCATION_NAME = "Glasgow Tribunals Centre";
     public static final String DEFAULT_DUE_DATE_NON_WORKING_CALENDAR
-            = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
+        = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
     public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
     public static final String DEFAULT_ASSIGNEE = "someIdamId";
 
@@ -71,7 +71,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
             = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
-            = "ExamineInfectedBloodCompensationAuthority";
+        = "ExamineInfectedBloodCompensationAuthority";
     public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
     public static final String EXAMINE_DOUBLE_PROBATE_CASE_PRINTED = "ExamineDoubleProbateCasePrinted";
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
@@ -88,11 +88,11 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_MINORITY_INTEREST = "ExamineMinorityInterest";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
-            = "ExamineWillOrCodicilToBeNotated";
+        = "ExamineWillOrCodicilToBeNotated";
     public static final String EXAMINE_WITNESS_INTERVIEW
-            = "ExamineWitnessInterview";
+        = "ExamineWitnessInterview";
     public static final String EXAMINE_HORIZON_SCHEME
-            = "ExamineHorizonScheme";
+        = "ExamineHorizonScheme";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
     public static final String EXAMINE_SECTION_116 = "ExamineSection116";
     public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
@@ -105,9 +105,9 @@ public class TaskAttributeConstants {
     public static final String RECTIFY_QA_CASE = "RectifyQACase";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
-            = "ExamineWillOrCodicilToBeNotatedCasePrinted";
+        = "ExamineWillOrCodicilToBeNotatedCasePrinted";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED
-            = "ExamineRectifyWillOrCodicilCasePrinted";
+        = "ExamineRectifyWillOrCodicilCasePrinted";
     public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
@@ -145,17 +145,17 @@ public class TaskAttributeConstants {
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
-                    + "[Issue Grant](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
-                    + "[Escalate to Registrar](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
-                    + "[Select For QA](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
-                    + "[SME Referral](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
-                    + "[Stop Case](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
+            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
+            + "[Issue Grant](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
+            + "[Escalate to Registrar](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
+            + "[Select For QA](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
+            + "[SME Referral](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
+            + "[Stop Case](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
             "[Amend Case Details](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
@@ -201,14 +201,14 @@ public class TaskAttributeConstants {
     public static final String FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
     public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
-            = "SKILL:ABA6:InfectedBloodCompensationAuthority";
+        = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
     public static final String WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE
-            = "SKILL:ABA6:WillOrCodicilToBeNotated";
+        = "SKILL:ABA6:WillOrCodicilToBeNotated";
     public static final String WITNESS_INTERVIEW_SKILL_CODE
-            = "SKILL:ABA6:WitnessInterview";
+        = "SKILL:ABA6:WitnessInterview";
     public static final String HORIZON_SCHEME_SKILL_CODE
-            = "SKILL:ABA6:HorizonScheme";
+        = "SKILL:ABA6:HorizonScheme";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
     public static final String DOUBLE_PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:DoubleProbate";
     public static final String INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE = "SKILL:ABA6:IncapacityUnder_Rule35";
