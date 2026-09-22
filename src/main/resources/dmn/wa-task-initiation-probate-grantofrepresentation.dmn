@@ -2231,7 +2231,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBCA")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pdmnrl">
-          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+          <text>"ExamineIBCA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_066elbg">
           <text>"Examine - Infected Blood Compensation Authority"</text>
@@ -2273,7 +2273,7 @@ else false</text>
 </text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1rjcw6u">
-          <text>	"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineWillCodicilNotated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1meuy8f">
           <text>"Examine - Will or Codicil to be Notated"</text>
@@ -2437,7 +2437,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_163kue4">
-          <text>"ExamineIncapacityUnderRule35"</text>
+          <text>"ExamineIncapacityRule35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1c23oiw">
           <text>"Examine - Incapacity under rule 35"</text>
@@ -2478,7 +2478,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "LeadingFollowing Grants")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_01we7j9">
-          <text>	"ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineLeadingFollowing Grants"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0cluz0l">
           <text>"Examine - Leading or following Grants"</text>
@@ -2519,7 +2519,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "RectifyWillCodicil")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0tfmhkh">
-          <text>"ExamineRectifyWillOrCodicil"</text>
+          <text>"ExamineRectifyWillCodicil"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_11ifuhs">
           <text>"Examine - Rectify a Will or Codicil"</text>
@@ -2560,7 +2560,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "CodicilMis")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0zy6jhc">
-          <text>"ExamineCodicilMisRecital"</text>
+          <text>"ExamineCodicilMis"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0lfmlun">
           <text>"Examine - Codicil Mis-Recital"</text>
@@ -2642,7 +2642,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "POA")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0q2o8mh">
-          <text>"ExaminePowerOfAttorney"</text>
+          <text>"ExaminePOA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1dnkg76">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -2724,7 +2724,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1c177b9">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineIBIS"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1knpbw9">
           <text>"Examine - Infected Blood Interim Scheme"</text>

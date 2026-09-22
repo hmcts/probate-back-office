@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Base64;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -49,8 +50,11 @@ public class WaTaskContoller {
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
-        Predicate<CallbackRequest> completeTask = waTaskService.getCaseTypePredicate();
-        return getCallbackResponseResponseEntity(callbackRequest, clientContext, bindingResult, request, completeTask);
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getCaseTypePredicate());
     }
 
 
@@ -63,8 +67,11 @@ public class WaTaskContoller {
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
-        Predicate<CallbackRequest> completeTask = waTaskService.getHandOffPredicate();
-        return getCallbackResponseResponseEntity(callbackRequest, clientContext, bindingResult, request, completeTask);
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getHandOffPredicate());
     }
 
     private @NonNull ResponseEntity<CallbackResponse> getCallbackResponseResponseEntity(
@@ -72,7 +79,7 @@ public class WaTaskContoller {
             String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request,
-            Predicate<CallbackRequest> completeTask) {
+            BiPredicate<CallbackRequest, String> completeTask) {
 
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);

@@ -6,10 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.WaMapper;
 
 import java.util.Base64;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -24,7 +26,7 @@ public class TaskUtils {
     public Optional<String> setTaskCompletion(
         String clientContext,
         CallbackRequest callbackRequest,
-        Predicate<CallbackRequest> completeTask) {
+        BiPredicate<CallbackRequest, String> completeTask) {
 
         return getWaMapper(clientContext)
                 .map(WaMapper::getClientContext)
@@ -32,16 +34,23 @@ public class TaskUtils {
                 .map(value ->
                         value.toBuilder()
                                 .userTask(value.getUserTask().toBuilder()
-                                        .completeTask(completeTask.test(callbackRequest))
+                                        .completeTask(completeTask.test(callbackRequest,
+                                                clientContext))
                                         .build())
                                 .build()).flatMap(updatedClientContext -> base64Encode(WaMapper.builder()
                         .clientContext(updatedClientContext)
                         .build()));
     }
 
-    private  Optional<WaMapper> getWaMapper(String clientContext) {
+    public Optional<TaskData> getTaskData(String clientContext) {
+        return getWaMapper(clientContext)
+                .map(WaMapper::getClientContext)
+                .filter(value -> nonNull(value.getUserTask()))
+                .map(value -> value.getUserTask().getTaskData());
+    }
+
+    private Optional<WaMapper> getWaMapper(String clientContext) {
         if (clientContext != null) {
-            log.info("clientContext is present");
             try {
                 byte[] decodedBytes = Base64.getDecoder().decode(clientContext);
                 String decodedString = new String(decodedBytes);

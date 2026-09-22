@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -30,16 +31,18 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private WaApi waApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private TaskUtils taskUtils;
 
     private WaTaskService waTaskService;
 
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
-    private static final String authToken = "authToken";
+    private static final String AUTH_TOKEN = "authToken";
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils));
         processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
     }
 
@@ -58,7 +61,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(authToken, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
@@ -74,7 +77,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(authToken, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);

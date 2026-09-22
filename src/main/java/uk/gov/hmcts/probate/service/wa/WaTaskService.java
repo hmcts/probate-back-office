@@ -14,12 +14,14 @@ import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
@@ -31,6 +33,8 @@ import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 public class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
+    private final TaskUtils taskUtils;
+    private final static int EXAMINE_TASK_LENGTH = "Examine".length();
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -63,16 +67,20 @@ public class WaTaskService {
                 .anyMatch(taskNames::contains);
     }
 
-    public Predicate<CallbackRequest> getCaseTypePredicate() {
-        return callbackRequest ->
+    public BiPredicate<CallbackRequest, String> getCaseTypePredicate() {
+        return (callbackRequest, clientContext) ->
                 !callbackRequest.getCaseDetails().getData().getCaseType()
                         .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
     }
 
-    public Predicate<CallbackRequest> getHandOffPredicate() {
-        return callbackRequest -> {
+    public BiPredicate<CallbackRequest, String> getHandOffPredicate() {
+        return (callbackRequest, clientContext) -> {
             Set<HandoffReason> handOffReasonBefore = getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
             Set<HandoffReason> handOffReasonAfter = getGetHandOffReasons(callbackRequest.getCaseDetails());
+
+            if (isTaskHandOffReasonRetained(clientContext, handOffReasonAfter)) {
+                return false;
+            }
 
             if (handOffReasonBefore.isEmpty() && handOffReasonAfter.isEmpty()) {
                 return true;
@@ -80,6 +88,25 @@ public class WaTaskService {
 
             return !handOffReasonBefore.equals(handOffReasonAfter);
         };
+    }
+
+    private boolean isTaskHandOffReasonRetained(String clientContext, Set<HandoffReason> handOffReasonAfter) {
+        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
+        String currentTaskHandOff = taskData.map(TaskData::getType)
+                .map(taskType -> taskType.substring(EXAMINE_TASK_LENGTH))
+                .orElse("");
+        log.info("Current task handOff {}", currentTaskHandOff);
+
+        HandoffReasonId currentTaskHandOffId = HandoffReasonId.fromCode(currentTaskHandOff);
+
+        boolean isTaskHandOffReasonRetained = handOffReasonAfter.stream()
+                .map(HandoffReason::getCaseHandoffReason)
+                .anyMatch(handoffReason -> handoffReason.equals(currentTaskHandOffId));
+        log.info("Current task handOff Id {}, isTaskHandOffReasonRetained: {}",
+                currentTaskHandOffId,
+                isTaskHandOffReasonRetained);
+
+        return isTaskHandOffReasonRetained;
     }
 
     public Set<HandoffReason> getGetHandOffReasons(CaseDetails caseDetails) {

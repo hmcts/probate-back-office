@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -25,8 +26,10 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.Set;
 import java.util.UUID;
@@ -42,6 +45,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class WaTaskServiceTest {
     public static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
+    public static final String CLIENT_CONTEXT = "client_context";
     @Mock
     private WaApi waApi;
     @Mock
@@ -52,6 +56,8 @@ class WaTaskServiceTest {
     private SecurityUtils securityUtils;
     @Mock
     private CaseDetails caseDetailsBefore;
+    @Mock
+    private TaskUtils taskUtils;
 
     @InjectMocks
     private WaTaskService waTaskService;
@@ -190,10 +196,10 @@ class WaTaskServiceTest {
                 "GrantOfAdministration"
         );
 
-        Predicate<CallbackRequest> predicate =
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getCaseTypePredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, ""))
                 .isTrue();
     }
 
@@ -204,10 +210,10 @@ class WaTaskServiceTest {
                 "GrantOfProbate"
         );
 
-        Predicate<CallbackRequest> predicate =
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getCaseTypePredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, ""))
                 .isFalse();
     }
 
@@ -232,16 +238,24 @@ class WaTaskServiceTest {
                                 generateHandOffReasonCollection(
                                         List.of(HandoffReasonId.FOREIGN_DOMICILE))
                         ).build());
+        TaskData task = new TaskData();
+        task.setType("ExamineDeBonisNon");
 
-        Predicate<CallbackRequest> predicate =
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
+
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
                 .isTrue();
     }
 
     @Test
     void shouldReturnFalseWhenHandOffReasonsHaveNotChanged() {
+        TaskData task = new TaskData();
+        task.setType("ExamineDoubleProbate");
+
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
 
@@ -262,10 +276,10 @@ class WaTaskServiceTest {
                                         List.of(HandoffReasonId.DOUBLE_PROBATE))
                         ).build());
 
-        Predicate<CallbackRequest> predicate =
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
                 .isFalse();
     }
 
@@ -285,10 +299,10 @@ class WaTaskServiceTest {
                 .thenReturn(CaseData.builder()
                         .build());
 
-        Predicate<CallbackRequest> predicate =
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
                 .isTrue();
     }
 
@@ -342,10 +356,44 @@ class WaTaskServiceTest {
                                                 HandoffReasonId.FOREIGN_DOMICILE))
                         ).build());
 
-        Predicate<CallbackRequest> predicate =
+        BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
 
-        assertThat(predicate.test(callbackRequest))
+        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
+                .isTrue();
+    }
+
+    @Test
+    void shouldReturnCurrentHandOffsWhenTaskNHandOffReasonRetained() {
+        TaskData task = new TaskData();
+        task.setType("ExamineLeadingFollowing Grants");
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .build());
+
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(
+                                generateHandOffReasonCollection(
+                                        List.of(HandoffReasonId.DOUBLE_PROBATE,
+                                                HandoffReasonId.LEADING_FOLLOWING_GRANTS,
+                                                HandoffReasonId.FOREIGN_DOMICILE))
+                        ).build());
+
+        BiPredicate<CallbackRequest, String> predicate =
+                waTaskService.getHandOffPredicate();
+
+        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
                 .isTrue();
     }
 

@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +46,7 @@ import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMET
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskContollerUnitTest {
+    public static final String CLIENT_CONTEXT = "encodedClientContext";
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -75,13 +77,13 @@ class WaTaskContollerUnitTest {
     private WaTaskContoller waTaskContoller;
 
     @Captor
-    private ArgumentCaptor<Predicate<CallbackRequest>> predicateArgumentCaptor;
+    private ArgumentCaptor<BiPredicate<CallbackRequest, String>> predicateArgumentCaptor;
 
     private final String clientContext = "clientContext";
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 
@@ -100,7 +102,7 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
                 callbackRequest,
@@ -111,7 +113,7 @@ class WaTaskContollerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -119,7 +121,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest)).isFalse();
+               .test(callbackRequest, CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -142,7 +144,7 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
                 callbackRequest,
@@ -154,7 +156,7 @@ class WaTaskContollerUnitTest {
 
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -162,7 +164,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest)).isTrue();
+               .test(callbackRequest, CLIENT_CONTEXT)).isTrue();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -188,7 +190,7 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
                 callbackRequest,
@@ -199,7 +201,7 @@ class WaTaskContollerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -207,7 +209,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest)).isFalse();
+               .test(callbackRequest, CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -232,7 +234,7 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
                 callbackRequest,
@@ -244,7 +246,7 @@ class WaTaskContollerUnitTest {
 
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
