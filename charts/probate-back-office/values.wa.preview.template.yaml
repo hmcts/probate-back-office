@@ -74,7 +74,7 @@ wa:
       devmemoryLimits: 4Gi
       environment:
         CAMUNDA_URL: "http://{{ .Release.Name }}-camunda/engine-rest"
-        IDAM_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
+        IDAM_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
         S2S_URL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
         OPEN_ID_IDAM_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
@@ -197,7 +197,7 @@ xui-webapp:
       SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
-      SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      SERVICES_IDAM_API_URL: https://idam-web-public.aat.platform.hmcts.net
       SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       JURISDICTIONS: PROBATE
       FEATURE_REDIS_ENABLED: false
