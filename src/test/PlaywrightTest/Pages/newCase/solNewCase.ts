@@ -1212,14 +1212,15 @@ export class SolCreateCasePage extends BasePage {
                applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
         await expect(this.page.getByText(intestacyDetailsConfig.surviving_children_grandchildrenText)).toBeVisible();
         await this.page.locator(`#deceasedAnyLivingDescendants_${intestacyDetailsConfig.optionNo}`).click();
-        await expect(this.page.getByText(intestacyDetailsConfig.deceased_adoptionText)).toBeVisible();
-        await this.page.locator(`#deceasedAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
-        await expect(this.page. locator('#deceasedAdoptionInEnglandOrWales')
-          .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
-          .toBeVisible();
-        await this.page.locator(`#deceasedAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+
         if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
           await expect(this.page.getByText(intestacyDetailsConfig.surviving_parentsText)).toBeVisible();
+          await expect(this.page.getByText(intestacyDetailsConfig.deceased_adoptedTextSiblings)).toBeVisible();
+          await this.page.locator(`#deceasedAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+          await expect(this.page. locator('#deceasedAdoptionInEnglandOrWales')
+            .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
+            .toBeVisible();
+          await this.page.locator(`#deceasedAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
           await this.page.locator(`#deceasedAnyLivingParents_${intestacyDetailsConfig.optionNo}`).click()
           await expect(this.page.getByText(intestacyDetailsConfig.siblingType_Text)).toBeVisible();
           if (isWholeBloodSibling) {
@@ -1233,6 +1234,15 @@ export class SolCreateCasePage extends BasePage {
           await this.page.locator(`#primaryApplicantAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
           await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptedOutText)).toBeVisible();
           await this.page.locator(`#primaryApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+        } else if(applicantRelationship === intestacyDetailsConfig.applicantRelationshipParent){
+            await expect(this.page.getByText(intestacyDetailsConfig.deceased_adoptionText)).toBeVisible();
+            await this.page.locator(`#applicantAdoptedDeceasedIn_${intestacyDetailsConfig.optionYes}`).click();
+            await expect(this.page. locator('#applicantAdoptionDeceasedInEnglandOrWales')
+              .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
+              .toBeVisible();
+            await this.page.locator(`#applicantAdoptionDeceasedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+            await this.page.locator(`#deceasedAnyLivingParents_${intestacyDetailsConfig.optionNo}`).click()
+
         }
     }
 

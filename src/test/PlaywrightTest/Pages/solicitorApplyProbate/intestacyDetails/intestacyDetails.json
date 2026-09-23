@@ -27,6 +27,7 @@
   "half_blood_sibling_coApplicant": "halfBloodSibling",
   "half_blood_niece_coApplicant": "halfBloodNieceOrNephew",
   "deceased_adoptionText": "Did the applicant adopt the deceased in to their family?",
+  "deceased_adoptedTextSiblings": "Was the deceased adopted in to the family?",
   "divorced_day": "01",
   "divorced_month": "01",
   "divorced_year": "2016",
