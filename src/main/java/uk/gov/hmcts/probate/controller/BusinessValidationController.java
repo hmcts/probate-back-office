@@ -748,9 +748,9 @@ public class BusinessValidationController {
 
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
 
-        if (BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT.equalsIgnoreCase(callbackRequest.getEventId()) ||
-                RESOLVE_SME_REFERRAL_EVENT.equalsIgnoreCase(callbackRequest.getEventId()) ||
-                CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
+        if (BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                || RESOLVE_SME_REFERRAL_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                || CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
             caseworkerInfo.ifPresent(userInfo -> {
                 String idamUserId = userInfo.getUid();
                 log.info("redeclarationUserIdamId set to: {}", idamUserId);
