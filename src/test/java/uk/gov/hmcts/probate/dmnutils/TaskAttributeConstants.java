@@ -277,5 +277,5 @@ public class TaskAttributeConstants {
 
     public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a Foreign Will";
-    public static final String EXAMINE_PROVE_FOREIGN_WILL_SKILL_CODE = "SKILL:ABA6:ForeignWill";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_SKILL_CODE = "SKILL:ABA6:ProveForeignWill";
 }
