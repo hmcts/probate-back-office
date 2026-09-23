@@ -597,7 +597,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         REDECLARATION,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().setRedeclarationUserIdamId(DEFAULT_ASSIGNEE).build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", REDECLARATION,

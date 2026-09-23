@@ -59,4 +59,9 @@ public class CaseDataBuilder {
         caseData.put("escalateToRegistrarUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setRedeclarationUserIdamId(String idamId) {
+        caseData.put("redeclarationUserIdamId", idamId);
+        return this;
+    }
 }

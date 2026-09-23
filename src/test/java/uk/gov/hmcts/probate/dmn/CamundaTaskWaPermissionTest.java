@@ -463,7 +463,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REDECLARATION,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissionsWithAutoAssign(null, false)
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
                 )
         );
     }
