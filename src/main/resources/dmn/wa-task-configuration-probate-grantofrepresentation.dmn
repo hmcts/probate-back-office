@@ -395,6 +395,24 @@ else ""</text>
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0m1ayyu">
+        <inputEntry id="UnaryTests_08wpyd5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b1rwln">
+          <text>"Redeclaration"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1y3idnd">
+          <text>"assignee"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0b39com">
+          <text>if (caseData.redeclarationUserIdamId != null) then caseData.redeclarationUserIdamId
+else ""</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rwcuet">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

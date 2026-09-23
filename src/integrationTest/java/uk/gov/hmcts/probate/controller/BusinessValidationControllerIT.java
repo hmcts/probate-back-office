@@ -1619,4 +1619,23 @@ class BusinessValidationControllerIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.hasValidMatches").value(NO));
     }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsBoRedeclarationSoTForCaseStopped() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState("BOCaseClosed");
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boRedeclarationSoTForCaseStopped");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(REDECE_SOT)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
 }
