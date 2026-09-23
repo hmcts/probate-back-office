@@ -1488,7 +1488,8 @@ public class CallbackResponseTransformer {
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
             .createTask(caseData.getCreateTask())
-            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
+            .moveToCWEscalationUserIdamId(caseData.getSelectForQAUserIdamId());
 
         handleDeceasedAliases(
                 builder,

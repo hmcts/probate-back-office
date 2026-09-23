@@ -547,5 +547,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "createTask", "Label": "Task creation flag", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "selectForQAUserIdamId", "Label": "Select for QA User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "selectForQAUserIdamId", "Label": "Select for QA User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "moveToCWEscalationUserIdamId", "Label": "Move to CW Escalation User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

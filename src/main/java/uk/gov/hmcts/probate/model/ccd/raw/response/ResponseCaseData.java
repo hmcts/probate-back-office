@@ -425,4 +425,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private String createTask;
     private String selectForQAUserIdamId;
+    private String moveToCWEscalationUserIdamId;
 }

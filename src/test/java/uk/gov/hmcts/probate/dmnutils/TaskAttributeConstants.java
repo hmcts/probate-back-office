@@ -112,6 +112,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
+    public static final String EXAMINE_SME_REFERRAL = "ExamineSMEReferral";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -180,6 +181,11 @@ public class TaskAttributeConstants {
     public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
             "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/handleEvidence)";
+    public static final String DESCRIPTION_EXAMINE_SME_REFERRAL =
+            "[Resolve SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/resolveCWEscalation)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
@@ -244,6 +250,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME
             = "Examine - Will or Codicil to be Notated";
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
+    public static final String REVIEW_SME_REFERRAL_TASK_TYPE_NAME = "Review SME Referral";
+    public static final String EXAMINE_SME_REFERRAL_TASK_TYPE_NAME = "Examine SME Referral";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
