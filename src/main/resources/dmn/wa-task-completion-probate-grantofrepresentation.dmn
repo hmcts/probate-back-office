@@ -561,7 +561,7 @@
       </rule>
       <rule id="DecisionRule_1gzc6z4">
         <inputEntry id="UnaryTests_0affdy7">
-          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA"</text>
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA","boStopCaseForCaseQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_11v5zwe">
           <text>"ReviewQACaseIntestacy"</text>
@@ -572,7 +572,7 @@
       </rule>
       <rule id="DecisionRule_0b0g8w5">
         <inputEntry id="UnaryTests_1k0awkp">
-          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA"</text>
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA","boStopCaseForCaseQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ikidu3">
           <text>"ReviewQACaseAdmon"</text>
@@ -583,7 +583,7 @@
       </rule>
       <rule id="DecisionRule_0btr9jq">
         <inputEntry id="UnaryTests_0v1o173">
-          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA"</text>
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA","boStopCaseForCaseQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_17qx2hd">
           <text>"ReviewQACaseProbate"</text>

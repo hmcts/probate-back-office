@@ -1045,6 +1045,23 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", REVIEW_QA_CASE_PROBATE
                                 )
                         )
+                ),
+                Arguments.of(
+                        "boStopCaseForCaseQA",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REVIEW_QA_CASE_INTESTACY
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REVIEW_QA_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REVIEW_QA_CASE_PROBATE
+                                )
+                        )
                 )
         );
     }

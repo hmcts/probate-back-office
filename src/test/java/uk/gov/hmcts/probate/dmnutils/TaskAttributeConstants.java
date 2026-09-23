@@ -187,7 +187,9 @@ public class TaskAttributeConstants {
                     + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/moveToCWEscalation)  "
                     + "[Fail QA](/cases/case-details/${[CASE_REFERENCE]}"
-                    + "/trigger/boFailQA)";
+                    + "/trigger/boFailQA)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForCaseQA)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";

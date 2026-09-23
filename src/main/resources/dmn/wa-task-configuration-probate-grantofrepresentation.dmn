@@ -355,7 +355,7 @@ else ""</text>
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0nsjg7y">
-          <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Fail QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boFailQA)"</text>
+          <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Fail QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boFailQA)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseQA)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09w92ar">
           <text>true</text>
