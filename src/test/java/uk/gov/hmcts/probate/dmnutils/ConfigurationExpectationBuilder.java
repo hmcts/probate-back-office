@@ -13,6 +13,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
@@ -105,6 +106,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
                 || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
+                || conditions.get("taskType").equals(EXAMINE_FOREIGN_DOMICILE)
                 || conditions.get("taskType").equals(EXAMINE_PROVE_FOREIGN_WILL)
                 || conditions.get("taskType").equals(EXAMINE_TRUST_CORPORATION)
             )) {
