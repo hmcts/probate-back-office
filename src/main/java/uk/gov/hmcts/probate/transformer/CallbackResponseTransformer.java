@@ -1036,6 +1036,7 @@ public class CallbackResponseTransformer {
     }
 
     private void clearHalfSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
         responseCaseDataBuilder.otherHalfBloodSiblings(null);
         responseCaseDataBuilder.halfBloodSiblingsDiedBeforeDeceased(null);
         responseCaseDataBuilder.halfBloodNiecesAndNephewsSurvived(null);
