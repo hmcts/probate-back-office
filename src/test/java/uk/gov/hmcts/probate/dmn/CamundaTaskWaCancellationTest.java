@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
@@ -33,6 +34,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID = "boWithdrawApplicationForReadyToIssue";
     private static final String
             WITHDRAW_APPLICATION_FOR_CASE_STOPPED_EVENT_ID = "boWithdrawApplicationForCaseStopped";
+    private static final String
+            WITHDRAW_APPLICATION_FOR_REGISTER_ESCALATION_EVENT_ID = "boWithdrawApplicationForRegistrarEscalation";
 
     @BeforeAll
     public static void initialization() {
@@ -45,7 +48,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(4));
+        assertThat(logic.getRules().size(), is(5));
     }
 
     @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
@@ -60,7 +63,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
         if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID)
-                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_STOPPED_EVENT_ID)) {
+                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_STOPPED_EVENT_ID)
+                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_REGISTER_ESCALATION_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)) {
             testBoAmendCaseDetailsForReadyToIssue(dmnResultList, cancellationProperties);
@@ -109,7 +113,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                                                 Map<String, String> cancellationProperties) {
         if ((cancellationProperties.containsValue(CASE_PRINTED_STATE)
                 || cancellationProperties.containsValue(READY_TO_ISSUE_STATE)
-                || cancellationProperties.containsValue(BO_CASE_STOPPED_STATE))
+                || cancellationProperties.containsValue(BO_CASE_STOPPED_STATE)
+                || cancellationProperties.containsValue(BO_REGISTRAR_ESCALATION))
                 && cancellationProperties.containsValue(BO_CASE_CLOSED)) {
             Assertions.assertEquals(1, dmnResultList.size());
             Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),

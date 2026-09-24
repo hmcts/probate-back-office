@@ -91,6 +91,29 @@
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0btay92">
+        <inputEntry id="UnaryTests_1bcm0h8">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11kzbxa">
+          <text>"boWithdrawApplicationForRegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cz1fk1">
+          <text>"BOCaseClosed"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13n51a8">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t3m174">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0srgb5z">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15m9mgt">
+          <text></text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1rr7tab">
         <inputEntry id="UnaryTests_16mkb96">
           <text>"BOReadyToIssue"</text>
