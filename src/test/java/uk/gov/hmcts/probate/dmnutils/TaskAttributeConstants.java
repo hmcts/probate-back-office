@@ -34,6 +34,7 @@ public class TaskAttributeConstants {
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
     public static final String ACCESS_WORK_TYPE = "access_requests";
+    public static final String DECISION_MAKING_WORK_WORK_TYPE = "decision_making_work";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -114,6 +115,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
     public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
+    public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -179,11 +181,15 @@ public class TaskAttributeConstants {
     public static final String DESCRIPTION_BO_RESOLVE_STOP =
             "[Resolve Stop](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boResolveStop)";
+    public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
+            "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/handleEvidence)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
     public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
+    public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -285,4 +291,5 @@ public class TaskAttributeConstants {
 
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
             = "ExamineIncapacityUnderRule35CasePrinted";
+    public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
 }
