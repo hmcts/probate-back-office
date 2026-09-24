@@ -569,11 +569,11 @@ class BusinessValidationUnitTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty()))
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty(), AUTH_TOKEN))
             .thenReturn(callbackResponseMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
@@ -587,8 +587,8 @@ class BusinessValidationUnitTest {
             when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
             when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-                bindingResultMock, httpServletRequest);
+            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                    callbackRequestMock, bindingResultMock, httpServletRequest);
 
             assertThat(response.getStatusCode(), is(HttpStatus.OK));
             assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -605,8 +605,8 @@ class BusinessValidationUnitTest {
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -820,7 +820,7 @@ class BusinessValidationUnitTest {
     void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        verify(callbackResponseTransformerMock).transform(any(), any());
+        verify(callbackResponseTransformerMock).transform(any(), eq(Optional.empty()), any());
     }
 
     @Test
@@ -895,7 +895,8 @@ class BusinessValidationUnitTest {
     void shouldValidateSolPostCode() {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
-        verify(callbackResponseTransformerMock).transform(callbackRequestMock, Optional.empty());
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock,
+                Optional.empty(), "");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -916,7 +917,7 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0))
-                .transform(callbackRequestMock, CASEWORKER_USERINFO);
+                .transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
