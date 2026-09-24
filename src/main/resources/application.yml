@@ -111,11 +111,11 @@ docmosis:
     sentEmail:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
-      templateName: FL-PRB-SOT-ENG-00092.doc
+      templateName: FL-PRB-SOT-ENG-statement-of-truth-V0001.doc
     dormantReminder:
       templateName: FL-PRB-GNO-ENG-postal-dormant-reminder-v001.docx
     welshStatementOfTruth:
-      templateName: FL-PRB-SOT-WEL-00236.doc
+      templateName: FL-PRB-SOT-WEL-statement-of-truth-V0001.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00238.docx
     blankLetter:
