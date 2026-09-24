@@ -315,7 +315,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         additionalDataNoHandOffList(),
                         emptyList()
                 ),
-                // ATTACH_SCANNED_DOCS_EVENT - Case Printed only
+                // ATTACH_SCANNED_DOCS_EVENT - Case Printed
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         CASE_PRINTED_STATE,
