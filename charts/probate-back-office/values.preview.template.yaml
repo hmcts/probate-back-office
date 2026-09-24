@@ -24,8 +24,8 @@ ccd:
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
-    idamApiUrl: https://idam-web-public.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    idamApiUrl: https://idam-api.aat.platform.hmcts.net
+    idamWebUrl: https://idam-api.aat.platform.hmcts.net
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     devMode: true
     postgresHostname: "probate-preview.postgres.database.azure.com"
@@ -98,8 +98,8 @@ ccd:
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
-        IDAM_API_BASE_URL: https://idam-web-public.aat.platform.hmcts.net
-        IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+        IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
+        IDAM_OIDC_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
@@ -150,7 +150,7 @@ ccd:
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp,aac_manage_case_assignment
         DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 240
-        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+        IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 50000
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
@@ -395,7 +395,7 @@ xui-webapp:
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
       SERVICES_ROLE_ASSIGNMENT_API: http://${SERVICE_NAME}-am-role-assignment-service
-      SERVICES_IDAM_API_URL: https://idam-web-public.aat.platform.hmcts.net
+      SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       JURISDICTIONS: PROBATE
       LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
@@ -436,8 +436,8 @@ aac-manage-case-assignment:
     devmemoryRequests: 550Mi
     devmemoryLimits: 768Mi
     environment:
-      IDAM_API_URL: https://idam-web-public.aat.platform.hmcts.net
-      IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OIDC_URL: https://idam-api.aat.platform.hmcts.net
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
