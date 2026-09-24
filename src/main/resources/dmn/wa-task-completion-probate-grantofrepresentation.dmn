@@ -88,7 +88,7 @@
       </rule>
       <rule id="DecisionRule_1hakhbs">
         <inputEntry id="UnaryTests_0me2u40">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13p3955">
           <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
@@ -99,7 +99,7 @@
       </rule>
       <rule id="DecisionRule_06hfote">
         <inputEntry id="UnaryTests_1gu7it3">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0d93s81">
           <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
@@ -154,7 +154,7 @@
       </rule>
       <rule id="DecisionRule_0069rjp">
         <inputEntry id="UnaryTests_1fvv8ff">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_097jzif">
           <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
@@ -165,7 +165,7 @@
       </rule>
       <rule id="DecisionRule_1bcdjcf">
         <inputEntry id="UnaryTests_0nq4b2o">
-          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ebdjd9">
           <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
@@ -286,7 +286,7 @@
       </rule>
       <rule id="DecisionRule_1n7soue">
         <inputEntry id="UnaryTests_1hmgdlz">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0nb2nwv">
           <text></text>
@@ -556,6 +556,28 @@
           <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a4vbok">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wpl2vi">
+        <inputEntry id="UnaryTests_0rpalft">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xqlplk">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wosmu6">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_148i6jx">
+        <inputEntry id="UnaryTests_07lzcdi">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0go98kv">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fow4ag">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

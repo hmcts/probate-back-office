@@ -72,6 +72,7 @@ test.describe("Case Progress - standard path", () => {
       goToNextStep: true});
 
     await basePage.logInfo(scenarioName, 'Grant of probate details');
+    await solCreateCasePage.selectMaritalStatus('deceasedMarried');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();
