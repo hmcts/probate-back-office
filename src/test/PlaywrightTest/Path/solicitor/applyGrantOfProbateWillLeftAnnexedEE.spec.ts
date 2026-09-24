@@ -76,6 +76,7 @@ test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", 
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedMarried');
     await solCreateCasePage.admonWillDetailsPage1();
     await solCreateCasePage.admonWillDetailsPage2(updateAddressManually);
     await solCreateCasePage.admonWillDetailsPage3();
