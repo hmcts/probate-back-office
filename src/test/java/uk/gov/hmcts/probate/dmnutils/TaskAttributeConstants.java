@@ -213,7 +213,6 @@ public class TaskAttributeConstants {
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
     public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String PROVE_FOREIGN_WILL_SKILL_CODE = "SKILL:ABA6:ProveForeignWill";
-    public static final String TRUST_CORPORATION_SKILL_CODE = "SKILL:ABA6:TrustCorporation";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -246,7 +245,6 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
     public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a foreign will";
-    public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
