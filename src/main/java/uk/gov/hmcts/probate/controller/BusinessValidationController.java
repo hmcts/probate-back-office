@@ -77,6 +77,8 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +107,7 @@ public class BusinessValidationController {
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
+
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -168,7 +171,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/validate-further-evidence", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
         furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty()));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty(), ""));
     }
 
     @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -194,7 +197,7 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
+            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
         }
         return ResponseEntity.ok(response);
     }
@@ -314,6 +317,34 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(
+            path = "/sols-validate-will-and-codicil-dates-in-create",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsValidateCreationProbateAdmon(
+            @RequestBody
+            final CallbackRequest callbackRequest,
+            final HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        final List<String> errors = new ArrayList<>();
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        errors.addAll(eventValidationService.generateErrorsSepDateBounds(caseData));
+        errors.addAll(eventValidationService.generateErrorsSepOutsideEngWales(caseData));
+
+        if (! errors.isEmpty()) {
+            CallbackResponse errResponse = CallbackResponse.builder()
+                    .errors(errors)
+                    .build();
+            return ResponseEntity.ok(errResponse);
+        }
+
+        return commonSolsValidateProbatePage1(callbackRequest);
+    }
+
     @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
@@ -321,6 +352,12 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+
+        return commonSolsValidateProbatePage1(callbackRequest);
+    }
+
+    private ResponseEntity<CallbackResponse> commonSolsValidateProbatePage1(
+            final CallbackRequest callbackRequest) {
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
 
@@ -363,7 +400,7 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
         validateIHT400Date(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
     }
 
     @PostMapping(path = "/sols-default-iht400421Page", produces = {APPLICATION_JSON_VALUE})
@@ -374,6 +411,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCaseDetails(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
         HttpServletRequest request) {
@@ -384,7 +422,7 @@ public class BusinessValidationController {
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
+            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty(), authToken);
         }
 
         return ResponseEntity.ok(response);
@@ -467,7 +505,7 @@ public class BusinessValidationController {
 
         caseEscalatedService.setCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo);
+        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, "");
 
         return ResponseEntity.ok(response);
     }
@@ -707,7 +745,7 @@ public class BusinessValidationController {
 
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, ""));
     }
 
     @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_VALUE, produces = {

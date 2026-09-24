@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -35,7 +36,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
         Map<String, Object> examineDigitalCaseProbateTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String, Object> examineDigitalCaseProbateReadyToIssueTaskAttributes = Map.of(
@@ -366,6 +367,13 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     additionalData(false, "gop", true,
                             emptyList(),  true),
                     List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "gop", true,
+                            emptyList(),  true),
+                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
             )
         );
     }

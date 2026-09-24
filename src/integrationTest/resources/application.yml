@@ -589,3 +589,6 @@ upload_doc:
 
 supplementary-data:
   hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}
+
+wa.provider.client:
+  url: ${WA_SERVICE_HOST:http://localhost:6000}
