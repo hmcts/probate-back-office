@@ -52,6 +52,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String windrushSchemeHandOffReason = "WindrushScheme";
     protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
     protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
+    protected static final String trustCorporationHandOffReason = "TrustCorporation";
+    protected static final String foreignDomicileHandOffReason = "ForeignDomicile";
+    protected static final String proveForeignWillHandOffReason = "ForeignWill";
     protected static final String escalationReasonVar = "registrarEscalateReason";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
@@ -105,7 +108,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(54));
+        assertThat(logic.getRules().size(), is(63));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -137,6 +140,10 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationFiatWillCasePrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationTrustCorporationTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewSmeReferralTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationOrdersTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
