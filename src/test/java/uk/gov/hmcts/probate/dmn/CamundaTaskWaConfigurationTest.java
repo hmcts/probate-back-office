@@ -35,14 +35,22 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
@@ -64,6 +72,14 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -367,6 +383,132 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", RECTIFY_QA_CASE,
                                         "state", BO_CASE_STOPPED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LITERARY_ESTATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LITERARY_ESTATE, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                        Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL, "state", READY_TO_ISSUE_STATE))
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_MINORITY_INTEREST,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_MINORITY_INTEREST, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_SECTION_116_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_SECTION_116_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_FIAT_WILL_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_FIAT_WILL_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_FOREIGN_DOMICILE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_FOREIGN_DOMICILE,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
+                                        "state", CASE_PRINTED_STATE)).build()
                 )
         );
     }

@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -161,7 +162,7 @@ public class CallbackResponseTransformer {
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
     private final WorkAllocationToggleService workAllocationToggleService;
-    private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
+    private final CreateTaskProcessorFactory createTaskProcessorFactory;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -877,7 +878,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
+                                      String authToken) {
         ResponseCaseData responseCaseData = getResponseCaseData(
                 callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(),
@@ -886,20 +888,16 @@ public class CallbackResponseTransformer {
         ).build();
 
         //Setting task creation flag as mid event doesnt persist
-        setTaskCreation(callbackRequest, responseCaseData);
+        setTaskCreation(authToken, callbackRequest, responseCaseData);
 
         return transformResponse(responseCaseData);
     }
 
-    private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             responseCaseData.setCreateTask(Constants.NO);
-            if (callbackRequest.getEventId() != null
-                    && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
-                responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
-                        .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                        ? Constants.NO : Constants.YES);
-            }
+            createTaskProcessorFactory.get(callbackRequest.getEventId())
+                    .ifPresent(processor -> processor.process(authToken, callbackRequest, responseCaseData));
         }
     }
 
@@ -1287,13 +1285,14 @@ public class CallbackResponseTransformer {
             .declaration(caseData.getDeclaration())
             .legalStatement(caseData.getLegalStatement())
             .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+            .deceasedMarriedAfterWillOrCodicilDateYN(caseData.getDeceasedMarriedAfterWillOrCodicilDateYN())
+            .deceasedSpouseName(caseData.getDeceasedSpouseName())
 
             .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
             .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
             .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
 
             .payments(caseData.getPayments())
-            .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
             .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
 
             .scannedDocuments(caseData.getScannedDocuments())
@@ -1487,6 +1486,7 @@ public class CallbackResponseTransformer {
             .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
 
