@@ -1285,13 +1285,14 @@ public class CallbackResponseTransformer {
             .declaration(caseData.getDeclaration())
             .legalStatement(caseData.getLegalStatement())
             .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+            .deceasedMarriedAfterWillOrCodicilDateYN(caseData.getDeceasedMarriedAfterWillOrCodicilDateYN())
+            .deceasedSpouseName(caseData.getDeceasedSpouseName())
 
             .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
             .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
             .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
 
             .payments(caseData.getPayments())
-            .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
             .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
 
             .scannedDocuments(caseData.getScannedDocuments())
@@ -1485,6 +1486,7 @@ public class CallbackResponseTransformer {
             .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
 
