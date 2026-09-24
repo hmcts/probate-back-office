@@ -609,6 +609,18 @@
           <text>"Examine - Foreign Domicile"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0b6edfk">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_0z8f1rb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lko6uy">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0enj924">
+          <text>"Examine - Prove a Foreign Will"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
