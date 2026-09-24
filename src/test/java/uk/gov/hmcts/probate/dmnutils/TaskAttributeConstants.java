@@ -72,6 +72,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
     public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
+    public static final String EXAMINE_DOUBLE_PROBATE_CASE_PRINTED = "ExamineDoubleProbateCasePrinted";
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS = "ExamineLeadingOrFollowingGrants";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED =
@@ -94,7 +95,9 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
     public static final String EXAMINE_SECTION_116 = "ExamineSection116";
     public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
+    public static final String EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED = "ExaminePowerOfAttorneyCasePrinted";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT = "ExamineResealForeignGrant";
+    public static final String EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED = "ExamineResealForeignGrantCasePrinted";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
@@ -253,13 +256,22 @@ public class TaskAttributeConstants {
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME
-            = "Examine - Lost Will or Codicil";
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
 
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
-    public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME = "Examine - Horizon Scheme";
-    public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
     public static final String LITERARY_ESTATE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String LOST_WILL_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+    public static final String EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME = "Examine - Horizon Scheme";
+    public static final String EXAMINE_HORIZON_SCHEME_SKILL_CODE = "SKILL:ABA6:HorizonScheme";
+
+    public static final String EXAMINE_FIAT_WILL_CASE_PRINTED = "ExamineFiatWillCasePrinted";
+    public static final String EXAMINE_FIAT_WILL_TASK_TYPE_NAME = "Examine - Fiat Will";
+    public static final String EXAMINE_FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
+
+    public static final String EXAMINE_FOREIGN_DOMICILE = "ExamineForeignDomicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME = "Examine - Foreign Domicile";
+    public static final String EXAMINE_FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
+
+    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
+            = "ExamineIncapacityUnderRule35CasePrinted";
 }
