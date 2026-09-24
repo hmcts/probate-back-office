@@ -581,7 +581,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      </rule>
       <rule id="DecisionRule_1nyuh9a">
         <inputEntry id="UnaryTests_1v06865">
           <text>"handleEvidence"</text>
