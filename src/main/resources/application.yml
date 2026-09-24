@@ -45,6 +45,10 @@ auth.provider.client:
   email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
   password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
+wa.provider.client:
+  url: ${WA_SERVICE_HOST:http://localhost:6000}
+
+
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v2/pdf-generator/html
