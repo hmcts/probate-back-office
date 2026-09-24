@@ -109,6 +109,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FOREIGN_DOMICILE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN_WILL_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -389,6 +393,16 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(FOREIGN_DOMICILE_SKILL_CODE)
                 ),
                 Arguments.of(
+                        EXAMINE_PROVE_FOREIGN_WILL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROVE_FOREIGN_WILL_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_TRUST_CORPORATION,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(TRUST_CORPORATION_SKILL_CODE)
+                ),
+                Arguments.of(
                         REVIEW_SME_REFERRAL,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(PROBATE_SME_SKILL_CODE)
@@ -418,7 +432,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(96));
+        assertThat(logic.getRules().size(), is(98));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
