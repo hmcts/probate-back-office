@@ -59,6 +59,7 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       goToNextStep: true});
 
     await basePage.logInfo(scenarioName, 'Add application details');
+    await solCreateCasePage.selectMaritalStatus('deceasedMarried');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();
