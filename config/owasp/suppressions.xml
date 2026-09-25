@@ -147,5 +147,6 @@
     </suppress>
     <suppress until = "2026-10-24">
         <cve>CVE-2026-89044</cve>
+        <cve>CVE-2026-41707</cve>
     </suppress>
 </suppressions>

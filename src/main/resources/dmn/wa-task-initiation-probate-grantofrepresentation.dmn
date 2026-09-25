@@ -2383,6 +2383,120 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0a84lt7">
+        <inputEntry id="UnaryTests_1k3tb0t">
+          <text>"boSelectForQA", "boResolveStop", "resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0noq639">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a7erm8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c3rqwr">
+          <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lybf0c">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wh6cwm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17ojm4b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i8nm92">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_155jez5">
+          <text>"ReviewQACaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_161pv3x">
+          <text>"Review QA Case - Intestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wtoizg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03eyske">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x6w0qn">
+        <inputEntry id="UnaryTests_1o3bkyw">
+          <text>"boSelectForQA", "boResolveStop", "resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cgsz2r">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13hhxqt">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0htzr73">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01p0dyu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eqtb2m">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0o56jzz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hns54m">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rmu28i">
+          <text>"ReviewQACaseAdmon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mo82e6">
+          <text>"Review QA Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pkb3ro">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1md0fkd">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j5snqf">
+        <inputEntry id="UnaryTests_16sxoq0">
+          <text>"boSelectForQA", "boResolveStop", "resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gj9blb">
+          <text>"BOCaseQA"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15jvvgd">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yw2lkj">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hfnmaq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0psnawc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cwsr6m">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00sv5h7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0w4j61e">
+          <text>"ReviewQACaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j9ve47">
+          <text>"Review QA Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fpmffe">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mouhm1">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

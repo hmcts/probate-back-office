@@ -645,6 +645,42 @@
           <text>"Review SME Referral"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_011l0a3">
+        <description>RQACI</description>
+        <inputEntry id="UnaryTests_0jgcgz7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yu9p2l">
+          <text>"ReviewQACaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02e04gj">
+          <text>"Review QA Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uv4un9">
+        <description>RQACA</description>
+        <inputEntry id="UnaryTests_02i9wfd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ll5n09">
+          <text>"ReviewQACaseAdmon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kgslhl">
+          <text>"Review QA Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hjkrrl">
+        <description>RQACP</description>
+        <inputEntry id="UnaryTests_1kqjck1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1whnf10">
+          <text>"ReviewQACaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l5e5tx">
+          <text>"Review QA Case - Probate"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

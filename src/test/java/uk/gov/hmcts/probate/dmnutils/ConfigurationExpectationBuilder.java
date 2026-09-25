@@ -68,6 +68,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
 
 public class ConfigurationExpectationBuilder {
 
@@ -79,6 +84,12 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_TIME, ASSIGNEE
     );
 
+    private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
+            REVIEW_QA_CASE_INTESTACY,
+            REVIEW_QA_CASE_ADMON,
+            REVIEW_QA_CASE_PROBATE
+    );
+
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
 
     public static ConfigurationExpectationBuilder defaultExpectations() {
@@ -88,6 +99,8 @@ public class ConfigurationExpectationBuilder {
     public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(
             Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
+        boolean isReviewQaCase = conditions.containsKey("taskType")
+                && REVIEW_QA_CASE_TASK_TYPES.contains(conditions.get("taskType"));
 
         builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
@@ -103,7 +116,10 @@ public class ConfigurationExpectationBuilder {
                         DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
                 .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
 
-        if (conditions.containsValue(READY_TO_ISSUE_STATE)
+        if (isReviewQaCase) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
+                    .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
+        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)
                 && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
@@ -166,4 +182,3 @@ public class ConfigurationExpectationBuilder {
         return this;
     }
 }
-
