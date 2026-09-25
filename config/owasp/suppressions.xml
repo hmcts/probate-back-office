@@ -57,6 +57,7 @@
         <cve>CVE-2026-47887</cve>
         <cve>CVE-2026-47888</cve>
         <cve>CVE-2026-47889</cve>
+        <cve>CVE-2026-41707</cve>
     </suppress>
     <suppress until = "2026-10-24">
         <notes><![CDATA[
