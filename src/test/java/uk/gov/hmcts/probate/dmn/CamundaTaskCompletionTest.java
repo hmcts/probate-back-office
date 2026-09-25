@@ -1198,7 +1198,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(59));
     }
 
     @ParameterizedTest(name = "event id: {0}")
