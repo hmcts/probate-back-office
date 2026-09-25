@@ -2383,6 +2383,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_00uykdh">
+        <inputEntry id="UnaryTests_1i6w85q">
+          <text>"handleEvidence","attachScannedDocs","citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qt7aop">
+          <text>"BOCaseStopped"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fn2gr8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lucs4j">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h6zxfd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kr1m9k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cye9py">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0viw110">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s3xvn4">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oh7wng">
+          <text>"Resolve Stopped Case"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fl0vzv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yl822c">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

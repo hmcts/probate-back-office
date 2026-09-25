@@ -645,6 +645,18 @@
           <text>"Review SME Referral"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0fand0d">
+        <description>RSC</description>
+        <inputEntry id="UnaryTests_1gjhhg3">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tbs55t">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pyk2z2">
+          <text>"Resolve Stopped Case"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

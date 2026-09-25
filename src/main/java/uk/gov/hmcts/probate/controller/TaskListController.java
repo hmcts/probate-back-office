@@ -25,6 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TaskListController {
 
     private static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
+    private static final String BO_WITHDRAW_FOR_REDECLARATION_SOT = "boWithdrawForRedeclarationSOT";
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
     private final UserInfoService userInfoService;
@@ -38,6 +39,14 @@ public class TaskListController {
                 String idamUserId = userInfo.getUid();
                 log.info("selectForQAUserIdamId set to: {}", idamUserId);
                 caseDataTransformer.setSelectForQAUserIdamId(request.getCaseDetails(), idamUserId);
+            });
+
+        }
+        if (BO_WITHDRAW_FOR_REDECLARATION_SOT.equalsIgnoreCase(request.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("resolveStoppedCaseUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(request.getCaseDetails(), idamUserId);
             });
 
         }

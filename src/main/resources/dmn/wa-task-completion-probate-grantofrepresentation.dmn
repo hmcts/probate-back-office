@@ -614,6 +614,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0mmgtop">
+        <inputEntry id="UnaryTests_08amysl">
+          <text>"boIssueGrantForCaseMatching","boResolveStop","handleEvidence","boRequestInfoForCaseStopped","assembleLetter","boRedeclarationSoTForCaseStopped"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02qi3xx">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ato0ed">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

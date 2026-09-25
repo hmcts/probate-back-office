@@ -184,6 +184,17 @@ public class TaskAttributeConstants {
     public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
             "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/handleEvidence)";
+    public static final String DESCRIPTION_RESOLVE_STOPPED_CASE =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/boIssueGrantForCaseMatching)  [Resolve stop]"
+                    + "(/cases/case-details/${[CASE_REFERENCE]}/trigger/boResolveStop)  "
+                    + "[Handle supplementary evidence](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/handleEvidence)  "
+                    + "[Request for Information](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRequestInfoForCaseStopped)  "
+                    + "[Assemble letter](/cases/case-details/${[CASE_REFERENCE]}/trigger/assembleLetter)  "
+                    + "[Redeclaration Legal Statement](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRedeclarationSoTForCaseStopped)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
@@ -292,4 +303,15 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
             = "ExamineIncapacityUnderRule35CasePrinted";
     public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
+
+    public static final String RESOLVE_STOPPED_CASE = "ResolveStoppedCase";
+    public static final String RESOLVE_STOPPED_CASE_TASK_TYPE_NAME = "Resolve Stopped Case";
+    public static final String BO_REDECLARATION_SOT = "boWithdrawForRedeclarationSOT";
+    public static final String CITIZEN_HUB_RESPONSE = "citizenHubResponse";
+    public static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
+    public static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
+    public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
+    public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
+    public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
+
 }
