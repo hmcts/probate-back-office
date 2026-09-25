@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
@@ -297,7 +297,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1v0k3uj">
-          <text>"ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseAdColligendaBona", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme", "ExamineLiteraryEstate", "ExamineLostWillOrCodicil", "ExamineMinorityInterest","ExamineProveForeignWill","ExamineTrustCorporation"</text>
+          <text>"ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseAdColligendaBona", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme", "ExamineLiteraryEstate", "ExamineLostWillOrCodicil", "ExamineMinorityInterest","ExamineProveForeignWill","ExamineTrustCorporation","ResolveStoppedCase"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ekukf5">
           <text>"workType"</text>
@@ -393,23 +393,6 @@ else ""</text>
 else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0dhj7u8">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0dqf010">
-        <inputEntry id="UnaryTests_09bda5z">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1wagvok">
-          <text>"ResolveStoppedCase" </text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1x1e8o8">
-          <text>"workType"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1vfvtpp">
-          <text>"stopped_applications"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1gqf42d">
           <text>true</text>
         </outputEntry>
       </rule>

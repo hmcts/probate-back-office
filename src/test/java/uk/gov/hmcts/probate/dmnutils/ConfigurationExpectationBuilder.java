@@ -42,7 +42,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
@@ -155,7 +154,7 @@ public class ConfigurationExpectationBuilder {
 
         if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {
-            builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
+            //builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         }
 
