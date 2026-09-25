@@ -145,4 +145,24 @@ class TaskListControllerIT {
                 .andExpect(content().string(containsString("data")));
         verify(caseDataTransformer).transformCaseDataForCaseCloseEvidenceHandledYes(any());
     }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsBoWithdrawReDeclarationSOT() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boWithdrawForRedeclarationSOT");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/tasklist/update")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
 }

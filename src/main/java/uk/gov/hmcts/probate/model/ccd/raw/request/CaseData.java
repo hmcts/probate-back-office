@@ -382,6 +382,7 @@ public class CaseData extends CaseDataParent {
     private final String caseType;
     private final String createTask;
     private String selectForQAUserIdamId;
+    private String resolveStoppedCaseUserIdamId;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;
