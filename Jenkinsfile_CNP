@@ -243,9 +243,11 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
   afterSuccess('checkout') {
+      echo "environment: ${env.ENV}"
       def subscription = 'nonprod'
-      if (env.ENVIRONMENT == 'demo') {
+      if (env.ENV == 'demo') {
           withSubscription(subscription) {
+              echo "Uploading dmn and bpmn diagrams"
               uploadDmnDiagrams()
               uploadBpmnDiagram()
           }
