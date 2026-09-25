@@ -143,7 +143,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_FOREIGN_DOMICILE)
                 || conditions.get("taskType").equals(EXAMINE_PROVE_FOREIGN_WILL)
                 || conditions.get("taskType").equals(EXAMINE_TRUST_CORPORATION)
-        )) {
+            )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
