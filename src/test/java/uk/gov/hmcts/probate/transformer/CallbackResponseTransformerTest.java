@@ -500,6 +500,7 @@ class CallbackResponseTransformerTest {
         .roles(List.of("caseworker-probate"))
         .build());
     private static final String AUTH_TOKEN = "AUTH_TOKEN";
+    private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationId";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -764,7 +765,8 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDateKnown(YES)
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
-            .documentsReceivedNotificationSent(YES);
+            .documentsReceivedNotificationSent(YES)
+            .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
