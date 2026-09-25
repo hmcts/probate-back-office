@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIG
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
@@ -23,6 +24,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
@@ -133,6 +135,9 @@ public class ConfigurationExpectationBuilder {
                 && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_SME_REFERRAL, true)
                     .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
+        } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(EXAMINE_SME_REFERRAL)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_SME_REFERRAL, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
         } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
@@ -144,6 +149,11 @@ public class ConfigurationExpectationBuilder {
 
         if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(RECTIFY_QA_CASE))) {
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        }
+
+        if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(EXAMINE_SME_REFERRAL))) {
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         }
 
