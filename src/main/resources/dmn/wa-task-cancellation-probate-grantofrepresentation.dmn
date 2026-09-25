@@ -91,6 +91,29 @@
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1rr7tab">
+        <inputEntry id="UnaryTests_16mkb96">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c0laio">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hp28ee">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0llqu8n">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02j1kgr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01fnyr2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08k2971">
+          <text>"examineDigitalCaseTypes"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

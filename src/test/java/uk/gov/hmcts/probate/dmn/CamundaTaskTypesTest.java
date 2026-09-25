@@ -77,6 +77,13 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_TASK_TYPE_NAME;
 
@@ -298,6 +305,26 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
                 ),
                 Map.of(
+                        "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_TRUST_CORPORATION
+                ),
+                Map.of(
+                    "taskTypeName", "Review SME Referral",
+                    "taskTypeId", REVIEW_SME_REFERRAL
+                ),
+                Map.of(
                         "taskTypeName", RESOLVE_STOPPED_CASE_TASK_TYPE_NAME,
                         "taskTypeId", RESOLVE_STOPPED_CASE
                 )
@@ -316,7 +343,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(49));
+        assertThat(logic.getRules().size(), is(54));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

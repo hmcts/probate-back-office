@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.params.provider.ValueSources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -1625,8 +1624,8 @@ class BusinessValidationControllerIT {
     }
 
     @ParameterizedTest()
-    @ValueSource(strings = {"boStopCaseForCaseMatchingForExamining", "boStopCaseForRegistrarEscalations",
-    "boStopCaseForCasePrinted"})
+    @ValueSource(strings = {"boStopCaseForCaseMatchingForExamining",
+        "boStopCaseForRegistrarEscalations", "boStopCaseForCasePrinted" })
     void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsBoStop(String eventId) throws Exception {
         caseDataBuilder = CaseData.builder().evidenceHandled(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
