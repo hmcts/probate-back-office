@@ -242,6 +242,14 @@ withPipeline("java", product, component) {
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
+  afterSuccess('checkout') {
+    def subscription = 'nonprod'
+    if (env.ENVIRONMENT == 'demo') {
+        withSubscription(subscription) {
+            uploadDmnDiagrams()
+            uploadBpmnDiagram()
+        }
+    }
 
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'
@@ -396,6 +404,7 @@ withPipeline("java", product, component) {
     env.ENV='demo'
     env.PROBATE_WA_ENABLED = true
     env.PROBATE_GS_ENABLED = true
+    env.CAMUNDA_BASE_URL = "http://camunda-api-demo.service.core-compute-demo.internal"
   }
 
   onPerftest() {
