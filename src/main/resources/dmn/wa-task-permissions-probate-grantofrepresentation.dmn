@@ -2923,6 +2923,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1b36g80">
+        <inputEntry id="UnaryTests_00hci1o">
+          <text>"Redeclaration"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15euy1q">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1veiapg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1f21le6">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wpzvxr">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14byxoy">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1099j3c">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e1w93b">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ll5z8e">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sqwrs4">
+        <inputEntry id="UnaryTests_0lcfufp">
+          <text>"Redeclaration"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ghw7te">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0b9417m">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rmpfdf">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1prra0f">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ojs59n">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lmcqqp">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oqw6rp">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ysiruh">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
