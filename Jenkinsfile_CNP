@@ -407,6 +407,8 @@ withPipeline("java", product, component) {
     env.ENV='demo'
     env.PROBATE_WA_ENABLED = true
     env.PROBATE_GS_ENABLED = true
+    env.IDAM_API_URL_BASE = "https://idam-web-public.demo.platform.hmcts.net"
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
     env.CAMUNDA_BASE_URL = "http://camunda-api-demo.service.core-compute-demo.internal"
   }
 
