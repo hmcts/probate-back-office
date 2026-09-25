@@ -71,6 +71,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_SME_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
@@ -106,6 +109,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FOREIGN_DOMICILE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN_WILL_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_QA_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_QA_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_QA_SKILL_CODE;
@@ -392,6 +399,21 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(FOREIGN_DOMICILE_SKILL_CODE)
                 ),
                 Arguments.of(
+                        EXAMINE_PROVE_FOREIGN_WILL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROVE_FOREIGN_WILL_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_TRUST_CORPORATION,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(TRUST_CORPORATION_SKILL_CODE)
+                ),
+                Arguments.of(
+                        REVIEW_SME_REFERRAL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_SME_SKILL_CODE)
+                ),
+                Arguments.of(
                         REVIEW_QA_CASE_INTESTACY,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INTESTACY_QA_SKILL_CODE)
@@ -431,7 +453,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(94));
+        assertThat(logic.getRules().size(), is(100));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

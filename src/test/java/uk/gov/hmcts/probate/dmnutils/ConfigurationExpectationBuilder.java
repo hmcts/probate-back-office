@@ -9,10 +9,13 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
@@ -36,6 +39,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
@@ -62,6 +66,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
@@ -96,6 +102,21 @@ public class ConfigurationExpectationBuilder {
         boolean isReviewQaCase = conditions.containsKey("taskType")
                 && REVIEW_QA_CASE_TASK_TYPES.contains(conditions.get("taskType"));
 
+        builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
+                .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
+                .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
+                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
+                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
+                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
+                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
+                .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
+                .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
+                .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
+                .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
+                        DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
+                .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
+
+        if (conditions.containsValue(READY_TO_ISSUE_STATE)
         if (isReviewQaCase) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
                     .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
@@ -121,8 +142,14 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
                 || conditions.get("taskType").equals(EXAMINE_FOREIGN_DOMICILE)
+                || conditions.get("taskType").equals(EXAMINE_PROVE_FOREIGN_WILL)
+                || conditions.get("taskType").equals(EXAMINE_TRUST_CORPORATION)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
+        } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_SME_REFERRAL, true)
+                    .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
         } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
