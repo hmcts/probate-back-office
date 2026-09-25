@@ -40,6 +40,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
@@ -87,7 +88,8 @@ public class ConfigurationExpectationBuilder {
     private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
             REVIEW_QA_CASE_INTESTACY,
             REVIEW_QA_CASE_ADMON,
-            REVIEW_QA_CASE_PROBATE
+            REVIEW_QA_CASE_PROBATE,
+            REVIEW_QA_CASE_AD_COLLIGENDA_BONA
     );
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
