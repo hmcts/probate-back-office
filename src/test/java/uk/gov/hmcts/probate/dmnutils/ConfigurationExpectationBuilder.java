@@ -116,7 +116,6 @@ public class ConfigurationExpectationBuilder {
                         DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
                 .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
 
-        if (conditions.containsValue(READY_TO_ISSUE_STATE)
         if (isReviewQaCase) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_QA_CASE, true)
                     .expectedValue(WORK_TYPE, REVIEW_CASE_WORK_TYPE, true);
@@ -144,7 +143,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_FOREIGN_DOMICILE)
                 || conditions.get("taskType").equals(EXAMINE_PROVE_FOREIGN_WILL)
                 || conditions.get("taskType").equals(EXAMINE_TRUST_CORPORATION)
-            )) {
+        )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
@@ -158,21 +157,6 @@ public class ConfigurationExpectationBuilder {
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
-        if (!isReviewQaCase) {
-            builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
-        }
-        builder.expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
-                .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
-                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
-                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
-                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
-                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
-                .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
-                .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
-                .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
-                .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
-                        DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
-                .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
 
         if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(RECTIFY_QA_CASE))) {
