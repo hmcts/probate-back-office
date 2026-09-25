@@ -649,7 +649,7 @@
       </rule>
       <rule id="DecisionRule_0tg3a6n">
         <inputEntry id="UnaryTests_1b2qs60">
-          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA"</text>
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boFailQA","boStopCaseForCaseQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1bcaau8">
           <text>"ReviewQACaseAdColligendaBona"</text>
