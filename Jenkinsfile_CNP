@@ -307,6 +307,14 @@ withPipeline("java", product, component) {
   }
 
   afterSuccess('akschartsinstall') {
+    onDemo {
+      setCommonEnvVariables()
+      env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
+      sh 'chmod -R +x ./bin'
+      uploadDmnDiagrams()
+      uploadBpmnDiagram()
+      setupRoleAssignments()
+    }
     onPR {
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
