@@ -90,6 +90,7 @@ def secrets = [
                 secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
                 secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+                secret('session-keys', 'SESSION_KEYS'),
         ],
         'aac-${env}': [
                 secret('idam-mca-client-secret', 'IDAM_CLIENT_SECRET'),
@@ -357,7 +358,7 @@ withPipeline("java", product, component) {
   onMaster() {
     env.ENV='aat'
     env.PROBATE_WA_ENABLED = false
-    env.PROBATE_GS_ENABLED = false
+    env.PROBATE_GS_ENABLED = true
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
