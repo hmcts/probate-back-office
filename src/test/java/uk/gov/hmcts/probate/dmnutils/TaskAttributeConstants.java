@@ -117,9 +117,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
+    public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
     public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
     public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
-    public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
+
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -273,9 +274,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
     public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a foreign will";
+    public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
     public static final String REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME = "Review QA Case - Intestacy";
     public static final String REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME = "Review QA Case - Admon";
-    public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
+
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
