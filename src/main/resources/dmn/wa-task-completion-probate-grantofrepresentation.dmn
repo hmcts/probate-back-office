@@ -614,6 +614,39 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_18c6roy">
+        <inputEntry id="UnaryTests_14nyvmr">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xvenw8">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t202fd">
+          <text>"Auto"</text>
+        </outputEntry>
+       </rule>
+       <rule id="DecisionRule_0ciwiue">
+        <inputEntry id="UnaryTests_0nmijes">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1angv4y">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tex7rl">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15avi5s">
+        <inputEntry id="UnaryTests_0ijvsil">
+          <text>"boIssueGrantForCaseMatching","boStopCaseForCasePrinted","boEscalateToRegistrar","moveToCWEscalation","boSelectForQA"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15vy698">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gzg9b1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0mmgtop">
         <inputEntry id="UnaryTests_08amysl">
           <text>"boIssueGrantForCaseMatching","boResolveStop","handleEvidence","boRequestInfoForCaseStopped","assembleLetter","boRedeclarationSoTForCaseStopped"</text>
