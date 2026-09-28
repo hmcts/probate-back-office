@@ -116,7 +116,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FOREIGN_DOMIC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORATION_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_QA_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_QA_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_QA_SKILL_CODE;

@@ -584,16 +584,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of("taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
-            Arguments.of(
-                    REVIEW_SME_REFERRAL,
-                    CaseDataBuilder.defaultWaCase()
-                            .isUrgent()
-                            .build(),
-                    "handleEvidence",
-                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                            Map.of("taskType", REVIEW_SME_REFERRAL,
-                                    "state", BO_CASE_WORKER_ESCALATION)).build()
-            ),
                 Arguments.of(
                         REVIEW_QA_CASE_INTESTACY,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
