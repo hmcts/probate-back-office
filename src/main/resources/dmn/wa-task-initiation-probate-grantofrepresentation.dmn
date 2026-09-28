@@ -61,6 +61,15 @@ else false</text>
           <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.createTask != null) then additionalData.Data.createTask else false</text>
         </inputExpression>
       </input>
+      <input id="InputClause_0hxu125" label="Escalation Reason">
+        <inputExpression id="LiteralExpression_0os2jxn" typeRef="string">
+          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.registrarEscalateReason != null) then additionalData.Data.registrarEscalateReason else false
+          </text>
+        </inputExpression>
+        <inputValues id="UnaryTests_00ic1gg">
+          <text>"referrals","orders"</text>
+        </inputValues>
+      </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
@@ -88,6 +97,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1cd46yl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19nllec">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
@@ -128,6 +140,9 @@ else false</text>
         <inputEntry id="UnaryTests_1fvhoki">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0hju2lm">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
         </outputEntry>
@@ -164,6 +179,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ujty0b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02u4n50">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0a93yyj">
@@ -204,6 +222,9 @@ else false</text>
         <inputEntry id="UnaryTests_0d9q986">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0myjfef">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_windrush_task_id">
           <text>"ExamineWindrushScheme"</text>
         </outputEntry>
@@ -240,6 +261,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_08yxlw2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gz1itd">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_17lzws3">
@@ -280,6 +304,9 @@ else false</text>
         <inputEntry id="UnaryTests_1lg8r18">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0ybg72g">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0foopux">
           <text>"ExamineInfectedBloodCompensationAuthority"</text>
         </outputEntry>
@@ -316,6 +343,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0qdd994">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1t5z3be">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_14nb7gm">
@@ -356,6 +386,9 @@ else false</text>
         <inputEntry id="UnaryTests_05mopkl">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1l4qpqd">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1n963n6">
           <text>"ExamineWitnessInterview"</text>
         </outputEntry>
@@ -392,6 +425,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0mny1lv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nrxp6f">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0gbmund">
@@ -432,6 +468,9 @@ else false</text>
         <inputEntry id="UnaryTests_1s7i9o0">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_16ajunz">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_02nklps">
           <text>"ExamineDigitalCaseAdmonWill"</text>
         </outputEntry>
@@ -468,6 +507,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1v5op07">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08vy5hv">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1s9m90i">
@@ -508,6 +550,9 @@ else false</text>
         <inputEntry id="UnaryTests_1450p6n">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1u379fo">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0bgn9xq">
           <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </outputEntry>
@@ -544,6 +589,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vh6pts">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b8pdgt">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ac64en">
@@ -584,6 +632,9 @@ else false</text>
         <inputEntry id="UnaryTests_1q1g7gh">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_19rhais">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0wk7qne">
           <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </outputEntry>
@@ -620,6 +671,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1umolvh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10mtwwk">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1m9r1te">
@@ -660,6 +714,9 @@ else false</text>
         <inputEntry id="UnaryTests_1ynswl3">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0idizxs">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_19mh0f1">
           <text>"ExamineDoubleProbate"</text>
         </outputEntry>
@@ -696,6 +753,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1g5go9s">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1laikfm">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1e2bebn">
@@ -736,6 +796,9 @@ else false</text>
         <inputEntry id="UnaryTests_1n7s0rb">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0i84imx">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0lzpn0r">
           <text>"ExamineLeadingOrFollowingGrants"</text>
         </outputEntry>
@@ -772,6 +835,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0m5uvrm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a8nlj7">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_09loh53">
@@ -812,6 +878,9 @@ else false</text>
         <inputEntry id="UnaryTests_05daqwi">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0w1pxzq">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_09kckax">
           <text>"ExamineCodicilMisRecital"</text>
         </outputEntry>
@@ -848,6 +917,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0q0wkir">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1x0rtt8">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ljjwuy">
@@ -888,6 +960,9 @@ else false</text>
         <inputEntry id="UnaryTests_1jkqon9">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0ocr1iv">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_section_116_task_id">
           <text>"ExamineSection116"</text>
         </outputEntry>
@@ -924,6 +999,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1dg93u3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tcfj2k">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_task_id">
@@ -964,6 +1042,9 @@ else false</text>
         <inputEntry id="UnaryTests_045tey5">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1dmhbu6">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_reseal_foreign_grant_task_id">
           <text>"ExamineResealForeignGrant"</text>
         </outputEntry>
@@ -1000,6 +1081,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1y48h00">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rc6uxi">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_task_id">
@@ -1040,6 +1124,9 @@ else false</text>
         <inputEntry id="UnaryTests_1p6r8xd">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0fj4nx9">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1rbc90q">
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
@@ -1077,6 +1164,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0rqexhq">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08zsiz7">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ccuez0">
           <text>"ExamineDigitalCaseIntestacy"</text>
@@ -1116,6 +1206,9 @@ else false</text>
         <inputEntry id="UnaryTests_00eeatx">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0j3rwfl">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1cz8h9o">
           <text>"ExamineDigitalCaseAdmonWill"</text>
         </outputEntry>
@@ -1153,6 +1246,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_18hqjzn">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0psw1s8">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ckxwj4">
           <text>"ExamineDigitalCaseAdColligendaBona"</text>
@@ -1192,6 +1288,9 @@ else false</text>
         <inputEntry id="UnaryTests_1yyreca">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0nxhpgz">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0fmd5wj">
           <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
         </outputEntry>
@@ -1229,6 +1328,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1cnkwrk">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kjiwzf">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0p64f28">
           <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
@@ -1268,6 +1370,9 @@ else false</text>
         <inputEntry id="UnaryTests_0r4yug1">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_03b1oit">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0ljs1yd">
           <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </outputEntry>
@@ -1306,6 +1411,9 @@ else false</text>
         <inputEntry id="UnaryTests_10sywbr">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1lamz11">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1g1auzw">
           <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
         </outputEntry>
@@ -1342,6 +1450,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0geaarz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qxxizw">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13hjkcw">
@@ -1382,6 +1493,9 @@ else false</text>
         <inputEntry id="UnaryTests_0u1if6a">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1fovny1">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0bvaoyu">
           <text>"ExamineHorizonSchemeCasePrinted"</text>
         </outputEntry>
@@ -1418,6 +1532,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uwqjnj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k8ucm0">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0y2x77r">
@@ -1458,6 +1575,9 @@ else false</text>
         <inputEntry id="UnaryTests_0dsc9lg">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_13zag25">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0gpep81">
           <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
         </outputEntry>
@@ -1494,6 +1614,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_14tnwhe">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0o2sgb1">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0h5uta3">
@@ -1534,6 +1657,9 @@ else false</text>
         <inputEntry id="UnaryTests_1nzeril">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1tjacaa">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0g77sb3">
           <text>"ExamineMinorityInterestCasePrinted"</text>
         </outputEntry>
@@ -1570,6 +1696,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1eepwqw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h20x9n">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0brtnjs">
@@ -1610,6 +1739,9 @@ else false</text>
         <inputEntry id="UnaryTests_0pgeoct">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1wk7av8">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_04hmsqj">
           <text>"ExamineLostWillOrCodicil"</text>
         </outputEntry>
@@ -1646,6 +1778,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0q0q8qn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10kbccs">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ic6bdz">
@@ -1686,6 +1821,9 @@ else false</text>
         <inputEntry id="UnaryTests_2azgrif">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0xpph71">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_025ypul">
           <text>"ExamineCodicilMisRecitalCasePrinted"</text>
         </outputEntry>
@@ -1722,6 +1860,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_5q0wkis">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r0yax4">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1d6f1io">
@@ -1762,6 +1903,9 @@ else false</text>
         <inputEntry id="UnaryTests_3g5go9t">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0bw67dx">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1oe2jxn">
           <text>"RectifyQACase"</text>
         </outputEntry>
@@ -1798,6 +1942,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1rlaxrl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dk4fv5">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13e57ha">
@@ -1838,6 +1985,9 @@ else false</text>
         <inputEntry id="UnaryTests_1cirwdc">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0k5lfwr">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ugwubh">
           <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
         </outputEntry>
@@ -1874,6 +2024,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hgtxit">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15ywds0">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ckpba3">
@@ -1914,6 +2067,9 @@ else false</text>
         <inputEntry id="UnaryTests_0md4isk">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0ejdh8c">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1sia4wt">
           <text>"ExamineWitnessInterviewCasePrinted"</text>
         </outputEntry>
@@ -1950,6 +2106,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0odd93o">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a6vj0b">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_06p9wj6">
@@ -1990,6 +2149,9 @@ else false</text>
         <inputEntry id="UnaryTests_1je1c4l">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0jpjri1">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_13opcfi">
           <text>"ExamineDoubleProbateCasePrinted"</text>
         </outputEntry>
@@ -2026,6 +2188,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1y890oi">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ahadue">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1udtqwo">
@@ -2066,6 +2231,9 @@ else false</text>
         <inputEntry id="UnaryTests_164v8nw">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0tatr21">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0jff2sm">
           <text>"ExamineResealForeignGrantCasePrinted"</text>
         </outputEntry>
@@ -2102,6 +2270,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1jz2qp5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j2vtm0">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_07o9ljt">
@@ -2142,6 +2313,9 @@ else false</text>
         <inputEntry id="UnaryTests_0mg209b">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0fbb9h1">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_04qejdc">
           <text>"ExamineForeignDomicile"</text>
         </outputEntry>
@@ -2178,6 +2352,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0kg8u9h">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r3utye">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19opowg">
@@ -2218,6 +2395,9 @@ else false</text>
         <inputEntry id="UnaryTests_1coj3qm">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0tmcjgj">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_16ricpv">
           <text>"ExamineTrustCorporationCasePrinted"</text>
         </outputEntry>
@@ -2254,6 +2434,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0zrlchp">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1argvp7">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wzt2ht">
@@ -2294,6 +2477,9 @@ else false</text>
         <inputEntry id="UnaryTests_1b6br6n">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_05hr7zv">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_12hkylp">
           <text>"ExamineProveForeignWill"</text>
         </outputEntry>
@@ -2330,6 +2516,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1b43rcq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0s4635a">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0upjdj0">
@@ -2370,6 +2559,9 @@ else false</text>
         <inputEntry id="UnaryTests_59d3avv">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0v1m0wd">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1l7w8c3">
           <text>"ReviewSMEReferral"</text>
         </outputEntry>
@@ -2380,6 +2572,88 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0shv3z4">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kvgxfv">
+        <inputEntry id="UnaryTests_1tx137y">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o38awi">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11103fw">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vpulf8">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lp6tjn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04zw2xl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j9j904">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qaseot">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hsuayu">
+          <text>"referrals"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1m7pgyu">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n7c4m9">
+          <text>"Resolve Registrar Escalation - Referrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vill99">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mbm9z3">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05ujdnc">
+        <inputEntry id="UnaryTests_0wvc5bh">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xbixfc">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xdnmf0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0o10d3v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rjt0sy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nu08c7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0b2b24c">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19o56rh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0egm5x4">
+          <text>"orders"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0w4n3ky">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lajr7y">
+          <text>"Resolve Registrar Escalation - Orders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sgz1wk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e44kio">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
