@@ -188,6 +188,8 @@ public class TaskAttributeConstants {
     public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
             "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/handleEvidence)";
+    public static final String DESCRIPTION_REGISTRAR_DECISION =
+            "[Registrar's Decision](/cases/case-details/${[CASE_REFERENCE]}/trigger/registrarsDecision)";
     public static final String DESCRIPTION_REVIEW_QA_CASE =
             "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
@@ -205,6 +207,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
     public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
+    public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
     public static final String BO_CASE_QA_STATE = "BOCaseQA";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
@@ -294,6 +297,8 @@ public class TaskAttributeConstants {
     public static final String TRUST_CORPORATION_SKILL_CODE = "SKILL:ABA6:TrustCorporation";
     public static final String FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
 
+    public static final String SERVICE_REQUEST_PAYMENT_SUCCESS = "serviceRequestPaymentSuccess";
+
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
@@ -315,4 +320,19 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
             = "ExamineIncapacityUnderRule35CasePrinted";
     public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
+
+    public static final String DECISION_MAKING_WORK_TYPE_PROBATE = "decision_making_work";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_EVENT = "boEscalateToRegistrar";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRALS = "ResolveRegistrarEscalationReferrals";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_ORDERS = "ResolveRegistrarEscalationOrders";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME =
+            "Resolve Registrar Escalation - Referrals";
+    public static final String RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME =
+            "Resolve Registrar Escalation - Orders";
+    public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
+    public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
+
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
+            "Examine - Prove a Foreign Will";
 }
