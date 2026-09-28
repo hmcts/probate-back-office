@@ -48,6 +48,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
@@ -71,6 +72,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -184,6 +190,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -289,6 +299,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -391,7 +405,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE
                                 ),
-                                Map.of()
+                                Map.of(),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_TRUST_CORPORATION
+                                )
                         )
                 ),
                 Arguments.of(
@@ -592,6 +614,18 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_TRUST_CORPORATION
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -793,6 +827,18 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_TRUST_CORPORATION
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -994,6 +1040,18 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_TRUST_CORPORATION
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
                                 )
                         )
                 ),
@@ -1053,6 +1111,29 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of()
                         )
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REVIEW_SME_REFERRAL
+                                ),
+                                Map.of()
+                        )
+                ),
+                Arguments.of(
+                        "registrarsDecision",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS
+                                )
+                        )
                 )
         );
     }
@@ -1063,7 +1144,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(52));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "event id: {0}")
