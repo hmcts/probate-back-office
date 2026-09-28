@@ -244,6 +244,16 @@ export class SolCreateCasePage extends BasePage {
     super(page);
   }
 
+  private deceasedMaritalStatusOptionLocators: Record<
+    'deceasedMarried' | 'deceasedDivorced' | 'deceasedWidowed' | 'deceasedSeparated' | 'deceasedNeverMarried',
+    string> = {
+    deceasedMarried: '#deceasedMaritalStatus-marriedCivilPartnership',
+    deceasedDivorced: '#deceasedMaritalStatus-divorcedCivilPartnership',
+    deceasedWidowed: '#deceasedMaritalStatus-widowed',
+    deceasedSeparated: '#deceasedMaritalStatus-judicially',
+    deceasedNeverMarried: '#deceasedMaritalStatus-neverMarried'
+  };
+
   async applyCaveatPage1() {
     await expect(this.page.locator("#solsCaveatEligibility")).toBeVisible();
     await this.runAccessibilityTest();
@@ -828,8 +838,30 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async grantOfProbatePage1() {
+  async selectMaritalStatus(maritalStatus) {
     await this.verifyPageLoad(this.willHasCodicilsLocator);
+    await this.page.locator(this.deceasedMaritalStatusOptionLocators[maritalStatus]).click();
+
+    if (maritalStatus === 'deceasedDivorced' || maritalStatus === 'deceasedSeparated') {
+      await expect(this.page.locator('#dateOfDivorcedCPJudicially-day')).toBeEnabled();
+      await this.page.locator('#dateOfDivorcedCPJudicially-day').fill(grantOfProbateConfig.page1_divorcedSeparatedDay);
+      await this.page.locator('#dateOfDivorcedCPJudicially-month').fill(grantOfProbateConfig.page1_divorcedSeparatedMonth);
+      await this.page.locator('#dateOfDivorcedCPJudicially-year').fill(grantOfProbateConfig.page1_divorcedSeparatedYear);
+      await expect(this.page.locator('#deceasedDivorcedInEnglandOrWales_Yes')).toBeVisible();
+      await expect(this.page.locator('#deceasedDivorcedInEnglandOrWales_Yes')).toBeEnabled();
+      await this.page.locator('#deceasedDivorcedInEnglandOrWales_Yes').focus();
+      await this.page.locator('#deceasedDivorcedInEnglandOrWales_Yes').click();
+    } else if (maritalStatus === 'deceasedWidowed') {
+      await expect(this.page.locator('#deceasedSpouseName')).toBeVisible();
+      await expect(this.page.locator('#deceasedSpouseName')).toBeEnabled();
+      await this.page.locator('#deceasedSpouseName').fill(grantOfProbateConfig.page1_predeceasedSpouseName);
+    }
+    await expect(this.page.locator('#deceasedMarriedAfterWillOrCodicilDateYN_Yes')).toBeVisible();
+    await expect(this.page.locator('#deceasedMarriedAfterWillOrCodicilDateYN_Yes')).toBeEnabled();
+    await this.page.locator('#deceasedMarriedAfterWillOrCodicilDateYN_Yes').click();
+  }
+
+  async grantOfProbatePage1() {
     await expect(this.willHasCodicilsLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.willAccessOriginalOptionNoLocator.click();
@@ -848,9 +880,10 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
     await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
     await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
+
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
+
     const isLanguagePreferenceSelected = await this.languagePreferenceWelshLocator.isChecked();
     if (isLanguagePreferenceSelected) {
       await this.waitForNavigationToComplete(commonConfig.continueButton);

@@ -57,6 +57,7 @@
         <cve>CVE-2026-47887</cve>
         <cve>CVE-2026-47888</cve>
         <cve>CVE-2026-47889</cve>
+        <cve>CVE-2026-41707</cve>
     </suppress>
     <suppress until = "2026-10-24">
         <notes><![CDATA[
@@ -144,5 +145,11 @@
             file name: reactor-netty-core-1.2.18.jar
         ]]></notes>
         <cve>CVE-2026-47874</cve>
+    </suppress>
+    <suppress until = "2026-10-24">
+        <cve>CVE-2026-89044</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2026-41707</cve>
     </suppress>
 </suppressions>

@@ -322,7 +322,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mowadn">
-        <description>ELWOCCP</description>
+        <description>EHSCP</description>
         <inputEntry id="UnaryTests_0qgjw9u">
           <text></text>
         </inputEntry>
@@ -334,7 +334,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ijxawh">
-        <description>ELWOCCP</description>
+        <description>EIBCACP</description>
         <inputEntry id="UnaryTests_1vyfmh6">
           <text></text>
         </inputEntry>
@@ -513,6 +513,138 @@
           <text>"Examine - Section 116"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_14gmknf">
+        <description>EDBCP</description>
+        <inputEntry id="UnaryTests_1vah4ux">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xvot9x">
+          <text>"ExamineDoubleProbateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_018pegr">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0s311t7">
+        <description>EPOACP</description>
+        <inputEntry id="UnaryTests_1xghq61">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d00c0u">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z0t4cw">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0czxgft">
+        <description>ERFGCP</description>
+        <inputEntry id="UnaryTests_1n7r14g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19ycqtm">
+          <text>"ExamineResealForeignGrantCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tbl7vl">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17b3ebg">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_1q5stmm">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02ynw4u">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ctwlsc">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_033gc31">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_01np77p">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1icyhu5">
+          <text>"ExamineForeignDomicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i9o895">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j02ou6">
+        <description>ELWOCCP</description>
+        <inputEntry id="UnaryTests_06wayfn">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02hmfxt">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uxbgus">
+          <text>"Examine - Incapacity under rule 35"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fts7ky">
+        <description>ETCCP</description>
+        <inputEntry id="UnaryTests_1yh60jd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06piemd">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r9w1vn">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qo86kf">
+        <description>EFDCP</description>
+        <inputEntry id="UnaryTests_1j10us1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1fbaqm3">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jyi8qc">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zisixc">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_00psrl4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11fj62e">
+          <text>"ExamineProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ic4hv5">
+          <text>"Examine - Prove a foreign will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q6epz4">
+        <description>ETC</description>
+        <inputEntry id="UnaryTests_1y7884l">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dzzk9u">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ikcf63">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1t3otn1">
+        <description>RSMER</description>
+        <inputEntry id="UnaryTests_162tcfo">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qha2nz">
+          <text>"ReviewSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0e905fp">
+          <text>"Review SME Referral"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1aq5pp2">
         <description>RRERCP</description>
         <inputEntry id="UnaryTests_1uaew50">
@@ -537,15 +669,27 @@
           <text>"Resolve Registrar Escalation - Orders"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0rt81g9">
-        <description>RRD</description>
-        <inputEntry id="UnaryTests_0tm6zt8">
+      <rule id="DecisionRule_0b6edfk">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_0z8f1rb">
           <text></text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0mw076g">
+        <outputEntry id="LiteralExpression_1lko6uy">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0enj924">
+          <text>"Examine - Prove a Foreign Will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0whsjn8">
+        <description>RRD</description>
+        <inputEntry id="UnaryTests_1tpz37i">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14lymx4">
           <text>"ReviewRegistrarDecision"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_13a4n5d">
+        <outputEntry id="LiteralExpression_13cz2z3">
           <text>"Review Registrar's Decision"</text>
         </outputEntry>
       </rule>
