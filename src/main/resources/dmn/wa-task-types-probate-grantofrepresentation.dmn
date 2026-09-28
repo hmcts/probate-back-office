@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
   <decision id="wa-task-types-probate-grantofrepresentation" name="Task Types DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_17knzal" hitPolicy="COLLECT">
       <input id="Input_1">
@@ -643,6 +643,42 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_0e905fp">
           <text>"Review SME Referral"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1aq5pp2">
+        <description>RRERCP</description>
+        <inputEntry id="UnaryTests_1uaew50">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05nf1gs">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1unhsx4">
+          <text>"Resolve Registrar Escalation - Referrals"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13o9rlz">
+        <description>RREOCP</description>
+        <inputEntry id="UnaryTests_0jvt1sz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nzcv9m">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fyawrk">
+          <text>"Resolve Registrar Escalation - Orders"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0b6edfk">
+        <description>EPFW</description>
+        <inputEntry id="UnaryTests_0z8f1rb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lko6uy">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0enj924">
+          <text>"Examine - Prove a Foreign Will"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0kqdzb4">

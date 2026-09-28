@@ -10,5 +10,51 @@
     "com.github.hmcts:probate-commons",
     "com.github.hmcts:probate-pact-commons",
     "aac-manage-case-assignment"
+  ],
+  "packageRules": [
+    {
+      "description": "IDAM client 4.x targets Spring Boot 4; keep this repo on the Boot 3 compatible 3.x line.",
+      "matchPackageNames": ["com.github.hmcts:idam-java-client"],
+      "allowedVersions": "<3.1.0"
+    },
+    {
+      "description": "Spring Cloud 2025.1.x targets Spring Boot 4; keep this repo on the Boot 3 compatible 2025.0.x line.",
+      "matchPackageNames": ["org.springframework.cloud:spring-cloud-dependencies"],
+      "allowedVersions": "/^2025\\.0\\./"
+    },
+    {
+      "description": "These HMCTS client major versions target Spring Boot 4; keep this repo on the Boot 3 compatible lines.",
+      "matchPackageNames": [
+        "com.github.hmcts:service-auth-provider-java-client",
+        "com.github.hmcts:core-case-data-store-client"
+      ],
+      "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "springdoc v3 target Spring Boot 4",
+      "matchPackageNames": [
+        "org.springdoc:springdoc-openapi-starter-webmvc-ui"
+      ],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "Ignore Java base image",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "hmctsprod.azurecr.io/base/java"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePatterns": ["pact"],
+      "enabled": false
+    },
+    {
+      "description": "Bundle all minor and patch dependency updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "All non-major updates",
+      "groupSlug": "all-non-major",
+      "automerge": false
+    }
   ]
 }
