@@ -46,8 +46,10 @@
       "enabled": false
     },
     {
-      "matchPackagePatterns": ["pact"],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": [
+        "/pact/"
+      ]
     },
     {
       "description": "Bundle all minor and patch dependency updates",
