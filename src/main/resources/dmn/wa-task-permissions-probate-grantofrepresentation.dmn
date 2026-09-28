@@ -3068,7 +3068,6 @@
           <text>false</text>
         </outputEntry>
       </rule>
-      </rule>
       <rule id="DecisionRule_0dxga18">
         <inputEntry id="UnaryTests_1e1j7ix">
           <text>"ExamineSMEReferral"</text>
