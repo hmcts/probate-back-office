@@ -2383,6 +2383,44 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1dzyryz">
+        <inputEntry id="UnaryTests_0mhrb0v">
+          <text>"boRedeclarationSoTForCaseStopped",  "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0oqbeli">
+          <text>"BOCaseStoppedAwaitRedec"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12psdo8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nmqqji">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qvsfjy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0d9nmpr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10f7auh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0os4ter">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v1edh1">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mryvq1">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tic4fl">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1convb0">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

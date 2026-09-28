@@ -645,6 +645,18 @@
           <text>"Review SME Referral"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_12ezbav">
+        <description>RD</description>
+        <inputEntry id="UnaryTests_0x55q5u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ug8qxp">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkfw93">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

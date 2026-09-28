@@ -108,6 +108,9 @@ public class BusinessValidationController {
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
 
+    public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
+    public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
+    public static final String CHANGE_STATE_EVENT = "changeState";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -743,8 +746,20 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> redeclarationSot(
         @RequestBody CallbackRequest callbackRequest) {
 
-        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        if (BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                || RESOLVE_SME_REFERRAL_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                || CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("redeclarationUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+
+        }
+
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, ""));
     }
 

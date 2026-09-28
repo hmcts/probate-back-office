@@ -1488,7 +1488,8 @@ public class CallbackResponseTransformer {
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .createTask(caseData.getCreateTask())
-            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
+            .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId());
 
         handleDeceasedAliases(
                 builder,

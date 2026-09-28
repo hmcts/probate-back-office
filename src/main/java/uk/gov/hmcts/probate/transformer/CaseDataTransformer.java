@@ -263,4 +263,8 @@ public class CaseDataTransformer {
     public void setSelectForQAUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setSelectForQAUserIdamId(idamUserId);
     }
+
+    public void setRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setRedeclarationUserIdamId(idamUserId);
+    }
 }
