@@ -297,7 +297,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1v0k3uj">
-          <text>"ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseAdColligendaBona", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme", "ExamineLiteraryEstate", "ExamineLostWillOrCodicil", "ExamineMinorityInterest","ExamineProveForeignWill","ExamineTrustCorporation","ResolveStoppedCase"</text>
+          <text>"ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseAdColligendaBona", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme", "ExamineLiteraryEstate", "ExamineLostWillOrCodicil", "ExamineMinorityInterest","ExamineProveForeignWill","ExamineTrustCorporation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ekukf5">
           <text>"workType"</text>
@@ -393,6 +393,23 @@ else ""</text>
 else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0dhj7u8">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dqf010">
+        <inputEntry id="UnaryTests_09bda5z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wagvok">
+          <text>"ResolveStoppedCase" </text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x1e8o8">
+          <text>"workType"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vfvtpp">
+          <text>"stopped_applications"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gqf42d">
           <text>true</text>
         </outputEntry>
       </rule>
