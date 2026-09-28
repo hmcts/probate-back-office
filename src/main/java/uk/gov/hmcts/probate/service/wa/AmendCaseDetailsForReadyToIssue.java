@@ -41,7 +41,7 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
 
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest);
+        boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
         boolean taskToClosePresent = !caseTypeChanged
                 && waTaskService.isTaskPresent(authToken,
@@ -63,22 +63,19 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
     private void setHandoffReasons(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setWaHandoffReasonList(Collections.emptyList());
 
-        if (waTaskService.getHandOffPredicate().test(callbackRequest)) {
+        Set<HandoffReason> handOffReasonBefore = waTaskService
+                .getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
+        Set<HandoffReason> handOffReasonAfter = waTaskService
+                .getGetHandOffReasons(callbackRequest.getCaseDetails());
 
-            Set<HandoffReason> handOffReasonBefore = waTaskService
-                    .getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
-            Set<HandoffReason> handOffReasonAfter = waTaskService
-                    .getGetHandOffReasons(callbackRequest.getCaseDetails());
+        Set<HandoffReason> handOffReasons = new HashSet<>(handOffReasonAfter);
+        handOffReasons.removeAll(handOffReasonBefore);
 
-            Set<HandoffReason> handOffReasons = new HashSet<>(handOffReasonAfter);
-            handOffReasons.removeAll(handOffReasonBefore);
+        List<CollectionMember<HandoffReason>> newHandOffReasons = handOffReasons.stream()
+                .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason)
+                ).toList();
 
-            List<CollectionMember<HandoffReason>> newHandOffReasons = handOffReasons.stream()
-                    .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason)
-                    ).toList();
-
-            responseCaseData.setWaHandoffReasonList(newHandOffReasons);
-            log.info("New handOffReasons added: {}", responseCaseData.getWaHandoffReasonList());
-        }
+        responseCaseData.setWaHandoffReasonList(newHandOffReasons);
+        log.info("New handOffReasons added: {}", responseCaseData.getWaHandoffReasonList());
     }
 }

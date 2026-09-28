@@ -31,8 +31,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
@@ -49,9 +49,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_F
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -1581,7 +1581,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     static Stream<Arguments> infectedBloodCompensationAuthorityScenarios() {
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                "taskId", EXAMINE_IBCA,
                 "name", "Examine - Infected Blood Compensation Authority",
                 "processCategories", "case progression"
         );
@@ -1845,7 +1845,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     static Stream<Arguments> willOrCodicilToBeNotatedScenarios() {
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                "taskId", EXAMINE_WILL_CODICIL_NOTATED,
                 "name", "Examine - Will or Codicil to be Notated",
                 "processCategories", "case progression"
         );
@@ -2519,7 +2519,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35TaskAttributes
                 = Map.of(
-                        "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        "taskId", EXAMINE_INCAPACITY_RULE_35,
                         "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
                         "processCategories", "case progression"
         );
@@ -2652,7 +2652,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes
                 = Map.of(
-                        "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
                         "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                         "processCategories", "case progression"
         );

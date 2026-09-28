@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.model.wa.WaMapper;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
 

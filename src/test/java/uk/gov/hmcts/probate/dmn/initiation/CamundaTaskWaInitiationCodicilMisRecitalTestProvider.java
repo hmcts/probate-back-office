@@ -17,9 +17,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -33,13 +33,13 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
 
 
         Map<String,Object> examineCodicilMisRecitalTaskAttributes = Map.of(
-                "taskId", EXAMINE_CODICIL_MIS_RECITAL,
+                "taskId", EXAMINE_CODICIL_MIS,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
         Map<String,Object> examineCodicilMisRecitalCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                "taskId", EXAMINE_CODICIL_MIS_CASE_PRINTED,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );

@@ -6,9 +6,9 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_TYPES_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
@@ -21,46 +21,46 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
@@ -81,6 +81,8 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
@@ -122,7 +124,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                     "taskTypeName", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                    "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                    "taskTypeId", EXAMINE_IBCA
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Windrush Scheme",
@@ -130,7 +132,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Will or Codicil to be Notated",
-                    "taskTypeId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                    "taskTypeId", EXAMINE_WILL_CODICIL_NOTATED
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Witness Interview",
@@ -158,11 +160,11 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_INCAPACITY_UNDER_RULE_35
+                        "taskTypeId", EXAMINE_INCAPACITY_RULE_35
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS
+                        "taskTypeId", EXAMINE_LEADING_FOLLOWING_GRANTS
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Section 116",
@@ -170,7 +172,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Power of Attorney (POA)",
-                    "taskTypeId", EXAMINE_POWER_OF_ATTORNEY
+                    "taskTypeId", EXAMINE_POA
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Reseal Foreign Grant",
@@ -178,23 +180,23 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                     "taskTypeName", "Examine - Infected Blood Interim Scheme",
-                    "taskTypeId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                    "taskTypeId", EXAMINE_IBIS
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_RECTIFY_WILL_OR_CODICIL
+                        "taskTypeId", EXAMINE_RECTIFY_WILL_CODICIL
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_CODICIL_MIS_RECITAL
+                        "taskTypeId", EXAMINE_CODICIL_MIS
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
+                        "taskTypeId", EXAMINE_IBIS_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED
+                        "taskTypeId", EXAMINE_LOST_WILL_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME,
@@ -202,11 +204,11 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED
+                        "taskTypeId", EXAMINE_IBCA_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED
+                        "taskTypeId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
@@ -218,7 +220,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED
+                        "taskTypeId", EXAMINE_CODICIL_MIS_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", DE_BONIS_NON_TASK_TYPE_NAME,
@@ -234,7 +236,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_LOST_WILL_OR_CODICIL
+                        "taskTypeId", EXAMINE_LOST_WILL
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
@@ -242,11 +244,11 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
+                        "taskTypeId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED
+                        "taskTypeId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
@@ -280,6 +282,13 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
         VariableMap inputVariables = new VariableMapImpl();
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
+        Set<Object> actuals = dmnDecisionTableResult.getResultList().stream()
+                .map(result -> result.get("taskTypeId")).collect(Collectors.toSet());
+        Set<Object> expected = expectedTaskTypes.stream()
+                .map(result -> result.get("taskTypeId")).collect(Collectors.toSet());
+        actuals.removeAll(expected);
+        System.out.println(actuals);
+
         MatcherAssert.assertThat(dmnDecisionTableResult.getResultList(), is(expectedTaskTypes));
     }
 

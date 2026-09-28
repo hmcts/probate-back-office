@@ -26,7 +26,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_PERMISSIONS_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
@@ -37,28 +37,28 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HORIZON_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTORNEY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
@@ -73,22 +73,22 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTER
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DOUBLE_PROBATE_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINORITY_INTEREST_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LITERARY_ESTATE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOST_WILL_CODICIL_SKILL_CODE;
@@ -162,7 +162,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                        EXAMINE_IBCA,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE)
                 ),
@@ -172,7 +172,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(WINDRUSH_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        EXAMINE_WILL_CODICIL_NOTATED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
                 ),
@@ -202,12 +202,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        EXAMINE_INCAPACITY_RULE_35,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        EXAMINE_LEADING_FOLLOWING_GRANTS,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE)
                 ),
@@ -217,7 +217,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(SECTION_116_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_POWER_OF_ATTORNEY,
+                        EXAMINE_POA,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(POWER_OF_ATTORNEY_SKILL_CODE)
                 ),
@@ -227,27 +227,27 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(RESEAL_FOREIGN_GRANT_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                        EXAMINE_IBIS,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_CODICIL_MIS_RECITAL,
+                        EXAMINE_CODICIL_MIS,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                        EXAMINE_IBIS_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                        EXAMINE_RECTIFY_WILL_CODICIL,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED,
+                        EXAMINE_LOST_WILL_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_SKILL_CODE)
                 ),
@@ -257,12 +257,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(EXAMINE_HORIZON_SCHEME_CASE_PRINTED_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
+                        EXAMINE_IBCA_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                        EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE)
                 ),
@@ -277,7 +277,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                        EXAMINE_CODICIL_MIS_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
                 ),
@@ -297,7 +297,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(LITERARY_ESTATE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        EXAMINE_LOST_WILL,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(LOST_WILL_CODICIL_SKILL_CODE)
                 ),
@@ -307,12 +307,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(MINORITY_INTEREST_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                        EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                        EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE)
                 ),

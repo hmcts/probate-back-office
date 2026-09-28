@@ -17,13 +17,13 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
 
 
 public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implements ArgumentsProvider {
@@ -33,14 +33,14 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes
                 = Map.of(
-                "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes
                 = Map.of(
-                "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );

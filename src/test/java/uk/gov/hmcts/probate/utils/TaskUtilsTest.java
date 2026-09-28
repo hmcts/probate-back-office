@@ -36,7 +36,9 @@ class TaskUtilsTest {
           "client_context": {
             "user_task": {
               "complete_task" : true,
-              "type": "ExamineWindrushScheme"
+               "task_data" : {
+                  "type": "ExamineWindrushScheme"
+               }
             }
           }
         }
@@ -67,7 +69,7 @@ class TaskUtilsTest {
 
         Optional<String> encodedClientContext = taskUtils.setTaskCompletion(encodedString.get(),
                 callbackRequest,
-                (data, CLIENT_CONTEXT) -> completeTask);
+                (data, clientContext) -> completeTask);
 
         assertThat(encodedClientContext).isNotEmpty();
         byte[] decodeClientContext = getDecoder().decode(encodedClientContext.get());
@@ -81,7 +83,7 @@ class TaskUtilsTest {
     void testWhenClientContextNotPresent() {
         assertThat(taskUtils.setTaskCompletion(null,
                 callbackRequest,
-                (data,CLIENT_CONTEXT) -> false))
+                (data,clientContext) -> false))
                 .isEmpty();
     }
 
@@ -92,7 +94,7 @@ class TaskUtilsTest {
         assertThat(encodedString).isNotEmpty();
 
         assertThat(taskUtils.setTaskCompletion(encodedString.get(),
-                callbackRequest, (data,CLIENT_CONTEXT)  -> false))
+                callbackRequest, (data,clientContext)  -> false))
                 .isEmpty();
     }
 
@@ -101,7 +103,7 @@ class TaskUtilsTest {
         String malformedClientContext = "not-a-valid-base64-string";
         assertThat(taskUtils.setTaskCompletion(malformedClientContext,
                 callbackRequest,
-                (data,CLIENT_CONTEXT) -> false))
+                (data,clientContext) -> false))
                 .isEmpty();
     }
 

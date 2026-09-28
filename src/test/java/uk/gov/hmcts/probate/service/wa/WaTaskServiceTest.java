@@ -9,18 +9,13 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
-import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.utils.TaskUtils;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
@@ -30,10 +25,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -222,16 +213,6 @@ class WaTaskServiceTest {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
 
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .boHandoffReasonList(
-                                generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.DOUBLE_PROBATE))
-                        ).build());
-
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
                         .boHandoffReasonList(
@@ -253,21 +234,8 @@ class WaTaskServiceTest {
 
     @Test
     void shouldReturnFalseWhenHandOffReasonsHaveNotChanged() {
-        TaskData task = new TaskData();
-        task.setType("ExamineDoubleProbate");
-
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .boHandoffReasonList(
-                                generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.DOUBLE_PROBATE))
-                        ).build());
 
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
@@ -275,6 +243,12 @@ class WaTaskServiceTest {
                                 generateHandOffReasonCollection(
                                         List.of(HandoffReasonId.DOUBLE_PROBATE))
                         ).build());
+
+        TaskData task = new TaskData();
+        task.setType("ExamineDoubleProbate");
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
 
         BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
@@ -284,20 +258,18 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldReturnTrueWhenHandOffReasonsPresent() {
+    void shouldReturnTrueWhenNoHandOffReasonsPresent() {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .build());
 
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
                         .build());
+        TaskData task = new TaskData();
+        task.setType("ExamineDoubleProbate");
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
 
         BiPredicate<CallbackRequest, String> predicate =
                 waTaskService.getHandOffPredicate();
@@ -337,34 +309,7 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldReturnCurrentHandOffsWhenPreviousNoHandOffReasons() {
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .build());
-
-        when(caseDetails.getData())
-                .thenReturn(CaseData.builder()
-                        .boHandoffReasonList(
-                                generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.DOUBLE_PROBATE,
-                                                HandoffReasonId.FOREIGN_DOMICILE))
-                        ).build());
-
-        BiPredicate<CallbackRequest, String> predicate =
-                waTaskService.getHandOffPredicate();
-
-        assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
-                .isTrue();
-    }
-
-    @Test
-    void shouldReturnCurrentHandOffsWhenTaskNHandOffReasonRetained() {
+    void shouldReturnFalseWhenTaskHandOffReasonRetained() {
         TaskData task = new TaskData();
         task.setType("ExamineLeadingFollowing Grants");
 
@@ -373,13 +318,6 @@ class WaTaskServiceTest {
 
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .build());
 
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
@@ -394,7 +332,7 @@ class WaTaskServiceTest {
                 waTaskService.getHandOffPredicate();
 
         assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
-                .isTrue();
+                .isFalse();
     }
 
     private void setUpCallbackRequestForCaseType(

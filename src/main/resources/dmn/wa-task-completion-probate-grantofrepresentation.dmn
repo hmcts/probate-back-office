@@ -58,7 +58,7 @@
           <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ipyedj">
-          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+          <text>"ExamineIBCA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0p5dizp">
           <text>"Auto"</text>
@@ -113,7 +113,7 @@
           <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mpikqp">
-          <text>"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineWillCodicilNotated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0guqwp3">
           <text>"Auto"</text>
@@ -190,7 +190,7 @@
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1e5htxk">
-          <text>"ExamineIncapacityUnderRule35"</text>
+          <text>"ExamineIncapacityRule35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0kj4yb8">
           <text>"Auto"</text>
@@ -201,7 +201,7 @@
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1c021lg">
-          <text>"ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineLeadingFollowing Grants"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ipv2ag">
           <text>"Auto"</text>
@@ -223,7 +223,7 @@
           <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_completion_task">
-          <text>"ExaminePowerOfAttorney"</text>
+          <text>"ExaminePOA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_completion_mode">
           <text>"Auto"</text>
@@ -245,7 +245,7 @@
           <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_completion_task">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineIBIS"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_completion_mode">
           <text>"Auto"</text>
@@ -256,7 +256,7 @@
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1qbluwa">
-          <text>"ExamineRectifyWillOrCodicil"</text>
+          <text>"ExamineRectifyWillCodicil"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l2pggr">
           <text>"Auto"</text>
@@ -267,7 +267,7 @@
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching","boAmendCaseDetailsForReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wwvgis">
-          <text>"ExamineCodicilMisRecital"</text>
+          <text>"ExamineCodicilMis"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1av6lml">
           <text>"Auto"</text>
@@ -278,7 +278,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_05mydkq">
-          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+          <text>"ExamineIBISCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0e4vnmo">
           <text>"Auto"</text>
@@ -300,7 +300,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kwrhd0">
-          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+          <text>"ExamineLostWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0oa94p1">
           <text>"Auto"</text>
@@ -322,7 +322,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0gwdq7q">
-          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+          <text>"ExamineIBCACasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1qmy6px">
           <text>"Auto"</text>
@@ -333,7 +333,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ex7aff">
-          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+          <text>"ExamineLeadingFollowing GrantsCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cd3l7n">
           <text>"Auto"</text>
@@ -377,7 +377,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0vmrjc2">
-          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+          <text>"ExamineCodicilMisCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1wtpqfz">
           <text>"Auto"</text>
@@ -421,7 +421,7 @@
           <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1o8ah8a">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08nopc0">
           <text>"Auto"</text>
@@ -454,7 +454,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1fhbpod">
-          <text>"ExamineWillOrCodicilToBeNotatedCasePrinted"</text>
+          <text>"ExamineWillCodicilNotatedCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1622zqf">
           <text>"Auto"</text>
@@ -465,7 +465,7 @@
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1utfsj4">
-          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
+          <text>"ExamineRectifyWillCodicilCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1clsjye">
           <text>"Auto"</text>

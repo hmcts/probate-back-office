@@ -23,7 +23,7 @@ public class AmendCaseDetailsForAwaitingDocumentation implements CreateTaskProce
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask(waTaskService.getCaseTypePredicate()
-                .test(callbackRequest, "client_context")
+                .test(callbackRequest, null)
                 ? Constants.YES : Constants.NO);
     }
 }

@@ -34,7 +34,6 @@ public class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
-    private final static int EXAMINE_TASK_LENGTH = "Examine".length();
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -75,38 +74,24 @@ public class WaTaskService {
 
     public BiPredicate<CallbackRequest, String> getHandOffPredicate() {
         return (callbackRequest, clientContext) -> {
-            Set<HandoffReason> handOffReasonBefore = getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
             Set<HandoffReason> handOffReasonAfter = getGetHandOffReasons(callbackRequest.getCaseDetails());
 
-            if (isTaskHandOffReasonRetained(clientContext, handOffReasonAfter)) {
-                return false;
-            }
+            Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
+            String currentWaTaskHandOff = taskData.map(TaskData::getType)
+                    .orElse("");
 
-            if (handOffReasonBefore.isEmpty() && handOffReasonAfter.isEmpty()) {
-                return true;
-            }
+            boolean isTaskHandOffReasonRetained = handOffReasonAfter.stream()
+                    .map(HandoffReason::getCaseHandoffReason)
+                    .map(HandoffReasonId::getCode)
+                    .anyMatch(currentWaTaskHandOff::contains);
 
-            return !handOffReasonBefore.equals(handOffReasonAfter);
+            log.info("Case id {} - current WA task  {}, isTaskHandOffReasonRetained: {}",
+                    callbackRequest.getCaseDetails().getId(),
+                    currentWaTaskHandOff,
+                    isTaskHandOffReasonRetained);
+
+            return !isTaskHandOffReasonRetained;
         };
-    }
-
-    private boolean isTaskHandOffReasonRetained(String clientContext, Set<HandoffReason> handOffReasonAfter) {
-        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
-        String currentTaskHandOff = taskData.map(TaskData::getType)
-                .map(taskType -> taskType.substring(EXAMINE_TASK_LENGTH))
-                .orElse("");
-        log.info("Current task handOff {}", currentTaskHandOff);
-
-        HandoffReasonId currentTaskHandOffId = HandoffReasonId.fromCode(currentTaskHandOff);
-
-        boolean isTaskHandOffReasonRetained = handOffReasonAfter.stream()
-                .map(HandoffReason::getCaseHandoffReason)
-                .anyMatch(handoffReason -> handoffReason.equals(currentTaskHandOffId));
-        log.info("Current task handOff Id {}, isTaskHandOffReasonRetained: {}",
-                currentTaskHandOffId,
-                isTaskHandOffReasonRetained);
-
-        return isTaskHandOffReasonRetained;
     }
 
     public Set<HandoffReason> getGetHandOffReasons(CaseDetails caseDetails) {
