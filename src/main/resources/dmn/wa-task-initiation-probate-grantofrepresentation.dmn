@@ -2657,6 +2657,47 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0vr8sci">
+        <inputEntry id="UnaryTests_0rue9wy">
+          <text>"handleEvidence", "attachScannedDocs","boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ftm8hl">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mon58v">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zaqfnr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wm39mt">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0emle4f">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10c9z11">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00ie79w">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0989bsb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00zc46u">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ui8hsm">
+          <text>"Examine - Prove a Foreign Will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15nvznq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13im3qs">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

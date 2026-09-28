@@ -274,6 +274,8 @@ public class TaskAttributeConstants {
     public static final String TRUST_CORPORATION_SKILL_CODE = "SKILL:ABA6:TrustCorporation";
     public static final String FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
 
+    public static final String SERVICE_REQUEST_PAYMENT_SUCCESS = "serviceRequestPaymentSuccess";
+
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
             "ExamineLostWillOrCodicilCasePrinted";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
@@ -306,4 +308,8 @@ public class TaskAttributeConstants {
             "Resolve Registrar Escalation - Orders";
     public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
     public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
+
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
+            "Examine - Prove a Foreign Will";
 }
