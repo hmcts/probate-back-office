@@ -92,6 +92,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_RE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_LO;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -558,6 +560,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                                 "state", BO_REGISTRAR_ESCALATION))
                                 .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
                                 .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
+                                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_LO, true)
                                 .build()
                 ),
                 Arguments.of(
@@ -569,6 +572,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                                 "state", BO_REGISTRAR_ESCALATION))
                                 .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
                                 .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
+                                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_LO, true)
                                 .build()
                 ),
                 Arguments.of(
@@ -588,7 +592,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(23, logic.getRules().size());
+        assertEquals(24, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
