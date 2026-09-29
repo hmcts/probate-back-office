@@ -451,22 +451,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION,
                         DUMMY_CASE_DATA,
-                        List.of(
-                                Map.of(
-                                        "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", true
-                                ),
-                                Map.of(
-                                        "name", "ctsc-team-leader",
-                                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", true
-                                )
-                        )
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
                 )
         );
     }

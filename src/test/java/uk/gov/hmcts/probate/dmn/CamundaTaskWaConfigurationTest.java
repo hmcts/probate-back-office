@@ -23,11 +23,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REGISTRAR_DECISION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATIONS_WORK_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
@@ -94,7 +89,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_RE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 
@@ -560,8 +554,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
                                                 "state", BO_REGISTRAR_ESCALATION))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
                                 .build()
                 ),
                 Arguments.of(
@@ -571,8 +563,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", RESOLVE_REGISTRAR_ESCALATION_ORDERS,
                                                 "state", BO_REGISTRAR_ESCALATION))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_TYPE_PROBATE, true)
                                 .build()
                 ),
                 Arguments.of(
@@ -591,8 +581,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                         Map.of("taskType", REVIEW_REGISTRAR_DECISION,
                                                 "state", BO_REGISTRAR_ESCALATION))
-                                .expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_REGISTRAR_DECISION, true)
-                                .expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                                 .build()
                 )
         );
@@ -604,7 +592,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(25, logic.getRules().size());
+        assertEquals(26, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

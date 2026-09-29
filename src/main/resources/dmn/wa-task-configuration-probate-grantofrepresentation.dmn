@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
@@ -127,7 +127,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ol0bht">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDeBonisNon","ExamineFiatWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineInfectedBloodCompensationAuthority","ExamineWindrushScheme","ExamineDigitalCaseProbateReadyToIssue","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme","ExamineInfectedBloodInterimSchemeCasePrinted","ExamineCodicilMisRecital","ExamineRectifyWillOrCodicil","ExamineLostWillOrCodicilCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineInfectedBloodCompensationAuthorityCasePrinted","ExamineLeadingOrFollowingGrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisRecitalCasePrinted","ExamineDeBonisNonCasePrinted","RectifyQACase","ExamineLiteraryEstate","ExamineLostWillOrCodicil","ExamineMinorityInterest","ExamineWillOrCodicilToBeNotatedCasePrinted","ExamineRectifyWillOrCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePowerOfAttorneyCasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineForeignDomicile","ExamineIncapacityUnderRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineProveForeignWill","ExamineTrustCorporation","ReviewSMEReferral","ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders","ExamineProveForeignWillCasePrinted","ReviewRegistrarDecision"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDeBonisNon","ExamineFiatWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineInfectedBloodCompensationAuthority","ExamineWindrushScheme","ExamineDigitalCaseProbateReadyToIssue","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme","ExamineInfectedBloodInterimSchemeCasePrinted","ExamineCodicilMisRecital","ExamineRectifyWillOrCodicil","ExamineLostWillOrCodicilCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineInfectedBloodCompensationAuthorityCasePrinted","ExamineLeadingOrFollowingGrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisRecitalCasePrinted","ExamineDeBonisNonCasePrinted","RectifyQACase","ExamineLiteraryEstate","ExamineLostWillOrCodicil","ExamineMinorityInterest","ExamineWillOrCodicilToBeNotatedCasePrinted","ExamineRectifyWillOrCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePowerOfAttorneyCasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineForeignDomicile","ExamineIncapacityUnderRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineProveForeignWill","ExamineTrustCorporation","ReviewSMEReferral","ExamineProveForeignWillCasePrinted","ReviewRegistrarDecision"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1vwmxcn">
           <text>"roleCategory"</text>
@@ -444,6 +444,23 @@ else ""</text>
 else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0786d66">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j4ynkh">
+        <inputEntry id="UnaryTests_0ix4lpg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vc61zc">
+          <text>"ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1c3zu8v">
+          <text>"roleCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1odjbso">
+          <text>"LEGAL_OPERATIONS"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1chheoi">
           <text>true</text>
         </outputEntry>
       </rule>
