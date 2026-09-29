@@ -1006,7 +1006,8 @@ public class BusinessValidationController {
         }
     }
 
-    private void setRedeclarationUserFromCaseworker(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    private void setRedeclarationUserFromCaseworker(CallbackRequest callbackRequest,
+                                                    Optional<UserInfo> caseworkerInfo) {
         caseworkerInfo.ifPresent(userInfo -> {
             String idamUserId = userInfo.getUid();
             log.info("redeclarationUserIdamId set to: {}", idamUserId);
