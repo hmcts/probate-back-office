@@ -56,8 +56,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.*;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
@@ -74,6 +73,7 @@ public class NotificationController {
 
     private static final List<String> RECEIPT_OF_RESPONSE_EXCLUDED_STATE_LIST = Arrays.asList("BOGrantIssued",
             "CaseCreated", "BOCaseClosed");
+    public static final String BO_NOTIFY_REDECLARATION_SOT_EVENT = "boNotifyRedeclarationSOT";
 
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
@@ -181,6 +181,16 @@ public class NotificationController {
         @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse =
             callbackResponseTransformer.defaultRedeclarationSOTValues(callbackRequest);
+
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_NOTIFY_REDECLARATION_SOT_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
         return ResponseEntity.ok(callbackResponse);
     }
 

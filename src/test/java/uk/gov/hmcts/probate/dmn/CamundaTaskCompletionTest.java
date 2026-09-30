@@ -85,6 +85,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -891,6 +892,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", REVIEW_QA_CASE_AD_COLLIGENDA_BONA
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
                                 )
                         )
                 ),
@@ -1203,6 +1208,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", RESOLVE_STOPPED_CASE
                                 ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
+                                ),
                                 Map.of()
                         )
                 ),
@@ -1303,6 +1312,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", REVIEW_QA_CASE_AD_COLLIGENDA_BONA
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boRedeclarationComplete",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
                                 )
                         )
                 )
