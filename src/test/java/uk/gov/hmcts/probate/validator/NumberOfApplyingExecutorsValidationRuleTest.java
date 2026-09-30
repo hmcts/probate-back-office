@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
 import java.util.ArrayList;
