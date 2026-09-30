@@ -49,4 +49,9 @@ public class CaseDataBuilder {
         caseData.put("selectForQAUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setResolveRedeclarationUserIdamId(String idamId) {
+        caseData.put("resolveRedeclarationUserIdamId", idamId);
+        return this;
+    }
 }
