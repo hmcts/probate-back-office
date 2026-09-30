@@ -13,6 +13,9 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.GOP_CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT;
@@ -58,7 +61,27 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
-
+                Arguments.of(
+                        BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, ADMON_WILL_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, INTESTACY_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
@@ -88,6 +111,27 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, ADMON_WILL_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, INTESTACY_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, "",true,
@@ -112,6 +156,27 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                         CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, ADMON_WILL_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, INTESTACY_CASE_TYPE,true,
+                                Collections.emptyList(), false),
+                        List.of(redeclarationTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_STOPPED_AWAIT_REDEC_STATE,
+                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 )
