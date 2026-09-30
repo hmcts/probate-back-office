@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
@@ -101,5 +102,29 @@ class NumberOfApplyingExecutorsValidationRuleTest {
 
         underTest.validate(caseDetailsMock);
 
+    }
+
+    @Test
+    void shouldErrorWhenPrimaryApplicantApplyingAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantIsApplying("Yes");
+        caseDataMock.setPrimaryApplicantForenames("Primary");
+        caseDataMock.setPrimaryApplicantSurname("Applicant");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+            caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class,
+            () -> underTest.validate(caseDetailsMock));
+
+        assertThat(bve.getMessage(),
+            containsString("The total number executors applying cannot exceed 4 for case id 0"));
     }
 }
