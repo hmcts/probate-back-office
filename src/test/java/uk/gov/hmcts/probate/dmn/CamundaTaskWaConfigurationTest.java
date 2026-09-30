@@ -95,6 +95,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGIST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDEC_NOTIFICATION_SENT_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -621,6 +623,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", RESOLVE_STOPPED_CASE,
                                         "state", BO_CASE_STOPPED_STATE)).build()
+                ),
+                Arguments.of(
+                        RESOLVE_REDECLARATION,
+                        CaseDataBuilder.defaultWaCase().isUrgent()
+                                .setResolveRedeclarationUserIdamId(DEFAULT_ASSIGNEE).build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", RESOLVE_REDECLARATION,
+                                        "state", BO_REDEC_NOTIFICATION_SENT_STATE)).build()
                 )
         );
     }

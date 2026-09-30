@@ -119,6 +119,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -468,6 +469,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         RESOLVE_STOPPED_CASE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
+                ),
+                Arguments.of(
+                        RESOLVE_REDECLARATION,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissionsWithAutoAssign(null, true)
                 )

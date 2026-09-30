@@ -81,6 +81,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -855,6 +856,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", REVIEW_REGISTRAR_DECISION
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
                                 )
                         )
                 ),
@@ -1151,6 +1156,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", RESOLVE_STOPPED_CASE
                                 ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
+                                ),
                                 Map.of()
                         )
                 ),
@@ -1209,6 +1218,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", RESOLVE_STOPPED_CASE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boRedeclarationComplete",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_REDECLARATION
                                 )
                         )
                 )
