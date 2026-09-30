@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

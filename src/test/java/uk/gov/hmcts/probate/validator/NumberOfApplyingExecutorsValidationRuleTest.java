@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
@@ -36,8 +35,6 @@ class NumberOfApplyingExecutorsValidationRuleTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
-    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Mock
     private ExecutorsTransformer executorsTransformer;
     private CaseData caseDataMock;
