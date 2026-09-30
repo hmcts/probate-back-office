@@ -30,7 +30,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
         Map<String, Object> examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         return Stream.of(

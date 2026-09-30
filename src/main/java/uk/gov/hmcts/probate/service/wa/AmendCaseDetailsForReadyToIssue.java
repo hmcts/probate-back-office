@@ -26,10 +26,11 @@ import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBA
 @Component
 public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
 
-    private static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
+    private static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
+            = "boAmendCaseDetailsForAwaitingDocumentation";
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
     private final WaTaskService waTaskService;
-    private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+    private static final List<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
@@ -46,18 +47,30 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
         boolean taskToClosePresent = !caseTypeChanged
                 && waTaskService.isTaskPresent(authToken,
                 callbackRequest.getCaseDetails().getId().toString(),
-                EVENT_TO_MONITOR,
-                taskToCLose);
-
-        log.info("case id {}: caseTypeChanged {} and taskToClosePresent {}",
-                callbackRequest.getCaseDetails().getId(),
-                caseTypeChanged,
-                taskToClosePresent);
-
-        responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
-                ? Constants.YES : Constants.NO);
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                TASKS_AWAITING_DOCUMENTATION_TO_CLOSE);
 
         setHandoffReasons(callbackRequest, responseCaseData);
+
+        boolean isInitialCaseExaminationTaskRequired =
+                !waTaskService
+                        .getGetHandOffReasons(callbackRequest.getCaseDetailsBefore())
+                        .isEmpty()
+                && waTaskService
+                        .getGetHandOffReasons(callbackRequest.getCaseDetails())
+                        .isEmpty();
+
+        responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
+                || isInitialCaseExaminationTaskRequired
+                ? Constants.YES : Constants.NO);
+
+        log.info("case id {}: caseTypeChanged {}, taskToClosePresent {}, " +
+                        "new handoffs {}, isInitialCaseExaminationTaskRequired {}",
+                callbackRequest.getCaseDetails().getId(),
+                caseTypeChanged,
+                taskToClosePresent,
+                responseCaseData.getWaHandoffReasonList(),
+                isInitialCaseExaminationTaskRequired);
     }
 
     private void setHandoffReasons(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
@@ -76,6 +89,5 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
                 ).toList();
 
         responseCaseData.setWaHandoffReasonList(newHandOffReasons);
-        log.info("New handOffReasons added: {}", responseCaseData.getWaHandoffReasonList());
     }
 }

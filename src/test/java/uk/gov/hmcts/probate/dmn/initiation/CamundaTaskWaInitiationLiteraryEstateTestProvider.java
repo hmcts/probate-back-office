@@ -33,7 +33,7 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
         Map<String,Object> examineLiteraryEstateCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(

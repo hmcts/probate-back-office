@@ -36,6 +36,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
+
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -188,6 +189,43 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .getCaseTypePredicate();
         verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+    }
+
+    @Test
+    void shouldCreateIceTaskToWhenAllHandOffReasonsAreRemoved() {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType(CaseType.CAVEAT.name())
+                        .build());
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType(CaseType.CAVEAT.name())
+                        .boHandoffReasonList(List.of(new CollectionMember<>(null,
+                                HandoffReason.builder().caseHandoffReason(HandoffReasonId.FIAT_WILL).build())))
+                        .build());
+        String caseId = callbackRequest.getCaseDetails().getId().toString();
+
+        doReturn(false)
+                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .isEmpty();
+
+        verify(waTaskService)
+                .getCaseTypePredicate();
+        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(Constants.YES);
     }
 
     private void setUpCaseTypeCallbackRequest(
