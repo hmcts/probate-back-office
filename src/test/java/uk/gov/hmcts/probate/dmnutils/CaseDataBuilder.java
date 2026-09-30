@@ -49,4 +49,9 @@ public class CaseDataBuilder {
         caseData.put("selectForQAUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setResolveStoppedCaseUserIdamId(String idamId) {
+        caseData.put("resolveStoppedCaseUserIdamId", idamId);
+        return this;
+    }
 }
