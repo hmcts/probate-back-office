@@ -40,7 +40,7 @@ java:
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
-    LOG_LEVEL: INFO
+    LOG_LEVEL: DEBUG
     IDAM_CLIENT_NAME: probate
     S2S_AUTH_URL : http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
