@@ -49,6 +49,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
@@ -574,6 +575,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
+                        EXAMINE_SME_REFERRAL,
+                        CaseDataBuilder.defaultWaCase().isUrgent().setMoveToCWEscalationUserIdamId(DEFAULT_ASSIGNEE)
+                                .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_SME_REFERRAL,
+                                        "state", BO_CASE_WORKER_ESCALATION)).build()
+                ),
+                Arguments.of(
                         REVIEW_REGISTRAR_DECISION,
                         CaseDataBuilder.defaultWaCase().isUrgent().setEscalateToRegistrarUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -592,7 +602,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(26, logic.getRules().size());
+        assertEquals(28, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

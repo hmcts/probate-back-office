@@ -3068,6 +3068,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0dxga18">
+        <inputEntry id="UnaryTests_1e1j7ix">
+          <text>"ExamineSMEReferral"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_097qugl">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dhpl82">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0q9f2lb">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0oq7kpw">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1am1vss">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gp84nf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0d1l8e9">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rrc7f7">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0y522c9">
+        <inputEntry id="UnaryTests_1i1tnme">
+          <text>"ExamineSMEReferral"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16tqqs6">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_199qusg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ipo5ce">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yeida4">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pwvtol">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ddjg7u">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a3t3rc">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bnvy28">
+          <text>true</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0kw7q56">
         <inputEntry id="UnaryTests_16u3e4v">
           <text>"ReviewRegistrarDecision"</text>
