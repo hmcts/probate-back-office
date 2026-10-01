@@ -25,6 +25,7 @@ import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
 @Slf4j
@@ -80,17 +81,24 @@ public class WaTaskService {
             String currentWaTaskHandOff = taskData.map(TaskData::getType)
                     .orElse("");
 
-            boolean isTaskHandOffReasonRetained = handOffReasonAfter.stream()
-                    .map(HandoffReason::getCaseHandoffReason)
-                    .map(HandoffReasonId::getCode)
-                    .anyMatch(currentWaTaskHandOff::contains);
+            boolean caseHandedOffToLegacySite = Optional.ofNullable(callbackRequest.getCaseDetails()
+                            .getData().getCaseHandedOffToLegacySite()).map(value -> value.equals(YES))
+                    .orElse(false);
 
-            log.info("Case id {} - current WA task  {}, isTaskHandOffReasonRetained: {}",
-                    callbackRequest.getCaseDetails().getId(),
-                    currentWaTaskHandOff,
-                    isTaskHandOffReasonRetained);
+            if (caseHandedOffToLegacySite) {
+                boolean isTaskHandOffReasonRetained = handOffReasonAfter.stream()
+                        .map(HandoffReason::getCaseHandoffReason)
+                        .map(HandoffReasonId::getCode)
+                        .anyMatch(currentWaTaskHandOff::contains);
 
-            return !isTaskHandOffReasonRetained;
+                log.info("Case id {} - current WA task  {}, isTaskHandOffReasonRetained: {}",
+                        callbackRequest.getCaseDetails().getId(),
+                        currentWaTaskHandOff,
+                        isTaskHandOffReasonRetained);
+
+                return !isTaskHandOffReasonRetained;
+            }
+            return true;
         };
     }
 

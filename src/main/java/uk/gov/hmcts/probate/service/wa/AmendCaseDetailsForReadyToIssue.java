@@ -13,13 +13,19 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,6 +40,12 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
+
+    private static final List<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE
+            = List.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+            EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+            EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE,
+            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE);
 
     @Override
     public String getEventId() {
@@ -50,25 +62,34 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 TASKS_AWAITING_DOCUMENTATION_TO_CLOSE);
 
-        setHandoffReasons(callbackRequest, responseCaseData);
+        boolean caseHandedOffToLegacySite = Optional.ofNullable(callbackRequest.getCaseDetails()
+                        .getData().getCaseHandedOffToLegacySite()).map(value -> value.equals(YES))
+                .orElse(false);
+
+        boolean newHandOffPresent = false;
+        if (caseHandedOffToLegacySite) {
+            setHandoffReasons(callbackRequest, responseCaseData);
+            newHandOffPresent = !responseCaseData.getWaHandoffReasonList().isEmpty();
+        }
 
         boolean isInitialCaseExaminationTaskRequired =
-                !waTaskService
-                        .getGetHandOffReasons(callbackRequest.getCaseDetailsBefore())
-                        .isEmpty()
-                && waTaskService
-                        .getGetHandOffReasons(callbackRequest.getCaseDetails())
-                        .isEmpty();
+                !caseTypeChanged
+                && !caseHandedOffToLegacySite
+                && !waTaskService.isTaskPresent(authToken,
+                        callbackRequest.getCaseDetails().getId().toString(),
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE,
+                        TASKS_READY_TO_ISSUE_TO_CREATE);
 
         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
-                || isInitialCaseExaminationTaskRequired
-                ? Constants.YES : Constants.NO);
+                || newHandOffPresent || isInitialCaseExaminationTaskRequired
+                ? YES : Constants.NO);
 
-        log.info("case id {}: caseTypeChanged {}, taskToClosePresent {}, "
+        log.info("case id {}: caseTypeChanged {}, taskToClosePresent {}, newHandOffPresent {}"
                         + "new handoffs {}, isInitialCaseExaminationTaskRequired {}",
                 callbackRequest.getCaseDetails().getId(),
                 caseTypeChanged,
                 taskToClosePresent,
+                newHandOffPresent,
                 responseCaseData.getWaHandoffReasonList(),
                 isInitialCaseExaminationTaskRequired);
     }

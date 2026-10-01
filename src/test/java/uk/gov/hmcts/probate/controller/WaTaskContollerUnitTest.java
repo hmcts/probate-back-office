@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INCAPACITY_RULE35;
 
@@ -180,6 +181,8 @@ class WaTaskContollerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseHandedOffToLegacySite())
+                .thenReturn(YES);
         when(caseData.getBoHandoffReasonList())
                 .thenReturn(generateHandOffReasonCollection(List.of(
                         DOUBLE_PROBATE,
