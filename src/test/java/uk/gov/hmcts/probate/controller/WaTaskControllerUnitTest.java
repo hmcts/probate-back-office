@@ -41,7 +41,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @ExtendWith(MockitoExtension.class)
-class WaTaskContollerUnitTest {
+class WaTaskControllerUnitTest {
     @Mock
     private CallbackRequest callbackRequest;
     @Mock

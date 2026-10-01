@@ -50,6 +50,11 @@ public class CaseDataBuilder {
         return this;
     }
 
+    public CaseDataBuilder setMoveToCWEscalationUserIdamId(String idamId) {
+        caseData.put("moveToCWEscalationUserIdamId", idamId);
+        return this;
+    }
+
     public CaseDataBuilder setResolveStoppedCaseUserIdamId(String idamId) {
         caseData.put("resolveStoppedCaseUserIdamId", idamId);
         return this;

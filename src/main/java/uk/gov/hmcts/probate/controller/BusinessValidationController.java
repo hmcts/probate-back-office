@@ -107,6 +107,7 @@ public class BusinessValidationController {
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
+    private static final String MOVE_TO_CW_ESCALATION = "moveToCWEscalation";
     private static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
     private static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
     private static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
@@ -519,6 +520,16 @@ public class BusinessValidationController {
 
         caseEscalatedService.setCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        if (MOVE_TO_CW_ESCALATION.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("moveToCWEscalationUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setMoveToCWEscalationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+
+        }
+
         CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, "");
 
         return ResponseEntity.ok(response);
