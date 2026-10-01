@@ -23,6 +23,5 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boSelectForQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFailQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
