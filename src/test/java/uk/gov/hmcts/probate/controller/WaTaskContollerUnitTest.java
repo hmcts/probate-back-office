@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -24,6 +27,7 @@ import uk.gov.hmcts.probate.utils.TaskUtils;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -211,12 +215,23 @@ class WaTaskContollerUnitTest {
         );
     }
 
-    @Test
-    void shouldNotCompleteTaskWhenEvidenceHandledIsNotNo() throws JsonProcessingException {
+    static Stream<Arguments> evidenceHandledPredicateTestCases() {
+        return Stream.of(
+            Arguments.of("BOCaseStopped", NO, false),
+            Arguments.of("BOCaseWorkerEscalation", YES, false),
+            Arguments.of("BOCaseStopped", YES, true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("evidenceHandledPredicateTestCases")
+    void shouldEvaluateTaskCompletionPredicateByStateAndEvidenceHandled(String state, String evidenceHandled,
+                                                         boolean expectedResult) throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getEvidenceHandled()).thenReturn(YES);
+        when(caseDetails.getState()).thenReturn(state);
+        when(caseData.getEvidenceHandled()).thenReturn(evidenceHandled);
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         when(taskUtils.setTaskCompletion(
@@ -242,7 +257,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-                .test(callbackRequest)).isFalse();
+                .test(callbackRequest)).isEqualTo(expectedResult);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -250,46 +265,36 @@ class WaTaskContollerUnitTest {
 
     @Test
     void shouldCompleteTaskWhenEvidenceHandledIsNo() throws JsonProcessingException {
-        // Mock setup
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getState()).thenReturn("BOCaseWorkerEscalation");
         when(caseData.getEvidenceHandled()).thenReturn(NO);
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
-        // Mock task completion
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
                 any()))
                 .thenReturn(Optional.of("encodedClientContext"));
 
-        // Execute the method
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
                 callbackRequest,
                 clientContext,
                 bindingResult,
                 httpServletRequest);
 
-        // Assertions
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getHeaders())
                 .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
 
-        // Verify predicate logic
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
                 predicateArgumentCaptor.capture());
 
-        // Debugging the predicate evaluation
-        boolean predicateResult = predicateArgumentCaptor.getValue().test(callbackRequest);
-        System.out.println("Predicate result: " + predicateResult); // Debugging output
+        assertThat(predicateArgumentCaptor.getValue().test(callbackRequest)).isTrue();
 
-        // Ensure the predicate evaluates to true
-        assertThat(predicateResult).isTrue();
-
-        // Verify logging
         verify(objectMapper).writeValueAsString(callbackRequest);
     }
 
