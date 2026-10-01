@@ -122,7 +122,7 @@
           <text>"boWithdrawForRedeclarationSOT"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_19mw437">
-          <text>"BOCaseClosed"</text>
+          <text>"BOCaseStopped"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0y6435v">
           <text>"Cancel"</text>
