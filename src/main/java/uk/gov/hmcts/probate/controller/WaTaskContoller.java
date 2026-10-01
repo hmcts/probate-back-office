@@ -170,7 +170,7 @@ public class WaTaskContoller {
                     PROBATE.name(),
                     callbackRequest.getCaseDetails().getData().getCaseType(),
                     callbackRequest.getCaseDetails().getId().toString(),
-                    AUTO_SELECT_FOR_QA_CREATE_TASK.toString()
+                    AUTO_SELECT_FOR_QA_CREATE_TASK.getName()
             );
 
             CaseDataContent caseDataContent = CaseDataContent.builder()
