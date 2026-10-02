@@ -127,7 +127,7 @@ public class WaTaskContoller {
     @PostMapping(path = "/select-for-qa/setup-wa-task",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> selectForQASetupWATask(
+    public void selectForQASetupWATask(
             @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
@@ -157,10 +157,6 @@ public class WaTaskContoller {
                                 new String(Base64.getDecoder().decode(value)));
                         responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                     });
-
-            log.info("Case Type: {}, Case ID: {}",
-                    callbackRequest.getCaseDetails().getData().getCaseType(),
-                    callbackRequest.getCaseDetails().getId().toString());
 
             SecurityDTO securityDTO = securityUtils.getSecurityDTO();
             StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
@@ -194,9 +190,8 @@ public class WaTaskContoller {
                     caseDataContent
             );
 
-            return responseBuilder.body(CallbackResponse.builder().build());
         }
-        return ResponseEntity.ok(CallbackResponse.builder().build());
+
     }
 
 
