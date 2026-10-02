@@ -282,13 +282,6 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
         VariableMap inputVariables = new VariableMapImpl();
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        Set<Object> actuals = dmnDecisionTableResult.getResultList().stream()
-                .map(result -> result.get("taskTypeId")).collect(Collectors.toSet());
-        Set<Object> expected = expectedTaskTypes.stream()
-                .map(result -> result.get("taskTypeId")).collect(Collectors.toSet());
-        actuals.removeAll(expected);
-        System.out.println(actuals);
-
         MatcherAssert.assertThat(dmnDecisionTableResult.getResultList(), is(expectedTaskTypes));
     }
 
