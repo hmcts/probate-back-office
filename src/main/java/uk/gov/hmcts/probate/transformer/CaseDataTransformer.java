@@ -267,4 +267,8 @@ public class CaseDataTransformer {
     public void setMoveToCWEscalationUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setMoveToCWEscalationUserIdamId(idamUserId);
     }
+
+    public void setResolveStoppedCaseUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setResolveStoppedCaseUserIdamId(idamUserId);
+    }
 }
