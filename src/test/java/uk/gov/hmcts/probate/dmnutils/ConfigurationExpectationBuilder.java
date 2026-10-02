@@ -157,6 +157,8 @@ public class ConfigurationExpectationBuilder {
         } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_RESOLVE_STOPPED_CASE, true);
+            builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
@@ -168,12 +170,6 @@ public class ConfigurationExpectationBuilder {
 
         if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(EXAMINE_SME_REFERRAL))) {
-            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
-        }
-
-        if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
-                && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {
-            builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         }
 
