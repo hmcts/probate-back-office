@@ -2823,7 +2823,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0j5zstt">
         <inputEntry id="UnaryTests_1ms0ir5">
-          <text>"boSelectForQA", "boResolveStop", "resolveCWEscalation"</text>
+          <text>"autoSelectForQACreateTask", "boResolveStop", "resolveCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1p03k9w">
           <text>"BOCaseQA"</text>

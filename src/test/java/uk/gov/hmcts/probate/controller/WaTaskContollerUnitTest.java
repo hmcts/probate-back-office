@@ -18,8 +18,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -58,6 +63,12 @@ class WaTaskContollerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private CoreCaseDataApi coreCaseDataApi;
+    @Mock
+    private uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel;
 
     @InjectMocks
     private WaTaskContoller waTaskContoller;
@@ -323,5 +334,72 @@ class WaTaskContollerUnitTest {
         ).isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(taskUtils);
+    }
+
+    @Test
+    void shouldCreateTaskWhenWAIsEnabled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseData.getCaseType()).thenReturn("gop");
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("auth")
+                .userId("userId")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId("eventId")
+                .token("eventToken")
+                .caseDetails(caseDetailsModel)
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq("auth"),
+                eq("serviceAuth"),
+                eq("userId"),
+                eq("PROBATE"),
+                eq("gop"),
+                eq("12345"),
+                eq("autoSelectForQACreateTask")
+        )).thenReturn(startEventResponse);
+
+        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                eq("auth"),
+                eq("serviceAuth"),
+                eq("userId"),
+                eq("PROBATE"),
+                eq("gop"),
+                eq("12345"),
+                eq(false),
+                any(CaseDataContent.class)
+        );
+    }
+
+    @Test
+    void shouldBypassTaskCreationWhenWAIsDisabled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsSelectForQASetupWATask() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(12345L);
+
+        assertThatThrownBy(() -> waTaskContoller.selectForQASetupWATask(
+                callbackRequest, clientContext, bindingResult, httpServletRequest))
+                .isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(coreCaseDataApi);
     }
 }
