@@ -143,7 +143,7 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
     public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE =
             "https://www.gov.uk/bank-holidays/england-and-wales.json, "
-            + "https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-6077-Calendar-Test/src/main/resources/privilege-calendar.json";
+            + "https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-6077-calendar-test/src/main/resources/privilege-calendar.json";
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
