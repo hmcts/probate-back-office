@@ -53,32 +53,28 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -97,32 +93,28 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -135,64 +127,56 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -201,37 +185,33 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         additionalDataNoHandOffList(),
                         emptyList()
                 ),
-                //case printed tests
+                // case printed tests
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -250,32 +230,28 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -288,64 +264,56 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(

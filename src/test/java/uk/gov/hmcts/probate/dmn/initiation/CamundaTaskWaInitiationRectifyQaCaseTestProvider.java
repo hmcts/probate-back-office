@@ -36,120 +36,105 @@ public class CamundaTaskWaInitiationRectifyQaCaseTestProvider implements Argumen
                         BO_FAIL_QA_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         List.of(rectifyQaCaseTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEvent",
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_FAIL_QA_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 )
         );

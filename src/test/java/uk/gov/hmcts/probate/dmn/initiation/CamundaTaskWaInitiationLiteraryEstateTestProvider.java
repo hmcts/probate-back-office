@@ -47,31 +47,27 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -90,31 +86,27 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                emptyList(), false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -127,62 +119,54 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason),
-                                false, emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason),
-                                false, emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(),
-                                false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(),
-                                false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -195,31 +179,27 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(),
-                                false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -238,31 +218,27 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -275,62 +251,54 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(),
-                                false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         List.of(examineLiteraryEstateTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(),
-                                false, emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(

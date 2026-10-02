@@ -41,8 +41,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
-                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason), true,
-                                emptyList()),
+                                        examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason), true),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -51,24 +50,21 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -89,8 +85,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -99,24 +94,21 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -131,8 +123,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -141,24 +132,21 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -167,8 +155,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         List.of(infectedBloodCompensationAuthorityTaskAttributes)
                 ),
                 Arguments.of(
@@ -177,24 +164,21 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(
                                         examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason),
-                                true,
-                                emptyList()),
+                                true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false,
-                                emptyList()),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(

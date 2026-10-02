@@ -46,31 +46,27 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -89,31 +85,27 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -126,62 +118,54 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -194,31 +178,27 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -237,16 +217,14 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -260,8 +238,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -274,62 +251,54 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         List.of(examineMinorityInterestTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
