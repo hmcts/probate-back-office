@@ -35,6 +35,12 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBCA,
+                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         return Stream.of(
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -182,7 +188,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             )
         );
     }

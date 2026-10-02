@@ -104,6 +104,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "examineDigitalCaseTypes",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeReadyToIssueHandOffs",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue",
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
                 )
         );
     }

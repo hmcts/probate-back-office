@@ -2117,7 +2117,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ywl8fq">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1v4ieuu">
@@ -2158,7 +2158,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gw3dig">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1j7g211">
@@ -2199,7 +2199,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ro1zqc">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1xpxoix">
@@ -2240,7 +2240,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1wey9fv">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1k11rz6">
@@ -2282,7 +2282,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00f5tbo">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0z1fzfw">
@@ -2323,7 +2323,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hfh3sj">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1pv9e7q">
@@ -2364,7 +2364,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15nih5b">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0miof5b">
@@ -2405,7 +2405,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_01js3an">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1f2zlmx">
@@ -2446,7 +2446,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tvn9c2">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1bfakz3">
@@ -2487,7 +2487,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gkbbpb">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_03pkpew">
@@ -2528,7 +2528,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p2v2ls">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rt08qe">
@@ -2569,7 +2569,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0au28zh">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04f9lcg">
@@ -2610,7 +2610,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0aodtxk">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_19p845u">
@@ -2651,7 +2651,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cms5du">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fvyftz">
@@ -2692,7 +2692,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ebzd8l">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1gvn1wu">
@@ -2733,7 +2733,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_12bz1nd">
-          <text>"case progression"</text>
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
     </decisionTable>

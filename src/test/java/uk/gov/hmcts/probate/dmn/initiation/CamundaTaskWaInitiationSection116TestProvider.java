@@ -36,6 +36,12 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineSection116ReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_SECTION_116,
+                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -195,7 +201,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false,
                                 handOffReasonListWithHandOffReason(section116HandOffReason)),
-                        List.of(examineSection116TaskAttributes)
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

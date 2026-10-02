@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +34,8 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private SecurityUtils securityUtils;
     @Mock
     private TaskUtils taskUtils;
+    @Mock
+    private CcdClientApi ccdClientApi;
 
     private WaTaskService waTaskService;
 
@@ -42,7 +45,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
         processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
     }
 

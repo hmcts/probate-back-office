@@ -39,6 +39,12 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
+                "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
@@ -357,7 +363,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason)),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

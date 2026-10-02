@@ -36,6 +36,13 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_INCAPACITY_RULE_35,
+                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         return Stream.of(
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -183,7 +190,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
         )
         );
     }

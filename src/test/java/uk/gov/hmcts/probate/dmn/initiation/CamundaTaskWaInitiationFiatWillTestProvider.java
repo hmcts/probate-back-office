@@ -34,6 +34,11 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                 "name", FIAT_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
+        Map<String,Object> examineFiatWillReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FIAT_WILL,
+                "name", FIAT_WILL_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
 
 
         return Stream.of(
@@ -41,160 +46,140 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -215,7 +200,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason)),
-                        List.of(examineFiatWillTaskAttributes)
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

@@ -2,10 +2,13 @@ package uk.gov.hmcts.probate.service.wa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -14,24 +17,33 @@ import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -50,6 +62,12 @@ class WaTaskServiceTest {
     private CaseDetails caseDetailsBefore;
     @Mock
     private TaskUtils taskUtils;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    @Mock
+    private SecurityDTO securityDTO;
+    @Captor
+    ArgumentCaptor<Function<StartEventResponse, CaseDataContent>> functionCaptor;
 
     @InjectMocks
     private WaTaskService waTaskService;
@@ -336,6 +354,95 @@ class WaTaskServiceTest {
 
         assertThat(predicate.test(callbackRequest, CLIENT_CONTEXT))
                 .isFalse();
+    }
+
+    @Test
+    void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(Constants.NO)
+                .build();
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(securityUtils.getSecurityDTO())
+                .thenReturn(securityDTO);
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
+                any(Function.class),
+                eq(securityDTO)
+        );
+    }
+
+    @Test
+    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySite() {
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(Constants.YES)
+                .build();
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+
+        verifyNoInteractions(ccdClientApi);
+    }
+
+    @Test
+    void shouldBuildCorrectCaseDataContentWhenClosingReadyToIssueHandOffs() {
+
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(Constants.NO)
+                .build();
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(securityUtils.getSecurityDTO())
+                .thenReturn(securityDTO);
+        when(securityUtils.getSecurityDTO())
+                .thenReturn(securityDTO);
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
+                functionCaptor.capture(),
+                eq(securityDTO)
+        );
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
+                .build();
+
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
+
+        assertThat(result.getEvent().getId())
+                .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
+
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
     }
 
     private void setUpCallbackRequestForCaseType(

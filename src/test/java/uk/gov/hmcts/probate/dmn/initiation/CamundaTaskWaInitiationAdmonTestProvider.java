@@ -49,48 +49,42 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     "someOtherEventId",
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false,
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
@@ -103,48 +97,42 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
@@ -159,232 +147,203 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
-                            handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                            emptyList()),
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false,
-                            emptyList()),
+                            emptyList(), false),
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
-                            emptyList(), true,
-                            emptyList()),
+                            emptyList(), true),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false,
-                            emptyList(), true,
-                            emptyList()),
+                            emptyList(), true),
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             )
         );

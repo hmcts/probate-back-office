@@ -36,6 +36,12 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_POA,
+                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -195,7 +201,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason)),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

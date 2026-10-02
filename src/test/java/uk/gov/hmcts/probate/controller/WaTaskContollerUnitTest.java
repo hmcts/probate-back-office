@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.wa.WaApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
@@ -38,7 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -75,6 +78,8 @@ class WaTaskContollerUnitTest {
     private WaApi waApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private CcdClientApi ccdClientApi;
 
     private WaTaskService waTaskService;
 
@@ -87,7 +92,7 @@ class WaTaskContollerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 
@@ -339,6 +344,32 @@ class WaTaskContollerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    void shouldByPassCloseReadyToIssueHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        waTaskContoller.closeReadyToIssueHandOffs(
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
+    }
+
+    @Test
+    void shouldInvokeCloseReadyToIssueHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+
+        waTaskContoller.closeReadyToIssueHandOffs(
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+    }
+
 
     @Test
     void shouldThrowBadRequestExceptionWhenBindingResultHasErrors() {
@@ -398,5 +429,23 @@ class WaTaskContollerUnitTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueHandOffs() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.closeReadyToIssueHandOffs(
+                        callbackRequest,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(waTaskService);
     }
 }

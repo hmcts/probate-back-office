@@ -36,133 +36,125 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_DOUBLE_PROBATE,
+                "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -183,7 +175,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason)),
-                        List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
+                        List.of(examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

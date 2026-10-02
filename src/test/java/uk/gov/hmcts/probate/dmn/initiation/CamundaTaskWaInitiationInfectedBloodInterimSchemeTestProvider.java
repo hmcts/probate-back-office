@@ -37,6 +37,12 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBIS,
+                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBIS_CASE_PRINTED,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
@@ -355,7 +361,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

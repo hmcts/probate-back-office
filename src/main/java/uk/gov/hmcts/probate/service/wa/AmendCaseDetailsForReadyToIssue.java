@@ -85,7 +85,7 @@ public class AmendCaseDetailsForReadyToIssue  implements CreateTaskProcessor {
                 ? YES : Constants.NO);
 
         log.info("case id {}: caseTypeChanged {}, taskToClosePresent {}, newHandOffPresent {}"
-                        + "new handoffs {}, isInitialCaseExaminationTaskRequired {}",
+                        + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
                 callbackRequest.getCaseDetails().getId(),
                 caseTypeChanged,
                 taskToClosePresent,

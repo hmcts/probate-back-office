@@ -40,7 +40,7 @@ public class WaTaskContoller {
     private final WaTaskService waTaskService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
-    @PostMapping(path = "/case-type/updateCaseTypeClientContext",
+    @PostMapping(path = "/updateCaseTypeClientContext",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateCaseTypeClientContext(
@@ -57,7 +57,7 @@ public class WaTaskContoller {
     }
 
 
-    @PostMapping(path = "/case-type/updateHandOffClientContext",
+    @PostMapping(path = "/updateHandOffClientContext",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateHandOffClientContext(
@@ -107,7 +107,23 @@ public class WaTaskContoller {
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
+    @PostMapping(path = "/trigger/closeReadyToIssueHandOffs",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public void closeReadyToIssueHandOffs(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            logRequest(request.getRequestURI(), callbackRequest);
 
+            if (bindingResult.hasErrors()) {
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+                throw new BadRequestException("Invalid payload", bindingResult);
+            }
+            waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        }
+    }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {

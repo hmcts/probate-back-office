@@ -49,32 +49,28 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -93,32 +89,28 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -131,64 +123,56 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
-                                emptyList(), false,
-                                emptyList()),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -202,31 +186,27 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -245,31 +225,27 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -282,62 +258,54 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
-                                emptyList()),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
-                        additionalData(false, "",true, emptyList(), false,
-                                emptyList()),
+                        additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(

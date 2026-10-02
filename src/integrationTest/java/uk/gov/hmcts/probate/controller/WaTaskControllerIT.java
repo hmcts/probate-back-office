@@ -70,7 +70,7 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/case-type/updateCaseTypeClientContext")
+        mockMvc.perform(post("/waTaskContoller/updateCaseTypeClientContext")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(
                                 CLIENT_CONTEXT_HEADER_PARAMETER,
@@ -92,7 +92,7 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/case-type/updateHandOffClientContext")
+        mockMvc.perform(post("/waTaskContoller/updateHandOffClientContext")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(
                                 CLIENT_CONTEXT_HEADER_PARAMETER,
@@ -114,7 +114,7 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/case-type/updateCaseTypeClientContext")
+        mockMvc.perform(post("/waTaskContoller/updateCaseTypeClientContext")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(
                                 CLIENT_CONTEXT_HEADER_PARAMETER,
@@ -126,6 +126,24 @@ public class WaTaskControllerIT {
 
         verify(taskUtils, never())
                 .setTaskCompletion(isA(String.class), isA(CallbackRequest.class), any());
+    }
+
+    @Test
+    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsNotEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskCaseType.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isOk());
+
+        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
     }
 
     @Test
@@ -144,7 +162,7 @@ public class WaTaskControllerIT {
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);
 
-        mockMvc.perform(post("/waTaskContoller/case-type/updateCaseTypeClientContext")
+        mockMvc.perform(post("/waTaskContoller/updateCaseTypeClientContext")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidRequest))
                 .andExpect(status().isBadRequest());

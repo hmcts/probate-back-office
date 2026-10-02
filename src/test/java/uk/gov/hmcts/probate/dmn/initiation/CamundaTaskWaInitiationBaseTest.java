@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
@@ -52,6 +53,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
     protected static final String windrushSchemeHandOffReason = "WindrushScheme";
     protected static final String waHandoffReasonListVar = "waHandoffReasonList";
+
+    protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList,
+                                                                     boolean createTask) {
+        return additionalData(evidenceHandled,
+                caseType,
+                caseHandedOffToLegacySite,
+                boHandoffReasonList,
+                createTask,
+                emptyList()
+        );
+    }
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,

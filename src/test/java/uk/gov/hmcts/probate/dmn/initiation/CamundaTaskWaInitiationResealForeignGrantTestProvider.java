@@ -36,6 +36,12 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineResealForeignGrantReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT,
+                "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -195,7 +201,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason)),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }
