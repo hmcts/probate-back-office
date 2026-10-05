@@ -126,8 +126,6 @@ public class RetainAndDisposalService {
         List<Long> failedCases = new ArrayList<>();
         try {
             LocalDate disposalStartDate = LocalDate.parse(startDate);
-            LocalDate disposalEndDate = LocalDate.parse(runDate)
-                    .minusDays(inactivityNotificationPeriod + disposalGracePeriod);
 
             log.info("Start Dispose Gop Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, runDate);
@@ -136,6 +134,9 @@ public class RetainAndDisposalService {
             log.info("Start Dispose Caveat Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, runDate);
             disposeDeletedCase(disposalStartDate.toString(), runDate, failedCases, false);
+
+            LocalDate disposalEndDate = LocalDate.parse(runDate)
+                    .minusDays(inactivityNotificationPeriod + disposalGracePeriod);
 
             log.info("Start disposing inactive PA Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
