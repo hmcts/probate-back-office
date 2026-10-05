@@ -741,7 +741,7 @@ class NotificationControllerIT {
         ((ObjectNode) payload.get("case_details"))
                 .put("state", "BORedecNotificationSent");
 
-        mockMvc.perform(post(REDECLARATION_SOT_DEFAULT_URL)
+        mockMvc.perform(post(REDECLARATION_SOT)
                         .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(OBJECT_MAPPER.writeValueAsString(payload))
                         .contentType(MediaType.APPLICATION_JSON))
