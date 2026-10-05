@@ -885,6 +885,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForSMEReferral", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createDraft", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorCreateApplication", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponse", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
