@@ -3,7 +3,7 @@
 set -eu
 workspace=${1}
 
-s2sSecret=${S2S_SECRET:-AABBCCDDEEFFGGHH}
+s2sSecret=${S2S_AUTH_TOTP_SECRET:-AABBCCDDEEFFGGHH}
 
 if [[ "${ENV}" == 'prod' ]]; then
   s2sSecret=${S2S_SECRET_PROD}
