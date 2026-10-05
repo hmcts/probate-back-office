@@ -4440,6 +4440,5 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedDateForDormant", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "selectForQAUserIdamId", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
 ]
