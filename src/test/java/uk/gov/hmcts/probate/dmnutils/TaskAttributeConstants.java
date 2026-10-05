@@ -117,6 +117,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
+    public static final String EXAMINE_SME_REFERRAL = "ExamineSMEReferral";
     public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
     public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
     public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
@@ -191,6 +192,20 @@ public class TaskAttributeConstants {
                     + "/trigger/handleEvidence)";
     public static final String DESCRIPTION_REGISTRAR_DECISION =
             "[Registrar's Decision](/cases/case-details/${[CASE_REFERENCE]}/trigger/registrarsDecision)";
+    public static final String DESCRIPTION_EXAMINE_SME_REFERRAL =
+            "[Resolve SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/resolveCWEscalation)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)";
+    public static final String DESCRIPTION_REVIEW_REGISTRAR_DECISION =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForRegistrarEscalations)";
     public static final String DESCRIPTION_REVIEW_QA_CASE =
             "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
@@ -275,6 +290,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME = "Examine - Witness Interview";
     public static final String EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME = "Examine - Trust Corporation";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a foreign will";
+    public static final String REVIEW_SME_REFERRAL_TASK_TYPE_NAME = "Review SME Referral";
+    public static final String EXAMINE_SME_REFERRAL_TASK_TYPE_NAME = "Examine SME Referral";
     public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
     public static final String REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME = "Review QA Case - Intestacy";
     public static final String REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME = "Review QA Case - Admon";
@@ -339,4 +356,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
             "Examine - Prove a Foreign Will";
+
+    public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
+    public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
+    public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
 }

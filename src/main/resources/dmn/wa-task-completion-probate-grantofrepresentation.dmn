@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-completion-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-completion-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-completion-probate-grantofrepresentation" name="Task completion DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_01re27m" hitPolicy="COLLECT">
       <input id="eventId" label="Event ID" biodi:width="614">
@@ -644,6 +644,28 @@
           <text>"ExamineProveForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gzg9b1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0o4kx86">
+        <inputEntry id="UnaryTests_0nqc7ni">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForRegistrarEscalations"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15wufin">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_162dabx">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nzc6as">
+        <inputEntry id="UnaryTests_1itjamn">
+          <text>"boEscalateToRegistrar", "resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_038oawx">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03wtfoy">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

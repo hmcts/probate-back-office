@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -2695,6 +2695,88 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_13im3qs">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ze3k6d">
+        <inputEntry id="UnaryTests_1bpx8hf">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rdvmz5">
+          <text>"BOCaseWorkerEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b9hlrw">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nmjs8g">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o7pqhp">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kydpm1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1i1n46e">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kg1sip">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_a589cdc">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0h8rkqy">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19xbzcy">
+          <text>"Examine SME Referral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00dqm4t">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x6xc0e">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zjaely">
+        <inputEntry id="UnaryTests_1gsp9qs">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0195lp4">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16j0xon">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02ww6li">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15yhz0l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mlhi3k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tqp3l7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zfm70o">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18bbnrd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mtaaqu">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ivagfw">
+          <text>"Review Registrar's Decision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19ykwp7">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mm8p9e">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
