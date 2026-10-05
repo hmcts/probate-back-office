@@ -3514,7 +3514,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "createTask", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "selectForQAUserIdamId", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "moveToCWEscalationUserIdamId", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "escalateToRegistrarUserIdamId", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "escalateToRegistrarUserIdamId", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveStoppedCaseUserIdamId", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "taskList", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
