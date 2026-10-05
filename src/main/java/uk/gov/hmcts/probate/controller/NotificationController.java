@@ -182,17 +182,7 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> redeclarationSOTDefaultValues(
         @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse =
-            callbackResponseTransformer.defaultRedeclarationSOTValues(callbackRequest);
-
-        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        if (BO_NOTIFY_REDECLARATION_SOT_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
-                && REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
-            caseworkerInfo.ifPresent(userInfo -> {
-                String idamUserId = userInfo.getUid();
-                log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
-                caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
-            });
-        }
+                callbackResponseTransformer.defaultRedeclarationSOTValues(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -228,6 +218,14 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_NOTIFY_REDECLARATION_SOT_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest,
                 caseworkerInfo));
     }
