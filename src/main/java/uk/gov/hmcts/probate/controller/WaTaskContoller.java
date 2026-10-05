@@ -128,7 +128,7 @@ public class WaTaskContoller {
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }

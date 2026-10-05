@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.wa.WaApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
@@ -80,6 +81,8 @@ class WaTaskContollerUnitTest {
     private SecurityUtils securityUtils;
     @Mock
     private CcdClientApi ccdClientApi;
+    @Mock
+    private IdamApi idamApi;
 
     private WaTaskService waTaskService;
 
@@ -92,7 +95,7 @@ class WaTaskContollerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi, idamApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 

@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
@@ -58,6 +59,9 @@ class AmendCaseDetailsForReadyToIssueTest {
     private TaskUtils taskUtils;
     @Mock
     private CcdClientApi ccdClientApi;
+    @Mock
+    private IdamApi idamApi;
+
 
     private WaTaskService waTaskService;
 
@@ -77,7 +81,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi, idamApi));
         processor = new AmendCaseDetailsForReadyToIssue(waTaskService);
     }
 

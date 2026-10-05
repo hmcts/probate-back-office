@@ -19,12 +19,14 @@ import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -66,6 +69,8 @@ class WaTaskServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityDTO securityDTO;
+    @Mock
+    private IdamApi idamApi;
     @Captor
     ArgumentCaptor<Function<StartEventResponse, CaseDataContent>> functionCaptor;
 
@@ -356,31 +361,7 @@ class WaTaskServiceTest {
                 .isFalse();
     }
 
-    @Test
-    void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
-        Long caseId = 123456789L;
-        CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(Constants.NO)
-                .build();
 
-        when(caseDetails.getId())
-                .thenReturn(caseId);
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-        when(securityUtils.getSecurityDTO())
-                .thenReturn(securityDTO);
-
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
-
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
-                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
-                any(Function.class),
-                eq(securityDTO)
-        );
-    }
 
     @Test
     void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySite() {
@@ -398,6 +379,55 @@ class WaTaskServiceTest {
     }
 
     @Test
+    void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(Constants.NO)
+                .build();
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(securityUtils.getAuthorisation())
+                .thenReturn("auth-token");
+        when(idamApi.retrieveUserInfo(anyString()))
+                .thenReturn(UserInfo.builder()
+                        .uid("user-id")
+                        .build());
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class)
+        );
+        verify(idamApi).retrieveUserInfo(anyString());
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
+                .build();
+
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
+
+        assertThat(result.getEvent().getId())
+                .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
+
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
+    }
+
+    @Test
     void shouldBuildCorrectCaseDataContentWhenClosingReadyToIssueHandOffs() {
 
         Long caseId = 123456789L;
@@ -411,10 +441,12 @@ class WaTaskServiceTest {
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-        when(securityUtils.getSecurityDTO())
-                .thenReturn(securityDTO);
-        when(securityUtils.getSecurityDTO())
-                .thenReturn(securityDTO);
+        when(securityUtils.getAuthorisation())
+                .thenReturn("auth-token");
+        when(idamApi.retrieveUserInfo(anyString()))
+                .thenReturn(UserInfo.builder()
+                        .uid("user-id")
+                        .build());
 
         waTaskService.closeReadyToIssueHandOffs(callbackRequest);
 
@@ -422,8 +454,9 @@ class WaTaskServiceTest {
                 eq(caseId.toString()),
                 eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
                 functionCaptor.capture(),
-                eq(securityDTO)
-        );
+                isA(SecurityDTO.class));
+
+        verify(idamApi).retrieveUserInfo(anyString());
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
                 .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
