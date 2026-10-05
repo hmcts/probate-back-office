@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.wa;
 
 import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import lombok.NonNull;
@@ -20,6 +21,8 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
@@ -31,6 +34,7 @@ public class WaTaskService {
     private final WaApi waApi;
     private final SecurityUtils securityUtils;
     private final CoreCaseDataApi coreCaseDataApi;
+    private final IdamApi idamApi;
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -63,9 +67,20 @@ public class WaTaskService {
                 .anyMatch(taskNames::contains);
     }
 
+    private SecurityDTO getCaseworkerSecurityDTO() {
+        securityUtils.setSecurityContextUserAsCaseworker();
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        return SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+                .serviceAuthorisation(securityUtils.generateServiceToken())
+                .userId(userId)
+                .build();
+    }
 
-    public void createAndSubmitTaskForCaseWorker(CallbackRequest callbackRequest, SecurityDTO securityDTO,
+    public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
                                                  EventId eventId, String summary, String description) {
+        SecurityDTO securityDTO = getCaseworkerSecurityDTO();
         StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),

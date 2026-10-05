@@ -362,9 +362,8 @@ class WaTaskContollerUnitTest {
 
         waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
 
-        verify(waTaskService).createAndSubmitTaskForCaseWorker(
+        verify(waTaskService).createAndSubmitTaskForSystemUser(
                 eq(callbackRequest),
-                eq(securityDTO),
                 eq(AUTO_SELECT_FOR_QA_CREATE_TASK),
                 eq("Auto Select For QA Create Task"),
                 eq("Auto Select For QA Create Task")
