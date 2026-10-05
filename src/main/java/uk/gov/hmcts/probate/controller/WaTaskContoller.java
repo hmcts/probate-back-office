@@ -110,7 +110,7 @@ public class WaTaskContoller {
     @PostMapping(path = "/trigger/closeReadyToIssueHandOffs",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public void closeReadyToIssueHandOffs(
+    public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
             @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
@@ -123,6 +123,7 @@ public class WaTaskContoller {
             }
             waTaskService.closeReadyToIssueHandOffs(callbackRequest);
         }
+        return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {

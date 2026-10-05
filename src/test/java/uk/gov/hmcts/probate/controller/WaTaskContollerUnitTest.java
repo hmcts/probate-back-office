@@ -365,10 +365,12 @@ class WaTaskContollerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
 
-        waTaskContoller.closeReadyToIssueHandOffs(
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
                 bindingResult,
                 httpServletRequest);
+        assertThat(callbackResponseResponseEntity.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
 
         verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
     }
