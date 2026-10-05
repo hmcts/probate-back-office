@@ -108,6 +108,7 @@ public class BusinessValidationController {
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
     private static final String MOVE_TO_CW_ESCALATION = "moveToCWEscalation";
+    private static final String BO_ESCALATE_TO_REGISTRAR = "boEscalateToRegistrar";
 
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
@@ -473,6 +474,14 @@ public class BusinessValidationController {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
 
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        if (BO_ESCALATE_TO_REGISTRAR.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("escalateToRegistrarUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setEscalateToRegistrarUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+
+        }
         Document sentNotification;
         try {
             sentNotification = notificationService.sendRegistrarEscalationNotification(caseDetails);
