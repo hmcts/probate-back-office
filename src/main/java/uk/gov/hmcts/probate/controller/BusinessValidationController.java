@@ -87,6 +87,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -598,6 +599,14 @@ public class BusinessValidationController {
             caseworkerInfo.ifPresent(userInfo -> {
                 String idamUserId = userInfo.getUid();
                 caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
+        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
+                caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
             });
         }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
