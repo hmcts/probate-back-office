@@ -18,12 +18,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
-import uk.gov.hmcts.reform.ccd.client.model.Event;
-import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.Base64;
 import java.util.Optional;
@@ -32,7 +29,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
-import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
 @Controller
@@ -44,8 +40,9 @@ public class WaTaskContoller {
     private final ObjectMapper objectMapper;
     private final WorkAllocationToggleService workAllocationToggleService;
     private final SecurityUtils securityUtils;
-    private final CoreCaseDataApi coreCaseDataApi;
+    private final WaTaskService waTaskService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
+    public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION = "Auto Select For QA Create Task";
 
     @PostMapping(path = "/case-type/updateClientContext",
             consumes = APPLICATION_JSON_VALUE,
@@ -163,36 +160,9 @@ public class WaTaskContoller {
                     callbackRequest.getCaseDetails().getId().toString());
 
             SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-            StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
-                    securityDTO.getAuthorisation(),
-                    securityDTO.getServiceAuthorisation(),
-                    securityDTO.getUserId(),
-                    PROBATE.name(),
-                    callbackRequest.getCaseDetails().getData().getCaseType(),
-                    callbackRequest.getCaseDetails().getId().toString(),
-                    AUTO_SELECT_FOR_QA_CREATE_TASK.getName()
-            );
-
-            CaseDataContent caseDataContent = CaseDataContent.builder()
-                    .event(Event.builder()
-                            .id(startEventResponse.getEventId())
-                            .summary("Auto Select For QA Create Task")
-                            .description("Auto Select For QA Create Task")
-                            .build())
-                    .eventToken(startEventResponse.getToken())
-                    .data(startEventResponse.getCaseDetails().getData())
-                    .build();
-
-            coreCaseDataApi.submitEventForCaseWorker(
-                    securityDTO.getAuthorisation(),
-                    securityDTO.getServiceAuthorisation(),
-                    securityDTO.getUserId(),
-                    PROBATE.name(),
-                    callbackRequest.getCaseDetails().getData().getCaseType(),
-                    callbackRequest.getCaseDetails().getId().toString(),
-                    false,
-                    caseDataContent
-            );
+            waTaskService.createAndSubmitTaskForCaseWorker(callbackRequest, securityDTO, AUTO_SELECT_FOR_QA_CREATE_TASK,
+                    AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION,
+                    AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION);
 
             return responseBuilder.body(CallbackResponse.builder().build());
         }

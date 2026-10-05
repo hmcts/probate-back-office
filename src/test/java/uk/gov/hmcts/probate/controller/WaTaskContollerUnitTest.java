@@ -23,8 +23,8 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -40,6 +40,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskContollerUnitTest {
@@ -69,6 +70,8 @@ class WaTaskContollerUnitTest {
     private CoreCaseDataApi coreCaseDataApi;
     @Mock
     private uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel;
+    @Mock
+    private WaTaskService waTaskService;
 
     @InjectMocks
     private WaTaskContoller waTaskContoller;
@@ -356,27 +359,15 @@ class WaTaskContollerUnitTest {
                 .token("eventToken")
                 .caseDetails(caseDetailsModel)
                 .build();
-        when(coreCaseDataApi.startEventForCaseWorker(
-                eq("auth"),
-                eq("serviceAuth"),
-                eq("userId"),
-                eq("PROBATE"),
-                eq("gop"),
-                eq("12345"),
-                eq("autoSelectForQACreateTask")
-        )).thenReturn(startEventResponse);
 
         waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
 
-        verify(coreCaseDataApi).submitEventForCaseWorker(
-                eq("auth"),
-                eq("serviceAuth"),
-                eq("userId"),
-                eq("PROBATE"),
-                eq("gop"),
-                eq("12345"),
-                eq(false),
-                any(CaseDataContent.class)
+        verify(waTaskService).createAndSubmitTaskForCaseWorker(
+                eq(callbackRequest),
+                eq(securityDTO),
+                eq(AUTO_SELECT_FOR_QA_CREATE_TASK),
+                eq("Auto Select For QA Create Task"),
+                eq("Auto Select For QA Create Task")
         );
     }
 
