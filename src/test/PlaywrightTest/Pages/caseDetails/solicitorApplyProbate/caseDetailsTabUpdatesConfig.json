@@ -39,7 +39,7 @@
   },
   "MaritalStatus": {
     "fields": [
-      "What was the marital status of the deceased at the date of death?"
+      "What was the marital status of the deceased at the time of their death?"
     ],
     "dataKeys": [
       "page2_maritalstatus_display"

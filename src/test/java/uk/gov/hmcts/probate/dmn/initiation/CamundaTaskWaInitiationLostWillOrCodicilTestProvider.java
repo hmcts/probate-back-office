@@ -12,6 +12,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -33,7 +35,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
 
         Map<String,Object> lostWillOrCodicilTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL_CASE_PRINTED,
-                "name", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME,
+                "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
                 "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
@@ -49,7 +51,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
@@ -57,21 +59,21 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), true),
+                                Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -91,7 +93,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
@@ -99,7 +101,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -127,7 +129,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
@@ -135,14 +137,14 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -157,7 +159,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         List.of(lostWillOrCodicilTaskAttributes)
                 ),
                 Arguments.of(
@@ -165,14 +167,14 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
-                                true),
+                                false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), true),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(

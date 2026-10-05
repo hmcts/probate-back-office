@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -18,6 +19,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -31,6 +34,12 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression,examineDigitalCaseTypes"
+        );
+
+        Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
+                "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
+                "processCategories", "case progression"
         );
 
         return Stream.of(
@@ -169,6 +178,131 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                // Ready to Issue scenarios
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList(), false
                 )
         );
     }

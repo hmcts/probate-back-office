@@ -38,26 +38,43 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME;
@@ -76,6 +93,42 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
+
+import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
+import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
@@ -193,11 +246,11 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_IBIS_CASE_PRINTED
                 ),
                 Map.of(
-                        "taskTypeName", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED_TASK_TYPE_NAME,
+                        "taskTypeName", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_LOST_WILL_CASE_PRINTED
                 ),
                 Map.of(
-                        "taskTypeName", EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME,
+                        "taskTypeName", EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED
                 ),
                 Map.of(
@@ -255,6 +308,74 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_SECTION_116_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_FIAT_WILL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FIAT_WILL_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FOREIGN_DOMICILE
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_TRUST_CORPORATION
+                ),
+                Map.of(
+                    "taskTypeName", REVIEW_SME_REFERRAL_TASK_TYPE_NAME,
+                    "taskTypeId", REVIEW_SME_REFERRAL
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_REFERRALS
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_ORDERS
+                ),
+                Map.of(
+                        "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
+                ),
+                Map.of(
+                    "taskTypeName", EXAMINE_SME_REFERRAL_TASK_TYPE_NAME,
+                    "taskTypeId", EXAMINE_SME_REFERRAL
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_REGISTRAR_DECISION
                 )
 
         );
@@ -271,7 +392,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(41));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

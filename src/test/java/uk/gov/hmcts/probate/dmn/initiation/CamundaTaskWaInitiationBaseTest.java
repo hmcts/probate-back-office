@@ -45,34 +45,35 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String lostWillOrCodicilHandOffReason = "LostWill";
     protected static final String witnessInterviewHandOffReason = "WitnessInterview";
     protected static final String createTaskVar = "createTask";
-    protected static final String examineHorizonSchemeCasePrintedHandOffReason = "HorizonScheme";
-    protected static final String examineInfectedBloodCompensationAuthorityCasePrintedHandOffReason = "IBCA";
+    protected static final String horizonSchemeCasePrintedHandOffReason = "HorizonScheme";
     protected static final String literaryEstateHandOffReason = "LiteraryEstate";
     protected static final String minorityInterestHandOffReason = "MinorityInterest";
     protected static final String willOrCodicilToBeNotatedHandOffReason = "WillCodicilNotated";
     protected static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
     protected static final String windrushSchemeHandOffReason = "WindrushScheme";
+    protected static final String fiatWillCasePrintedHandOffReason = "FiatWill";
+    protected static final String foreignDomicileCasePrintedHandOffReason = "ForeignDomicile";
+    protected static final String trustCorporationHandOffReason = "TrustCorporation";
+    protected static final String foreignDomicileHandOffReason = "ForeignDomicile";
+    protected static final String proveForeignWillHandOffReason = "ForeignWill";
+    protected static final String escalationReasonVar = "registrarEscalateReason";
+    protected static final String examineProveForeignWill = "ForeignWill";
     protected static final String waHandoffReasonListVar = "waHandoffReasonList";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
-                                                                     String caseType,
-                                                                     boolean caseHandedOffToLegacySite,
-                                                                     List<Map<String,Object>> boHandoffReasonList,
-                                                                     boolean createTask) {
-        return additionalData(evidenceHandled,
-                caseType,
-                caseHandedOffToLegacySite,
-                boHandoffReasonList,
-                createTask,
-                emptyList()
-        );
+                                                                   String caseType,
+                                                                   boolean caseHandedOffToLegacySite,
+                                                                   List<Map<String,Object>> boHandoffReasonList,
+                                                                   boolean createTask) {
+        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
+                "",emptyList());
     }
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
                                                                    List<Map<String,Object>> boHandoffReasonList,
-                                                                   boolean createTask,
+                                                                   boolean createTask, String escalationReason,
                                                                    List<Map<String,Object>> waHandoffReasonList) {
         return Map.of(
                 "Data", Map.of(
@@ -81,6 +82,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
                         boHandoffReasonListVar, boHandoffReasonList,
                         createTaskVar, createTask,
+                        escalationReasonVar, escalationReason,
                         waHandoffReasonListVar, waHandoffReasonList
                 )
         );
@@ -109,9 +111,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(9));
+        assertThat(logic.getInputs().size(), is(10));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(65));
+        assertThat(logic.getRules().size(), is(72));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -137,6 +139,18 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationRectifyQaCaseTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWitnessInterviewTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationFiatWillCasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationTrustCorporationTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewSmeReferralTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationResolveRegistrarEscalationOrdersTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationExamineSmeReferralTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,

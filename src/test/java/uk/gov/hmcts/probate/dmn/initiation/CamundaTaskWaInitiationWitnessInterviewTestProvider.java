@@ -17,6 +17,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -32,6 +33,12 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                 "processCategories", "case progression,examineDigitalCaseTypes"
+        );
+
+        Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
+                "taskId", EXAMINE_WITNESS_INTERVIEW,
+                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                "processCategories", "case progression"
         );
 
         return Stream.of(
@@ -168,6 +175,131 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                // Ready to Issue scenarios
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
                 )

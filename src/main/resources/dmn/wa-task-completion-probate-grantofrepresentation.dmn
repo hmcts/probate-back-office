@@ -286,7 +286,7 @@
       </rule>
       <rule id="DecisionRule_1n7soue">
         <inputEntry id="UnaryTests_1hmgdlz">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation","boAmendCaseDetailsForReadyToIssue"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","boAmendCaseDetailsForReadyToIssue","handleEvidence"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0nb2nwv">
           <text></text>
@@ -479,6 +479,193 @@
           <text>"ExamineWindrushSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_087jham">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0h4vblv">
+        <inputEntry id="UnaryTests_1qy4yvu">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sqo1gw">
+          <text>"ExamineSection116CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0krmjj6">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jlzvij">
+        <inputEntry id="UnaryTests_1qvw1cd">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bmi71d">
+          <text>"ExamineDoubleProbateCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zs18lf">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nhcdg4">
+        <inputEntry id="UnaryTests_0a93mpo">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0n043m3">
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hg1fdg">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dhg9bm">
+        <inputEntry id="UnaryTests_1mkziss">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mf8z3g">
+          <text>"ExamineResealForeignGrantCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fvn4lw">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_09y0gsb">
+        <inputEntry id="UnaryTests_144nt7a">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k3dwup">
+          <text>"ExamineFiatWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pkv59t">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0y26oyr">
+        <inputEntry id="UnaryTests_1siluq8">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForCaseMatchingForExamining"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1eh5mm6">
+          <text>"ExamineForeignDomicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qgsjk7">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10t01p9">
+        <inputEntry id="UnaryTests_0pfasi7">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ffmssc">
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a4vbok">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wpl2vi">
+        <inputEntry id="UnaryTests_0rpalft">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xqlplk">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wosmu6">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_148i6jx">
+        <inputEntry id="UnaryTests_07lzcdi">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0go98kv">
+          <text>"ExamineForeignDomicileCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fow4ag">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1g4cxgp">
+        <inputEntry id="UnaryTests_1q2c9bq">
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11vginr">
+          <text>"ExamineProveForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rdkm2x">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0mc8m6v">
+        <inputEntry id="UnaryTests_1t0i7u5">
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0175b8n">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0axupk5">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nyuh9a">
+        <inputEntry id="UnaryTests_1v06865">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kqokkl">
+          <text>"ReviewSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ldnynn">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18c6roy">
+        <inputEntry id="UnaryTests_14nyvmr">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xvenw8">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t202fd">
+          <text>"Auto"</text>
+        </outputEntry>
+       </rule>
+       <rule id="DecisionRule_0ciwiue">
+        <inputEntry id="UnaryTests_0nmijes">
+          <text>"registrarsDecision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1angv4y">
+          <text>"ResolveRegistrarEscalationOrders"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tex7rl">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15avi5s">
+        <inputEntry id="UnaryTests_0ijvsil">
+          <text>"boIssueGrantForCaseMatching","boStopCaseForCasePrinted","boEscalateToRegistrar","moveToCWEscalation","boSelectForQA"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15vy698">
+          <text>"ExamineProveForeignWillCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gzg9b1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0o4kx86">
+        <inputEntry id="UnaryTests_0nqc7ni">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForRegistrarEscalations"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15wufin">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_162dabx">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nzc6as">
+        <inputEntry id="UnaryTests_1itjamn">
+          <text>"boEscalateToRegistrar", "resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_038oawx">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03wtfoy">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

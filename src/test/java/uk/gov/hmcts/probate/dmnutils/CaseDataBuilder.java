@@ -49,4 +49,14 @@ public class CaseDataBuilder {
         caseData.put("selectForQAUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setMoveToCWEscalationUserIdamId(String idamId) {
+        caseData.put("moveToCWEscalationUserIdamId", idamId);
+        return this;
+    }
+
+    public CaseDataBuilder setEscalateToRegistrarUserIdamId(String idamId) {
+        caseData.put("escalateToRegistrarUserIdamId", idamId);
+        return this;
+    }
 }
