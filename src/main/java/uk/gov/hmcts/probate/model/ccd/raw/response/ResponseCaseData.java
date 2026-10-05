@@ -429,5 +429,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String createTask;
     private String selectForQAUserIdamId;
     private String moveToCWEscalationUserIdamId;
+    private String escalateToRegistrarUserIdamId;
     private String resolveStoppedCaseUserIdamId;
 }

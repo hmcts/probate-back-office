@@ -55,6 +55,11 @@ public class CaseDataBuilder {
         return this;
     }
 
+    public CaseDataBuilder setEscalateToRegistrarUserIdamId(String idamId) {
+        caseData.put("escalateToRegistrarUserIdamId", idamId);
+        return this;
+    }
+
     public CaseDataBuilder setResolveStoppedCaseUserIdamId(String idamId) {
         caseData.put("resolveStoppedCaseUserIdamId", idamId);
         return this;

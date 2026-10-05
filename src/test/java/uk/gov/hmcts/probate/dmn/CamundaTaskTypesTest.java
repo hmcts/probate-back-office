@@ -93,6 +93,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_TASK_TYPE_NAME;
 
@@ -350,6 +352,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeId", EXAMINE_SME_REFERRAL
                 ),
                 Map.of(
+                        "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_REGISTRAR_DECISION
+                ),
+                Map.of(
                         "taskTypeName", RESOLVE_STOPPED_CASE_TASK_TYPE_NAME,
                         "taskTypeId", RESOLVE_STOPPED_CASE
                 )
@@ -368,7 +374,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(59));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
