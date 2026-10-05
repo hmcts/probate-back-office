@@ -72,7 +72,8 @@ def secrets = [
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
                 secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING'),
-                secret('probate-storage-account-nfi-primary-connection-string','PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING')
+                secret('probate-storage-account-nfi-primary-connection-string','PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING'),
+                secret('s2s-probate-backend', 'S2S_SECRET')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -242,7 +243,17 @@ withPipeline("java", product, component) {
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
-
+  afterSuccess('checkout') {
+      echo "environment: ${env.ENV}"
+      def subscription = 'nonprod'
+      if (env.ENV == 'demo') {
+          withSubscription(subscription) {
+              echo "Uploading dmn and bpmn diagrams"
+              uploadDmnDiagrams()
+              uploadBpmnDiagram()
+          }
+      }
+  }
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
@@ -394,8 +405,11 @@ withPipeline("java", product, component) {
 
   onDemo() {
     env.ENV='demo'
-    env.PROBATE_WA_ENABLED = false
-    env.PROBATE_GS_ENABLED = false
+    env.PROBATE_WA_ENABLED = true
+    env.PROBATE_GS_ENABLED = true
+    env.IDAM_API_URL_BASE = "https://idam-web-public.demo.platform.hmcts.net"
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
+    env.CAMUNDA_BASE_URL = "http://camunda-api-demo.service.core-compute-demo.internal"
   }
 
   onPerftest() {
