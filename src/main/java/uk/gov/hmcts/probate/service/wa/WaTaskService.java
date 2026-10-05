@@ -124,9 +124,6 @@ public class WaTaskService {
     }
 
     public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest) {
-        log.info("Start Closing ready to issue handoffs for case id if not required{}",
-                callbackRequest.getCaseDetails().getId());
-
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
@@ -141,20 +138,13 @@ public class WaTaskService {
                                             .eventToken(startEventResponse.getToken())
                                             .data(startEventResponse.getCaseDetails().getData())
                                             .build();
-                    log.info("Triggering event {} for case id {}",
-                            CLOSE_READY_TO_ISSUE_HANDOFFS,
-                            caseDetails.getId());
 
                     ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                             CLOSE_READY_TO_ISSUE_HANDOFFS,
                             caseDataContentFunction,
                             getCaseworkerSecurityDTO());
-                    log.info("Triggering event successfully {} for case id {}",
-                            CLOSE_READY_TO_ISSUE_HANDOFFS,
-                            caseDetails.getId());
+
                 });
-        log.info("Completed call to ready to issue handoffs for case id if not required{}",
-                callbackRequest.getCaseDetails().getId());
     }
 
     private SecurityDTO getCaseworkerSecurityDTO() {

@@ -202,5 +202,8 @@ public class CcdClientApi implements CoreCaseDataService {
                 false,
                 caseDataContent
         );
+        log.info("For case id {} triggered event successfully {} ",
+                caseId,
+                eventId.getName());
     }
 }
