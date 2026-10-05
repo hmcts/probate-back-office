@@ -82,6 +82,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -603,11 +604,14 @@ public class BusinessValidationController {
         }
         if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
                 && REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
-            caseworkerInfo.ifPresent(userInfo -> {
-                String idamUserId = userInfo.getUid();
-                log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
-                caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
-            });
+            String existingIdamUserId = callbackRequest.getCaseDetails().getData().getResolveRedeclarationUserIdamId();
+            if (StringUtils.isBlank(existingIdamUserId)) {
+                caseworkerInfo.ifPresent(userInfo -> {
+                    String idamUserId = userInfo.getUid();
+                    log.info("resolveRedeclarationUserIdamId set to: {}", idamUserId);
+                    caseDataTransformer.setResolveRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+                });
+            }
         }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
