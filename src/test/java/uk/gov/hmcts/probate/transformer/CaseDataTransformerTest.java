@@ -505,4 +505,15 @@ class CaseDataTransformerTest {
 
         assertEquals(idamUserId, caseDetailsMock.getData().getMoveToCWEscalationUserIdamId());
     }
+
+    @Test
+    void shouldSetEscalateToRegistrarUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setEscalateToRegistrarUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getEscalateToRegistrarUserIdamId());
+    }
 }

@@ -587,5 +587,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyLivingWholeBloodSiblings", "Label": "Were there any living whole blood siblings of the deceased at the time of their death?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "selectForQAUserIdamId", "Label": "Select for QA User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "moveToCWEscalationUserIdamId", "Label": "Move to CW Escalation User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "moveToCWEscalationUserIdamId", "Label": "Move to CW Escalation User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "22/09/2026", "CaseTypeID": "GrantOfRepresentation", "ID": "escalateToRegistrarUserIdamId", "Label": "Escalate to registrar User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

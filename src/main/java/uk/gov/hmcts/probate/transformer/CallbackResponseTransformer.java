@@ -1641,7 +1641,8 @@ public class CallbackResponseTransformer {
             .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
-            .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId());
+            .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
+            .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId());
 
         handleDeceasedAliases(
                 builder,
