@@ -174,6 +174,7 @@ class BusinessValidationControllerIT {
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
     private static final String ROLLBACK = "/case/rollback";
