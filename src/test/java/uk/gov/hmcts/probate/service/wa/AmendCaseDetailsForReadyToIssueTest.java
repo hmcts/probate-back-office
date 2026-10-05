@@ -1,0 +1,135 @@
+package uk.gov.hmcts.probate.service.wa;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
+@ExtendWith(MockitoExtension.class)
+class AmendCaseDetailsForReadyToIssueTest {
+
+    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
+            = "boAmendCaseDetailsForAwaitingDocumentation";
+    @Mock
+    private CallbackRequest callbackRequest;
+    @Mock
+    private CaseDetails caseDetails;
+    @Mock
+    private CaseDetails caseDetailsBefore;
+    @Mock
+    private WaTaskService waTaskService;
+
+    @InjectMocks
+    private AmendCaseDetailsForReadyToIssue processor;
+
+    private static final String authToken = "authToken";
+
+    private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+            EXAMINE_DIGITAL_CASE_INTESTACY,
+            EXAMINE_DIGITAL_CASE_ADMON_WILL,
+            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
+
+    @Test
+    void shouldReturnCorrectEventId() {
+        assertThat(processor.getEventId())
+                .isEqualTo("boAmendCaseDetailsForReadyToIssue");
+    }
+
+    @Test
+    void shouldSetCreateTaskToNoWhenCaseTypesAreSame() {
+        setUpCallbackRequest(
+                "GrantOfRepresentation",
+                "GrantOfRepresentation"
+        );
+        when(caseDetails.getId())
+                .thenReturn(12345L);
+        when(waTaskService.isTaskPresent(authToken,
+                callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                taskToCLose))
+                .thenReturn(false);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+
+        processor.process(authToken, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(Constants.NO);
+
+        verify(waTaskService)
+                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                        taskToCLose);
+    }
+
+    @Test
+    void shouldSetCreateTaskToNoWhenCaseTypesAreSameWithTaskToClosePresent() {
+        setUpCallbackRequest(
+                "GrantOfRepresentation",
+                "GrantOfRepresentation"
+        );
+        when(caseDetails.getId())
+                .thenReturn(12345L);
+        when(waTaskService.isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                taskToCLose))
+                .thenReturn(true);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+
+        processor.process(authToken, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(Constants.YES);
+        verify(waTaskService)
+                .isTaskPresent(authToken, callbackRequest.getCaseDetails().getId().toString(),
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
+                        taskToCLose);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenCaseTypesAreDifferent() {
+        setUpCallbackRequest(
+                "CaveatGrantOfRepresentation",
+                "Caveat"
+        );
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(authToken, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(Constants.YES);
+        verifyNoInteractions(waTaskService);
+    }
+
+    private void setUpCallbackRequest(
+            String caseType,
+            String caseTypeBefore) {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder().caseType(caseType).build());
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder().caseType(caseTypeBefore).build());
+    }
+}
