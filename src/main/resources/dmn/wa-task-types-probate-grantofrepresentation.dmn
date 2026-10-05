@@ -681,6 +681,18 @@
           <text>"Examine - Prove a Foreign Will"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0kqdzb4">
+        <description>ESMER</description>
+        <inputEntry id="UnaryTests_07lcj9w">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kyjwt3">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13t3f1z">
+          <text>"Examine SME Referral"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

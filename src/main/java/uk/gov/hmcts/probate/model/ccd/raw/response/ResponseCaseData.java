@@ -463,4 +463,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String anyLivingWholeBloodSiblings;
     private String createTask;
     private String selectForQAUserIdamId;
+    private String moveToCWEscalationUserIdamId;
 }

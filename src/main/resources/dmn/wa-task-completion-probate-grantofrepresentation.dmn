@@ -647,6 +647,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0nzc6as">
+        <inputEntry id="UnaryTests_1itjamn">
+          <text>"boEscalateToRegistrar", "resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_038oawx">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03wtfoy">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
