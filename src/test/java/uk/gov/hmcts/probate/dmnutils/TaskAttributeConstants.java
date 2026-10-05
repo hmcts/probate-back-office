@@ -120,7 +120,7 @@ public class TaskAttributeConstants {
     public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
     public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
     public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
-
+    public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA = "ReviewQACaseAdColligendaBona";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -242,6 +242,7 @@ public class TaskAttributeConstants {
     public static final String INTESTACY_QA_SKILL_CODE = "SKILL:ABA6:IntestacyQA";
     public static final String ADMON_QA_SKILL_CODE = "SKILL:ABA6:AdmonQA";
     public static final String PROBATE_QA_SKILL_CODE = "SKILL:ABA6:ProbateQA";
+    public static final String AD_COLLIGENDA_BONA_QA_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaQA";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -277,7 +278,7 @@ public class TaskAttributeConstants {
     public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
     public static final String REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME = "Review QA Case - Intestacy";
     public static final String REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME = "Review QA Case - Admon";
-
+    public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Review QA Case - Ad Colligenda Bona";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -293,6 +294,7 @@ public class TaskAttributeConstants {
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
     public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
+    public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT = "autoSelectForQACreateTask";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
