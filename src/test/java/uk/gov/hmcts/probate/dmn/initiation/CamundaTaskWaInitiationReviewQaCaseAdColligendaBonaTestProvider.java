@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -32,7 +33,7 @@ public class CamundaTaskWaInitiationReviewQaCaseAdColligendaBonaTestProvider imp
 
         return Stream.of(
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, emptyList(), false),
                         List.of(reviewQaCaseProbateTaskAttributes)
@@ -58,34 +59,34 @@ public class CamundaTaskWaInitiationReviewQaCaseAdColligendaBonaTestProvider imp
                 ),
                 // Negative: wrong state
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 // Negative: wrong case type
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, "", false, emptyList(), false),
                         emptyList()
                 ),
                 // Negative: evidence already handled
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, AD_COLLIGENDA_BONA_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 // Negative: no additional data
                 Arguments.of(
-                        "autoSelectForQACreateTask",
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         null,
                         emptyList()

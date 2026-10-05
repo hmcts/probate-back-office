@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_SELECT_FOR_QA_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -33,7 +33,7 @@ public class CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider implements Arg
 
         return Stream.of(
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, false, emptyList(), false),
                         List.of(reviewQaCaseAdmonTaskAttributes)
@@ -57,31 +57,31 @@ public class CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider implements Arg
                         emptyList()
                 ),
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, "", false, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, ADMON_WILL_CASE_TYPE, false, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        BO_SELECT_FOR_QA_EVENT,
+                        AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         null,
                         emptyList()

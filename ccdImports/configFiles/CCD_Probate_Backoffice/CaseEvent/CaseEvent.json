@@ -205,19 +205,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "autoNotificationUnsubmittedApplication", "Name": "Unsubmitted Application (AN)", "Description": "Unsubmitted Application (AN)", "DisplayOrder": 204, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N", "ShowEventNotes": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "autoNotificationDeclarationNotSigned", "Name": "Declaration Not Signed (AN)", "Description": "Declaration Not Signed (AN)", "DisplayOrder": 205, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N", "ShowEventNotes": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "autoNotificationDormantReminder", "Name": "Dormant case reminder", "Description": "Dormant 12-month Reminder (AN) sent", "DisplayOrder": 206, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N", "ShowEventNotes": "Y"},
-  {
-    "LiveFrom": "01/01/2017",
-    "CaseTypeID": "GrantOfRepresentation",
-    "ID": "autoSelectForQACreateTask",
-    "Name": "Auto Select For QA Create Task",
-    "Description": "Auto Select For QA Create Task",
-    "DisplayOrder": 207,
-    "PreConditionState(s)": "*",
-    "PostConditionState": "*",
-    "SecurityClassification": "Public",
-    "ShowSummary": "N",
-    "ShowEventNotes": "N",
-    "Publish": "${CCD_DEF_PUBLISH}",
-    "EventEnablingCondition": "caseType=\"NEVER_SHOW\""
-  }
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "autoSelectForQACreateTask", "Name": "Auto Select For QA Create Task", "Description": "Auto Select For QA Create Task", "DisplayOrder": 207, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N", "ShowEventNotes": "N", "Publish": "${CCD_DEF_PUBLISH}", "EventEnablingCondition": "caseType=\"NEVER_SHOW\""}
 ]

@@ -2700,7 +2700,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_02o7h4e">
         <inputEntry id="UnaryTests_0dbr0vo">
-          <text>"boSelectForQA","boResolveStop","resolveCWEscalation"</text>
+          <text>"autoSelectForQACreateTask","boResolveStop","resolveCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hs78so">
           <text>"BOCaseQA"</text>
@@ -2741,7 +2741,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1h98t85">
         <inputEntry id="UnaryTests_07mj1f1">
-          <text>"boSelectForQA","boResolveStop","resolveCWEscalation"</text>
+          <text>"autoSelectForQACreateTask","boResolveStop","resolveCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_06bbcey">
           <text>"BOCaseQA"</text>
@@ -2782,7 +2782,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0xye4cn">
         <inputEntry id="UnaryTests_1o46iph">
-          <text>"boSelectForQA","boResolveStop","resolveCWEscalation"</text>
+          <text>"autoSelectForQACreateTask","boResolveStop","resolveCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_03bcndv">
           <text>"BOCaseQA"</text>
