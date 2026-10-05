@@ -24,7 +24,13 @@ function send_curl_request() {
   fi
 
   local payload=$(cat "${json_file}")
-  local url="https://am-org-role-mapping-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net/am/testing-support/createOrgMapping?userType=${user_type}"
+  local base_url
+  if [[ "${ENV:-}" == "demo" ]]; then
+    base_url="http://am-org-role-mapping-service-demo.service.core-compute-demo.internal"
+  else
+    base_url="https://am-org-role-mapping-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+  fi
+  local url="${base_url}/am/testing-support/createOrgMapping?userType=${user_type}"
 
   curl --silent --show-error --fail "${url}" \
   -H 'Content-Type: application/json' \
