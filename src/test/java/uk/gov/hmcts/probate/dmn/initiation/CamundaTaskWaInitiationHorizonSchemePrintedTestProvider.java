@@ -1,6 +1,14 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
-import static java.util.Collections.emptyList;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineHorizonSchemeCasePrintedHandOffReason;
@@ -13,15 +21,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
-
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements ArgumentsProvider {
 
