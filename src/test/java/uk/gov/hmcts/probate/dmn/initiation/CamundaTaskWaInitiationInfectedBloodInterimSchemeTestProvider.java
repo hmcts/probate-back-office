@@ -14,11 +14,12 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.infectedBloodInterimSchemeHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -31,15 +32,21 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
         Map<String,Object> examineInfectedBloodInterimSchemeTaskAttributes = Map.of(
-                "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                "taskId", EXAMINE_IBIS,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
-        Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+        Map<String,Object> examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBIS,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBIS_CASE_PRINTED,
+                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         return Stream.of(
@@ -315,6 +322,14 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

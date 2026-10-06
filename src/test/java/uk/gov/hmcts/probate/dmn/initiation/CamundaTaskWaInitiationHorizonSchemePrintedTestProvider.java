@@ -1,5 +1,14 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.horizonSchemeCasePrintedHandOffReason;
@@ -14,15 +23,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
 public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements ArgumentsProvider {
 
     @Override
@@ -31,7 +31,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> horizonSchemeTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineHorizonSchemeTaskAttributes = Map.of(

@@ -14,9 +14,10 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.proveForeignWillHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -29,9 +30,15 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
         Map<String,Object> examineProveForeignWillTaskAttributes = Map.of(
-                "taskId", EXAMINE_PROVE_FOREIGN_WILL,
+                "taskId", EXAMINE_FOREIGN_WILL,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineProveForeignWillReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_WILL,
+                "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -170,6 +177,14 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

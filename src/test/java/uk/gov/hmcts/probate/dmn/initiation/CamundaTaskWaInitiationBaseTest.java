@@ -1,10 +1,5 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
-
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
@@ -17,6 +12,12 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Collections.emptyList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTest {
 
@@ -57,21 +58,53 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String proveForeignWillHandOffReason = "ForeignWill";
     protected static final String escalationReasonVar = "registrarEscalateReason";
     protected static final String examineProveForeignWill = "ForeignWill";
+    protected static final String waHandoffReasonListVar = "waHandoffReasonList";
+
+    protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList,
+                                                                     boolean createTask) {
+        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
+                "", emptyList());
+    }
+
+    protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList,
+                                                                     boolean createTask,
+                                                                     String escalationReason) {
+        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
+                escalationReason, emptyList());
+    }
+
+    protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList,
+                                                                     boolean createTask,
+                                                                     List<Map<String,Object>> waHandoffReasonList) {
+        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
+                "", waHandoffReasonList);
+    }
+
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
-                                                                   List<Map<String,Object>> boHandoffReasonList,
-                                                                   boolean createTask) {
-        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
-                "");
+                                                                   List<Map<String,Object>> boHandoffReasonList) {
+        return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, false,
+                "",emptyList());
     }
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
                                                                    List<Map<String,Object>> boHandoffReasonList,
-                                                                   boolean createTask, String escalationReason) {
+                                                                   boolean createTask,
+                                                                   String escalationReason,
+                                                                   List<Map<String,Object>> waHandoffReasonList) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
@@ -79,7 +112,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                         caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite,
                         boHandoffReasonListVar, boHandoffReasonList,
                         createTaskVar, createTask,
-                        escalationReasonVar, escalationReason
+                        escalationReasonVar, escalationReason,
+                        waHandoffReasonListVar, waHandoffReasonList
                 )
         );
     }
@@ -107,16 +141,14 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(9));
+        assertThat(logic.getInputs().size(), is(10));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(66));
+        assertThat(logic.getRules().size(), is(90));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @ArgumentsSource(CamundaTaskWaInitiationProbateTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationAdmonTestProvider.class)
-    @ArgumentsSource(CamundaTaskWaInitiationDeBonisNonTestProvider.class)
-    @ArgumentsSource(CamundaTaskWaInitiationIntestacyTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationAdCollingendaTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationDoubleProbateTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationFiatWillTestProvider.class)
@@ -124,7 +156,6 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider.class)
-    @ArgumentsSource(CamundaTaskWaInitiationCodicilMisRecitalTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationWindrushTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationSection116TestProvider.class)

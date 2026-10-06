@@ -137,6 +137,29 @@
           <text>"examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1ug4r4u">
+        <inputEntry id="UnaryTests_1nextoz">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gbj487">
+          <text>"closeReadyToIssueHandOffs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1loli00">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ufx9pg">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0h0xltp">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y25o6o">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a3ztio">
+          <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

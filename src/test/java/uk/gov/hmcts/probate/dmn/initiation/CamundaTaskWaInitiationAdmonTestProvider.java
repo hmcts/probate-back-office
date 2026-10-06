@@ -139,7 +139,8 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
-                            emptyList(), false),
+                            emptyList(), false,
+                            emptyList()),
                     emptyList()
             ),
             Arguments.of(

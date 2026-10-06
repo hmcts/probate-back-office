@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.fiatWillHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
@@ -32,6 +33,11 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                 "taskId", EXAMINE_FIAT_WILL,
                 "name", FIAT_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+        Map<String,Object> examineFiatWillReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FIAT_WILL,
+                "name", FIAT_WILL_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
 
@@ -96,7 +102,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
@@ -187,6 +193,14 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason)),
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

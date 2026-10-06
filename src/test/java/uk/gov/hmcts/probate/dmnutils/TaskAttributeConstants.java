@@ -70,50 +70,51 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
             = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
-    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
-        = "ExamineInfectedBloodCompensationAuthority";
+    public static final String EXAMINE_IBCA = "ExamineIBCA";
     public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
     public static final String EXAMINE_DOUBLE_PROBATE_CASE_PRINTED = "ExamineDoubleProbateCasePrinted";
-    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
-    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS = "ExamineLeadingOrFollowingGrants";
-    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED =
-            "ExamineLeadingOrFollowingGrantsCasePrinted";
-    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED =
-            "ExamineInfectedBloodInterimSchemeCasePrinted";
-    public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
-    public static final String EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED = "ExamineCodicilMisRecitalCasePrinted";
-    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL = "ExamineRectifyWillOrCodicil";
+    public static final String EXAMINE_INCAPACITY_RULE_35 = "ExamineIncapacityRule35";
+    public static final String EXAMINE_LEADING_FOLLOWING_GRANTS = "ExamineLeadingFollowing Grants";
+    public static final String EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED =
+            "ExamineLeadingFollowing GrantsCasePrinted";
+    public static final String EXAMINE_IBIS_CASE_PRINTED =
+            "ExamineIBISCasePrinted";
+    public static final String EXAMINE_CODICIL_MIS = "ExamineCodicilMis";
+    public static final String EXAMINE_CODICIL_MIS_CASE_PRINTED = "ExamineCodicilMisCasePrinted";
+    public static final String EXAMINE_RECTIFY_WILL_CODICIL = "ExamineRectifyWillCodicil";
     public static final String EXAMINE_TRUST_CORPORATION_CASE_PRINTED = "ExamineTrustCorporationCasePrinted";
     public static final String EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED = "ExamineForeignDomicileCasePrinted";
 
     public static final String EXAMINE_LITERARY_ESTATE = "ExamineLiteraryEstate";
     public static final String EXAMINE_MINORITY_INTEREST = "ExamineMinorityInterest";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
-    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
-        = "ExamineWillOrCodicilToBeNotated";
+    public static final String EXAMINE_WILL_CODICIL_NOTATED
+        = "ExamineWillCodicilNotated";
     public static final String EXAMINE_WITNESS_INTERVIEW
         = "ExamineWitnessInterview";
     public static final String EXAMINE_HORIZON_SCHEME
         = "ExamineHorizonScheme";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
     public static final String EXAMINE_SECTION_116 = "ExamineSection116";
+    public static final String EXAMINE_POA = "ExaminePOA";
     public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
     public static final String EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED = "ExaminePowerOfAttorneyCasePrinted";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT = "ExamineResealForeignGrant";
+    public static final String EXAMINE_IBIS = "ExamineIBIS";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED = "ExamineResealForeignGrantCasePrinted";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
     public static final String RECTIFY_QA_CASE = "RectifyQACase";
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
-    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
-        = "ExamineWillOrCodicilToBeNotatedCasePrinted";
-    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED
-        = "ExamineRectifyWillOrCodicilCasePrinted";
+    public static final String EXAMINE_LOST_WILL = "ExamineLostWill";
+    public static final String EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED
+        = "ExamineWillCodicilNotatedCasePrinted";
+    public static final String EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED
+        = "ExamineRectifyWillCodicilCasePrinted";
     public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
-    public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
+    public static final String EXAMINE_FOREIGN_WILL = "ExamineForeignWill";
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
     public static final String EXAMINE_SME_REFERRAL = "ExamineSMEReferral";
@@ -171,7 +172,9 @@ public class TaskAttributeConstants {
                     + "[Stop Case](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)";
     public static final String DESCRIPTION_EXAMINE_OTHER_CASES =
-            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+            "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boAmendCaseDetailsForReadyToIssue)  "
+                    + "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
                     + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boEscalateToRegistrar)  "
@@ -229,8 +232,8 @@ public class TaskAttributeConstants {
     public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";
     public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE = "SKILL:ABA6:InfectedBloodInterimScheme";
     public static final String CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE = "SKILL:ABA6:CodicilMisRecital";
-    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED =
-            "ExamineInfectedBloodCompensationAuthorityCasePrinted";
+    public static final String EXAMINE_IBCA_CASE_PRINTED =
+            "ExamineIBCACasePrinted";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE =
             "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String MINORITY_INTEREST_SKILL_CODE = "SKILL:ABA6:MinorityInterest";
@@ -293,8 +296,8 @@ public class TaskAttributeConstants {
 
     public static final String SERVICE_REQUEST_PAYMENT_SUCCESS = "serviceRequestPaymentSuccess";
 
-    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED =
-            "ExamineLostWillOrCodicilCasePrinted";
+    public static final String EXAMINE_LOST_WILL_CASE_PRINTED =
+            "ExamineLostWillCasePrinted";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
 
     public static final String EXAMINE_HORIZON_SCHEME_CASE_PRINTED = "ExamineHorizonSchemeCasePrinted";
@@ -326,11 +329,12 @@ public class TaskAttributeConstants {
     public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
     public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
 
-    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
-    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
+    public static final String EXAMINE_FOREIGN_WILL_CASE_PRINTED = "ExamineForeignWillCasePrinted";
+    public static final String EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
             "Examine - Prove a Foreign Will";
 
     public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
     public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
     public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
+    public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
 }

@@ -18,8 +18,8 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -30,13 +30,13 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
         Map<String, Object> examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                "taskId", EXAMINE_WILL_CODICIL_NOTATED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );

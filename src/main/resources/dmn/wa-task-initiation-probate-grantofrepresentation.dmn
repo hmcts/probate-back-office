@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -70,6 +70,11 @@ else false</text>
           <text>"referrals","orders"</text>
         </inputValues>
       </input>
+      <input id="InputClause_0kqfato" label="Contains WA handOff Reason">
+        <inputExpression id="LiteralExpression_1eux4ij" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
@@ -100,6 +105,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_19nllec">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dz0rw8">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
@@ -143,6 +151,9 @@ else false</text>
         <inputEntry id="UnaryTests_0hju2lm">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1dbln1q">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
         </outputEntry>
@@ -182,6 +193,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_02u4n50">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ni95yd">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0a93yyj">
@@ -225,6 +239,9 @@ else false</text>
         <inputEntry id="UnaryTests_0myjfef">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0ydcmtk">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_windrush_task_id">
           <text>"ExamineWindrushScheme"</text>
         </outputEntry>
@@ -264,6 +281,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gz1itd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10vyqgq">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_17lzws3">
@@ -307,8 +327,11 @@ else false</text>
         <inputEntry id="UnaryTests_0ybg72g">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1f5nn7q">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0foopux">
-          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+          <text>"ExamineIBCA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_04m9wr7">
           <text>"Examine - Infected Blood Compensation Authority"</text>
@@ -348,8 +371,11 @@ else false</text>
         <inputEntry id="UnaryTests_1t5z3be">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0lpzazy">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_14nb7gm">
-          <text>"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineWillCodicilNotated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_104ro4c">
           <text>"Examine - Will or Codicil to be Notated"</text>
@@ -387,6 +413,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1l4qpqd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h4e0x7">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1n963n6">
@@ -430,6 +459,9 @@ else false</text>
         <inputEntry id="UnaryTests_0nrxp6f">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1gpkbc2">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0gbmund">
           <text>"ExamineHorizonScheme"</text>
         </outputEntry>
@@ -469,6 +501,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_16ajunz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eweyth">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02nklps">
@@ -512,6 +547,9 @@ else false</text>
         <inputEntry id="UnaryTests_08vy5hv">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0n9ff7l">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1s9m90i">
           <text>"ExamineDigitalCaseAdColligendaBona"</text>
         </outputEntry>
@@ -551,6 +589,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1u379fo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g34a2f">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0bgn9xq">
@@ -594,6 +635,9 @@ else false</text>
         <inputEntry id="UnaryTests_1b8pdgt">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0672g4q">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ac64en">
           <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
         </outputEntry>
@@ -633,6 +677,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_19rhais">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13473n7">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wk7qne">
@@ -676,6 +723,9 @@ else false</text>
         <inputEntry id="UnaryTests_10mtwwk">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1l9dls3">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1m9r1te">
           <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
         </outputEntry>
@@ -715,6 +765,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0idizxs">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0o9okub">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19mh0f1">
@@ -758,8 +811,11 @@ else false</text>
         <inputEntry id="UnaryTests_1laikfm">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0aapbrt">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1e2bebn">
-          <text>"ExamineIncapacityUnderRule35"</text>
+          <text>"ExamineIncapacityRule35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ikocil">
           <text>"Examine - Incapacity under rule 35"</text>
@@ -799,8 +855,11 @@ else false</text>
         <inputEntry id="UnaryTests_0i84imx">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_09hfbku">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0lzpn0r">
-          <text>"ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineLeadingFollowing Grants"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0qgo6tj">
           <text>"Examine - Leading or following Grants"</text>
@@ -840,8 +899,11 @@ else false</text>
         <inputEntry id="UnaryTests_1a8nlj7">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0i38d5c">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_09loh53">
-          <text>"ExamineRectifyWillOrCodicil"</text>
+          <text>"ExamineRectifyWillCodicil"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1o0h2vi">
           <text>"Examine - Rectify a Will or Codicil"</text>
@@ -881,8 +943,11 @@ else false</text>
         <inputEntry id="UnaryTests_0w1pxzq">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0fx528i">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_09kckax">
-          <text>"ExamineCodicilMisRecital"</text>
+          <text>"ExamineCodicilMis"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ikfyvs">
           <text>"Examine - Codicil Mis-Recital"</text>
@@ -922,8 +987,11 @@ else false</text>
         <inputEntry id="UnaryTests_1x0rtt8">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1mujatj">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0ljjwuy">
-          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+          <text>"ExamineIBISCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_02o1qmj">
           <text>"Examine - Infected Blood Interim Scheme"</text>
@@ -932,7 +1000,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0k4e8eh">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_section_116">
@@ -961,6 +1029,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ocr1iv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0oyflv3">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_section_116_task_id">
@@ -1004,8 +1075,11 @@ else false</text>
         <inputEntry id="UnaryTests_0tcfj2k">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_09y3ceo">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_task_id">
-          <text>"ExaminePowerOfAttorney"</text>
+          <text>"ExaminePOA"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_task_name">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -1043,6 +1117,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1dmhbu6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0txdsd4">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_reseal_foreign_grant_task_id">
@@ -1086,8 +1163,11 @@ else false</text>
         <inputEntry id="UnaryTests_1rc6uxi">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0zqbw8d">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_task_id">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineIBIS"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_task_name">
           <text>"Examine - Infected Blood Interim Scheme"</text>
@@ -1125,6 +1205,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0fj4nx9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e2zbj3">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1rbc90q">
@@ -1168,6 +1251,9 @@ else false</text>
         <inputEntry id="UnaryTests_08zsiz7">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0x6f14t">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0ccuez0">
           <text>"ExamineDigitalCaseIntestacy"</text>
         </outputEntry>
@@ -1207,6 +1293,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0j3rwfl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08ajrja">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1cz8h9o">
@@ -1250,6 +1339,9 @@ else false</text>
         <inputEntry id="UnaryTests_0psw1s8">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0rxth6y">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ckxwj4">
           <text>"ExamineDigitalCaseAdColligendaBona"</text>
         </outputEntry>
@@ -1289,6 +1381,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0nxhpgz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e2bkpb">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0fmd5wj">
@@ -1332,6 +1427,9 @@ else false</text>
         <inputEntry id="UnaryTests_0kjiwzf">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0ggu1it">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0p64f28">
           <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </outputEntry>
@@ -1371,6 +1469,9 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_03b1oit">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13h8xrz">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ljs1yd">
@@ -1414,6 +1515,9 @@ else false</text>
         <inputEntry id="UnaryTests_1lamz11">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0s9krpp">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1g1auzw">
           <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
         </outputEntry>
@@ -1455,8 +1559,11 @@ else false</text>
         <inputEntry id="UnaryTests_1qxxizw">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_04xtkub">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_13hjkcw">
-          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+          <text>"ExamineLostWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_18w9hn4">
           <text>"Examine - Lost Will or Codicil"</text>
@@ -1465,7 +1572,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0b97052">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_10tpe4b">
@@ -1496,6 +1603,9 @@ else false</text>
         <inputEntry id="UnaryTests_1fovny1">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_07u81am">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0bvaoyu">
           <text>"ExamineHorizonSchemeCasePrinted"</text>
         </outputEntry>
@@ -1506,7 +1616,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1yjnr55">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_06lgf5u">
@@ -1537,8 +1647,11 @@ else false</text>
         <inputEntry id="UnaryTests_0k8ucm0">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0pe57yn">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0y2x77r">
-          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+          <text>"ExamineIBCACasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0znfo30">
           <text>"Examine - Infected Blood Compensation Authority"</text>
@@ -1547,7 +1660,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0octng3">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1u1czbf">
@@ -1578,8 +1691,11 @@ else false</text>
         <inputEntry id="UnaryTests_13zag25">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0z4qw6x">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0gpep81">
-          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+          <text>"ExamineLeadingFollowing GrantsCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0arao14">
           <text>"Examine - Leading or following Grants"</text>
@@ -1588,7 +1704,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0si3bmn">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_08fjjak">
@@ -1619,6 +1735,9 @@ else false</text>
         <inputEntry id="UnaryTests_0o2sgb1">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0a9n77p">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0h5uta3">
           <text>"ExamineLiteraryEstateCasePrinted"</text>
         </outputEntry>
@@ -1629,7 +1748,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_178p6cu">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_02a3ezc">
@@ -1660,6 +1779,9 @@ else false</text>
         <inputEntry id="UnaryTests_1tjacaa">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_14pw5pz">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0g77sb3">
           <text>"ExamineMinorityInterestCasePrinted"</text>
         </outputEntry>
@@ -1670,7 +1792,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a7znpr">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0tqyr5k">
@@ -1699,6 +1821,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1h20x9n">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wz1hhi">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0brtnjs">
@@ -1742,8 +1867,11 @@ else false</text>
         <inputEntry id="UnaryTests_1wk7av8">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0b76vys">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_04hmsqj">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d94syw">
           <text>"Examine - Lost Will or Codicil"</text>
@@ -1781,6 +1909,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_10kbccs">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ew3usc">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1ic6bdz">
@@ -1824,8 +1955,11 @@ else false</text>
         <inputEntry id="UnaryTests_0xpph71">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_12l31g7">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_025ypul">
-          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+          <text>"ExamineCodicilMisCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_07mw2yj">
           <text>"Examine - Codicil Mis-Recital"</text>
@@ -1834,7 +1968,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16jtolv">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1adg5jb">
@@ -1865,6 +1999,9 @@ else false</text>
         <inputEntry id="UnaryTests_0r0yax4">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1laub95">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1d6f1io">
           <text>"ExamineDeBonisNonCasePrinted"</text>
         </outputEntry>
@@ -1875,7 +2012,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sn1uh9">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0akolcg">
@@ -1904,6 +2041,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0bw67dx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jy2tkn">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oe2jxn">
@@ -1947,8 +2087,11 @@ else false</text>
         <inputEntry id="UnaryTests_0dk4fv5">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0wl8jqp">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_13e57ha">
-          <text>"ExamineWillOrCodicilToBeNotatedCasePrinted"</text>
+          <text>"ExamineWillCodicilNotatedCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0r7zv2z">
           <text>"Examine - Will or Codicil to be Notated"</text>
@@ -1957,7 +2100,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0nl0b2c">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04u430i">
@@ -1988,8 +2131,11 @@ else false</text>
         <inputEntry id="UnaryTests_0k5lfwr">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1wx3uuv">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ugwubh">
-          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
+          <text>"ExamineRectifyWillCodicilCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1wu6n66">
           <text>"Examine - Rectify a Will or Codicil"</text>
@@ -1998,7 +2144,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bnarg0">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_11buehx">
@@ -2029,6 +2175,9 @@ else false</text>
         <inputEntry id="UnaryTests_15ywds0">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0y6mwqc">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ckpba3">
           <text>"ExamineWindrushSchemeCasePrinted"</text>
         </outputEntry>
@@ -2039,7 +2188,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1mpbsxr">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1svcxji">
@@ -2070,6 +2219,9 @@ else false</text>
         <inputEntry id="UnaryTests_0ejdh8c">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0h7vzek">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1sia4wt">
           <text>"ExamineWitnessInterviewCasePrinted"</text>
         </outputEntry>
@@ -2080,7 +2232,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1m1rykb">
-          <text>"case progression"</text>
+          <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1expmii">
@@ -2109,6 +2261,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1a6vj0b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rn9n0c">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_06p9wj6">
@@ -2152,6 +2307,9 @@ else false</text>
         <inputEntry id="UnaryTests_0jpjri1">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1bmgc2l">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_13opcfi">
           <text>"ExamineDoubleProbateCasePrinted"</text>
         </outputEntry>
@@ -2191,6 +2349,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ahadue">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07cchg1">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1udtqwo">
@@ -2234,6 +2395,9 @@ else false</text>
         <inputEntry id="UnaryTests_0tatr21">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0hp4zir">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0jff2sm">
           <text>"ExamineResealForeignGrantCasePrinted"</text>
         </outputEntry>
@@ -2273,6 +2437,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1j2vtm0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00mxg0n">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_07o9ljt">
@@ -2316,6 +2483,9 @@ else false</text>
         <inputEntry id="UnaryTests_0fbb9h1">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1xoz8me">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_04qejdc">
           <text>"ExamineForeignDomicile"</text>
         </outputEntry>
@@ -2355,6 +2525,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1r3utye">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1md6e3q">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19opowg">
@@ -2398,6 +2571,9 @@ else false</text>
         <inputEntry id="UnaryTests_0tmcjgj">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1c03vkd">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_16ricpv">
           <text>"ExamineTrustCorporationCasePrinted"</text>
         </outputEntry>
@@ -2437,6 +2613,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1argvp7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o7qo2h">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wzt2ht">
@@ -2480,8 +2659,11 @@ else false</text>
         <inputEntry id="UnaryTests_05hr7zv">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0kmhk2q">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_12hkylp">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineForeignWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_182svze">
           <text>"Examine - Prove a foreign will"</text>
@@ -2519,6 +2701,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0s4635a">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s9vl0m">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0upjdj0">
@@ -2562,6 +2747,9 @@ else false</text>
         <inputEntry id="UnaryTests_0v1m0wd">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0p5uon4">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1l7w8c3">
           <text>"ReviewSMEReferral"</text>
         </outputEntry>
@@ -2602,6 +2790,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hsuayu">
           <text>"referrals"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1k7z8yy">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1m7pgyu">
           <text>"ResolveRegistrarEscalationReferrals"</text>
@@ -2644,6 +2835,9 @@ else false</text>
         <inputEntry id="UnaryTests_0egm5x4">
           <text>"orders"</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0pjxxqf">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0w4n3ky">
           <text>"ResolveRegistrarEscalationOrders"</text>
         </outputEntry>
@@ -2685,8 +2879,11 @@ else false</text>
         <inputEntry id="UnaryTests_0989bsb">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_02rcan2">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_00zc46u">
-          <text>"ExamineProveForeignWillCasePrinted"</text>
+          <text>"ExamineForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ui8hsm">
           <text>"Examine - Prove a Foreign Will"</text>
@@ -2724,6 +2921,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_a589cdc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ny8h4g">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0h8rkqy">
@@ -2767,6 +2967,9 @@ else false</text>
         <inputEntry id="UnaryTests_18bbnrd">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0sy407a">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0mtaaqu">
           <text>"ReviewRegistrarDecision"</text>
         </outputEntry>
@@ -2778,6 +2981,1064 @@ else false</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1mm8p9e">
           <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1e07d42">
+        <inputEntry id="UnaryTests_0fxluau">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0iamfr7">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19rxq41">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0am432k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c11qpf">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l6jnxi">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i67yk9">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r1pnyl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05razli">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11rjdo1">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "DeBonisNon")
+</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l954ku">
+          <text>"ExamineDeBonisNon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1whrzxi">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07bjbfb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a60lfu">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1yhrtnj">
+        <inputEntry id="UnaryTests_19wp7wl">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g5qggk">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a2e2yy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_136522k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19j9ibv">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05y06a9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xyp4yg">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0brkrkb">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17wzpfg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xy11r1">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WindrushScheme")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_147pnr4">
+          <text>"ExamineWindrushScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0em0co1">
+          <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0q83m2s">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pfb0su">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0pimirf">
+        <inputEntry id="UnaryTests_1h2sg2w">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bmazq3">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01keg5j">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14zviom">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s1lwtr">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14306d2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18iroex">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qkn55s">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1awst6z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tljy8o">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "FiatWill")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1t83mph">
+          <text>"ExamineFiatWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yzf2ar">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i8ep1u">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19y17ld">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1niynr0">
+        <inputEntry id="UnaryTests_1lihhes">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04m2ol0">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1z0r7fg">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09umjp5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0refubn">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jm6etz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q1q4tw">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vlh88g">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0timv4i">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0x9vy57">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBCA")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_017nisk">
+          <text>"ExamineIBCA"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hgb8ac">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j9nfuf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rorw06">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vqcfxv">
+        <inputEntry id="UnaryTests_0cg2hkw">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qeifc6">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xwfqyy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q6952r">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13jmf1m">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rr2v34">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yqvrme">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g7vacj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s36fdw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mwxw38">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WillCodicilNotated")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kxccdg">
+          <text>"ExamineWillCodicilNotated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ygi5yg">
+          <text>"Examine - Will or Codicil to be Notated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n5805o">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18gusbf">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sp1hru">
+        <inputEntry id="UnaryTests_0053b0i">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bai8le">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1822apg">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01566pp">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gnca42">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lzz8ue">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xiydxa">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1drmy0p">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rz7cqq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dcetad">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "WitnessInterview")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0d1hhgl">
+          <text>"ExamineWitnessInterview"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0adflrv">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mwvlai">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ccpw3y">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1u7ferx">
+        <inputEntry id="UnaryTests_0mb6xc8">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0asq32r">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_191tg17">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hh1vn7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19jne3v">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m99isu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ggj49f">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mg29j0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tiv5wc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iakdnt">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "HorizonScheme")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13g0nov">
+          <text>"ExamineHorizonScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zbnaaf">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17hgiqm">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fcsujt">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1u2u9ur">
+        <inputEntry id="UnaryTests_1q60m8f">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06nxfsa">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fpoy6h">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0icv91n">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lyx6nv">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0puxyz0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0907z90">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fezz41">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z37j2u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ltowsu">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "DoubleProbate")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09l5vpi">
+          <text>"ExamineDoubleProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_073549j">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k32xwb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gnl12d">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18wnvkm">
+        <inputEntry id="UnaryTests_03rvycu">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qv7f6f">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1uxi30j">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_183v0bu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1swn9j5">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u7jjup">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kax760">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o1gzwe">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13lqzxx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14japji">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bwx9af">
+          <text>"ExamineIncapacityRule35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ymp6ht">
+          <text>"Examine - Incapacity under rule 35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15315s4">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n1je33">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11gfek9">
+        <inputEntry id="UnaryTests_0otagsa">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06hkc8j">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tqjeby">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xd7gt3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ddtv7b">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rafzr9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dfnit7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01gat73">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05apzcc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cjhx4e">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "LeadingFollowing Grants")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0p310uf">
+          <text>"ExamineLeadingFollowing Grants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17nbdus">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08hm5mg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t5rmu4">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1n9s7hh">
+        <inputEntry id="UnaryTests_1bl05wg">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jzod8v">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oz98dm">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mk7f2t">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1olido4">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06di2i1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wwzzco">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08795c6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jhcbii">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1owyub7">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "RectifyWillCodicil")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nh2qjf">
+          <text>"ExamineRectifyWillCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00u0wh8">
+          <text>"Examine - Rectify a Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0iukav4">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0frezdf">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_188vjcg">
+        <inputEntry id="UnaryTests_12mtuas">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06jgycb">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e8c2rx">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wznhvp">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0of4ord">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0igowv3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a2ihl9">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hohxzt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hlyley">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yr25gy">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "CodicilMis")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mulvdu">
+          <text>"ExamineCodicilMis"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k6eefu">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fnq7cg">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hcj8e3">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uspua3">
+        <inputEntry id="UnaryTests_0gp65cp">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dd5q9n">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mwuubq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lmcsdq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tbrsmi">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ricd2l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11nqg9y">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r0sic1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r3kso3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0reeh72">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "Section116")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pyy2ua">
+          <text>"ExamineSection116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0unmpnu">
+          <text>"Examine - Section 116"
+</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xbhmlv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gnd7sf">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ya1qsr">
+        <inputEntry id="UnaryTests_06rliyj">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z3mlvu">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03zkisa">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06nx3go">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a7kqlp">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qgpmlp">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04iu41h">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vvg67g">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ef29v0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s8lllq">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "POA")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0onoiww">
+          <text>"ExaminePOA"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00vlg93">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0spw7z1">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sod7mc">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nvcaju">
+        <inputEntry id="UnaryTests_0j467os">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14qk135">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e1hizi">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06bb4dm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_048rzw5">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15lhiz4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eulmt0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06y3nol">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t6fp9l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rt4o1g">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ResealForeignGrant")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v8ssv9">
+          <text>"ExamineResealForeignGrant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ji9i01">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_124bqmx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17wxpbj">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dawbgj">
+        <inputEntry id="UnaryTests_0kwv3x2">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z210rd">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u2z1m6">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pc6c1f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f5x5gm">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18fu1ik">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r44kn7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n834vx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iueozy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0s6ro6c">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06sly1f">
+          <text>"ExamineIBIS"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1js310e">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ub611w">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_127jrrn">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_016ovep">
+        <inputEntry id="UnaryTests_1yr7g7r">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06e40r4">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_174ajkj">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jfbmxf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_001p006">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ec94ae">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mdy811">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m1rqnl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bzarz7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e37z9k">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "TrustCorporation")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jd3uxh">
+          <text>"ExamineTrustCorporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_083byuw">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_023pne3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qw0n47">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1oedqyi">
+        <inputEntry id="UnaryTests_1s3ik6d">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fpvhwr">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fio7wp">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0542avg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g0xk86">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ch4pj6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xlvx20">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q9xr6z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0utl7pl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_130g830">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ForeignWill")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1h0x6v4">
+          <text>"ExamineForeignWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_023n1x7">
+          <text>"Examine - Prove a foreign will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uyvmfs">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1di9dsv">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0462xou">
+        <inputEntry id="UnaryTests_1rbjpf2">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_005kue8">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dleymx">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ggzw2x">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ixjzex">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fa8i56">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bwb6kj">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07tf0k3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1p6dnxf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nh8hzw">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ForeignDomicile")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_075ku2u">
+          <text>"ExamineForeignDomicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fk4auu">
+          <text>"Examine - Foreign Domicile"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1u67bzt">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lvjwlt">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qse8fv">
+        <inputEntry id="UnaryTests_13twhn8">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a7v0wi">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e2ye9o">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hijk3b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cqtnsn">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1f31vrf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k1gi9u">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mlxmc3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03h40rc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00psr9y">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "MinorityInterest")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xfq6io">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nyomyk">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13d5t7x">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xqpfys">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kcc0a2">
+        <inputEntry id="UnaryTests_1vm02d7">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18cb2lm">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c1kxzb">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s52vp1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e5of2o">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0azr8x9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lyh4ar">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jjqbti">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w013hi">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ovfbjl">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "LostWill")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_068rtml">
+          <text>"ExamineLostWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mkftn4">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1agyux3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nho8qy">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_062o38r">
+        <inputEntry id="UnaryTests_14qlqvx">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10mng4x">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14pvy1r">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1v98azz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f3svpz">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hlb9ey">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vwnzkg">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vsdc7k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18boggf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c50my5">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "LiteraryEstate")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mvgwi3">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hdz9d3">
+          <text>"Examine - Literary Estate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vke6w4">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10kd9k8">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_192q8sr">
+        <inputEntry id="UnaryTests_1xyq7vi">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f0e8t3">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ebxqz6">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ys8i2u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c8fl31">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1di1h6h">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jpsvu4">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z9kyc2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0drptcy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h7ebez">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "Spreadsheet")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cr5swj">
+          <text>"ExamineSpreadsheet"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02it6wy">
+          <text>"Examine - Spreadsheet"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1st7txz">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rj55v3">
+          <text>"case progression,readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vqsrwa">
+        <inputEntry id="UnaryTests_10dzco4">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a9u99m">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1v7i0om">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0l8wswq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19s1nhh">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_171mcso">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r13d24">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gil3vw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0h9kixg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_193is3s">
+          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ColligendaBona")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07lj1sg">
+          <text>"ExamineColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1np0z1o">
+          <text>"Examine - Ad Colligenda Bona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qnzsvp">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1077qe5">
+          <text>"case progression,readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
     </decisionTable>

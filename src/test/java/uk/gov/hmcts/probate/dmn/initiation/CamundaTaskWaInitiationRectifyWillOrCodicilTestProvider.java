@@ -13,11 +13,12 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -33,15 +34,21 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
 
 
         Map<String,Object> examineRectifyWillOrCodicilTaskAttributes = Map.of(
-                "taskId", EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
-        Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+        Map<String,Object> examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
+                "taskId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
+                "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         return Stream.of(
@@ -317,6 +324,14 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason)),
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

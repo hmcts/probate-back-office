@@ -3,41 +3,60 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.wa.TaskData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.wa.WaApi;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.UUID;
+import java.util.function.BiPredicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INCAPACITY_RULE35;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskContollerUnitTest {
+    public static final String ENCODED_CLIENT_CONTEXT = "encodedClientContext";
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -58,17 +77,32 @@ class WaTaskContollerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
+    @Mock
+    private WaApi waApi;
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    @Mock
+    private IdamApi idamApi;
 
-    @InjectMocks
+    private WaTaskService waTaskService;
+
     private WaTaskContoller waTaskContoller;
 
     @Captor
-    private ArgumentCaptor<Predicate<CallbackRequest>> predicateArgumentCaptor;
+    private ArgumentCaptor<BiPredicate<CallbackRequest, String>> predicateArgumentCaptor;
 
     private final String clientContext = "clientContext";
 
+    @BeforeEach
+    void setUp() {
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi, idamApi));
+        waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
+    }
+
     @Test
-    void shouldNotCompleteTheExistingTaskAndNoNewTaskCreated() throws JsonProcessingException {
+    void shouldNotCompleteTheExistingTaskAndNoNewTaskCreatedForCaseType() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
@@ -82,9 +116,9 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
-        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
                 callbackRequest,
                 clientContext,
                 bindingResult,
@@ -93,7 +127,7 @@ class WaTaskContollerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -101,14 +135,16 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest)).isFalse();
+               .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
+        verify(waTaskService)
+                .getCaseTypePredicate();
     }
 
     @Test
-    void shouldCompleteTheExistingTaskAndNewTaskCreated() throws JsonProcessingException {
+    void shouldCompleteTheExistingTaskAndNewTaskCreatedForCaseType() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
@@ -122,9 +158,9 @@ class WaTaskContollerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                  any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
-        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
                 callbackRequest,
                 clientContext,
                 bindingResult,
@@ -134,7 +170,7 @@ class WaTaskContollerUnitTest {
 
 
         assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -142,22 +178,203 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest)).isTrue();
+               .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isTrue();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
+        verify(waTaskService)
+                .getCaseTypePredicate();
     }
 
     @Test
-    void shouldByPassWaCompletionFlag() {
-        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
-        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+    void shouldNotCompleteTheExistingTaskForHandOffReasonsWhenNewHandOffReasonAdded() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseHandedOffToLegacySite())
+                .thenReturn(YES);
+        when(caseData.getBoHandoffReasonList())
+                .thenReturn(generateHandOffReasonCollection(List.of(
+                        DOUBLE_PROBATE,
+                        INCAPACITY_RULE35)));
+
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                 any()))
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
+
+        Optional<TaskData> examineIncapacityRule35 = Optional.of(TaskData.builder()
+                .type("ExamineIncapacityRule35")
+                .build());
+
+        doReturn(examineIncapacityRule35)
+                .when(taskUtils)
+                .getTaskData(clientContext);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
                 callbackRequest,
                 clientContext,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+               .test(callbackRequest, clientContext)).isFalse();
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+        verify(waTaskService)
+                .getHandOffPredicate();
+    }
+
+    @Test
+    void shouldNotCompleteTheExistingTaskForHandOffs() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getBoHandoffReasonList())
+                .thenReturn(generateHandOffReasonCollection(List.of(DOUBLE_PROBATE)));
+
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                 any()))
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
+
+        Optional<TaskData> examineIncapacityRule35 = Optional.of(TaskData.builder()
+                .type("ExamineIncapacityRule35")
+                .build());
+
+        doReturn(examineIncapacityRule35)
+                .when(taskUtils)
+                .getTaskData(clientContext);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+               .test(callbackRequest, clientContext)).isTrue();
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+        verify(waTaskService)
+                .getHandOffPredicate();
+    }
+
+    @Test
+    void shouldCompleteTheExistingTaskForHandOffReasons() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getBoHandoffReasonList())
+                .thenReturn(generateHandOffReasonCollection(List.of(DOUBLE_PROBATE)));
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                 any()))
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
+
+        Optional<TaskData> examineForeignDomicile = Optional.of(TaskData.builder()
+                .type("ExamineForeignDomicile")
+                .build());
+
+        doReturn(examineForeignDomicile)
+                .when(taskUtils)
+                .getTaskData(clientContext);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+               .test(callbackRequest, clientContext)).isTrue();
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+        verify(waTaskService)
+                .getHandOffPredicate();
+    }
+
+    @Test
+    void shouldByPassWaCompletionFlag() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void shouldByPassCloseReadyToIssueHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        waTaskContoller.closeReadyToIssueHandOffs(
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
+    }
+
+    @Test
+    void shouldInvokeCloseReadyToIssueHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+        assertThat(callbackResponseResponseEntity.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
     }
 
 
@@ -169,7 +386,7 @@ class WaTaskContollerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         assertThatThrownBy(() ->
-                waTaskContoller.updateClientContext(
+                waTaskContoller.updateCaseTypeClientContext(
                         callbackRequest,
                         null,
                         bindingResult,
@@ -195,7 +412,7 @@ class WaTaskContollerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         ResponseEntity<CallbackResponse> response =
-                waTaskContoller.updateClientContext(
+                waTaskContoller.updateCaseTypeClientContext(
                         callbackRequest,
                         null,
                         bindingResult,
@@ -242,7 +459,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-                .test(callbackRequest)).isFalse();
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -282,12 +499,9 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                 predicateArgumentCaptor.capture());
 
-        // Debugging the predicate evaluation
-        boolean predicateResult = predicateArgumentCaptor.getValue().test(callbackRequest);
-        System.out.println("Predicate result: " + predicateResult); // Debugging output
-
         // Ensure the predicate evaluates to true
-        assertThat(predicateResult).isTrue();
+        assertThat(predicateArgumentCaptor.getValue()
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isTrue();
 
         // Verify logging
         verify(objectMapper).writeValueAsString(callbackRequest);
@@ -323,5 +537,33 @@ class WaTaskContollerUnitTest {
         ).isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(taskUtils);
+    }
+
+    private List<CollectionMember<HandoffReason>> generateHandOffReasonCollection(
+            List<HandoffReasonId> handOffReasons) {
+        return handOffReasons.stream()
+                .map(handoffReason ->
+                        new CollectionMember<>(
+                                UUID.randomUUID().toString(),
+                                HandoffReason.builder().caseHandoffReason(handoffReason).build())
+                ).toList();
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueHandOffs() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.closeReadyToIssueHandOffs(
+                        callbackRequest,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(waTaskService);
     }
 }

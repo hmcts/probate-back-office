@@ -22,76 +22,76 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -150,13 +150,13 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                             Map.of("taskType", EXAMINE_FIAT_WILL, "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                    EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                        EXAMINE_IBCA,
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
                         .build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                            Map.of("taskType", EXAMINE_IBCA,
                                     "state", READY_TO_ISSUE_STATE)).build()
                 ),
                Arguments.of(
@@ -187,13 +187,13 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        EXAMINE_WILL_CODICIL_NOTATED,
                         CaseDataBuilder.defaultWaCase()
                             .isUrgent()
                             .build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED, "state",
+                                Map.of("taskType", EXAMINE_WILL_CODICIL_NOTATED, "state",
                                         READY_TO_ISSUE_STATE)).build()
                 ),
             Arguments.of(
@@ -248,19 +248,19 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        EXAMINE_INCAPACITY_RULE_35,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                                Map.of("taskType", EXAMINE_INCAPACITY_RULE_35,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        EXAMINE_LEADING_FOLLOWING_GRANTS,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                                Map.of("taskType", EXAMINE_LEADING_FOLLOWING_GRANTS,
                                         "state", READY_TO_ISSUE_STATE)).build()
             ),
             Arguments.of(
@@ -273,13 +273,13 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                             Map.of("taskType", EXAMINE_SECTION_116, "state", READY_TO_ISSUE_STATE)).build()
             ),
             Arguments.of(
-                EXAMINE_POWER_OF_ATTORNEY,
+                    EXAMINE_POA,
                     CaseDataBuilder.defaultWaCase()
                             .isUrgent()
                             .build(),
                     "handleEvidence",
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                            Map.of("taskType", EXAMINE_POWER_OF_ATTORNEY, "state", READY_TO_ISSUE_STATE)).build()
+                            Map.of("taskType", EXAMINE_POA, "state", READY_TO_ISSUE_STATE)).build()
             ),
             Arguments.of(
                 EXAMINE_RESEAL_FOREIGN_GRANT,
@@ -291,45 +291,45 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                             Map.of("taskType", EXAMINE_RESEAL_FOREIGN_GRANT, "state", READY_TO_ISSUE_STATE)).build()
             ),
             Arguments.of(
-                EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                    EXAMINE_IBIS,
                     CaseDataBuilder.defaultWaCase()
                             .isUrgent()
                             .build(),
                     "handleEvidence",
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME, "state", READY_TO_ISSUE_STATE))
+                            Map.of("taskType", EXAMINE_IBIS, "state", READY_TO_ISSUE_STATE))
                             .build()
                 ),
                 Arguments.of(
-                        EXAMINE_CODICIL_MIS_RECITAL,
+                        EXAMINE_CODICIL_MIS,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_CODICIL_MIS_RECITAL,
+                                Map.of("taskType", EXAMINE_CODICIL_MIS,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                        EXAMINE_RECTIFY_WILL_CODICIL,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                                Map.of("taskType", EXAMINE_RECTIFY_WILL_CODICIL,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                        EXAMINE_IBIS_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_IBIS_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED,
+                        EXAMINE_LOST_WILL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_LOST_WILL_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
@@ -341,19 +341,19 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
+                        EXAMINE_IBCA_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_IBCA_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                        EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
@@ -373,11 +373,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                        EXAMINE_CODICIL_MIS_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_CODICIL_MIS_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
@@ -404,11 +404,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of("taskType", EXAMINE_LITERARY_ESTATE, "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_LOST_WILL_OR_CODICIL,
+                        EXAMINE_LOST_WILL,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                        Map.of("taskType", EXAMINE_LOST_WILL_OR_CODICIL, "state", READY_TO_ISSUE_STATE))
+                                        Map.of("taskType", EXAMINE_LOST_WILL, "state", READY_TO_ISSUE_STATE))
                                 .build()
                 ),
                 Arguments.of(
@@ -419,19 +419,19 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of("taskType", EXAMINE_MINORITY_INTEREST, "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                        EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                        EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
@@ -523,11 +523,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL,
+                        EXAMINE_FOREIGN_WILL,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_PROVE_FOREIGN_WILL,
+                                Map.of("taskType", EXAMINE_FOREIGN_WILL,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
@@ -567,11 +567,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build()
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
+                        EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
@@ -625,6 +625,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
+
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
 }

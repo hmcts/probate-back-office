@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.minorityInterestHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
@@ -32,13 +33,19 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
         Map<String,Object> examineMinorityInterestCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineMinorityInterestTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineMinorityInterestReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_MINORITY_INTEREST,
+                "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -231,7 +238,8 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false,
+                                emptyList()),
                         emptyList()
                 ),
                 Arguments.of(
@@ -305,6 +313,14 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false,
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason)),
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

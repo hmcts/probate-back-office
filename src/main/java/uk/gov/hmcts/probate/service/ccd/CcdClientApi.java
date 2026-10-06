@@ -21,7 +21,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
@@ -173,5 +175,35 @@ public class CcdClientApi implements CoreCaseDataService {
                 .description(description)
                 .summary(summary)
                 .build();
+    }
+
+    public void triggerEvent(String caseId,
+                             EventId eventId,
+                             Function<StartEventResponse, CaseDataContent> caseDataContentFunction,
+                             SecurityDTO securityDTO) {
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                JurisdictionId.PROBATE.name(),
+                GRANT_OF_REPRESENTATION_NAME,
+                caseId,
+                eventId.getName());
+
+        CaseDataContent caseDataContent = caseDataContentFunction.apply(startEventResponse);
+
+        coreCaseDataApi.submitEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                JurisdictionId.PROBATE.name(),
+                GRANT_OF_REPRESENTATION_NAME,
+                caseId,
+                false,
+                caseDataContent
+        );
+        log.info("For case id {} triggered event successfully {} ",
+                caseId,
+                eventId.getName());
     }
 }

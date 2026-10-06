@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,15 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Base64;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @Controller
@@ -35,17 +37,65 @@ public class WaTaskContoller {
     private final TaskUtils taskUtils;
     private final ObjectMapper objectMapper;
     private final WorkAllocationToggleService workAllocationToggleService;
+    private final WaTaskService waTaskService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
-    @PostMapping(path = "/case-type/updateClientContext",
+    @PostMapping(path = "/updateCaseTypeClientContext",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> updateClientContext(
+    public ResponseEntity<CallbackResponse> updateCaseTypeClientContext(
             @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getCaseTypePredicate());
+    }
+
+
+    @PostMapping(path = "/updateHandOffClientContext",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateHandOffClientContext(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getHandOffPredicate());
+    }
+
+    @PostMapping(path = "/evidence-handled/updateClientContext",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getEvidenceHandledPredicate());
+    }
+
+    private @NonNull ResponseEntity<CallbackResponse> getCallbackResponseResponseEntity(
+            CallbackRequest callbackRequest,
+            String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request,
+            BiPredicate<CallbackRequest, String> completeTask) {
+
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);
 
@@ -58,10 +108,7 @@ public class WaTaskContoller {
             Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
                     clientContext,
                     callbackRequest,
-                    paramCallbackRequest ->
-                            !paramCallbackRequest.getCaseDetails().getData().getCaseType()
-                                    .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
-
+                    completeTask
             );
 
             encodedClientContext
@@ -76,13 +123,11 @@ public class WaTaskContoller {
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
-    @PostMapping(path = "/evidence-handled/updateClientContext",
+    @PostMapping(path = "/trigger/closeReadyToIssueHandOffs",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
+    public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
             @Valid @RequestBody CallbackRequest callbackRequest,
-            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
-                    required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
@@ -92,24 +137,7 @@ public class WaTaskContoller {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-
-            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
-            Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
-                    clientContext,
-                    callbackRequest,
-                    paramCallbackRequest -> {
-                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        return NO.equals(evidenceHandled);
-                    }
-            );
-            encodedClientContext
-                    .ifPresent(value -> {
-                        log.debug("Updated case id's {} client context {}",
-                                callbackRequest.getCaseDetails().getId(),
-                                new String(Base64.getDecoder().decode(value)));
-                        responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
-                    });
-            return responseBuilder.body(CallbackResponse.builder().build());
+            waTaskService.closeReadyToIssueHandOffs(callbackRequest);
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }

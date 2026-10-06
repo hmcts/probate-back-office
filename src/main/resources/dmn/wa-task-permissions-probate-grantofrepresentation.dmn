@@ -315,7 +315,7 @@
       </rule>
       <rule id="DecisionRule_0irixea">
         <inputEntry id="UnaryTests_1eyfeb9">
-          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+          <text>"ExamineIBCA"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0bjknxm">
           <text></text>
@@ -344,7 +344,7 @@
       </rule>
       <rule id="DecisionRule_1kd2stq">
         <inputEntry id="UnaryTests_1iwrc9q">
-          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+          <text>"ExamineIBCA"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cteqph">
           <text></text>
@@ -431,7 +431,7 @@
       </rule>
       <rule id="DecisionRule_10h06dl">
         <inputEntry id="UnaryTests_1gitozm">
-          <text>"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineWillCodicilNotated"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1fftpe6">
           <text></text>
@@ -460,7 +460,7 @@
       </rule>
       <rule id="DecisionRule_1ak0ho0">
         <inputEntry id="UnaryTests_0gyuyye">
-          <text>"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineWillCodicilNotated"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0z1z1a7">
           <text></text>
@@ -779,7 +779,7 @@
       </rule>
       <rule id="DecisionRule_1lbywhb">
         <inputEntry id="UnaryTests_0jjghee">
-          <text>"ExamineIncapacityUnderRule35"</text>
+          <text>"ExamineIncapacityRule35"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1x5lo8g">
           <text></text>
@@ -808,7 +808,7 @@
       </rule>
       <rule id="DecisionRule_0dsj5ah">
         <inputEntry id="UnaryTests_1q92q3i">
-          <text>"ExamineIncapacityUnderRule35"</text>
+          <text>"ExamineIncapacityRule35"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ilf2w5">
           <text></text>
@@ -837,7 +837,7 @@
       </rule>
       <rule id="DecisionRule_0far0jg">
         <inputEntry id="UnaryTests_0jr1gw1">
-          <text>"ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineLeadingFollowing Grants"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hohcx3">
           <text></text>
@@ -866,7 +866,7 @@
       </rule>
       <rule id="DecisionRule_094hr9l">
         <inputEntry id="UnaryTests_003sbcj">
-          <text>"ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineLeadingFollowing Grants"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1tygqxa">
           <text></text>
@@ -953,7 +953,7 @@
       </rule>
       <rule id="DecisionRule_power_of_attorney_ctsc">
         <inputEntry id="UnaryTests_power_of_attorney_ctsc_task">
-          <text>"ExaminePowerOfAttorney"</text>
+          <text>"ExaminePOA"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_power_of_attorney_ctsc_case">
           <text></text>
@@ -982,7 +982,7 @@
       </rule>
       <rule id="DecisionRule_power_of_attorney_tl">
         <inputEntry id="UnaryTests_power_of_attorney_tl_task">
-          <text>"ExaminePowerOfAttorney"</text>
+          <text>"ExaminePOA"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_power_of_attorney_tl_case">
           <text></text>
@@ -1069,7 +1069,7 @@
       </rule>
       <rule id="DecisionRule_infected_blood_interim_ctsc">
         <inputEntry id="UnaryTests_infected_blood_interim_ctsc_task">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineIBIS"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_infected_blood_interim_ctsc_case">
           <text></text>
@@ -1098,7 +1098,7 @@
       </rule>
       <rule id="DecisionRule_infected_blood_interim_tl">
         <inputEntry id="UnaryTests_infected_blood_interim_tl_task">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineIBIS"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_infected_blood_interim_tl_case">
           <text></text>
@@ -1127,7 +1127,7 @@
       </rule>
       <rule id="DecisionRule_02odfr8">
         <inputEntry id="UnaryTests_1tkmvhk">
-          <text>"ExamineRectifyWillOrCodicil"</text>
+          <text>"ExamineRectifyWillCodicil"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0oyhpf0">
           <text></text>
@@ -1156,7 +1156,7 @@
       </rule>
       <rule id="DecisionRule_1eecurg">
         <inputEntry id="UnaryTests_0pmxtvv">
-          <text>"ExamineRectifyWillOrCodicil"</text>
+          <text>"ExamineRectifyWillCodicil"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1psfufv">
           <text></text>
@@ -1185,7 +1185,7 @@
       </rule>
       <rule id="DecisionRule_079905n">
         <inputEntry id="UnaryTests_1r4qy10">
-          <text>"ExamineCodicilMisRecital"</text>
+          <text>"ExamineCodicilMis"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1h6pw1y">
           <text></text>
@@ -1214,7 +1214,7 @@
       </rule>
       <rule id="DecisionRule_0bavvzv">
         <inputEntry id="UnaryTests_176isu9">
-          <text>"ExamineCodicilMisRecital"</text>
+          <text>"ExamineCodicilMis"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_16rxp1n">
           <text></text>
@@ -1243,7 +1243,7 @@
       </rule>
       <rule id="DecisionRule_1s91spy">
         <inputEntry id="UnaryTests_064l0co">
-          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+          <text>"ExamineIBISCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1jramb0">
           <text></text>
@@ -1272,7 +1272,7 @@
       </rule>
       <rule id="DecisionRule_1hgya8p">
         <inputEntry id="UnaryTests_00drbkk">
-          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+          <text>"ExamineIBISCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_055evzw">
           <text></text>
@@ -1301,7 +1301,7 @@
       </rule>
       <rule id="DecisionRule_0p4mvft">
         <inputEntry id="UnaryTests_0lc2hco">
-          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+          <text>"ExamineLostWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ffo7po">
           <text></text>
@@ -1330,7 +1330,7 @@
       </rule>
       <rule id="DecisionRule_1x9ptg5">
         <inputEntry id="UnaryTests_1rmqtpt">
-          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
+          <text>"ExamineLostWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1r1i6yy">
           <text></text>
@@ -1417,7 +1417,7 @@
       </rule>
       <rule id="DecisionRule_0z049xj">
         <inputEntry id="UnaryTests_0amwf8v">
-          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+          <text>"ExamineIBCACasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0xmcq5y">
           <text></text>
@@ -1446,7 +1446,7 @@
       </rule>
       <rule id="DecisionRule_1m8q37a">
         <inputEntry id="UnaryTests_061r1w9">
-          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+          <text>"ExamineIBCACasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1oj9t4o">
           <text></text>
@@ -1475,7 +1475,7 @@
       </rule>
       <rule id="DecisionRule_19f3acv">
         <inputEntry id="UnaryTests_1xebcjn">
-          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+          <text>"ExamineLeadingFollowing GrantsCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hatfpr">
           <text></text>
@@ -1504,7 +1504,7 @@
       </rule>
       <rule id="DecisionRule_0nut1ns">
         <inputEntry id="UnaryTests_171wnxy">
-          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+          <text>"ExamineLeadingFollowing GrantsCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1c50s83">
           <text></text>
@@ -1649,7 +1649,7 @@
       </rule>
       <rule id="DecisionRule_084dz6a">
         <inputEntry id="UnaryTests_1wzt3cx">
-          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+          <text>"ExamineCodicilMisCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_133x4em">
           <text></text>
@@ -1678,7 +1678,7 @@
       </rule>
       <rule id="DecisionRule_1ezoyqc">
         <inputEntry id="UnaryTests_08pfoc1">
-          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
+          <text>"ExamineCodicilMisCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_01ere7g">
           <text></text>
@@ -1881,7 +1881,7 @@
       </rule>
       <rule id="DecisionRule_11b5oxa">
         <inputEntry id="UnaryTests_1dz645s">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWill"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_15q85en">
           <text></text>
@@ -1910,7 +1910,7 @@
       </rule>
       <rule id="DecisionRule_1yxlf49">
         <inputEntry id="UnaryTests_0t7ovox">
-          <text>"ExamineLostWillOrCodicil"</text>
+          <text>"ExamineLostWill"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cm7o9g">
           <text></text>
@@ -1997,7 +1997,7 @@
       </rule>
       <rule id="DecisionRule_0h5duw5">
         <inputEntry id="UnaryTests_0vfzajv">
-          <text>"ExamineWillOrCodicilToBeNotatedCasePrinted"</text>
+          <text>"ExamineWillCodicilNotatedCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0tzgcyq">
           <text></text>
@@ -2026,7 +2026,7 @@
       </rule>
       <rule id="DecisionRule_17nwf5q">
         <inputEntry id="UnaryTests_1a586mp">
-          <text>"ExamineWillOrCodicilToBeNotatedCasePrinted"</text>
+          <text>"ExamineWillCodicilNotatedCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_085lgma">
           <text></text>
@@ -2055,7 +2055,7 @@
       </rule>
       <rule id="DecisionRule_1kuzwbt">
         <inputEntry id="UnaryTests_1xkbguo">
-          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
+          <text>"ExamineRectifyWillCodicilCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0a85rap">
           <text></text>
@@ -2084,7 +2084,7 @@
       </rule>
       <rule id="DecisionRule_1ud2nte">
         <inputEntry id="UnaryTests_190013a">
-          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
+          <text>"ExamineRectifyWillCodicilCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0zgv15s">
           <text></text>
