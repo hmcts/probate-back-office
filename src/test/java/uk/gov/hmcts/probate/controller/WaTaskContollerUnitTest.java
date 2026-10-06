@@ -459,7 +459,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-                .test(callbackRequest)).isFalse();
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -499,12 +499,9 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                 predicateArgumentCaptor.capture());
 
-        // Debugging the predicate evaluation
-        boolean predicateResult = predicateArgumentCaptor.getValue().test(callbackRequest);
-        System.out.println("Predicate result: " + predicateResult); // Debugging output
-
         // Ensure the predicate evaluates to true
-        assertThat(predicateResult).isTrue();
+        assertThat(predicateArgumentCaptor.getValue()
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isTrue();
 
         // Verify logging
         verify(objectMapper).writeValueAsString(callbackRequest);

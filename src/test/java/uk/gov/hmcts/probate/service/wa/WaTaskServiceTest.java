@@ -45,6 +45,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
@@ -233,6 +234,40 @@ class WaTaskServiceTest {
     }
 
     @Test
+    void shouldReturnTrueWhenEvidenceHasIsNo() {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .evidenceHandled(NO)
+                        .build());
+
+        BiPredicate<CallbackRequest, String> predicate =
+                waTaskService.getEvidenceHandledPredicate();
+
+        assertThat(predicate.test(callbackRequest, ""))
+                .isTrue();
+    }
+
+    @Test
+    void shouldReturnTrueWhenEvidenceHasIsYes() {
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .evidenceHandled(YES)
+                        .build());
+
+        BiPredicate<CallbackRequest, String> predicate =
+                waTaskService.getEvidenceHandledPredicate();
+
+        assertThat(predicate.test(callbackRequest, ""))
+                .isFalse();
+    }
+
+    @Test
     void shouldReturnTrueWhenHandOffReasonsHaveChanged() {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
@@ -382,7 +417,7 @@ class WaTaskServiceTest {
     void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
         Long caseId = 123456789L;
         CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(Constants.NO)
+                .caseHandedOffToLegacySite(NO)
                 .build();
 
         when(caseDetails.getId())
@@ -432,7 +467,7 @@ class WaTaskServiceTest {
 
         Long caseId = 123456789L;
         CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(Constants.NO)
+                .caseHandedOffToLegacySite(NO)
                 .build();
 
         when(caseDetails.getId())

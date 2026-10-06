@@ -34,6 +34,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
@@ -111,6 +112,13 @@ public class WaTaskService {
                 return !isTaskHandOffReasonRetained;
             }
             return true;
+        };
+    }
+
+    public BiPredicate<CallbackRequest, String> getEvidenceHandledPredicate() {
+        return (callbackRequest, clientContext) -> {
+            String evidenceHandled = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
+            return NO.equals(evidenceHandled);
         };
     }
 

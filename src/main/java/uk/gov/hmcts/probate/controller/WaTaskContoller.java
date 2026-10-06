@@ -27,7 +27,6 @@ import java.util.function.BiPredicate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @Controller
@@ -74,6 +73,22 @@ public class WaTaskContoller {
                 waTaskService.getHandOffPredicate());
     }
 
+    @PostMapping(path = "/evidence-handled/updateClientContext",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        return getCallbackResponseResponseEntity(callbackRequest,
+                clientContext,
+                bindingResult,
+                request,
+                waTaskService.getEvidenceHandledPredicate());
+    }
+
     private @NonNull ResponseEntity<CallbackResponse> getCallbackResponseResponseEntity(
             CallbackRequest callbackRequest,
             String clientContext,
@@ -96,44 +111,6 @@ public class WaTaskContoller {
                     completeTask
             );
 
-            encodedClientContext
-                    .ifPresent(value -> {
-                        log.debug("Updated case id's {} client context {}",
-                                callbackRequest.getCaseDetails().getId(),
-                                new String(Base64.getDecoder().decode(value)));
-                        responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
-                    });
-            return responseBuilder.body(CallbackResponse.builder().build());
-        }
-        return ResponseEntity.ok(CallbackResponse.builder().build());
-    }
-
-    @PostMapping(path = "/evidence-handled/updateClientContext",
-            consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
-            @Valid @RequestBody CallbackRequest callbackRequest,
-            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
-                    required = false) String clientContext,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
-        if (workAllocationToggleService.isProbateWAEnabled()) {
-            logRequest(request.getRequestURI(), callbackRequest);
-
-            if (bindingResult.hasErrors()) {
-                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-                throw new BadRequestException("Invalid payload", bindingResult);
-            }
-
-            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
-            Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
-                    clientContext,
-                    callbackRequest,
-                    paramCallbackRequest -> {
-                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        return NO.equals(evidenceHandled);
-                    }
-            );
             encodedClientContext
                     .ifPresent(value -> {
                         log.debug("Updated case id's {} client context {}",
