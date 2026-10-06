@@ -138,6 +138,8 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
+    private static final String CASEWORKER_PROBATE_SYSTEM_UPDATE = "caseworker-probate-systemupdate";
+    private static final String IDAM_SERVICE_ACCOUNT = "idam-service-account";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
             "boCorrection");
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
@@ -1193,6 +1195,15 @@ public class CallbackResponseTransformer {
                                                       Optional<UserInfo> caseworkerInfo, boolean transform) {
         CaseData caseData = caseDetails.getData();
 
+        String createTask = caseworkerInfo
+                .map(UserInfo::getRoles)
+                .filter(roles -> roles.contains(CASEWORKER_PROBATE_SYSTEM_UPDATE)
+                        || roles.contains(IDAM_SERVICE_ACCOUNT))
+                .map(roles -> YES)
+                .orElse(NO);
+
+        log.info("createTask in CallbackResonseTransformer : {}", createTask);
+
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
             .state(caseDetails.getState())
@@ -1487,7 +1498,7 @@ public class CallbackResponseTransformer {
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
-            .createTask(caseData.getCreateTask())
+            .createTask(createTask)
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
             .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId());

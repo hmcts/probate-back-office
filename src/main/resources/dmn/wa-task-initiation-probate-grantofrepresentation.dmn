@@ -76,7 +76,7 @@ else false</text>
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"handleEvidence","applyforGrantPaperApplicationMan","attachScannedDocs","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -112,6 +112,47 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
+          <text>"case progression,examineDigitalCaseTypes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10tvvcr">
+        <inputEntry id="UnaryTests_0p1r98q">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0re0lpr">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1df32yk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ouuxmc">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rbvd41">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vcbglz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dg5ez0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jhepqm">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ws7ee7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12vofg3">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tnlzoo">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07hhpy7">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gmkc20">
           <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
