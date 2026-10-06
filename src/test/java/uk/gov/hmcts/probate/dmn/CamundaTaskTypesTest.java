@@ -70,9 +70,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
@@ -323,7 +323,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL
+                        "taskTypeId", EXAMINE_FOREIGN_WILL
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
@@ -342,8 +342,8 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", RESOLVE_REGISTRAR_ESCALATION_ORDERS
                 ),
                 Map.of(
-                        "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
+                        "taskTypeName", EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FOREIGN_WILL_CASE_PRINTED
                 ),
                 Map.of(
                     "taskTypeName", EXAMINE_SME_REFERRAL_TASK_TYPE_NAME,

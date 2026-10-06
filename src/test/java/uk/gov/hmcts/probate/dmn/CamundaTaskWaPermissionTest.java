@@ -48,7 +48,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
@@ -94,7 +94,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBIS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
@@ -116,7 +115,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TRUST_CORPORA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FOREIGN_DOMICILE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN_WILL_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 
 
@@ -398,7 +397,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(FOREIGN_DOMICILE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL,
+                        EXAMINE_FOREIGN_WILL,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(PROVE_FOREIGN_WILL_SKILL_CODE)
                 ),
@@ -446,7 +445,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
+                        EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(PROVE_FOREIGN_WILL_SKILL_CODE)
                 ),

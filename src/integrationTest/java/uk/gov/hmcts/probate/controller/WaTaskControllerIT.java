@@ -206,7 +206,7 @@ public class WaTaskControllerIT {
             when(mockCaseData.getEvidenceHandled()).thenReturn(NO);
 
             // Test the predicate
-            return predicate.test(mockCallbackRequest);
+            return predicate.test(mockCallbackRequest, CLIENT_CONTEXT_HEADER_PARAMETER);
         }));
     }
 

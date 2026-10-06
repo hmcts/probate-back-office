@@ -65,8 +65,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINOR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
@@ -523,11 +523,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL,
+                        EXAMINE_FOREIGN_WILL,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_PROVE_FOREIGN_WILL,
+                                Map.of("taskType", EXAMINE_FOREIGN_WILL,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
@@ -567,11 +567,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build()
                 ),
                 Arguments.of(
-                        EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
+                        EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED,
+                                Map.of("taskType", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(

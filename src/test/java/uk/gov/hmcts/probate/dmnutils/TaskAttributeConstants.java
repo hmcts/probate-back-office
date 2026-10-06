@@ -114,7 +114,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED = "ExamineWindrushSchemeCasePrinted";
     public static final String EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED = "ExamineWitnessInterviewCasePrinted";
     public static final String EXAMINE_SECTION_116_CASE_PRINTED = "ExamineSection116CasePrinted";
-    public static final String EXAMINE_PROVE_FOREIGN_WILL = "ExamineProveForeignWill";
+    public static final String EXAMINE_FOREIGN_WILL = "ExamineForeignWill";
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
     public static final String EXAMINE_SME_REFERRAL = "ExamineSMEReferral";
@@ -329,8 +329,8 @@ public class TaskAttributeConstants {
     public static final String REGISTRAR_ESCALATION_REASON_REFERRALS = "referrals";
     public static final String REGISTRAR_ESCALATION_REASON_ORDERS = "orders";
 
-    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
-    public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
+    public static final String EXAMINE_FOREIGN_WILL_CASE_PRINTED = "ExamineForeignWillCasePrinted";
+    public static final String EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
             "Examine - Prove a Foreign Will";
 
     public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
