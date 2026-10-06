@@ -624,8 +624,8 @@
         <outputEntry id="LiteralExpression_1t202fd">
           <text>"Auto"</text>
         </outputEntry>
-       </rule>
-       <rule id="DecisionRule_0ciwiue">
+      </rule>
+      <rule id="DecisionRule_0ciwiue">
         <inputEntry id="UnaryTests_0nmijes">
           <text>"registrarsDecision"</text>
         </inputEntry>
@@ -644,17 +644,6 @@
           <text>"ExamineProveForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gzg9b1">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0klehlz">
-        <inputEntry id="UnaryTests_1v0b2ke">
-          <text>"boRedeclarationComplete","handleEvidence","boEscalateToRegistrar"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_10c9ozi">
-          <text>"ResolveRedeclaration"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0koqejy">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
@@ -677,6 +666,17 @@
           <text>"ExamineSMEReferral"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_03wtfoy">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0klehlz">
+        <inputEntry id="UnaryTests_1v0b2ke">
+          <text>"boRedeclarationComplete","handleEvidence","boEscalateToRegistrar"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10c9ozi">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0koqejy">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
