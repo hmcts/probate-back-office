@@ -249,7 +249,6 @@ public class NotificationController {
         boolean shouldSendReceiptOfResponse = RECEIPT_OF_RESPONSE_EXCLUDED_STATE_LIST.stream()
                 .noneMatch(s -> s.equalsIgnoreCase(caseState));
         Document document = null;
-        log.info("createTask in NotificationController : {}", caseData.getCreateTask());
         if (isAnEmailAddressPresent(caseData)
             && eventValidationService
                 .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()) {
