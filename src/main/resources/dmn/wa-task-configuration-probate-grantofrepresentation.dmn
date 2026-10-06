@@ -184,7 +184,7 @@
           <text>"dueDateOrigin"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0davc9r">
-          <text>now()</text>
+          <text>date and time("2026-12-14T10:00:00")</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0i31201">
           <text>true</text>
