@@ -25,6 +25,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
@@ -90,6 +92,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -325,7 +330,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_TRUST_CORPORATION
                 ),
                 Map.of(
-                    "taskTypeName", "Review SME Referral",
+                    "taskTypeName", REVIEW_SME_REFERRAL_TASK_TYPE_NAME,
                     "taskTypeId", REVIEW_SME_REFERRAL
                 ),
                 Map.of(
@@ -339,6 +344,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
+                ),
+                Map.of(
+                    "taskTypeName", EXAMINE_SME_REFERRAL_TASK_TYPE_NAME,
+                    "taskTypeId", EXAMINE_SME_REFERRAL
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_REGISTRAR_DECISION
                 )
 
         );
@@ -355,7 +368,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(56));
+        assertThat(logic.getRules().size(), is(58));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

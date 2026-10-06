@@ -263,4 +263,12 @@ public class CaseDataTransformer {
     public void setSelectForQAUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setSelectForQAUserIdamId(idamUserId);
     }
+
+    public void setMoveToCWEscalationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setMoveToCWEscalationUserIdamId(idamUserId);
+    }
+
+    public void setEscalateToRegistrarUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setEscalateToRegistrarUserIdamId(idamUserId);
+    }
 }

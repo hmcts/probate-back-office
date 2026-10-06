@@ -647,6 +647,28 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0o4kx86">
+        <inputEntry id="UnaryTests_0nqc7ni">
+          <text>"boIssueGrantForCaseMatching","boEscalateToRegistrar","moveToCWEscalation","boStopCaseForRegistrarEscalations"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15wufin">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_162dabx">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nzc6as">
+        <inputEntry id="UnaryTests_1itjamn">
+          <text>"boEscalateToRegistrar", "resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_038oawx">
+          <text>"ExamineSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03wtfoy">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

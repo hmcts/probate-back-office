@@ -196,6 +196,8 @@ class BusinessValidationControllerIT {
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
     private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
+    private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationUserId";
+    private static final String CASE_CLOSED_STATE = "BOCaseClosed";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -325,7 +327,8 @@ class BusinessValidationControllerIT {
             .extraCopiesOfGrant(EXTRA_UK)
             .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
             .totalFee(TOTAL_FEE)
-            .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+            .scannedDocuments(SCANNED_DOCUMENTS_LIST)
+            .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID);
 
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
@@ -1006,6 +1009,20 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldSetMoveToCWEscalationUserIdamIdAfterCaseworkerMoveToCWEscalationEvent() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadCaseWorkerEscalationMoveToCWEscalation.json");
+
+        mockMvc.perform(post(CASE_WORKER_ESCALATED).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setMoveToCWEscalationUserIdamId(any(), any());
+    }
+
+    @Test
     void shouldSetStateToBOCaseMatchingIssueGrantAfterResolveCaseworkerEscalated() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadCaseWorkerResolveEscalation.json");
@@ -1618,5 +1635,24 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.hasValidMatches").value(NO));
+    }
+
+    @Test
+    void shouldSetEscalateToRegistrarUserIdamIdWhenEventIdIsBoEscalateToRegistrar() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boEscalateToRegistrar");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/case-escalated")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setEscalateToRegistrarUserIdamId(any(), any());
     }
 }
