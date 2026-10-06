@@ -201,7 +201,7 @@
           <text>"dueDateNonWorkingCalendar"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1xky3y2">
-          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json, https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-6077-calendar-test/src/main/resources/privilege-calendar.json"</text>
+          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json, https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-6077-calendar-test/src/main/resources/privilege-calendar.json?v=2"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0coo8a0">
           <text>true</text>
