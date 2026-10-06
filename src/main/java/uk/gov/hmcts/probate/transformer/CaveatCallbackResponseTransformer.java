@@ -228,6 +228,7 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+
     public CaveatCallbackResponse transformResponseWithOrgPolicy(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaveatDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
