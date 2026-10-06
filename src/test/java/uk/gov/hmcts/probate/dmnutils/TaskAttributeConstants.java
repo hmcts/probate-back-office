@@ -191,6 +191,15 @@ public class TaskAttributeConstants {
                     + "/trigger/resolveCWEscalation)  "
                     + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boEscalateToRegistrar)";
+    public static final String DESCRIPTION_REVIEW_REGISTRAR_DECISION =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForRegistrarEscalations)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
@@ -319,4 +328,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED = "ExamineProveForeignWillCasePrinted";
     public static final String EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME =
             "Examine - Prove a Foreign Will";
+
+    public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
+    public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
+    public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
 }
