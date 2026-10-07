@@ -160,6 +160,29 @@
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_03vitm6">
+        <inputEntry id="UnaryTests_0ew9x86">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13glat4">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1irjj3w">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03i9uan">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06rvgl4">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bsgcnd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oewdsu">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

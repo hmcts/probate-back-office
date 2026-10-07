@@ -104,6 +104,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "examineDigitalCaseTypes",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "changeState",
+                                null,
+                                null,
+                                "case progression",
+                                "Cancel"
+                        )
                 )
         );
     }
