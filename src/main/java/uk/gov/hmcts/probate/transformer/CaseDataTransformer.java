@@ -281,4 +281,8 @@ public class CaseDataTransformer {
     public void setEscalateToRegistrarUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setEscalateToRegistrarUserIdamId(idamUserId);
     }
+
+    public void setRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setRedeclarationUserIdamId(idamUserId);
+    }
 }
