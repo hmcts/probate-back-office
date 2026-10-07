@@ -2751,7 +2751,7 @@
       </rule>
       <rule id="DecisionRule_0y6jedq">
         <inputEntry id="UnaryTests_07fdsm8">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineForeignWill"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hygaju">
           <text></text>
@@ -2780,7 +2780,7 @@
       </rule>
       <rule id="DecisionRule_0q6wivf">
         <inputEntry id="UnaryTests_01d2isd">
-          <text>"ExamineProveForeignWill"</text>
+          <text>"ExamineForeignWill"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0vvxgsj">
           <text></text>
@@ -3012,7 +3012,7 @@
       </rule>
       <rule id="DecisionRule_1nstypq">
         <inputEntry id="UnaryTests_01u91gn">
-          <text>"ExamineProveForeignWillCasePrinted"</text>
+          <text>"ExamineForeignWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1it6mos">
           <text></text>
@@ -3041,7 +3041,7 @@
       </rule>
       <rule id="DecisionRule_03x3ha5">
         <inputEntry id="UnaryTests_09rn5tg">
-          <text>"ExamineProveForeignWillCasePrinted"</text>
+          <text>"ExamineForeignWillCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dzpk34">
           <text></text>
