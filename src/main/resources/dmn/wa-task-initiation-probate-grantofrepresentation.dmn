@@ -2780,6 +2780,47 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1fh8uzc">
+        <inputEntry id="UnaryTests_0ywopwy">
+          <text>"boRedeclarationSoTForCaseStopped",  "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q2k827">
+          <text>"BOCaseStoppedAwaitRedec"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vf9dc8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16mkjsr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hmurgj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fcv0ss">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0232l47">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11zpdhu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qsyhj0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lekvso">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11rn8g4">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1726bas">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hsvu7m">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0765g2w">
         <inputEntry id="UnaryTests_0ydtqnf">
           <text>"handleEvidence","attachScannedDocs","citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>

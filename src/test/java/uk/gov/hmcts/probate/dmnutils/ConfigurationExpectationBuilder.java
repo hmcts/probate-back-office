@@ -8,12 +8,14 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
@@ -33,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_R
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -164,6 +167,10 @@ public class ConfigurationExpectationBuilder {
                 && conditions.get("taskType").equals(REVIEW_REGISTRAR_DECISION)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_REGISTRAR_DECISION, true);
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(BO_CASE_STOPPED_AWAIT_REDEC_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(REDECLARATION)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {

@@ -109,7 +109,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(9));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(67));
+        assertThat(logic.getRules().size(), is(68));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -150,6 +150,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationExamineSmeReferralTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationRedeclarationTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationResolveCaseStoppedTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,

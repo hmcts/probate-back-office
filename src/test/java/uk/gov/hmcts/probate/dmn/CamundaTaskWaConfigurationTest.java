@@ -93,6 +93,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -595,6 +597,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build()
                 ),
                 Arguments.of(
+                        REDECLARATION,
+                        CaseDataBuilder.defaultWaCase().isUrgent().setRedeclarationUserIdamId(DEFAULT_ASSIGNEE).build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REDECLARATION,
+                                        "state", BO_CASE_STOPPED_AWAIT_REDEC_STATE)).build()
+                ),
+                Arguments.of(
                         EXAMINE_SME_REFERRAL,
                         CaseDataBuilder.defaultWaCase().isUrgent().setMoveToCWEscalationUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -621,7 +631,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(31, logic.getRules().size());
+        assertEquals(33, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

@@ -669,6 +669,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1k5kgyi">
+        <inputEntry id="UnaryTests_0adx54a">
+          <text>"boNotifyRedeclarationSOT"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08kvss1">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qgydn8">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0mmgtop">
         <inputEntry id="UnaryTests_08amysl">
           <text>"boIssueGrantForCaseMatching","boResolveStop","handleEvidence","boRequestInfoForCaseStopped","assembleLetter","boRedeclarationSoTForCaseStopped"</text>

@@ -705,6 +705,18 @@
           <text>"Review Registrar's Decision"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_12ezbav">
+        <description>RD</description>
+        <inputEntry id="UnaryTests_0x55q5u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ug8qxp">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkfw93">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0fand0d">
         <description>RSC</description>
         <inputEntry id="UnaryTests_1gjhhg3">

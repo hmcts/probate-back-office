@@ -79,6 +79,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGIST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
@@ -1176,6 +1177,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
+                        "boNotifyRedeclarationSOT",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REDECLARATION
+                                )
+                        )
+                ),
+                Arguments.of(
                         "boRequestInfoForCaseStopped",
                         List.of(
                                 Map.of(
@@ -1211,7 +1221,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(61));
+        assertThat(logic.getRules().size(), is(62));
     }
 
     @ParameterizedTest(name = "event id: {0}")
