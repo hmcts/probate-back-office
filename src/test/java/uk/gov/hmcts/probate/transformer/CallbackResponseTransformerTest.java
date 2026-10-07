@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
@@ -66,6 +65,7 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessor;
 import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -4947,7 +4947,7 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
-        assertEquals(NO, callbackResponse.getData().getCreateTask());
+        assertNull(callbackResponse.getData().getCreateTask());
     }
 
     @Test
@@ -5000,7 +5000,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
-        assertEquals(NO, callbackResponse.getData().getCreateTask());
+        assertNull(callbackResponse.getData().getCreateTask());
     }
 
     @ParameterizedTest
@@ -5948,32 +5948,40 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
     }
 
-    static Stream<Arguments> createTaskTestCases() {
-        return Stream.of(
-                Arguments.of(List.of("caseworker-probate-systemupdate"), YES),
-                Arguments.of(List.of("idam-service-account"), YES),
-                Arguments.of(List.of("caseworker-probate-caseadmin"), NO),
-                Arguments.of(null, NO)
-        );
+    @Test
+    void shouldSetCreateTaskForAttachScannedDocsWhenWAEnabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        CreateTaskProcessor attachScannedDocsProcessor = mock(CreateTaskProcessor.class);
+        doAnswer(inv -> {
+            inv.<ResponseCaseData>getArgument(2).setCreateTask(YES);
+            return null;
+        })
+                .when(attachScannedDocsProcessor).process(any(), any(), any());
+        when(createTaskProcessorFactory.get("attachScannedDocs"))
+                .thenReturn(Optional.of(attachScannedDocsProcessor));
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
+
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
     }
 
-    @ParameterizedTest
-    @MethodSource("createTaskTestCases")
-    void shouldSetCreateTaskBasedOnUserRoles(List<String> roles, String expectedCreateTask) {
-        final var builder = ResponseCaseData.builder();
-        final var builderSpy = spy(builder);
+    @Test
+    void shouldNotSetCreateTaskForAttachScannedDocsWhenWADisabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
-        when(caseDetailsMock.getData()).thenReturn(CaseData.builder().build());
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
 
-        Optional<UserInfo> userInfo = roles == null
-                ? Optional.empty()
-                : Optional.of(UserInfo.builder().roles(roles).build());
-
-        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
-            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
-            underTest.getResponseCaseData(caseDetailsMock, "attachScannedDocs", userInfo, false);
-        }
-
-        verify(builderSpy).createTask(expectedCreateTask);
+        assertNull(callbackResponse.getData().getCreateTask());
     }
+
 }
