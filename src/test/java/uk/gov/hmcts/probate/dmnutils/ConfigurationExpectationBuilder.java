@@ -78,6 +78,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED;
 
 public class ConfigurationExpectationBuilder {
 
@@ -161,6 +164,10 @@ public class ConfigurationExpectationBuilder {
                 && conditions.get("taskType").equals(REVIEW_REGISTRAR_DECISION)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_REGISTRAR_DECISION, true);
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(BO_CASE_STOPPED_AWAIT_REDEC_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(REDECLARATION)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);

@@ -507,4 +507,15 @@ class CaseDataTransformerTest {
 
         assertEquals(idamUserId, caseDetailsMock.getData().getEscalateToRegistrarUserIdamId());
     }
+
+    @Test
+    void shouldSetRedeclarationUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setRedeclarationUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getRedeclarationUserIdamId());
+    }
 }
