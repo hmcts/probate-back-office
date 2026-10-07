@@ -32,6 +32,12 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
 
+        Map<String,Object> examineDeBonisNonReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON,
+                "name", DE_BONIS_NON_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
@@ -320,7 +326,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

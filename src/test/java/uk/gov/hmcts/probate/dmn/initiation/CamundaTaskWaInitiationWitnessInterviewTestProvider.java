@@ -32,7 +32,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
         Map<String,Object> examineWitnessInterviewCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression"
         );
 
         Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(

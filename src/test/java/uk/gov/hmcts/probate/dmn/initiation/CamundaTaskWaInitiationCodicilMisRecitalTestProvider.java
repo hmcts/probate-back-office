@@ -38,6 +38,12 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_CODICIL_MIS,
+                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         Map<String,Object> examineCodicilMisRecitalCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS_CASE_PRINTED,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
@@ -320,7 +326,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason)),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

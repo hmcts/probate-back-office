@@ -42,7 +42,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression"
         );
 
         return Stream.of(

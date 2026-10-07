@@ -46,7 +46,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
         Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBIS_CASE_PRINTED,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression"
         );
 
         return Stream.of(

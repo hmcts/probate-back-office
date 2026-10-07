@@ -44,7 +44,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
         Map<String,Object> examineWindrushSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression"
         );
 
         return Stream.of(
