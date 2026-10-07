@@ -2862,7 +2862,6 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      </rule>
       <rule id="DecisionRule_1nj4xan">
         <inputEntry id="UnaryTests_0sv3m38">
           <text>"changeState"</text>
