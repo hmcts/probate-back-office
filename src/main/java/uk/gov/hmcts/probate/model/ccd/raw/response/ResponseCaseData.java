@@ -431,4 +431,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String moveToCWEscalationUserIdamId;
     private String escalateToRegistrarUserIdamId;
     private String redeclarationUserIdamId;
+    private String resolveStoppedCaseUserIdamId;
 }
