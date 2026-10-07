@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
@@ -104,6 +105,77 @@ public class CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvi
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         BO_REGISTRAR_ESCALATION,
                         additionalData(true, "admonWill", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                // Change State scenarios
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "gop", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "gop", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "intestacy", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "intestacy", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "adColligendaBona", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(true, "admonWill", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(referralsTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "admonWill", false, Collections.emptyList(), false,
                                 REGISTRAR_ESCALATION_REASON_REFERRALS),
                         emptyList()
                 )
