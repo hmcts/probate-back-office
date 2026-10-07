@@ -93,6 +93,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TR
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_STOPPED_AWAIT_REDEC_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_REGISTRAR_ESCALATION_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
@@ -582,6 +583,10 @@ public class BusinessValidationController {
                 && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         }
+        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && BO_REGISTRAR_ESCALATION_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            setEscalateToRegistrarUserFromCaseworker(callbackRequest, caseworkerInfo);
+        }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
@@ -1012,6 +1017,15 @@ public class BusinessValidationController {
             String idamUserId = userInfo.getUid();
             log.info("redeclarationUserIdamId set to: {}", idamUserId);
             caseDataTransformer.setRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+        });
+    }
+
+    private void setEscalateToRegistrarUserFromCaseworker(CallbackRequest callbackRequest,
+                                                    Optional<UserInfo> caseworkerInfo) {
+        caseworkerInfo.ifPresent(userInfo -> {
+            String idamUserId = userInfo.getUid();
+            log.info("escalateToRegistrarUserIdamId set to: {}", idamUserId);
+            caseDataTransformer.setEscalateToRegistrarUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
         });
     }
 }

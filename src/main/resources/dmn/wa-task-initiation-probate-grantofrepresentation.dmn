@@ -2741,7 +2741,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0zjaely">
         <inputEntry id="UnaryTests_1gsp9qs">
-          <text>"registrarsDecision"</text>
+          <text>"registrarsDecision","changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0195lp4">
           <text>"BORegistrarEscalation"</text>

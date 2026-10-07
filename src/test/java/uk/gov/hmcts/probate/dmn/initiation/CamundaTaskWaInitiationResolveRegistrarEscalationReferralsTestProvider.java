@@ -119,23 +119,9 @@ public class CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvi
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "", false, Collections.emptyList(), false,
-                                REGISTRAR_ESCALATION_REASON_REFERRALS),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        BO_REGISTRAR_ESCALATION,
                         additionalData(true, "gop", false, Collections.emptyList(), false,
                                 REGISTRAR_ESCALATION_REASON_REFERRALS),
                         List.of(referralsTask)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "gop", false, Collections.emptyList(), false,
-                                REGISTRAR_ESCALATION_REASON_REFERRALS),
-                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -147,13 +133,6 @@ public class CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvi
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "intestacy", false, Collections.emptyList(), false,
-                                REGISTRAR_ESCALATION_REASON_REFERRALS),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        BO_REGISTRAR_ESCALATION,
                         additionalData(true, "adColligendaBona", false, Collections.emptyList(), false,
                                 REGISTRAR_ESCALATION_REASON_REFERRALS),
                         List.of(referralsTask)
@@ -161,23 +140,9 @@ public class CamundaTaskWaInitiationResolveRegistrarEscalationReferralsTestProvi
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false,
-                                REGISTRAR_ESCALATION_REASON_REFERRALS),
-                        emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        BO_REGISTRAR_ESCALATION,
                         additionalData(true, "admonWill", false, Collections.emptyList(), false,
                                 REGISTRAR_ESCALATION_REASON_REFERRALS),
                         List.of(referralsTask)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        BO_REGISTRAR_ESCALATION,
-                        additionalData(false, "admonWill", false, Collections.emptyList(), false,
-                                REGISTRAR_ESCALATION_REASON_REFERRALS),
-                        emptyList()
                 )
         );
 

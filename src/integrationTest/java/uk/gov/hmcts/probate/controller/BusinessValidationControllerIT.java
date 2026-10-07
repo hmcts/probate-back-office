@@ -83,6 +83,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_REGISTRAR_ESCALATION_NAME;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -1714,5 +1715,26 @@ class BusinessValidationControllerIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetEscalateToRegistrarUserIdamIdWhenEventIdIsChangeStateAndStateIsRegistrarEscalation() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
+
+        payload.put("event_id", "changeState");
+        ((ObjectNode) payload.get("case_details"))
+                .put("state", "BORegistrarEscalation");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setEscalateToRegistrarUserIdamId(any(), any());
     }
 }
