@@ -7,6 +7,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -1714,5 +1716,65 @@ class BusinessValidationControllerIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @ParameterizedTest()
+    @ValueSource(strings = {"boStopCaseForCaseMatchingForExamining",
+        "boStopCaseForRegistrarEscalations", "boStopCaseForCasePrinted" })
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsBoStop(String eventId) throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId(eventId);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/case-stopped")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsReDeclarationComplete() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boRedeclarationComplete");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/redeclarationComplete")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsChangeState() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder
+                .transferToState("changeState").build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("changeState");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/changeCaseState")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
     }
 }

@@ -110,6 +110,11 @@ public class BusinessValidationController {
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
     private static final String MOVE_TO_CW_ESCALATION = "moveToCWEscalation";
     private static final String BO_ESCALATE_TO_REGISTRAR = "boEscalateToRegistrar";
+    private static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
+    private static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
+    private static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
+    private static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
+    private static final String BO_CHANGE_STATE = "changeState";
 
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
@@ -446,9 +451,16 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         log.info("case-stopped started for case: {}", callbackRequest.getCaseDetails().getId());
-
-        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING.equalsIgnoreCase(callbackRequest.getEventId())
+                || BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS.equalsIgnoreCase(callbackRequest.getEventId())
+                || BO_STOP_CASE_FOR_CASE_PRINTED.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
@@ -581,6 +593,12 @@ public class BusinessValidationController {
         if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
                 && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        }
+        if (BO_CHANGE_STATE.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
         }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
@@ -762,9 +780,15 @@ public class BusinessValidationController {
     @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationComplete(@RequestBody CallbackRequest callbackRequest) {
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_REDECLARATION_COMPLETE.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
         Optional<String> state =
             stateChangeService.getRedeclarationComplete(callbackRequest.getCaseDetails().getData());
-        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity
             .ok(callbackResponseTransformer
                     .transformWithConditionalStateChange(callbackRequest, state, caseworkerInfo));

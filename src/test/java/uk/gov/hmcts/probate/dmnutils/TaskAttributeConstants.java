@@ -202,6 +202,17 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForRegistrarEscalations)";
+    public static final String DESCRIPTION_RESOLVE_STOPPED_CASE =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/boIssueGrantForCaseMatching)  [Resolve stop]"
+                    + "(/cases/case-details/${[CASE_REFERENCE]}/trigger/boResolveStop)  "
+                    + "[Handle supplementary evidence](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/handleEvidence)  "
+                    + "[Request for Information](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRequestInfoForCaseStopped)  "
+                    + "[Assemble letter](/cases/case-details/${[CASE_REFERENCE]}/trigger/assembleLetter)  "
+                    + "[Redeclaration Legal Statement](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRedeclarationSoTForCaseStopped)";
     public static final String DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED =
             "[Send Redec Notification](/cases/case-details/${[CASE_REFERENCE]}/trigger/boNotifyRedeclarationSOT)";
 
@@ -339,4 +350,15 @@ public class TaskAttributeConstants {
     public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
     public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
     public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
+
+    public static final String RESOLVE_STOPPED_CASE = "ResolveStoppedCase";
+    public static final String RESOLVE_STOPPED_CASE_TASK_TYPE_NAME = "Resolve Stopped Case";
+    public static final String BO_REDECLARATION_SOT = "boWithdrawForRedeclarationSOT";
+    public static final String CITIZEN_HUB_RESPONSE = "citizenHubResponse";
+    public static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
+    public static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
+    public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
+    public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
+    public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
+
 }
