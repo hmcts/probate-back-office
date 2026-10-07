@@ -584,7 +584,8 @@ public class BusinessValidationController {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         }
         if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
-                && BO_REGISTRAR_ESCALATION_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+                && BO_REGISTRAR_ESCALATION_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails()
+                .getData().getTransferToState())) {
             setEscalateToRegistrarUserFromCaseworker(callbackRequest, caseworkerInfo);
         }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);

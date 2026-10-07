@@ -1725,8 +1725,8 @@ class BusinessValidationControllerIT {
         ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
 
         payload.put("event_id", "changeState");
-        ((ObjectNode) payload.get("case_details"))
-                .put("state", "BORegistrarEscalation");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState", "BORegistrarEscalation");
 
         mockMvc.perform(post(CHANGE_CASE_STATE_URL)
                         .header(AUTH_HEADER, AUTH_TOKEN)
