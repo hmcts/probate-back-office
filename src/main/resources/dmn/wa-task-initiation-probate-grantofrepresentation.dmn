@@ -2847,7 +2847,7 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1yoxp9w">
-          <text>"referrals"</text>
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1q39uhu">
           <text>"ResolveRegistrarEscalationReferrals"</text>

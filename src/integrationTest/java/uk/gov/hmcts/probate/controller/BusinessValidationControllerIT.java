@@ -83,7 +83,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_REGISTRAR_ESCALATION_NAME;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -1718,7 +1717,8 @@ class BusinessValidationControllerIT {
     }
 
     @Test
-    void shouldSetEscalateToRegistrarUserIdamIdWhenEventIdIsChangeStateAndStateIsRegistrarEscalation() throws Exception {
+    void shouldSetEscalateToRegistrarUserIdamIdWhenEventIdIsChangeStateAndStateIsRegistrarEscalation()
+            throws Exception {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
 
