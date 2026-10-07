@@ -146,7 +146,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
-    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;
     private final String boEmailGrantIssuedNotificationRequested;

@@ -1674,6 +1674,7 @@ public class CallbackResponseTransformer {
 
         if ((INTESTACY_RELATIONSHIP_DRAFT_EVENT).equalsIgnoreCase(eventId)) {
             //need to do for all PA draft event if there are callbacks
+            builder.deceasedAliasNameList(caseData.getDeceasedAliasNameList());
             return;
         }
         final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
