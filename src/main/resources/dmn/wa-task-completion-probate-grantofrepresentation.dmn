@@ -438,17 +438,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1uaz2rl">
-        <inputEntry id="UnaryTests_0gv1j1s">
-          <text>"boStopCaseForCaseMatchingForExamining"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_12kg7fi">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_15qpiur">
-          <text></text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1jbf64u">
         <inputEntry id="UnaryTests_1b9brba">
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
@@ -689,6 +678,17 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1ato0ed">
           <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uaz2rl">
+        <inputEntry id="UnaryTests_0gv1j1s">
+          <text>"boStopCaseForCaseMatchingForExamining"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12kg7fi">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15qpiur">
+          <text></text>
         </outputEntry>
       </rule>
     </decisionTable>
