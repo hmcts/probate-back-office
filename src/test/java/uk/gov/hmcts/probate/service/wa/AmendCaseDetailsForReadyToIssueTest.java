@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
