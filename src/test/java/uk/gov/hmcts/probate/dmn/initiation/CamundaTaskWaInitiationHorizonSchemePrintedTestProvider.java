@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.horizonSchemeCasePrintedHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -22,6 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements ArgumentsProvider {
@@ -45,6 +47,12 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                 "taskId", EXAMINE_HORIZON_SCHEME,
                 "name", "Examine - Horizon Scheme",
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineHorizonSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_HORIZON_SCHEME,
+                "name", "Examine - Horizon Scheme",
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -195,125 +203,125 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                 // Ready to Issue scenarios
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         null,
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
                 ),
@@ -325,6 +333,14 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                                 false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason)),
                         List.of(horizonSchemeHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason)),
+                        List.of(examineHorizonSchemeReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

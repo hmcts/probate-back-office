@@ -68,10 +68,7 @@ class WaTaskServiceTest {
     private TaskUtils taskUtils;
     @Mock
     private CcdClientApi ccdClientApi;
-    @Mock
-    private SecurityDTO securityDTO;
-    @Mock
-    private IdamApi idamApi;
+
     @Captor
     ArgumentCaptor<Function<StartEventResponse, CaseDataContent>> functionCaptor;
 
@@ -396,8 +393,6 @@ class WaTaskServiceTest {
                 .isFalse();
     }
 
-
-
     @Test
     void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySite() {
         CaseData caseData = CaseData.builder()
@@ -426,12 +421,8 @@ class WaTaskServiceTest {
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-        when(securityUtils.getAuthorisation())
-                .thenReturn("auth-token");
-        when(idamApi.retrieveUserInfo(anyString()))
-                .thenReturn(UserInfo.builder()
-                        .uid("user-id")
-                        .build());
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
 
         waTaskService.closeReadyToIssueHandOffs(callbackRequest);
 
@@ -441,7 +432,6 @@ class WaTaskServiceTest {
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
         );
-        verify(idamApi).retrieveUserInfo(anyString());
         StartEventResponse startEventResponse = StartEventResponse.builder()
                 .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
                 .token("event-token")
@@ -476,12 +466,8 @@ class WaTaskServiceTest {
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-        when(securityUtils.getAuthorisation())
-                .thenReturn("auth-token");
-        when(idamApi.retrieveUserInfo(anyString()))
-                .thenReturn(UserInfo.builder()
-                        .uid("user-id")
-                        .build());
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
 
         waTaskService.closeReadyToIssueHandOffs(callbackRequest);
 
@@ -490,8 +476,6 @@ class WaTaskServiceTest {
                 eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
                 functionCaptor.capture(),
                 isA(SecurityDTO.class));
-
-        verify(idamApi).retrieveUserInfo(anyString());
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
                 .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
