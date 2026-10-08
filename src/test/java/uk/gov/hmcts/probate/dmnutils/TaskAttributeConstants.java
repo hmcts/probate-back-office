@@ -223,6 +223,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
     public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
     public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
+    public static final String BO_SOT_GENERATED_STATE = "BOSotGenerated";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";

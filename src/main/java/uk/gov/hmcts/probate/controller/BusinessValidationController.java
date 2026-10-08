@@ -92,7 +92,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_SOT_GENERATED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_STOPPED_AWAIT_REDEC_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_STOPPED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
@@ -114,7 +116,6 @@ public class BusinessValidationController {
     private static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
     private static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     private static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
-    private static final String BO_CHANGE_STATE = "changeState";
 
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
@@ -590,11 +591,13 @@ public class BusinessValidationController {
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
-                && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+        if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())
+                || STATE_BO_SOT_GENERATED.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
+                .getTransferToState())) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         }
-        if (BO_CHANGE_STATE.equalsIgnoreCase(callbackRequest.getEventId())) {
+
+        if (BO_CASE_STOPPED_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getData().getTransferToState())) {
             caseworkerInfo.ifPresent(userInfo -> {
                 String idamUserId = userInfo.getUid();
                 caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
