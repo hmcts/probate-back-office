@@ -201,8 +201,10 @@ class BusinessValidationControllerIT {
     private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationUserId";
     private static final String CASE_CLOSED_STATE = "BOCaseClosed";
+    private static final String STATE_BO_SOT_GENERATED = "BOSotGenerated";
+    public static final String CHANGE_STATE = "changeState";
+    public static final String BO_CASE_STOPPED = "BOCaseStopped";
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1762,10 +1764,9 @@ class BusinessValidationControllerIT {
     void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsChangeState() throws Exception {
         caseDataBuilder = CaseData.builder().evidenceHandled(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder
-                .transferToState("changeState").build(), LAST_MODIFIED, ID);
-        caseDetails.setState(CASE_CLOSED_STATE);
+                .transferToState(BO_CASE_STOPPED).build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        callbackRequest.setEventId("changeState");
+        callbackRequest.setEventId(CHANGE_STATE);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
         mockMvc.perform(post("/case/changeCaseState")
@@ -1776,5 +1777,23 @@ class BusinessValidationControllerIT {
                 .andExpect(content().string(CoreMatchers.containsString("data")));
 
         verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenCaseStateIsBOSotGenerated() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO).transferToState(STATE_BO_SOT_GENERATED);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId(CHANGE_STATE);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/changeCaseState")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
     }
 }

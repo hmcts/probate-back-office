@@ -2862,6 +2862,47 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1are5lv">
+        <inputEntry id="UnaryTests_14w4jrc">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n8vyit">
+          <text>"BOSotGenerated"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gtl7f9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k3xqag">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13tsppz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12oydck">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0s1lw0b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10jd8zt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ju7p69">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xg4cqd">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n4kwef">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00zubbs">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e2mru7">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
