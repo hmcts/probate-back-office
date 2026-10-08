@@ -409,7 +409,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_DOMICILE
                                 ),
-                                Map.of(),
+                                Map.of("completionMode", AUTO_COMPLETE_MODE),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_PROVE_FOREIGN_WILL
