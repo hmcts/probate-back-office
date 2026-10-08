@@ -2741,7 +2741,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0zjaely">
         <inputEntry id="UnaryTests_1gsp9qs">
-          <text>"registrarsDecision"</text>
+          <text>"registrarsDecision","changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0195lp4">
           <text>"BORegistrarEscalation"</text>
@@ -2859,6 +2859,47 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15cy1tl">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nj4xan">
+        <inputEntry id="UnaryTests_0sv3m38">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sauflt">
+          <text>"BORegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dhln2e">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rgxjlb">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iv3xip">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h136qd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fjk0cx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11zg988">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yoxp9w">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1q39uhu">
+          <text>"ResolveRegistrarEscalationReferrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0smo0yd">
+          <text>"Resolve Registrar Escalation - Referrals"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1604trf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xk11k1">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
