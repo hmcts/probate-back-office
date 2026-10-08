@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.willOrCodicilToBeNotatedHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -22,6 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider implements ArgumentsProvider {
@@ -39,6 +41,12 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_WILL_CODICIL_NOTATED,
+                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -181,127 +189,135 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                 // Ready to Issue scenarios
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "changeState",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         null,
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList(), false
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

@@ -38,6 +38,13 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
+                "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
@@ -52,6 +59,14 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -309,6 +324,14 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
                     emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             )
         );
     }
