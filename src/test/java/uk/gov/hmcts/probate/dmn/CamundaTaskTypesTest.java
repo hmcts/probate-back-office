@@ -95,6 +95,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -352,6 +356,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
                         "taskTypeId", REVIEW_REGISTRAR_DECISION
+                ),
+                Map.of(
+                        "taskTypeName", REDECLARATION_TASK_TYPE_NAME,
+                        "taskTypeId", REDECLARATION
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_STOPPED_CASE_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_STOPPED_CASE
                 )
 
         );
@@ -368,7 +380,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(58));
+        assertThat(logic.getRules().size(), is(60));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
