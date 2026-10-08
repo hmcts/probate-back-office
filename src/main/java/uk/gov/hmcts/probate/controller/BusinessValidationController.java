@@ -592,15 +592,8 @@ public class BusinessValidationController {
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        String eventId = callbackRequest.getEventId();
-        log.info("Current event: {}", eventId);
-        log.info("Current resolveRedeclarationUserIdamId: {}",
-                caseDetails.getData().getResolveRedeclarationUserIdamId());
-        log.info("resolveRedeclarationUserIdamId isBlank: {}",
-                StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId()));
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         String state = callbackRequest.getCaseDetails().getData().getTransferToState();
-        log.info("Current state: {}", state);
         if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(state)) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         } else if (REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(state)
