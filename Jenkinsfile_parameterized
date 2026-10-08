@@ -1,6 +1,6 @@
 #!groovy
 //noinspection GroovyUnusedAssignment
-@Library("Infrastructure@2.11.2") _
+@Library("Infrastructure@2.12.1") _
 
 //noinspection GroovyAssignabilityCheck
 properties([
