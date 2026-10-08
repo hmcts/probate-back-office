@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.wa.WaApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
@@ -48,11 +47,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INCAPACITY_RULE35;
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskContollerUnitTest {
@@ -83,8 +81,6 @@ class WaTaskContollerUnitTest {
     private SecurityUtils securityUtils;
     @Mock
     private CcdClientApi ccdClientApi;
-    @Mock
-    private IdamApi idamApi;
 
     private WaTaskService waTaskService;
 
@@ -97,7 +93,7 @@ class WaTaskContollerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi, idamApi));
+        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 

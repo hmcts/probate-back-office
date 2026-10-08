@@ -14,9 +14,7 @@ import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
@@ -24,7 +22,6 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +44,6 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
-    private final IdamApi idamApi;
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -150,17 +146,7 @@ public class WaTaskService {
                     ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                             CLOSE_READY_TO_ISSUE_HANDOFFS,
                             caseDataContentFunction,
-                            getCaseworkerSecurityDTO());
-
+                            securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
                 });
-    }
-
-    private SecurityDTO getCaseworkerSecurityDTO() {
-        securityUtils.setSecurityContextUserAsCaseworker();
-        UserInfo userInfo = idamApi.retrieveUserInfo(securityUtils.getAuthorisation());
-        return SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
-                .serviceAuthorisation(securityUtils.generateServiceToken())
-                .userId(userInfo.getUid())
-                .build();
     }
 }
