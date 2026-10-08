@@ -591,26 +591,26 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
-        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         String eventId = callbackRequest.getEventId();
         String state = caseDetails.getState();
 
         log.info("Current event: {}", eventId);
         log.info("Current state: {}", state);
-        log.info("Current resolveRedeclarationUserIdamId: {}", caseDetails.getData().getResolveRedeclarationUserIdamId());
-        log.info("resolveRedeclarationUserIdamId isBlank: {}", StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId()));
-        if (CHANGE_STATE_EVENT.equalsIgnoreCase(eventId)) {
-            if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(state)) {
-                setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
-            } else if (REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(state)
-                    && StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId())) {
-                caseworkerInfo.ifPresent(userInfo -> {
-                    String idamUserId = userInfo.getUid();
-                    log.info("Setting resolveRedeclarationUserIdamId to: {}", idamUserId);
-                    caseDataTransformer.setResolveRedeclarationUserIdamId(caseDetails, idamUserId);
-                });
-            }
+        log.info("Current resolveRedeclarationUserIdamId: {}",
+                caseDetails.getData().getResolveRedeclarationUserIdamId());
+        log.info("resolveRedeclarationUserIdamId isBlank: {}",
+                StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId()));
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(state)) {
+            setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        } else if (REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(state)
+                && StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("Setting resolveRedeclarationUserIdamId to: {}", idamUserId);
+                caseDataTransformer.setResolveRedeclarationUserIdamId(caseDetails, idamUserId);
+            });
         }
         if (BO_CHANGE_STATE.equalsIgnoreCase(callbackRequest.getEventId())) {
             caseworkerInfo.ifPresent(userInfo -> {

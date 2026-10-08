@@ -113,7 +113,8 @@ public class WaTaskContoller {
                             String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
                                     .getEvidenceHandled();
                             return NO.equals(evidenceHandled);
-                        } else if (STATE_BO_REDEC_NOTIFICATION_SENT.equals(paramCallbackRequest.getCaseDetails().getState())) {
+                        } else if (STATE_BO_REDEC_NOTIFICATION_SENT
+                                .equals(paramCallbackRequest.getCaseDetails().getState())) {
                             String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
                                     .getEvidenceHandled();
                             return YES.equals(evidenceHandled);
