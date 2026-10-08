@@ -28,6 +28,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 
 @Slf4j
@@ -42,6 +43,8 @@ public class WaTaskContoller {
     private final SecurityUtils securityUtils;
     private final WaTaskService waTaskService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
+    private static final String BO_CASE_STOPPED = "BOCaseStopped";
+    private static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
     public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION = "Auto Select For QA Create Task";
 
     @PostMapping(path = "/case-type/updateClientContext",
@@ -105,8 +108,20 @@ public class WaTaskContoller {
                     clientContext,
                     callbackRequest,
                     paramCallbackRequest -> {
-                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        return NO.equals(evidenceHandled);
+                        log.debug("paramCallbackRequest.getCaseDetails().getState() {}", paramCallbackRequest
+                                .getCaseDetails().getState());
+                        if (BO_CASE_STOPPED.equals(paramCallbackRequest.getCaseDetails().getState())) {
+                            String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
+                                    .getEvidenceHandled();
+                            return YES.equals(evidenceHandled);
+
+                        } else if (BO_CASE_WORKER_ESCALATION.equals(paramCallbackRequest.getCaseDetails().getState())) {
+                            String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
+                                    .getEvidenceHandled();
+                            return NO.equals(evidenceHandled);
+                        } else {
+                            return true;
+                        }
                     }
             );
             encodedClientContext

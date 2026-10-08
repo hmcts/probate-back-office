@@ -8,12 +8,14 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEFAULT_ASSIGNEE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_RESOLVE_STOP;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKING_WORK_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
@@ -21,6 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_E
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REGISTRAR_DECISION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
@@ -32,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_R
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -50,6 +54,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_RE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_LO;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
@@ -179,6 +185,15 @@ public class ConfigurationExpectationBuilder {
                 && conditions.get("taskType").equals(REVIEW_REGISTRAR_DECISION)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_REGISTRAR_DECISION, true);
             builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(BO_CASE_STOPPED_AWAIT_REDEC_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(REDECLARATION)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(BO_CASE_STOPPED_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_RESOLVE_STOPPED_CASE, true);
+            builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);

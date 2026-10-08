@@ -150,6 +150,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationExamineSmeReferralTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationRedeclarationTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationResolveCaseStoppedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseIntestacyTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseProbateTestProvider.class)

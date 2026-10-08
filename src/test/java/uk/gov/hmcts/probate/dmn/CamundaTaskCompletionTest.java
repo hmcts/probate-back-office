@@ -79,6 +79,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGIST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_REFERRALS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
@@ -1109,6 +1111,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", REVIEW_QA_CASE_INTESTACY
                                 ),
                                 Map.of(
@@ -1157,6 +1163,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", RECTIFY_QA_CASE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
                                 )
                         )
                 ),
@@ -1189,6 +1199,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", REVIEW_SME_REFERRAL
                                 ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
+                                ),
                                 Map.of()
                         )
                 ),
@@ -1211,6 +1225,42 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_SME_REFERRAL
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boNotifyRedeclarationSOT",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", REDECLARATION
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boRequestInfoForCaseStopped",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "assembleLetter",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boRedeclarationSoTForCaseStopped",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", RESOLVE_STOPPED_CASE
                                 )
                         )
                 ),

@@ -95,6 +95,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
@@ -360,6 +364,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
                         "taskTypeId", REVIEW_REGISTRAR_DECISION
+                ),
+                Map.of(
+                        "taskTypeName", REDECLARATION_TASK_TYPE_NAME,
+                        "taskTypeId", REDECLARATION
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_STOPPED_CASE_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_STOPPED_CASE
                 ),
                 Map.of(
                         "taskTypeName", REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME,

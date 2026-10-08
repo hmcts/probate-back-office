@@ -106,6 +106,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
     public static final String RECTIFY_QA_CASE = "RectifyQACase";
+    public static final String REDECLARATION = "Redeclaration";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
         = "ExamineWillOrCodicilToBeNotatedCasePrinted";
@@ -206,6 +207,19 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForRegistrarEscalations)";
+    public static final String DESCRIPTION_RESOLVE_STOPPED_CASE =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/boIssueGrantForCaseMatching)  [Resolve stop]"
+                    + "(/cases/case-details/${[CASE_REFERENCE]}/trigger/boResolveStop)  "
+                    + "[Handle supplementary evidence](/cases/case-details/${[CASE_REFERENCE]}/"
+                    + "trigger/handleEvidence)  "
+                    + "[Request for Information](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRequestInfoForCaseStopped)  "
+                    + "[Assemble letter](/cases/case-details/${[CASE_REFERENCE]}/trigger/assembleLetter)  "
+                    + "[Redeclaration Legal Statement](/cases/case-details/${[CASE_REFERENCE]}/trigger/"
+                    + "boRedeclarationSoTForCaseStopped)";
+    public static final String DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED =
+            "[Send Redec Notification](/cases/case-details/${[CASE_REFERENCE]}/trigger/boNotifyRedeclarationSOT)";
     public static final String DESCRIPTION_REVIEW_QA_CASE =
             "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
@@ -224,6 +238,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
     public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
+    public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
     public static final String BO_CASE_QA_STATE = "BOCaseQA";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
@@ -284,6 +299,7 @@ public class TaskAttributeConstants {
             = "Examine - Codicil Mis-Recital";
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
     public static final String RECTIFY_QA_CASE_TASK_TYPE_NAME = "Rectify QA Case";
+    public static final String REDECLARATION_TASK_TYPE_NAME = "Redeclaration";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME = "Examine - Lost Will or Codicil";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME
             = "Examine - Will or Codicil to be Notated";
@@ -310,6 +326,7 @@ public class TaskAttributeConstants {
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
+    public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
     public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT = "autoSelectForQACreateTask";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
@@ -360,4 +377,15 @@ public class TaskAttributeConstants {
     public static final String REVIEW_REGISTRAR_DECISION_EVENT = "registrarsDecision";
     public static final String REVIEW_REGISTRAR_DECISION = "ReviewRegistrarDecision";
     public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
+
+    public static final String RESOLVE_STOPPED_CASE = "ResolveStoppedCase";
+    public static final String RESOLVE_STOPPED_CASE_TASK_TYPE_NAME = "Resolve Stopped Case";
+    public static final String BO_REDECLARATION_SOT = "boWithdrawForRedeclarationSOT";
+    public static final String CITIZEN_HUB_RESPONSE = "citizenHubResponse";
+    public static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
+    public static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
+    public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
+    public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
+    public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
+
 }
