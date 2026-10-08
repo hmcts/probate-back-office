@@ -557,7 +557,7 @@ else ""</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wagvok">
-          <text>"ResolveStoppedCase" </text>
+          <text>"ResolveStoppedCase","ResolveRedeclaration"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1x1e8o8">
           <text>"workType"</text>
