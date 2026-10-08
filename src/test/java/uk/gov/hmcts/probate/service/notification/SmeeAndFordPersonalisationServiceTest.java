@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -17,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -52,6 +54,9 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Mock
     private FeatureToggleService featureToggleService;
+
+    @Spy
+    private DateFormatterService dateFormatterService = new DateFormatterService();
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
@@ -336,7 +341,7 @@ class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
+    void shouldMapAllAttributesWithInvalidDateListed() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
             false, false, true).build(), LAST_MODIFIED, ID);
@@ -370,7 +375,7 @@ class SmeeAndFordPersonalisationServiceTest {
         cases.add(returnedCaseDetailsSolicitor);
         byte[] actual = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
 
-        assertThat(1497, is(actual.length));
+        assertThat(2672, is(actual.length));
     }
 
     @Test
