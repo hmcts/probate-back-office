@@ -26,6 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 @Slf4j
 @Controller
@@ -112,6 +113,10 @@ public class WaTaskContoller {
                             String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
                                     .getEvidenceHandled();
                             return NO.equals(evidenceHandled);
+                        } else if (STATE_BO_REDEC_NOTIFICATION_SENT.equals(paramCallbackRequest.getCaseDetails().getState())) {
+                            String evidenceHandled = paramCallbackRequest.getCaseDetails().getData()
+                                    .getEvidenceHandled();
+                            return YES.equals(evidenceHandled);
                         } else {
                             return true;
                         }
