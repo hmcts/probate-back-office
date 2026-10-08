@@ -53,9 +53,6 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_REGION = "1";
     public static final String DEFAULT_LOCATION = "336559";
     public static final String DEFAULT_LOCATION_NAME = "Glasgow Tribunals Centre";
-    public static final String DEFAULT_DUE_DATE_NON_WORKING_CALENDAR
-        = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
-    public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
     public static final String DEFAULT_ASSIGNEE = "someIdamId";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
@@ -145,7 +142,9 @@ public class TaskAttributeConstants {
     public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
     public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
-    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json";
+    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE =
+            "https://www.gov.uk/bank-holidays/england-and-wales.json, "
+            + "https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/privilege-calendar.json";
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
