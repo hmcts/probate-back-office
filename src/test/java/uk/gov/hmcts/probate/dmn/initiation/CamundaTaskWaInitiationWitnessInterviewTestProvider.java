@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.witnessInterviewHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -35,7 +36,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 "processCategories", "case progression"
         );
 
-        Map<String,Object> examineWitnessInterviewHandOffsTaskAttributes = Map.of(
+        Map<String,Object> examineWitnessInterviewCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                 "processCategories", "case progression,awaitingDocumentationHandOffs"
@@ -54,14 +55,6 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
-                        List.of(examineWitnessInterviewHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -316,6 +309,14 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         "BOReadyToIssue",
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 )
         );
     }
