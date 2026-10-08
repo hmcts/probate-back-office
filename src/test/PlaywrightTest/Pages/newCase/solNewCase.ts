@@ -1274,7 +1274,7 @@ export class SolCreateCasePage extends BasePage {
               .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
               .toBeVisible();
             await this.page.locator(`#applicantAdoptionDeceasedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
-            await this.page.locator(`#deceasedAnyLivingParents_${intestacyDetailsConfig.optionNo}`).click()
+            // await this.page.locator(`#deceasedAnyLivingParents_${intestacyDetailsConfig.optionNo}`).click()
 
         }
     }
@@ -1405,6 +1405,13 @@ export class SolCreateCasePage extends BasePage {
           }
         }
       }
+    }
+
+    if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipParent) {
+      await expect(this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptedDeceasedIn_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
+      await this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptedDeceasedIn_${intestacyDetailsConfig.optionYes}`).click();
+      await expect(this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptionDeceasedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
+      await this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptionDeceasedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
     }
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
