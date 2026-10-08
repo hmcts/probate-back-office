@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -33,6 +34,12 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                 "taskId", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                 "name", EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> proveForeignWillHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
+                "name", EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         return Stream.of(
@@ -85,6 +92,15 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                                 handOffReasonListWithHandOffReason(examineProveForeignWill),
                                 false),
                         List.of(proveForeignWillTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill),
+                                false,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill)),
+                        List.of(proveForeignWillHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,

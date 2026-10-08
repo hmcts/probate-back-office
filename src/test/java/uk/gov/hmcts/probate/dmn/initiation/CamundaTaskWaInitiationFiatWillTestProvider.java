@@ -40,7 +40,6 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                 "processCategories", "case progression,readyToIssueHandOffs"
         );
 
-
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.incapacityUnderRule35HandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -31,6 +32,12 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                 "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
                 "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> incapacityUnderRule35HandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
+                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         return Stream.of(
@@ -177,6 +184,15 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(incapacityUnderRule35HandOffsTaskAttributes)
                 )
         );
     }

@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.trustCorporationHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -35,6 +36,12 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                 "taskId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String, Object> examineTrustCorporationCasePrintedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
+                "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         Map<String, Object> examineTrustCorporationTaskAttributes = Map.of(
@@ -390,6 +397,14 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
                         List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 )
         );
     }

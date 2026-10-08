@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.infectedBloodInterimSchemeHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -47,6 +48,12 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                 "taskId", EXAMINE_IBIS_CASE_PRINTED,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBIS_CASE_PRINTED,
+                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         return Stream.of(
@@ -330,6 +337,14 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
                         List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 )
         );
     }

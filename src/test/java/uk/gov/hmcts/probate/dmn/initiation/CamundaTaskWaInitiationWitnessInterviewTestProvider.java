@@ -35,6 +35,12 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineWitnessInterviewHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
+                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
+        );
+
         Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
@@ -48,6 +54,14 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

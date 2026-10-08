@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.foreignDomicileHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -34,6 +35,12 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                 "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineForeignDomicileCasePrintedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
+                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         return Stream.of(
@@ -309,6 +316,14 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false,
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason)),
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 )
         );
     }
