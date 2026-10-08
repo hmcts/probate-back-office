@@ -5,7 +5,8 @@
   "lockFileMaintenance": {
     "enabled": false
   },
-  "schedule": ["after 8am and before 2pm every weekday"],
+  "timezone": "Europe/London",
+  "schedule": ["* 8-13 * * 1-5"],
   "ignoreDeps": [
     "com.github.hmcts:probate-commons",
     "com.github.hmcts:probate-pact-commons",
@@ -13,7 +14,7 @@
   ],
   "packageRules": [
     {
-      "description": "IDAM client 4.x targets Spring Boot 4; keep this repo on the Boot 3 compatible 3.x line.",
+      "description": "IDAM client 4.x targets Spring Boot 4; keep this repo on the Boot 3 compatible line.",
       "matchPackageNames": ["com.github.hmcts:idam-java-client"],
       "allowedVersions": "<3.1.0"
     },
@@ -31,7 +32,7 @@
       "allowedVersions": "<6.0.0"
     },
     {
-      "description": "springdoc v3 target Spring Boot 4",
+      "description": "springdoc v3 targets Spring Boot 4",
       "matchPackageNames": [
         "org.springdoc:springdoc-openapi-starter-webmvc-ui"
       ],
@@ -40,22 +41,30 @@
     {
       "description": "Ignore Java base image",
       "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "hmctsprod.azurecr.io/base/java"
-      ],
+      "matchPackageNames": ["hmctsprod.azurecr.io/base/java"],
       "enabled": false
     },
     {
-      "enabled": false,
-      "matchPackageNames": [
-        "/pact/"
-      ]
+      "matchPackageNames": ["/pact/"],
+      "enabled": false
     },
     {
       "description": "Bundle all minor and patch dependency updates",
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
+      "automerge": false
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "groupName": "Helm chart updates",
+      "groupSlug": "helm-charts",
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["/^com\\.github\\.hmcts:/"],
+      "groupName": "HMCTS packages",
+      "groupSlug": "hmcts",
       "automerge": false
     }
   ]
