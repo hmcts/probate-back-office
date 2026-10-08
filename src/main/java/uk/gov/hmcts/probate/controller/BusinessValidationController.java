@@ -593,15 +593,15 @@ public class BusinessValidationController {
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         String eventId = callbackRequest.getEventId();
-        String state = caseDetails.getState();
-
         log.info("Current event: {}", eventId);
-        log.info("Current state: {}", state);
         log.info("Current resolveRedeclarationUserIdamId: {}",
                 caseDetails.getData().getResolveRedeclarationUserIdamId());
         log.info("resolveRedeclarationUserIdamId isBlank: {}",
                 StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId()));
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
+        String state = caseDetails.getState();
+        log.info("Current state: {}", state);
         if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(state)) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         } else if (REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(state)
@@ -618,7 +618,6 @@ public class BusinessValidationController {
                 caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
             });
         }
-        CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
 
