@@ -82,11 +82,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -589,10 +591,18 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
-                && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+        String state = callbackRequest.getCaseDetails().getData().getTransferToState();
+        if (BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(state)) {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        } else if (REDEC_NOTIFICATION_SENT_STATE.equalsIgnoreCase(state)
+                && StringUtils.isBlank(caseDetails.getData().getResolveRedeclarationUserIdamId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                log.info("Setting resolveRedeclarationUserIdamId to: {}", idamUserId);
+                caseDataTransformer.setResolveRedeclarationUserIdamId(caseDetails, idamUserId);
+            });
         }
         if (BO_CHANGE_STATE.equalsIgnoreCase(callbackRequest.getEventId())) {
             caseworkerInfo.ifPresent(userInfo -> {

@@ -729,6 +729,18 @@
           <text>"Resolve Stopped Case"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_07rijil">
+        <description>RRD</description>
+        <inputEntry id="UnaryTests_0ieztq1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bgr3un">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tdx9x9">
+          <text>"Resolve Redeclaration"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

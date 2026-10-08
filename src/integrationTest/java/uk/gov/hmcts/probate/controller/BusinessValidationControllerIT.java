@@ -1705,8 +1705,8 @@ class BusinessValidationControllerIT {
         ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
 
         payload.put("event_id", "changeState");
-        ((ObjectNode) payload.get("case_details"))
-                .put("state", "BOCaseStoppedAwaitRedec");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState","BOCaseStoppedAwaitRedec");
 
         mockMvc.perform(post(CHANGE_CASE_STATE_URL)
                         .header(AUTH_HEADER, AUTH_TOKEN)
@@ -1776,5 +1776,26 @@ class BusinessValidationControllerIT {
                 .andExpect(content().string(CoreMatchers.containsString("data")));
 
         verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsChangeStateAndStateIsBORedecNotificationSent() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
+
+        payload.put("event_id", "changeState");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState","BORedecNotificationSent");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setResolveRedeclarationUserIdamId(any(), any());
     }
 }

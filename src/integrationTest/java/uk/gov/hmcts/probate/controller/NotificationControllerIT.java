@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,6 +97,7 @@ class NotificationControllerIT {
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -727,5 +730,24 @@ class NotificationControllerIT {
                                 + "Ychwanegwch gyfeiriad e-bost neu cysylltwch â nhw drwy'r post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
+    }
+
+    @Test
+    void shouldSetResolveRedeclarationUserIdamIdWhenEventIdIsChangeState() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(personalPayload);
+
+        payload.put("event_id", "boNotifyRedeclarationSOT");
+        ((ObjectNode) payload.get("case_details"))
+                .put("state", "BORedecNotificationSent");
+
+        mockMvc.perform(post(REDECLARATION_SOT)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setResolveRedeclarationUserIdamId(any(), any());
     }
 }

@@ -2862,6 +2862,47 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_03cfali">
+        <inputEntry id="UnaryTests_0hnhp6k">
+          <text>"handleEvidence", "attachScannedDocs", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ob66vl">
+          <text>"BORedecNotificationSent"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1n24vv9">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1uhe5uy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ub8xbw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kpm7wx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ppp9l2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ivw624">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b3dc6g">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03upf70">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a7hsv4">
+          <text>"Resolve Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ym79n6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mkwp19">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
