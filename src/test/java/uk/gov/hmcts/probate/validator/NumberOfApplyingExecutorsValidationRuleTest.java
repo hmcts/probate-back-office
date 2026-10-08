@@ -102,4 +102,28 @@ class NumberOfApplyingExecutorsValidationRuleTest {
         underTest.validate(caseDetailsMock);
 
     }
+
+    @Test
+    void shouldErrorWhenPrimaryApplicantApplyingAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantIsApplying("Yes");
+        caseDataMock.setPrimaryApplicantForenames("Primary");
+        caseDataMock.setPrimaryApplicantSurname("Applicant");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+            caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class,
+            () -> underTest.validate(caseDetailsMock));
+
+        assertThat(bve.getMessage(),
+            containsString("The total number executors applying cannot exceed 4 for case id 0"));
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -30,18 +31,29 @@ public class NumberOfApplyingExecutorsValidationRule {
         String userMessageWelsh = businessValidationMessageRetriever.getMessage(TOO_MANY_EXECUTORS_WELSH, args,
                 Locale.UK);
 
+        CaseData caseData = caseDetails.getData();
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
-            executorsTransformer.createCaseworkerApplyingList(caseDetails.getData());
-        execsApplying = executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
-            caseDetails.getData());
+            executorsTransformer.createCaseworkerApplyingList(caseData);
+        execsApplying = executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
+
         String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
-
         List<String> executors = Arrays.asList(execsApplyingNames.split(","));
+        int applyingExecutorsCount = executors.size();
 
-        if (executors.size() > MAX_EXECUTORS) {
+        // make sure it counts primary applicant as executor and not only the executors applying
+        // also will only count if name filled in
+        if (primaryApplicantExists(caseData)) {
+            applyingExecutorsCount++;
+        }
+
+        if (applyingExecutorsCount > MAX_EXECUTORS) {
             throw new BusinessValidationException(userMessage,
                 "The total number executors applying cannot exceed 4 for case id " + caseDetails.getId(),
                     userMessageWelsh);
         }
+    }
+
+    private boolean primaryApplicantExists(CaseData caseData) {
+        return (caseData.isPrimaryApplicantApplying() && !caseData.getPrimaryApplicantFullName().isEmpty());
     }
 }
