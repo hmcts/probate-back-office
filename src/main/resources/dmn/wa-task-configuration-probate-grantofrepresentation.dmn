@@ -557,7 +557,7 @@ else ""</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wagvok">
-          <text>"ResolveStoppedCase" </text>
+          <text>"ResolveStoppedCase","ResolveRedeclaration"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1x1e8o8">
           <text>"workType"</text>
@@ -583,23 +583,6 @@ else ""</text>
           <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Resolve stop](/cases/case-details/${[CASE_REFERENCE]}/trigger/boResolveStop)  [Handle supplementary evidence](/cases/case-details/${[CASE_REFERENCE]}/trigger/handleEvidence)  [Request for Information](/cases/case-details/${[CASE_REFERENCE]}/trigger/boRequestInfoForCaseStopped)  [Assemble letter](/cases/case-details/${[CASE_REFERENCE]}/trigger/assembleLetter)  [Redeclaration Legal Statement](/cases/case-details/${[CASE_REFERENCE]}/trigger/boRedeclarationSoTForCaseStopped)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0bxkxty">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1d88kzv">
-        <inputEntry id="UnaryTests_1mqpqga">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_09vz1jb">
-          <text>"ResolveRedeclaration"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0pqllim">
-          <text>"workType"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_05ajbls">
-          <text>"stopped_applications"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_06k1di2">
           <text>true</text>
         </outputEntry>
       </rule>
