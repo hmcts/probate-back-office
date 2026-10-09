@@ -160,7 +160,7 @@ class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     void validatePostRequestSolicitorValidateIntestacySuccess() throws IOException {
         validatePostRequestSuccessForLegalStatement(
-            "I authorise Firm Name, as my appointed firm to submit this application on my behalf.",
+            "They have authorised Firm Name to sign a statement of truth on their behalf.",
             "solicitorPDFPayloadIntestacy.json", VALIDATE_INTESTACY_URL);
     }
 
@@ -320,7 +320,9 @@ class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             final Response response = utils.getDocumentResponseFromId(documentId, utils.getHeadersWithUserId());
 
             final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
+            System.out.println("textContent--->\n" + textContent);
             validationString = removeCrLfs(validationString);
+            System.out.println("validationString--->\n" + validationString);
             assertTrue(textContent.contains(validationString));
         } catch (IOException e) {
             log.error("IOException in downloadPdfAndVerifyString", e);

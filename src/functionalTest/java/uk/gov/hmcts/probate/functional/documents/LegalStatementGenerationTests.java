@@ -40,7 +40,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
     // doesn't lowercase the names before then capitalising first letter
     private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
-        "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
+        "We, FirstName LastName of 123 Street, Town, Postcode, and FirstName of 123 Street, Town, Postcode, UK make the following statement";
 
     private static final String APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA =
         "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
@@ -55,7 +55,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             "Gweinyddwyr yn Gwneud Cais am Lythyrau Gweinyddu (pan fydd yna ewyllys)";
     private static final String FURTHER_EVIDENCE = "Further evidence";
     private static final String DOMICILITY_SENTENCE_UK = "The gross value for the estate in the United Kingdom amounts";
-    private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
+    private static final String DOMICILITY_SENTENCE_NON_UK = "The gross estate passing under the grant amounts to";
     private static final String FIRM_AUTHORISATION = "They have authorised Firm Name to sign a statement";
     private static final String WILL_NO_CODICILS = "and is named in the will as";
     private static final String WILL_WITH_CODICIL =
