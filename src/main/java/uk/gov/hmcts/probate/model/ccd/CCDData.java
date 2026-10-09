@@ -17,12 +17,14 @@ public class CCDData implements Serializable {
     private final String solicitorReference;
     private final Solicitor solicitor;
     private final Deceased deceased;
+    private final Applicant applicant;
     private final InheritanceTax iht;
     private final Fee fee;
     private final String solsAdditionalInfo;
     private final LocalDate caseSubmissionDate;
     private final String applicationSubmissionDate;
     private final List<Executor> executors;
+    private final List<ExecutorApplying> caseworkerExecutorsList;
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String applicationType;
@@ -39,8 +41,10 @@ public class CCDData implements Serializable {
     private final LocalDate originalWillSignedDate;
     private final List<CodicilAddedDate> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;
+    private final String deceasedMaritalStatus;
     private final DocumentLink solsCoversheetDocument;
     private final String solsApplicantRelationshipToDeceased;
+    private final String primaryApplicantRelationshipToDeceased;
     private final String solsApplicantSiblings;
     private final String solsSpouseOrCivilRenouncing;
     private final String titleAndClearingType;
@@ -48,4 +52,5 @@ public class CCDData implements Serializable {
     private final String dispenseWithNoticeSupportingDocs;
     private final String englishWill;
     private final String channelChoice;
+    private final String otherExecutorExists;
 }
