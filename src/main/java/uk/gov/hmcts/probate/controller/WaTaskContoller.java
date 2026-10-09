@@ -174,7 +174,6 @@ public class WaTaskContoller {
                     callbackRequest.getCaseDetails().getData().getCaseType(),
                     callbackRequest.getCaseDetails().getId().toString());
 
-            SecurityDTO securityDTO = securityUtils.getSecurityDTO();
             waTaskService.createAndSubmitTaskForSystemUser(callbackRequest, AUTO_SELECT_FOR_QA_CREATE_TASK,
                     AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION,
                     AUTO_SELECT_FOR_QA_CREATE_TASK_SUMMARY_DESCRIPTION);
