@@ -110,7 +110,7 @@ class WaTaskServiceTest {
 
         assertThat(result).isFalse();
     }
-
+//empty commit
     @Test
     void shouldReturnFalseWhenResponseBodyIsNull() {
         when(securityUtils.generateServiceToken()).thenReturn("service-token");
