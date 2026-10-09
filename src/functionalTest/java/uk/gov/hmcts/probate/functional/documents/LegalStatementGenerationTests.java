@@ -40,7 +40,8 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
     // doesn't lowercase the names before then capitalising first letter
     private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
-        "We, FirstName LastName of 123 Street, Town, Postcode, and FirstName of 123 Street, Town, Postcode, UK make the following statement";
+        "We, FirstName LastName of 123 Street, Town, Postcode, and FirstName of 123 Street, Town, "
+                + "Postcode, UK make the following statement";
 
     private static final String APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA =
         "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
