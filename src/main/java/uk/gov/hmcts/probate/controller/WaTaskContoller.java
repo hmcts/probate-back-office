@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
