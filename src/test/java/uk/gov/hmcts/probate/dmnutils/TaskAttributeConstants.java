@@ -35,6 +35,7 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_WORK_TYPE = "priority";
     public static final String ACCESS_WORK_TYPE = "access_requests";
     public static final String DECISION_MAKING_WORK_WORK_TYPE = "decision_making_work";
+    public static final String REVIEW_CASE_WORK_TYPE = "review_case";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -118,6 +119,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_TRUST_CORPORATION = "ExamineTrustCorporation";
     public static final String REVIEW_SME_REFERRAL = "ReviewSMEReferral";
     public static final String EXAMINE_SME_REFERRAL = "ExamineSMEReferral";
+    public static final String REVIEW_QA_CASE_PROBATE = "ReviewQACaseProbate";
+    public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
+    public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
+    public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA = "ReviewQACaseAdColligendaBona";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -215,6 +220,17 @@ public class TaskAttributeConstants {
                     + "boRedeclarationSoTForCaseStopped)";
     public static final String DESCRIPTION_BO_REDECLARATION_SOT_FOR_CASE_STOPPED =
             "[Send Redec Notification](/cases/case-details/${[CASE_REFERENCE]}/trigger/boNotifyRedeclarationSOT)";
+    public static final String DESCRIPTION_REVIEW_QA_CASE =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Fail QA](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boFailQA)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForCaseMatching)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
@@ -223,6 +239,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
     public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
     public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
+    public static final String BO_CASE_QA_STATE = "BOCaseQA";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -252,6 +269,10 @@ public class TaskAttributeConstants {
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
     public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
     public static final String PROVE_FOREIGN_WILL_SKILL_CODE = "SKILL:ABA6:ProveForeignWill";
+    public static final String INTESTACY_QA_SKILL_CODE = "SKILL:ABA6:IntestacyQA";
+    public static final String ADMON_QA_SKILL_CODE = "SKILL:ABA6:AdmonQA";
+    public static final String PROBATE_QA_SKILL_CODE = "SKILL:ABA6:ProbateQA";
+    public static final String AD_COLLIGENDA_BONA_QA_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaQA";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -287,6 +308,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME = "Examine - Prove a foreign will";
     public static final String REVIEW_SME_REFERRAL_TASK_TYPE_NAME = "Review SME Referral";
     public static final String EXAMINE_SME_REFERRAL_TASK_TYPE_NAME = "Examine SME Referral";
+    public static final String REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME = "Review QA Case - Probate";
+    public static final String REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME = "Review QA Case - Intestacy";
+    public static final String REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME = "Review QA Case - Admon";
+    public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Review QA Case - Ad Colligenda Bona";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -302,6 +327,8 @@ public class TaskAttributeConstants {
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
+    public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
+    public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT = "autoSelectForQACreateTask";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
