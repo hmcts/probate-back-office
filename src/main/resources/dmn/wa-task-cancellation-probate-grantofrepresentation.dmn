@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -158,6 +158,29 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1a3ztio">
           <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07dkft6">
+        <inputEntry id="UnaryTests_01bi4oc">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14da86o">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jyqrf7">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xdi3o7">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jtbkds">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p2vcx0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19418hg">
+          <text>"awaitingDocumentationHandOffs"</text>
         </outputEntry>
       </rule>
     </decisionTable>

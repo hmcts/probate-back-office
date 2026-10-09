@@ -27,6 +27,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE;
@@ -121,7 +122,7 @@ class AmendCaseDetailsForReadyToIssueTest {
     }
 
     @Test
-    void shouldSetCreateTaskToNoWhenCaseTypesAreSameWithTaskToClosePresent() {
+    void shouldSetCreateTaskToYesWhenCaseTypesAreDifferent() {
         setUpCaseTypeCallbackRequest(
                 CaseType.GRANT_OF_REPRESENTATION.name(),
                 CaseType.CAVEAT.name()
@@ -139,21 +140,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
-    }
-
-    @Test
-    void shouldSetCreateTaskToYesWhenCaseTypesAreDifferent() {
-        setUpCaseTypeCallbackRequest(
-                "CaveatGrantOfRepresentation",
-                "Caveat"
-        );
-
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
-
-        assertThat(responseCaseData.getCreateTask())
-                .isEqualTo(YES);
-        verify(waTaskService).getCaseTypePredicate();
     }
 
     @Test
@@ -224,6 +210,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
+                        .caseHandedOffToLegacySite(NO)
                         .boHandoffReasonList(List.of(new CollectionMember<>(null,
                                 HandoffReason.builder().caseHandoffReason(HandoffReasonId.FIAT_WILL).build())))
                         .build());
