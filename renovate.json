@@ -10,7 +10,10 @@
   "ignoreDeps": [
     "com.github.hmcts:probate-commons",
     "com.github.hmcts:probate-pact-commons",
-    "aac-manage-case-assignment"
+    "aac-manage-case-assignment",
+    "org.mapstruct:mapstruct-processor",
+    "org.apache.pdfbox:pdfbox",
+    "com.github.hmcts.rse-cft-lib"
   ],
   "packageRules": [
     {
@@ -49,8 +52,9 @@
       "enabled": false
     },
     {
-      "description": "Bundle all minor and patch dependency updates",
+      "description": "Bundle all minor and patch dependency updates, except Jenkins Library",
       "matchUpdateTypes": ["minor", "patch"],
+      "matchDepNames": ["!Jenkins-Infrastructure"],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
       "automerge": false

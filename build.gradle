@@ -175,7 +175,7 @@ def versions = [
         commonsValidator                : '1.11.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '9.5.5',
-        feignVersion                    : '13.16',
+        feignVersion                    : '13.17',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.22.3',
@@ -267,7 +267,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.35.2'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.36.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.applicationInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: versions.applicationInsightsVersion
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '9.0'
@@ -302,7 +302,7 @@ dependencies {
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBootVersion
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.13'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.14'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   implementation group: 'org.jsoup', name: 'jsoup', version: versions.jsoup
