@@ -56,7 +56,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGIS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_LO;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_WORK_TYPE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
@@ -90,6 +89,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_CASE_W
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
 
 public class ConfigurationExpectationBuilder {
 

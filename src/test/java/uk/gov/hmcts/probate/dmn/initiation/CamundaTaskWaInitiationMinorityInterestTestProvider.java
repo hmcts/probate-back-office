@@ -173,7 +173,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
-                ), //ready to issue state
+                ), //ready to issue
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,

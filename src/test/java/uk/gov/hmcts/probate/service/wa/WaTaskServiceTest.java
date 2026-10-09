@@ -6,35 +6,35 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskServiceTest {

@@ -21,13 +21,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.security.SecurityDTO;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.util.Collections;
 import java.util.Optional;
