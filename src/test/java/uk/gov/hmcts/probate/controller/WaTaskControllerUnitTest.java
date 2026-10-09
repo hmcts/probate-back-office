@@ -26,7 +26,6 @@ import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.util.Collections;
@@ -351,13 +350,6 @@ class WaTaskControllerUnitTest {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseData.getCaseType()).thenReturn("gop");
-
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation("auth")
-                .userId("userId")
-                .serviceAuthorisation("serviceAuth")
-                .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
                 .eventId("eventId")
