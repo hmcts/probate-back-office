@@ -27,24 +27,39 @@ export class SignInPage extends BasePage {
       waitUntil: "load",
       timeout: 60000,
     });
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    await this.verifyPageLoad(this.usernameLocator, 10_000);
-    await expect(this.usernameLocator).toBeVisible();
-    let username: string;
-    let password: string;
+
+    const emailLocator = this.page.locator('//*[@id="email"]');
+    const passwordLocator = this.page.locator('//*[@id="password"]');
+    const continueButtonLocator = this.page.getByRole("button", {
+      name: "Continue",
+    });
+
+    await this.verifyPageLoad(emailLocator, 10_000);
+    await expect(emailLocator).toBeVisible();
+
+    let username;
+    let password;
     if (useProfessionalUser === "superUser") {
       username = testConfig.TestEnvSuperCwUser;
       password = testConfig.TestEnvSuperCwPassword;
-    } else if (useProfessionalUser) {
-      username = testConfig.TestEnvProfUser;
-      password = testConfig.TestEnvProfPassword;
     } else {
-      username = testConfig.TestEnvCwUser;
-      password = testConfig.TestEnvCwPassword;
+      username = useProfessionalUser
+        ? testConfig.TestEnvProfUser
+        : testConfig.TestEnvCwUser;
+      password = useProfessionalUser
+        ? testConfig.TestEnvProfPassword
+        : testConfig.TestEnvCwPassword;
     }
 
-    await this.signIn(username, password);
+    await emailLocator.fill(username!);
+    await expect(continueButtonLocator).toBeEnabled();
+    await continueButtonLocator.click();
 
+    await expect(passwordLocator).toBeVisible();
+    await passwordLocator.fill(password!);
+    await this.waitForNavigationToComplete(continueButtonLocator);
+
+    await expect(emailLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
