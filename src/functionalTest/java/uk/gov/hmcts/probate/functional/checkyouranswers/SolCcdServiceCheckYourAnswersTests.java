@@ -160,7 +160,7 @@ class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     void validatePostRequestSolicitorValidateIntestacySuccess() throws IOException {
         validatePostRequestSuccessForLegalStatement(
-            "I authorise Firm Name, as my appointed firm to submit this application on my behalf.",
+            "They have authorised Firm Name to sign a statement of truth on their behalf.",
             "solicitorPDFPayloadIntestacy.json", VALIDATE_INTESTACY_URL);
     }
 
