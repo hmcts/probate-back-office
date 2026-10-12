@@ -166,6 +166,7 @@ public class CallbackResponseTransformer {
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
     private static final String INTESTACY_RELATIONSHIP_DRAFT_EVENT = "intestacyRelationshipDraft";
+    private static final String SOLICITOR_UPDATE_INTESTACY_EVENT = "solicitorUpdateIntestacy";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -267,14 +268,15 @@ public class CallbackResponseTransformer {
         if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
             cd.getData().setEvidenceHandled(YES);
         }
-        ResponseCaseData responseCaseData =
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(cd,
                         callbackRequest.getEventId(),
                         newState.isPresent() ? caseworkerInfo : Optional.empty(),
                         false)
-                // set here again to make life easier mocking
-                .state(newState.orElse(null))
-                .build();
+                        // set here again to make life easier mocking
+                        .state(newState.orElse(null));
+        clearObsoleteWholeBloodSiblingAnswer(callbackRequest, responseCaseDataBuilder);
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
 
         return transformResponse(responseCaseData);
     }
@@ -892,6 +894,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
+        clearObsoleteWholeBloodSiblingAnswer(callbackRequest, responseCaseDataBuilder);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
@@ -899,6 +902,20 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.caseType(caseType);
         }
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private void clearObsoleteWholeBloodSiblingAnswer(CallbackRequest callbackRequest,
+                                                      ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        if (!SOLICITOR_UPDATE_INTESTACY_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
+            return;
+        }
+
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean hasHalfBloodSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased())
+                && HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
+        if (!hasHalfBloodSiblingRelationship) {
+            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
+        }
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,

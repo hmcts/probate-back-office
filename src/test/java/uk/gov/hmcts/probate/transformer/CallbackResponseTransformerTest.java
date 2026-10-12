@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.config.ObjectMapperConfiguration;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
@@ -118,6 +120,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -160,6 +163,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
@@ -354,6 +358,7 @@ class CallbackResponseTransformerTest {
     private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
     private static final String RESPONSE_CONTENT = "I responded";
+    private static final String SOLICITOR_UPDATE_INTESTACY_EVENT = "solicitorUpdateIntestacy";
 
     private static final String WILL_ALIAS_FN = "WillFN";
     private static final String WILL_ALIAS_LN = "WillLN";
@@ -1080,6 +1085,62 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldClearWholeBloodSiblingAnswerForSolicitorUpdateIntestacyStateChangeForWholeSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .anyLivingWholeBloodSiblings(YES);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
+
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldClearWholeBloodSiblingAnswerForSolicitorUpdateIntestacyStateChangeForNonSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(CHILD)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .anyLivingWholeBloodSiblings(NO);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
+
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldRetainWholeBloodSiblingAnswerForSolicitorUpdateIntestacyStateChangeForHalfSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .anyLivingWholeBloodSiblings(NO);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
+
+        assertEquals(NO, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldNotClearWholeBloodSiblingAnswerForUnrelatedEventStateChange() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .anyLivingWholeBloodSiblings(YES);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
+
+        assertEquals(YES, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
     void shouldConvertRequestToDataBeanForPaymentWithExecutorDetails() {
 
         when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
@@ -1099,6 +1160,79 @@ class CallbackResponseTransformerTest {
         assertEquals(DOC_URL, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentUrl());
         assertEquals(DOC_NAME, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentFilename());
         assertNull(callbackResponse.getData().getSolsSOTNeedToUpdate());
+    }
+
+    @Test
+    void shouldClearWholeBloodSiblingAnswerForSolicitorUpdateIntestacyDocumentPathForWholeSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .anyLivingWholeBloodSiblings(YES);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
+
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldClearWholeBloodSiblingAnswerForSolicitorUpdateIntestacyDocumentPathForNonSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(PARENT)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .anyLivingWholeBloodSiblings(NO);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
+
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldRetainWholeBloodSiblingAnswerForSolicitorUpdateIntestacyDocumentPathForHalfSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .anyLivingWholeBloodSiblings(NO);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
+
+        assertEquals(NO, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldNotClearWholeBloodSiblingAnswerForUnrelatedEventDocumentPath() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .anyLivingWholeBloodSiblings(YES);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
+
+        assertEquals(YES, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldSerializeClearedWholeBloodSiblingAnswerAsAbsentProperty() throws JsonProcessingException {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
+                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .anyLivingWholeBloodSiblings(NO);
+        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
+
+        ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
+        String responsePayload = objectMapper.writeValueAsString(callbackResponse);
+
+        assertFalse(responsePayload.contains("\"anyLivingWholeBloodSiblings\""));
     }
 
     @Test

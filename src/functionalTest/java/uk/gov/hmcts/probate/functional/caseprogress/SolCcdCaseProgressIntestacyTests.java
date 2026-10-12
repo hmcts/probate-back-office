@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.functional.caseprogress;
 
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +11,9 @@ import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SerenityJUnit5Extension.class)
@@ -136,5 +141,47 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     void shouldRenderSendDocumentsIntestacyCasePrinted() throws IOException {
         verifyCaseProgressHtmlCwPost("caseprogressintestacy/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
                 "/intestacy/case-printed-html.txt");
+    }
+
+    @Test
+    void shouldClearWholeBloodSiblingAnswerOnSolicitorIntestacyAmendment() throws IOException {
+        String basePayload = utils.getJsonFromFile("caseprogressintestacy/04b-caseCreated.json");
+        basePayload = basePayload.replaceFirst("\\n}\\s*$", ",\n  \"event_id\": \"solicitorUpdateIntestacy\"\n}");
+
+        String halfBloodPayload = basePayload.replace(
+                "\"solsApplicantRelationshipToDeceased\": \"Child\",",
+                "\"solsApplicantRelationshipToDeceased\": \"Sibling\","
+                        + "\"deceasedAnyLivingDescendants\": \"No\","
+                        + "\"deceasedAnyLivingParents\": \"No\","
+                        + "\"deceasedAdoptedIn\": \"Yes\","
+                        + "\"deceasedAdoptionInEnglandOrWales\": \"Yes\","
+                        + "\"applicantSameParentsAsDeceased\": \"oneParentsSame\","
+                        + "\"anyLivingWholeBloodSiblings\": \"No\","
+                        + "\"primaryApplicantAdoptedIn\": \"No\","
+                        + "\"primaryApplicantAdoptedOut\": \"No\","
+        );
+
+        ResponseBody halfBloodResponse = validatePostSuccessForPayload(
+                halfBloodPayload, SOLS_VALIDATE_INTESTACY_URL, utils.getHeadersWithSolicitorUser());
+        JsonPath halfBloodJson = JsonPath.from(halfBloodResponse.asString());
+        assertTrue(halfBloodJson.get("data.anyLivingWholeBloodSiblings") == null
+                        || "No".equals(halfBloodJson.get("data.anyLivingWholeBloodSiblings")),
+                "Expected half-blood response to either retain explicit 'No' or remain unset");
+
+        String wholeBloodPayload = halfBloodPayload.replaceFirst("oneParentsSame", "bothParentsSame");
+        ResponseBody wholeBloodResponse = validatePostSuccessForPayload(
+                wholeBloodPayload, SOLS_VALIDATE_INTESTACY_URL, utils.getHeadersWithSolicitorUser());
+        String wholeBloodResponseBody = wholeBloodResponse.asString();
+        JsonPath wholeBloodJson = JsonPath.from(wholeBloodResponseBody);
+        assertNull(wholeBloodJson.get("data.anyLivingWholeBloodSiblings"));
+        assertFalse(wholeBloodResponseBody.contains("\"anyLivingWholeBloodSiblings\""));
+
+        String halfBloodReopenPayload = wholeBloodPayload
+                .replaceFirst("bothParentsSame", "oneParentsSame")
+                .replace("\"anyLivingWholeBloodSiblings\": \"No\",", "");
+        ResponseBody halfBloodReopenResponse = validatePostSuccessForPayload(
+                halfBloodReopenPayload, SOLS_VALIDATE_INTESTACY_URL, utils.getHeadersWithSolicitorUser());
+        JsonPath halfBloodReopenJson = JsonPath.from(halfBloodReopenResponse.asString());
+        assertNull(halfBloodReopenJson.get("data.anyLivingWholeBloodSiblings"));
     }
 }
