@@ -2554,6 +2554,10 @@ public class CallbackResponseTransformer {
         } else if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
             responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
         }
+
+        if (!SIBLING.equalsIgnoreCase(relationshipAfter) || !HALF_SIBLING.equalsIgnoreCase(wholeOrHalfSiblingAfter)) {
+            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
