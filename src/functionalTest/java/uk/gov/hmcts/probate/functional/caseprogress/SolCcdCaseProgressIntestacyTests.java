@@ -137,5 +137,4 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
         verifyCaseProgressHtmlCwPost("caseprogressintestacy/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
                 "/intestacy/case-printed-html.txt");
     }
-
 }
