@@ -620,23 +620,6 @@ else ""</text>
           <text>true</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1d88kzv">
-        <inputEntry id="UnaryTests_1mqpqga">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_09vz1jb">
-          <text>"ResolveRedeclaration"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0pqllim">
-          <text>"workType"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_05ajbls">
-          <text>"stopped_applications"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_06k1di2">
-          <text>true</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0x4dox5">
         <inputEntry id="UnaryTests_1gngiaj">
           <text></text>
