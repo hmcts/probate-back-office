@@ -313,6 +313,41 @@ class WaTaskControllerUnitTest {
     }
 
     @Test
+    void shouldNotCompleteTaskWhenEvidenceHandledIsYes() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getState()).thenReturn("BOCaseWorkerEscalation");
+        when(caseData.getEvidenceHandled()).thenReturn(YES);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                any()))
+                .thenReturn(Optional.of("encodedClientContext"));
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue().test(callbackRequest)).isFalse();
+
+        verify(objectMapper).writeValueAsString(callbackRequest);
+    }
+
+    @Test
     void shouldBypassWaCompletionFlagWhenEvidenceHandled() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 

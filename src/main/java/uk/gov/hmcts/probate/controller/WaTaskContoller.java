@@ -164,7 +164,7 @@ public class WaTaskContoller {
                     callbackRequest,
                     paramCallbackRequest -> {
                         String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        return NO.equals(evidenceHandled);
+                        return !YES.equals(evidenceHandled);
                     }
             );
             encodedClientContext
