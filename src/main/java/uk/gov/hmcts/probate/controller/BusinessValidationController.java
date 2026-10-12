@@ -92,6 +92,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_STOPPED_AWAIT_REDEC_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
@@ -109,7 +110,15 @@ public class BusinessValidationController {
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
     private static final String MOVE_TO_CW_ESCALATION = "moveToCWEscalation";
     private static final String BO_ESCALATE_TO_REGISTRAR = "boEscalateToRegistrar";
+    private static final String BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING = "boStopCaseForCaseMatchingForExamining";
+    private static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
+    private static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
+    private static final String BO_REDECLARATION_COMPLETE = "boRedeclarationComplete";
+    private static final String BO_CHANGE_STATE = "changeState";
 
+    public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
+    public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
+    public static final String CHANGE_STATE_EVENT = "changeState";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -442,9 +451,16 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         log.info("case-stopped started for case: {}", callbackRequest.getCaseDetails().getId());
-
-        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING.equalsIgnoreCase(callbackRequest.getEventId())
+                || BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS.equalsIgnoreCase(callbackRequest.getEventId())
+                || BO_STOP_CASE_FOR_CASE_PRINTED.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
@@ -545,6 +561,10 @@ public class BusinessValidationController {
 
         caseEscalatedService.setResolveCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (RESOLVE_SME_REFERRAL_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        }
         CallbackResponse response = callbackResponseTransformer
                 .resolveCaseWorkerEscalationState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
@@ -570,6 +590,16 @@ public class BusinessValidationController {
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        }
+        if (BO_CHANGE_STATE.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
@@ -750,9 +780,15 @@ public class BusinessValidationController {
     @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationComplete(@RequestBody CallbackRequest callbackRequest) {
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (BO_REDECLARATION_COMPLETE.equalsIgnoreCase(callbackRequest.getEventId())) {
+            caseworkerInfo.ifPresent(userInfo -> {
+                String idamUserId = userInfo.getUid();
+                caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+            });
+        }
         Optional<String> state =
             stateChangeService.getRedeclarationComplete(callbackRequest.getCaseDetails().getData());
-        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity
             .ok(callbackResponseTransformer
                     .transformWithConditionalStateChange(callbackRequest, state, caseworkerInfo));
@@ -763,8 +799,14 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> redeclarationSot(
         @RequestBody CallbackRequest callbackRequest) {
 
-        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        if (BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+                && BO_CASE_STOPPED_AWAIT_REDEC_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails().getState())) {
+            setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
+        }
+
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, ""));
     }
 
@@ -986,5 +1028,14 @@ public class BusinessValidationController {
         for (TitleAndClearingPageValidationRule rule : allTitleAndClearingValidationRules) {
             rule.validate(callbackRequest.getCaseDetails());
         }
+    }
+
+    private void setRedeclarationUserFromCaseworker(CallbackRequest callbackRequest,
+                                                    Optional<UserInfo> caseworkerInfo) {
+        caseworkerInfo.ifPresent(userInfo -> {
+            String idamUserId = userInfo.getUid();
+            log.info("redeclarationUserIdamId set to: {}", idamUserId);
+            caseDataTransformer.setRedeclarationUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
+        });
     }
 }
