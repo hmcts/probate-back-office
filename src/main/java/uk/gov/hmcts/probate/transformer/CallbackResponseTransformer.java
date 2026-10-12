@@ -2555,9 +2555,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
         }
 
-        if (!SIBLING.equalsIgnoreCase(relationshipAfter) || !HALF_SIBLING.equalsIgnoreCase(wholeOrHalfSiblingAfter)) {
-            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
-        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 

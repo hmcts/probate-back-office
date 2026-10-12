@@ -5527,44 +5527,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearAnyLivingWholeBloodSiblingsWhenSiblingChangesFromHalfToWhole() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
-                .anyLivingWholeBloodSiblings(YES);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        assertNull(response.getData().getAnyLivingWholeBloodSiblings());
-    }
-
-    @Test
-    void shouldRetainAnyLivingWholeBloodSiblingsWhenHalfSiblingUnchanged() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(YES);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        assertEquals(YES, response.getData().getAnyLivingWholeBloodSiblings());
-    }
-
-    @Test
     void shouldSetupDynamicListWithExistingExecutorList() {
         DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
                 .code("child")
