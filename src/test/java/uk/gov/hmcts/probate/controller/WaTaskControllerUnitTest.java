@@ -232,7 +232,8 @@ class WaTaskControllerUnitTest {
         return Stream.of(
             Arguments.of("BOCaseStopped", NO, false),
             Arguments.of("BOCaseWorkerEscalation", YES, false),
-            Arguments.of("BOCaseStopped", YES, true)
+            Arguments.of("BOCaseStopped", YES, true),
+            Arguments.of("BORedecNotificationSent", YES, true)
         );
     }
 
