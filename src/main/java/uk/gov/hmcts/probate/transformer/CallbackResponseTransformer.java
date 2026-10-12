@@ -2554,7 +2554,6 @@ public class CallbackResponseTransformer {
         } else if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
             responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
         }
-
         return transformResponse(responseCaseDataBuilder.build());
     }
 
