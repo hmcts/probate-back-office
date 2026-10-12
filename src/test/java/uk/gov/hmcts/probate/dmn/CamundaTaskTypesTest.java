@@ -99,6 +99,14 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_STOPPED_CASE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -364,6 +372,22 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", RESOLVE_STOPPED_CASE_TASK_TYPE_NAME,
                         "taskTypeId", RESOLVE_STOPPED_CASE
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_QA_CASE_INTESTACY
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_QA_CASE_ADMON_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_QA_CASE_ADMON
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_QA_CASE_PROBATE
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_QA_CASE_AD_COLLIGENDA_BONA
                 )
 
         );
@@ -380,7 +404,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(60));
+        assertThat(logic.getRules().size(), is(64));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
