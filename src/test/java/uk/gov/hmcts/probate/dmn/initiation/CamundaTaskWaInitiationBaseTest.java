@@ -59,19 +59,19 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     protected static final String examineProveForeignWill = "ForeignWill";
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
-                                                                     String caseType,
-                                                                     boolean caseHandedOffToLegacySite,
-                                                                     List<Map<String,Object>> boHandoffReasonList,
-                                                                     boolean createTask) {
+                                                                   String caseType,
+                                                                   boolean caseHandedOffToLegacySite,
+                                                                   List<Map<String,Object>> boHandoffReasonList,
+                                                                   boolean createTask) {
         return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
                 "");
     }
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
-                                                                     String caseType,
-                                                                     boolean caseHandedOffToLegacySite,
-                                                                     List<Map<String,Object>> boHandoffReasonList,
-                                                                     boolean createTask, String escalationReason) {
+                                                                   String caseType,
+                                                                   boolean caseHandedOffToLegacySite,
+                                                                   List<Map<String,Object>> boHandoffReasonList,
+                                                                   boolean createTask, String escalationReason) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
