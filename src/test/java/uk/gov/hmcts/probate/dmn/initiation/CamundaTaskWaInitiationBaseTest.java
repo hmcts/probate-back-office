@@ -150,6 +150,12 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillPrintedTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationExamineSmeReferralTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationRedeclarationTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationResolveCaseStoppedTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseIntestacyTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseProbateTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationReviewQaCaseAdColligendaBonaTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,

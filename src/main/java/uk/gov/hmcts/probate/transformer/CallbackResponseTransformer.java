@@ -1495,7 +1495,9 @@ public class CallbackResponseTransformer {
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
-            .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId());
+            .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
+            .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
+            .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId());
 
         handleDeceasedAliases(
                 builder,
