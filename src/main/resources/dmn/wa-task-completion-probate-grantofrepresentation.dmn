@@ -440,7 +440,7 @@
       </rule>
       <rule id="DecisionRule_1uaz2rl">
         <inputEntry id="UnaryTests_0gv1j1s">
-          <text>"boStopCaseForCaseMatchingForExamining"</text>
+          <text>"boStopCaseForCaseMatchingForExamining","boStopCaseForCasePrinted"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_12kg7fi">
           <text></text>

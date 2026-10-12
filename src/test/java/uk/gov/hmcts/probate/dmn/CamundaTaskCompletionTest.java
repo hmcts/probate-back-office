@@ -311,7 +311,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_PROVE_FOREIGN_WILL_CASE_PRINTED
-                                )
+                                ),
+                                Map.of()
                         )
                 ),
                 Arguments.of(
@@ -1315,7 +1316,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(65));
+        assertThat(logic.getRules().size(), is(66));
     }
 
     @ParameterizedTest(name = "event id: {0}")
