@@ -166,7 +166,6 @@ public class CallbackResponseTransformer {
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
     private static final String INTESTACY_RELATIONSHIP_DRAFT_EVENT = "intestacyRelationshipDraft";
-    private static final String SOLICITOR_UPDATE_INTESTACY_EVENT = "solicitorUpdateIntestacy";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -906,7 +905,7 @@ public class CallbackResponseTransformer {
 
     private void clearObsoleteWholeBloodSiblingAnswer(CallbackRequest callbackRequest,
                                                       ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
-        if (!SOLICITOR_UPDATE_INTESTACY_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
+        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(callbackRequest.getEventId())) {
             return;
         }
 

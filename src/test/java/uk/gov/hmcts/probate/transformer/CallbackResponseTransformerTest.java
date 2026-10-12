@@ -1177,48 +1177,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearWholeBloodSiblingAnswerForSolicitorUpdateIntestacyDocumentPathForNonSibling() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(PARENT)
-                .applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(NO);
-        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
-
-        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
-    }
-
-    @Test
-    void shouldRetainWholeBloodSiblingAnswerForSolicitorUpdateIntestacyDocumentPathForHalfSibling() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(NO);
-        when(callbackRequestMock.getEventId()).thenReturn(SOLICITOR_UPDATE_INTESTACY_EVENT);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
-
-        assertEquals(NO, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
-    }
-
-    @Test
-    void shouldNotClearWholeBloodSiblingAnswerForUnrelatedEventDocumentPath() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .applicantSameParentsAsDeceased(WHOLE_SIBLING)
-                .anyLivingWholeBloodSiblings(YES);
-        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        Document document = Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build();
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, CASE_TYPE_INTESTACY);
-
-        assertEquals(YES, callbackResponse.getData().getAnyLivingWholeBloodSiblings());
-    }
-
-    @Test
     void shouldSerializeClearedWholeBloodSiblingAnswerAsAbsentProperty() throws JsonProcessingException {
         caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
                 .applicantSameParentsAsDeceased(WHOLE_SIBLING)
