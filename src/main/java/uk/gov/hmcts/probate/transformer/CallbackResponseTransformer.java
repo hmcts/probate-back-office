@@ -942,7 +942,6 @@ public class CallbackResponseTransformer {
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         setTaskCreation(null, callbackRequest, responseCaseData);
 
-        log.info("Callback request createTask : {}", responseCaseData.getCreateTask());
         return transformResponse(responseCaseData);
     }
 
