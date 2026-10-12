@@ -92,6 +92,9 @@
               "PostCode": "Postcode",
               "Country": "UK"
             },
+            "applicantFamilyDetails": {
+              "relationshipToDeceased": "child"
+            },
             "applyingExecutorOtherNames": "gksdajgj",
             "applyingExecutorOtherNamesReason": "fsdnkvdv",
             "applyingExecutorOtherReason": "gksdajgj"
@@ -250,6 +253,9 @@
               "PostTown": "Town",
               "PostCode": "Postcode",
               "Country": "UK"
+            },
+            "applicantFamilyDetails": {
+              "relationshipToDeceased": "child"
             },
             "applyingExecutorOtherNames": "gksdajgj",
             "applyingExecutorOtherNamesReason": "fsdnkvdv",

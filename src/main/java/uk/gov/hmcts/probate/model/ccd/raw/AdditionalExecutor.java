@@ -14,5 +14,6 @@ public class AdditionalExecutor {
     private final String additionalApplying;
     private final SolsAddress additionalExecAddress;
     private final String additionalExecReasonNotApplying;
+    private final ApplicantFamilyDetails applicantFamilyDetails;
 
 }

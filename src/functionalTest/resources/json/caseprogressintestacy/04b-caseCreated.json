@@ -99,7 +99,10 @@
             "additionalExecLastname": "exln1",
             "additionalExecForenames": "exfn1",
             "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "Alias name exfn1"
+            "additionalExecAliasNameOnWill": "Alias name exfn1",
+            "applicantFamilyDetails": {
+              "relationshipToDeceased": "child"
+            }
           }
         },
         {
@@ -110,7 +113,10 @@
             "additionalExecForenames": "exfn2",
             "additionalExecNameOnWill": "Yes",
             "additionalExecAliasNameOnWill": "alias name",
-            "additionalExecReasonNotApplying": "DiedBefore"
+            "additionalExecReasonNotApplying": "DiedBefore",
+            "applicantFamilyDetails": {
+              "relationshipToDeceased": "child"
+            }
           }
         },
         {
@@ -121,6 +127,9 @@
             "additionalExecForenames": "ex3fn",
             "additionalExecNameOnWill": "No",
             "additionalExecReasonNotApplying": "DiedBefore",
+            "applicantFamilyDetails": {
+              "relationshipToDeceased": "child"
+            },
             "additionalExecAddress": {
               "County": null,
               "Country": null,
