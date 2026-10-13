@@ -320,8 +320,15 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         ATTACH_SCANNED_DOCS_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), true),
                         List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
