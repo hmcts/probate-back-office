@@ -1,27 +1,27 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
-import applyProbateConfig from "../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
-import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
-import intestacyDetailsConfig from "../../Pages/solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
-import completeApplicationConfig from "../../Pages/solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
+import applyProbateConfig from "../../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
+import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
+import intestacyDetailsConfig from "../../../Pages/solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
+import completeApplicationConfig from "../../../Pages/solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
 
-import applicantDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig.json" with { type: "json" };
-import deceasedTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/deceasedTabConfig.json" with { type: "json" };
-import caseDetailsTabDeceasedDtlsConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig.json" with { type: "json" };
-import caseDetailsTabIntestacyConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabIntestacyConfig.json" with { type: "json" };
-import caseDetailsTabUpdatesConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig.json" with { type: "json" };
+import applicantDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig.json" with { type: "json" };
+import deceasedTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/deceasedTabConfig.json" with { type: "json" };
+import caseDetailsTabDeceasedDtlsConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig.json" with { type: "json" };
+import caseDetailsTabIntestacyConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabIntestacyConfig.json" with { type: "json" };
+import caseDetailsTabUpdatesConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig.json" with { type: "json" };
 
-import sotTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/sotTabConfig.json" with { type: "json" };
-import copiesTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/copiesTabConfig.json" with { type: "json" };
-import historyTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/historyTabConfig.json" with { type: "json" };
-import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
-import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import sotTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/sotTabConfig.json" with { type: "json" };
+import copiesTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/copiesTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/historyTabConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
-test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole Blood Siblings", () => {
-  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole Blood Siblings @firefox", async ({
+test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey", () => {
+  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey @firefox", async ({
     basePage,
     signInPage,
     createCasePage,
@@ -29,7 +29,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole 
     cwEventActionsPage
   }, testInfo) => {
     test.setTimeout(300000);
-    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy)';
+    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey';
     const willType = 'NoWill';
 
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
@@ -74,11 +74,10 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipSiblings, {
-      isJoint: true,
-      isWholeBloodSibling: true
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipParent, {
+      isJoint: true
     });
-    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.applicantRelationshipSiblings, 3, true);
+    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.applicantRelationshipParent, 1);
     await solCreateCasePage.intestacyDetailsPage3();
     // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();
