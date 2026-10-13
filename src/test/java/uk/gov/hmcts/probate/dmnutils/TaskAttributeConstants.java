@@ -246,6 +246,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
     public static final String BO_CASE_QA_STATE = "BOCaseQA";
     public static final String BO_REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
+    public static final String BO_SOT_GENERATED_STATE = "BOSotGenerated";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
