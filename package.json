@@ -139,7 +139,7 @@
   "resolutions": {
     "diff": "^9.0.0",
     "flatted": "^3.4.2",
-    "get-uri": "^6.0.5",
+    "get-uri": "^8.0.0",
     "http-cache-semantics": "^4.2.0",
     "serialize-javascript": "^7.1.2",
     "yargs-parser": "^22.0.0"
