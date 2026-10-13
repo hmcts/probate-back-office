@@ -283,4 +283,12 @@ public class CaseDataTransformer {
     public void setResolveRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setResolveRedeclarationUserIdamId(idamUserId);
     }
+
+    public void setTaskLocationEpimmsId(CaseDetails caseDetails, String taskLocationEpimmsId) {
+        caseDetails.getData().setTaskLocationEpimmsId(taskLocationEpimmsId);
+    }
+
+    public void setTaskLocationName(CaseDetails caseDetails, String taskLocationName) {
+        caseDetails.getData().setTaskLocationName(taskLocationName);
+    }
 }
