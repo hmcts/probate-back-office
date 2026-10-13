@@ -134,7 +134,7 @@ public class WaTaskControllerIT {
     }
 
     @Test
-    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsNotEnabled() throws Exception {
+    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsEnabled() throws Exception {
         String payload = testUtils.getStringFromFile("waTaskCaseType.json");
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);
@@ -149,6 +149,24 @@ public class WaTaskControllerIT {
                 .andExpect(status().isOk());
 
         verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
+    }
+
+    @Test
+    void shouldTriggerCloseAwaitingDocumentationHandOffsWhenProbateWaIsEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskCaseType.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/trigger/closeAwaitingDocumentationHandOffs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isOk());
+
+        verify(waTaskService).closeAwaitingDocumentationHandOffs(isA(CallbackRequest.class));
     }
 
     @Test

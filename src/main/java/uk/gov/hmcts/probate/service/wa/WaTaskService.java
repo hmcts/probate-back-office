@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
@@ -128,6 +130,14 @@ public class WaTaskService {
     }
 
     public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest) {
+        triggerEvent(callbackRequest, CLOSE_READY_TO_ISSUE_HANDOFFS);
+    }
+
+    public void closeAwaitingDocumentationHandOffs(CallbackRequest callbackRequest) {
+        triggerEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+    }
+
+    private void triggerEvent(CallbackRequest callbackRequest, EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
@@ -144,7 +154,7 @@ public class WaTaskService {
                                             .build();
 
                     ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                            CLOSE_READY_TO_ISSUE_HANDOFFS,
+                            eventId,
                             caseDataContentFunction,
                             securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
                 });

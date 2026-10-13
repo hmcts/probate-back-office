@@ -373,6 +373,34 @@ class WaTaskContollerUnitTest {
         verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
     }
 
+    @Test
+    void shouldByPassCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        waTaskContoller.closeReadyToIssueHandOffs(
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService, never()).closeAwaitingDocumentationHandOffs(callbackRequest);
+    }
+
+    @Test
+    void shouldInvokeCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).closeAwaitingDocumentationHandOffs(callbackRequest);
+
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity
+                = waTaskContoller.closeAwaitingDocumentationHandOffs(callbackRequest,
+                bindingResult,
+                httpServletRequest);
+        assertThat(callbackResponseResponseEntity.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        verify(waTaskService).closeAwaitingDocumentationHandOffs(callbackRequest);
+    }
+
 
     @Test
     void shouldThrowBadRequestExceptionWhenBindingResultHasErrors() {

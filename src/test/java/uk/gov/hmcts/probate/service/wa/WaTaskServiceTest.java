@@ -45,6 +45,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -488,6 +489,110 @@ class WaTaskServiceTest {
 
         assertThat(result.getEvent().getId())
                 .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
+
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
+    }
+
+    @Test
+    void shouldNotCloseAwaitingDocumentationHandOffsWhenCaseIsHandedOffToLegacySite() {
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(Constants.YES)
+                .build();
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+
+        verifyNoInteractions(ccdClientApi);
+    }
+
+    @Test
+    void shouldCloseAwaitingDocumentationHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(NO)
+                .build();
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class)
+        );
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
+                .build();
+
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
+
+        assertThat(result.getEvent().getId())
+                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName());
+
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
+    }
+
+    @Test
+    void shouldBuildCorrectCaseDataContentWhenClosingAwaitingDocumentationHandOffs() {
+
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(NO)
+                .build();
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class));
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
+                .build();
+
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
+
+        assertThat(result.getEvent().getId())
+                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName());
 
         assertThat(result.getEventToken())
                 .isEqualTo("event-token");
