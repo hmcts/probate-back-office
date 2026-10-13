@@ -36,6 +36,7 @@ public class TaskAttributeConstants {
     public static final String ACCESS_WORK_TYPE = "access_requests";
     public static final String DECISION_MAKING_WORK_WORK_TYPE = "decision_making_work";
     public static final String REVIEW_CASE_WORK_TYPE = "review_case";
+    public static final String STOPPED_APPLICATIONS = "stopped_applications";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -107,6 +108,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
     public static final String RECTIFY_QA_CASE = "RectifyQACase";
     public static final String REDECLARATION = "Redeclaration";
+    public static final String RESOLVE_REDECLARATION = "ResolveRedeclaration";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CASE_PRINTED
         = "ExamineWillOrCodicilToBeNotatedCasePrinted";
@@ -231,6 +233,9 @@ public class TaskAttributeConstants {
                     + "/trigger/boFailQA)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatching)";
+    public static final String DESCRIPTION_BO_REDECLARATION_COMPLETE_ESCALATE_TO_REGISTER =
+            "[Redeclaration complete](/cases/case-details/${[CASE_REFERENCE]}/trigger/boRedeclarationComplete) "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
@@ -241,6 +246,8 @@ public class TaskAttributeConstants {
     public static final String BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
     public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
     public static final String BO_CASE_QA_STATE = "BOCaseQA";
+    public static final String BO_REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
+    public static final String BO_SOT_GENERATED_STATE = "BOSotGenerated";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
@@ -301,6 +308,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME = "Examine - Minority Interest";
     public static final String RECTIFY_QA_CASE_TASK_TYPE_NAME = "Rectify QA Case";
     public static final String REDECLARATION_TASK_TYPE_NAME = "Redeclaration";
+    public static final String RESOLVE_REDECLARATION_TASK_TYPE_NAME = "Resolve Redeclaration";
     public static final String EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME = "Examine - Lost Will or Codicil";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME
             = "Examine - Will or Codicil to be Notated";
