@@ -90,6 +90,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedMarried');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2('true', isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();

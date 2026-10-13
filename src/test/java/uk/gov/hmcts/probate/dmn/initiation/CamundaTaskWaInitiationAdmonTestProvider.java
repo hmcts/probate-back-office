@@ -16,6 +16,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_TASK_TY
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -34,7 +35,7 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
         Map<String,Object> examineDigitalCaseAdmonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_ADMON,
                 "name", ADMON_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
         Map<String,Object> examineDigitalCaseAdmonReadyToIssueTaskAttributes = Map.of(
@@ -95,14 +96,28 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
-                    additionalData(false, "admonWill", false, 
+                    additionalData(false, "admonWill", false,
                             emptyList(), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "admonWill", false,
+                            emptyList(), true),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
-                    additionalData(true, "admonWill", false, 
+                    additionalData(true, "admonWill", false,
+                            emptyList(), true),
+                    emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "admonWill", false,
                             emptyList(), false),
                     emptyList()
             ),
@@ -336,6 +351,13 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     additionalData(false, "admonWill", false,
                             emptyList(), true),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "admonWill", false,
+                            emptyList(), true),
+                    List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             )
         );
     }

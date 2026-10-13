@@ -21,6 +21,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 
 
 public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements ArgumentsProvider {
@@ -31,6 +33,12 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
 
         Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
                 "taskId", EXAMINE_POWER_OF_ATTORNEY,
+                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examinePowerOfAttorneyCasePrintedTaskAttributes = Map.of(
+                "taskId", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -169,6 +177,139 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                //Case Printed scenarios
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
                 )

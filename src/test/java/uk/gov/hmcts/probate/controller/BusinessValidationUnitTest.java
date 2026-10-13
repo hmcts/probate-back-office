@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -81,13 +82,15 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.Mockito.when;
@@ -106,6 +109,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_SOT_GENERATED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 
@@ -565,11 +570,11 @@ class BusinessValidationUnitTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty()))
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty(), AUTH_TOKEN))
             .thenReturn(callbackResponseMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
@@ -583,8 +588,8 @@ class BusinessValidationUnitTest {
             when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
             when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-                bindingResultMock, httpServletRequest);
+            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                    callbackRequestMock, bindingResultMock, httpServletRequest);
 
             assertThat(response.getStatusCode(), is(HttpStatus.OK));
             assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -601,8 +606,8 @@ class BusinessValidationUnitTest {
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+                callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -816,7 +821,7 @@ class BusinessValidationUnitTest {
     void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        verify(callbackResponseTransformerMock).transform(any(), any());
+        verify(callbackResponseTransformerMock).transform(any(), eq(Optional.empty()), any());
     }
 
     @Test
@@ -891,7 +896,8 @@ class BusinessValidationUnitTest {
     void shouldValidateSolPostCode() {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
-        verify(callbackResponseTransformerMock).transform(callbackRequestMock, Optional.empty());
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock,
+                Optional.empty(), "");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -912,7 +918,7 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0))
-                .transform(callbackRequestMock, CASEWORKER_USERINFO);
+                .transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -1048,6 +1054,36 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         ResponseEntity<CallbackResponse> response =
                 underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetRedeclarationUserWhenChangingStateToSotGenerated() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_SOT_GENERATED);
+        ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setRedeclarationUserIdamId(eq(caseDetailsMock), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserWhenChangingStateToCaseStopped() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_CASE_STOPPED);
+        final ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setResolveStoppedCaseUserIdamId(eq(caseDetailsMock), any());
+        verify(caseDataTransformerMock, never())
+                .setRedeclarationUserIdamId(any(), any());
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -1447,5 +1483,164 @@ class BusinessValidationUnitTest {
     }
 
 
+    @Test
+    void testSolsCreationReportsErrorsSepDate() {
+        final CallbackRequest callbackRequest = mock();
+        final CaseDetails caseDetails = mock();
+        final CaseData caseData = mock();
+        final HttpServletRequest httpServletRequest = mock();
 
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+
+        when(httpServletRequest.getRequestURI())
+                .thenReturn("/sols-validate-will-and-codicil-dates");
+
+        final List<String> errors = List.of("ERROR_1", "ERROR_2");
+
+        when(eventValidationServiceMock.generateErrorsSepDateBounds(caseData))
+                .thenReturn(errors);
+        when(eventValidationServiceMock.generateErrorsSepOutsideEngWales(caseData))
+                .thenReturn(List.of());
+
+        final ResponseEntity<CallbackResponse> actual = underTest.solsValidateCreationProbateAdmon(
+                callbackRequest,
+                httpServletRequest);
+
+        final HttpStatusCode actualStatus = actual.getStatusCode();
+        final CallbackResponse actualResponse = actual.getBody();
+        final List<String> actualErrors = actualResponse.getErrors();
+        assertAll(
+                () -> assertThat(actualStatus, is(HttpStatus.OK)),
+                () -> assertThat(actualErrors, hasSize(errors.size())),
+                () -> assertThat(actualErrors, equalTo(errors)));
+    }
+
+    @Test
+    void testSolsCreationReportsErrorsSepOutsideEngWales() {
+        final CallbackRequest callbackRequest = mock();
+        final CaseDetails caseDetails = mock();
+        final CaseData caseData = mock();
+        final HttpServletRequest httpServletRequest = mock();
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+
+        when(httpServletRequest.getRequestURI())
+                .thenReturn("/sols-validate-will-and-codicil-dates");
+
+        final List<String> errors = List.of("ERROR_1", "ERROR_2");
+
+
+        when(eventValidationServiceMock.generateErrorsSepDateBounds(caseData))
+                .thenReturn(List.of());
+        when(eventValidationServiceMock.generateErrorsSepOutsideEngWales(caseData))
+                .thenReturn(errors);
+
+        final ResponseEntity<CallbackResponse> actual = underTest.solsValidateCreationProbateAdmon(
+                callbackRequest,
+                httpServletRequest);
+
+        final HttpStatusCode actualStatus = actual.getStatusCode();
+        final CallbackResponse actualResponse = actual.getBody();
+        final List<String> actualErrors = actualResponse.getErrors();
+        assertAll(
+                () -> assertThat(actualStatus, is(HttpStatus.OK)),
+                () -> assertThat(actualErrors, hasSize(errors.size())),
+                () -> assertThat(actualErrors, equalTo(errors)));
+    }
+
+    @Test
+    void testSolsCreationReportsErrorsBoth() {
+        final CallbackRequest callbackRequest = mock();
+        final CaseDetails caseDetails = mock();
+        final CaseData caseData = mock();
+        final HttpServletRequest httpServletRequest = mock();
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+
+        when(httpServletRequest.getRequestURI())
+                .thenReturn("/sols-validate-will-and-codicil-dates");
+
+        final List<String> errorsDate = List.of("ERROR_1", "ERROR_2");
+        final List<String> errorsOutside = List.of("ERROR_3", "ERROR_4");
+
+        final List<String> errorsBoth = new ArrayList<>();
+        errorsBoth.addAll(errorsDate);
+        errorsBoth.addAll(errorsOutside);
+
+        when(eventValidationServiceMock.generateErrorsSepDateBounds(caseData))
+                .thenReturn(errorsDate);
+        when(eventValidationServiceMock.generateErrorsSepOutsideEngWales(caseData))
+                .thenReturn(errorsOutside);
+
+        final ResponseEntity<CallbackResponse> actual = underTest.solsValidateCreationProbateAdmon(
+                callbackRequest,
+                httpServletRequest);
+
+        final HttpStatusCode actualStatus = actual.getStatusCode();
+        final CallbackResponse actualResponse = actual.getBody();
+        final List<String> actualErrors = actualResponse.getErrors();
+        assertAll(
+                () -> assertThat(actualStatus, is(HttpStatus.OK)),
+                () -> assertThat(actualErrors, hasSize(errorsBoth.size())),
+                () -> assertThat(actualErrors, equalTo(errorsBoth)));
+    }
+
+    @Test
+    void testSolsCreationReportsNoErrors() {
+        final CallbackRequest callbackRequest = mock();
+        final CaseDetails caseDetails = mock();
+        final CaseData caseData = mock();
+        final HttpServletRequest httpServletRequest = mock();
+
+        final CallbackResponse callbackResponse = mock();
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+
+        when(httpServletRequest.getRequestURI())
+                .thenReturn("/sols-validate-will-and-codicil-dates");
+
+        when(eventValidationServiceMock.generateErrorsSepDateBounds(caseData))
+                .thenReturn(List.of());
+        when(eventValidationServiceMock.generateErrorsSepOutsideEngWales(caseData))
+                .thenReturn(List.of());
+
+
+        when(eventValidationServiceMock.validateRequest(any(), any()))
+                .thenReturn(callbackResponse);
+        when(callbackResponse.getErrors())
+                .thenReturn(List.of());
+
+        when(callbackResponseTransformerMock.transformForSolicitorExecutorNames(any()))
+                .thenReturn(callbackResponse);
+
+        when(callbackResponse.getData())
+                .thenReturn(mock());
+
+        final ResponseEntity<CallbackResponse> actual = underTest.solsValidateCreationProbateAdmon(
+                callbackRequest,
+                httpServletRequest);
+
+        final HttpStatusCode actualStatus = actual.getStatusCode();
+        final CallbackResponse actualResponse = actual.getBody();
+        final List<String> actualErrors = actualResponse.getErrors();
+        final List<String> actualWarnings = actualResponse.getWarnings();
+        final ResponseCaseData actualData = actualResponse.getData();
+        assertAll(
+                () -> assertThat(actualStatus, is(HttpStatus.OK)),
+                () -> assertThat(actualErrors, empty()),
+                () -> assertThat(actualWarnings, empty()),
+                () -> assertThat(actualData, notNullValue()));
+    }
 }

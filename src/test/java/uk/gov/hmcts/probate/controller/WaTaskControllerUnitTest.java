@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -20,10 +23,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.probate.service.wa.WaTaskService;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,9 +41,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 
 @ExtendWith(MockitoExtension.class)
-class WaTaskContollerUnitTest {
+class WaTaskControllerUnitTest {
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -56,6 +67,14 @@ class WaTaskContollerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private CoreCaseDataApi coreCaseDataApi;
+    @Mock
+    private uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel;
+    @Mock
+    private WaTaskService waTaskService;
 
     @InjectMocks
     private WaTaskContoller waTaskContoller;
@@ -207,5 +226,168 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                 any()
         );
+    }
+
+    static Stream<Arguments> evidenceHandledPredicateTestCases() {
+        return Stream.of(
+            Arguments.of("BOCaseStopped", NO, false),
+            Arguments.of("BOCaseWorkerEscalation", YES, false),
+            Arguments.of("BOCaseStopped", YES, true),
+            Arguments.of("BORedecNotificationSent", YES, true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("evidenceHandledPredicateTestCases")
+    void shouldEvaluateTaskCompletionPredicateByStateAndEvidenceHandled(String state, String evidenceHandled,
+                                                         boolean expectedResult) throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getState()).thenReturn(state);
+        when(caseData.getEvidenceHandled()).thenReturn(evidenceHandled);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                any()))
+                .thenReturn(Optional.of("encodedClientContext"));
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+                .test(callbackRequest)).isEqualTo(expectedResult);
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+    }
+
+    @Test
+    void shouldCompleteTaskWhenEvidenceHandledIsNo() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getState()).thenReturn("BOCaseWorkerEscalation");
+        when(caseData.getEvidenceHandled()).thenReturn(NO);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                any()))
+                .thenReturn(Optional.of("encodedClientContext"));
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue().test(callbackRequest)).isTrue();
+
+        verify(objectMapper).writeValueAsString(callbackRequest);
+    }
+
+    @Test
+    void shouldBypassWaCompletionFlagWhenEvidenceHandled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsForEvidenceHandled() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.updateClientContextEvidenceHandled(
+                        callbackRequest,
+                        null,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(taskUtils);
+    }
+
+    @Test
+    void shouldCreateTaskWhenWAIsEnabled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseData.getCaseType()).thenReturn("gop");
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId("eventId")
+                .token("eventToken")
+                .caseDetails(caseDetailsModel)
+                .build();
+
+        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+
+        verify(waTaskService).createAndSubmitTaskForSystemUser(
+                eq(callbackRequest),
+                eq(AUTO_SELECT_FOR_QA_CREATE_TASK),
+                eq("Auto Select For QA Create Task"),
+                eq("Auto Select For QA Create Task")
+        );
+    }
+
+    @Test
+    void shouldBypassTaskCreationWhenWAIsDisabled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsSelectForQASetupWATask() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(12345L);
+
+        assertThatThrownBy(() -> waTaskContoller.selectForQASetupWATask(
+                callbackRequest, clientContext, bindingResult, httpServletRequest))
+                .isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(coreCaseDataApi);
     }
 }

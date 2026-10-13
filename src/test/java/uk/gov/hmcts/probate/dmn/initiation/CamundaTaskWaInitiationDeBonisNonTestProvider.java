@@ -15,9 +15,11 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -31,6 +33,12 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
 
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
+                "name", DE_BONIS_NON_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -60,7 +68,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -100,7 +108,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -134,7 +142,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -162,13 +170,146 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                //Case Printed scenarios
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
                 )

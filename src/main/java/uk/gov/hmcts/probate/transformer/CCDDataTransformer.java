@@ -121,6 +121,7 @@ public class CCDDataTransformer {
             .lastname(caseData.getDeceasedSurname())
             .dateOfBirth((caseData.getDeceasedDateOfBirth()))
             .dateOfDeath((caseData.getDeceasedDateOfDeath()))
+            .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
             .address(caseData.getDeceasedAddress())
             .build();
     }
