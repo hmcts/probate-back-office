@@ -61,9 +61,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
@@ -191,27 +189,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
-
-        Map<String, String> registryLocationEpimmsIdMap = new HashMap<>();
-        registryLocationEpimmsIdMap.put("Oxford", "371016");
-        registryLocationEpimmsIdMap.put("Birmingham", "231596");
-        registryLocationEpimmsIdMap.put("Manchester", "701411");
-        registryLocationEpimmsIdMap.put("Leeds", "495952");
-        registryLocationEpimmsIdMap.put("Liverpool", "448077");
-        registryLocationEpimmsIdMap.put("Brighton", "478896");
-        registryLocationEpimmsIdMap.put("London", "356855");
-        registryLocationEpimmsIdMap.put("Cardiff", "779109");
-        registryLocationEpimmsIdMap.put("Newcastle", "562808");
-        registryLocationEpimmsIdMap.put("Winchester", "886493");
-        registryLocationEpimmsIdMap.put("Bristol", "819890");
-        registryLocationEpimmsIdMap.put("ctsc", "815833");
-
-        String taskLocationEpimmsId = registryLocationEpimmsIdMap.get(
-                callbackRequest.getCaseDetails().getData().getRegistryLocation());
-
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE)
-                .taskLocationEpimmsId(taskLocationEpimmsId)
-                        .taskLocationName(callbackRequest.getCaseDetails().getData().getRegistryLocation());
+        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
         return transformResponse(builder.build());
     }
 
