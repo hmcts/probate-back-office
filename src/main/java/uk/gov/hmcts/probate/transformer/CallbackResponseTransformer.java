@@ -903,20 +903,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private void clearObsoleteWholeBloodSiblingAnswer(CallbackRequest callbackRequest,
-                                                      ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
-        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(callbackRequest.getEventId())) {
-            return;
-        }
-
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        boolean hasHalfBloodSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased())
-                && HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
-        if (!hasHalfBloodSiblingRelationship) {
-            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
-        }
-    }
-
     public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
                                       String authToken) {
         ResponseCaseData responseCaseData = getResponseCaseData(
@@ -930,6 +916,20 @@ public class CallbackResponseTransformer {
         setTaskCreation(authToken, callbackRequest, responseCaseData);
 
         return transformResponse(responseCaseData);
+    }
+
+    private void clearObsoleteWholeBloodSiblingAnswer(CallbackRequest callbackRequest,
+                                                       ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(callbackRequest.getEventId())) {
+            return;
+        }
+
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean isSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased());
+        boolean hasHalfSiblingAnswer = HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
+        if (!(isSiblingRelationship && hasHalfSiblingAnswer)) {
+            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
+        }
     }
 
     private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
