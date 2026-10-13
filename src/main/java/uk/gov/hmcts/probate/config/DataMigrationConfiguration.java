@@ -10,10 +10,8 @@ import uk.gov.hmcts.probate.service.migration.Dtspb5064CaveatRollback;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorMigration;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorRollback;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExistingExpiredCaveatMigration;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExistingExpiredCaveatRollback;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseNewlyExpiredCaveatMigration;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseNewlyExpiredCaveatRollback;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatMigration;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatRollback;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatMigration;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatRollback;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112SetExpiryCaveatRollback;
@@ -43,10 +41,8 @@ public class DataMigrationConfiguration {
             final Dtspb5112PaAppCreatedCaveatMigration dtspb5112PaAppCreatedCaveatMigration,
             final Dtspb5112PaAppCreatedCaveatRollback dtspb5112PaAppCreatedCaveatRollback,
             final Dtspb5112SetExpiryCaveatRollback dtspb5112SetExpiryCaveatRollback,
-            final Dtspb5112CloseNewlyExpiredCaveatMigration dtspb5112CloseNewlyExpiredCaveatMigration,
-            final Dtspb5112CloseNewlyExpiredCaveatRollback dtspb5112CloseNewlyExpiredCaveatRollback,
-            final Dtspb5112CloseExistingExpiredCaveatMigration dtspb5112CloseExistingExpiredCaveatMigration,
-            final Dtspb5112CloseExistingExpiredCaveatRollback dtspb5112CloseExistingExpiredCaveatRollback) {
+            final Dtspb5112CloseExpiredCaveatMigration dtspb5112CloseExpiredCaveatMigration,
+            final Dtspb5112CloseExpiredCaveatRollback dtspb5112CloseExpiredCaveatRollback) {
         return Map.of(
                 "DTSPB-5005_rollback", dtspb5005CaveatRollback,
                 "DTSPB-5064", dtspb5064CaveatMigrationHandler,
@@ -54,10 +50,8 @@ public class DataMigrationConfiguration {
                 "DTSPB-5112-pa-app-created", dtspb5112PaAppCreatedCaveatMigration,
                 "DTSPB-5112-pa-app-created-rollback", dtspb5112PaAppCreatedCaveatRollback,
                 "DTSPB-5112-set-expiry-rollback", dtspb5112SetExpiryCaveatRollback,
-                "DTSPB-5112-close-newly-expired", dtspb5112CloseNewlyExpiredCaveatMigration,
-                "DTSPB-5112-close-newly-expired-rollback", dtspb5112CloseNewlyExpiredCaveatRollback,
-                "DTSPB-5112-close-existing-expired", dtspb5112CloseExistingExpiredCaveatMigration,
-                "DTSPB-5112-close-existing-expired-rollback", dtspb5112CloseExistingExpiredCaveatRollback);
+                "DTSPB-5112-close-expired", dtspb5112CloseExpiredCaveatMigration,
+                "DTSPB-5112-close-expired-rollback", dtspb5112CloseExpiredCaveatRollback);
     }
 
 }

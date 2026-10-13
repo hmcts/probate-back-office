@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.service.migration.CaveatMigrationHandler;
 import static uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CaveatStates.CAVEAT_CLOSED;
 
 @Component
-public class Dtspb5112CloseExistingExpiredCaveatMigration implements CaveatMigrationHandler {
+public class Dtspb5112CloseExpiredCaveatMigration implements CaveatMigrationHandler {
 
     @Override
     public CaveatCallbackRequest migrate(CaveatCallbackRequest callbackRequest, JSONObject migrationData) {

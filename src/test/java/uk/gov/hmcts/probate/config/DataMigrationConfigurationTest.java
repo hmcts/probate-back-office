@@ -9,10 +9,8 @@ import uk.gov.hmcts.probate.service.migration.Dtspb5064CaveatRollback;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorMigration;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorRollback;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExistingExpiredCaveatMigration;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExistingExpiredCaveatRollback;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseNewlyExpiredCaveatMigration;
-import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseNewlyExpiredCaveatRollback;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatMigration;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatRollback;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatMigration;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatRollback;
 import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112SetExpiryCaveatRollback;
@@ -58,10 +56,8 @@ class DataMigrationConfigurationTest {
         Dtspb5112PaAppCreatedCaveatMigration dtspb5112PaAppCreatedCaveatMigration = mock();
         Dtspb5112PaAppCreatedCaveatRollback dtspb5112PaAppCreatedCaveatRollback = mock();
         Dtspb5112SetExpiryCaveatRollback dtspb5112SetExpiryCaveatRollback = mock();
-        Dtspb5112CloseNewlyExpiredCaveatMigration dtspb5112CloseNewlyExpiredCaveatMigration = mock();
-        Dtspb5112CloseNewlyExpiredCaveatRollback dtspb5112CloseNewlyExpiredCaveatRollback = mock();
-        Dtspb5112CloseExistingExpiredCaveatMigration dtspb5112CloseExistingExpiredCaveatMigration = mock();
-        Dtspb5112CloseExistingExpiredCaveatRollback dtspb5112CloseExistingExpiredCaveatRollback = mock();
+        Dtspb5112CloseExpiredCaveatMigration dtspb5112CloseExpiredCaveatMigration = mock();
+        Dtspb5112CloseExpiredCaveatRollback dtspb5112CloseExpiredCaveatRollback = mock();
 
         Map<String, CaveatMigrationHandler> handlers =
             configuration.caveatMigrationHandlers(
@@ -71,10 +67,8 @@ class DataMigrationConfigurationTest {
                 dtspb5112PaAppCreatedCaveatMigration,
                 dtspb5112PaAppCreatedCaveatRollback,
                 dtspb5112SetExpiryCaveatRollback,
-                dtspb5112CloseNewlyExpiredCaveatMigration,
-                dtspb5112CloseNewlyExpiredCaveatRollback,
-                dtspb5112CloseExistingExpiredCaveatMigration,
-                dtspb5112CloseExistingExpiredCaveatRollback
+                dtspb5112CloseExpiredCaveatMigration,
+                dtspb5112CloseExpiredCaveatRollback
             );
 
         Map<String, CaveatMigrationHandler> expected = Map.ofEntries(
@@ -84,10 +78,8 @@ class DataMigrationConfigurationTest {
                 Map.entry("DTSPB-5112-pa-app-created", dtspb5112PaAppCreatedCaveatMigration),
                 Map.entry("DTSPB-5112-pa-app-created-rollback", dtspb5112PaAppCreatedCaveatRollback),
                 Map.entry("DTSPB-5112-set-expiry-rollback", dtspb5112SetExpiryCaveatRollback),
-                Map.entry("DTSPB-5112-close-newly-expired", dtspb5112CloseNewlyExpiredCaveatMigration),
-                Map.entry("DTSPB-5112-close-newly-expired-rollback", dtspb5112CloseNewlyExpiredCaveatRollback),
-                Map.entry("DTSPB-5112-close-existing-expired", dtspb5112CloseExistingExpiredCaveatMigration),
-                Map.entry("DTSPB-5112-close-existing-expired-rollback", dtspb5112CloseExistingExpiredCaveatRollback)
+                Map.entry("DTSPB-5112-close-expired", dtspb5112CloseExpiredCaveatMigration),
+                Map.entry("DTSPB-5112-close-expired-rollback", dtspb5112CloseExpiredCaveatRollback)
         );
 
         assertThat(handlers).containsExactlyInAnyOrderEntriesOf(expected);
