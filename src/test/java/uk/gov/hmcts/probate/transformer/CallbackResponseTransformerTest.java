@@ -65,6 +65,7 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessor;
 import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -5946,4 +5947,41 @@ class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
     }
+
+    @Test
+    void shouldSetCreateTaskForAttachScannedDocsWhenWAEnabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        CreateTaskProcessor attachScannedDocsProcessor = mock(CreateTaskProcessor.class);
+        doAnswer(inv -> {
+            inv.<ResponseCaseData>getArgument(2).setCreateTask(YES);
+            return null;
+        })
+                .when(attachScannedDocsProcessor).process(any(), any(), any());
+        when(createTaskProcessorFactory.get("attachScannedDocs"))
+                .thenReturn(Optional.of(attachScannedDocsProcessor));
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
+
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldNotSetCreateTaskForAttachScannedDocsWhenWADisabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
+
+        assertNull(callbackResponse.getData().getCreateTask());
+    }
+
 }

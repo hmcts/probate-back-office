@@ -267,4 +267,20 @@ public class CaseDataTransformer {
     public void setMoveToCWEscalationUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setMoveToCWEscalationUserIdamId(idamUserId);
     }
+
+    public void setEscalateToRegistrarUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setEscalateToRegistrarUserIdamId(idamUserId);
+    }
+
+    public void setRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setRedeclarationUserIdamId(idamUserId);
+    }
+
+    public void setResolveStoppedCaseUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setResolveStoppedCaseUserIdamId(idamUserId);
+    }
+
+    public void setResolveRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setResolveRedeclarationUserIdamId(idamUserId);
+    }
 }
