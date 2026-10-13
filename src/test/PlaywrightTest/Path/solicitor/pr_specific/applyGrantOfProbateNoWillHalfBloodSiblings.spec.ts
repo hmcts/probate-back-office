@@ -29,7 +29,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole 
     cwEventActionsPage
   }, testInfo) => {
     test.setTimeout(300000);
-    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole Blood Siblings';
+    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy) - Half Blood Siblings';
     const willType = 'NoWill';
 
     await basePage.logInfo(scenarioName, 'Login as Solicitor');

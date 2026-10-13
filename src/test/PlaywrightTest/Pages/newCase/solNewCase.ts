@@ -1222,7 +1222,9 @@ export class SolCreateCasePage extends BasePage {
       await this.page.locator('#dateOfDivorcedCPJudicially-year').fill(intestacyDetailsConfig.divorced_year);
       await expect(this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`)).toBeEnabled();
       await this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+      await this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
     }
+    await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
     await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
     if (applicantRelationship === intestacyDetailsConfig.page2_child || applicantRelationship === intestacyDetailsConfig.applicantRelationshipGrandchild) {
       await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptionText)).toBeVisible();
