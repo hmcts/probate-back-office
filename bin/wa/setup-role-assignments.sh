@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeu
+set -eu
 
 # LOCALLY:
 #CHANGE_ID=4357

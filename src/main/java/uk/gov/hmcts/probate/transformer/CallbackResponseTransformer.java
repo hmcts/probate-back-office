@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
@@ -40,6 +41,8 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -158,6 +161,8 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final WorkAllocationToggleService workAllocationToggleService;
+    private final CreateTaskProcessorFactory createTaskProcessorFactory;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -873,7 +878,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
+                                      String authToken) {
         ResponseCaseData responseCaseData = getResponseCaseData(
                 callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(),
@@ -881,7 +887,18 @@ public class CallbackResponseTransformer {
                 false
         ).build();
 
+        //Setting task creation flag as mid event doesnt persist
+        setTaskCreation(authToken, callbackRequest, responseCaseData);
+
         return transformResponse(responseCaseData);
+    }
+
+    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            responseCaseData.setCreateTask(Constants.NO);
+            createTaskProcessorFactory.get(callbackRequest.getEventId())
+                    .ifPresent(processor -> processor.process(authToken, callbackRequest, responseCaseData));
+        }
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -921,7 +938,11 @@ public class CallbackResponseTransformer {
                         transform);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        return transformResponse(responseCaseDataBuilder.build());
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        setTaskCreation(null, callbackRequest, responseCaseData);
+
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -1268,13 +1289,14 @@ public class CallbackResponseTransformer {
             .declaration(caseData.getDeclaration())
             .legalStatement(caseData.getLegalStatement())
             .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+            .deceasedMarriedAfterWillOrCodicilDateYN(caseData.getDeceasedMarriedAfterWillOrCodicilDateYN())
+            .deceasedSpouseName(caseData.getDeceasedSpouseName())
 
             .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
             .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
             .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
 
             .payments(caseData.getPayments())
-            .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
             .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
 
             .scannedDocuments(caseData.getScannedDocuments())
@@ -1467,7 +1489,15 @@ public class CallbackResponseTransformer {
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
+            .createTask(caseData.getCreateTask())
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
+            .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
+            .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
+            .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
+            .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
+            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
 
         handleDeceasedAliases(
                 builder,
