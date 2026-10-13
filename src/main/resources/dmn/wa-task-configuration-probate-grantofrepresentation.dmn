@@ -127,7 +127,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ol0bht">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDeBonisNon","ExamineFiatWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineInfectedBloodCompensationAuthority","ExamineWindrushScheme","ExamineDigitalCaseProbateReadyToIssue","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme","ExamineInfectedBloodInterimSchemeCasePrinted","ExamineCodicilMisRecital","ExamineRectifyWillOrCodicil","ExamineLostWillOrCodicilCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineInfectedBloodCompensationAuthorityCasePrinted","ExamineLeadingOrFollowingGrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisRecitalCasePrinted","ExamineDeBonisNonCasePrinted","RectifyQACase","ExamineLiteraryEstate","ExamineLostWillOrCodicil","ExamineMinorityInterest","ExamineWillOrCodicilToBeNotatedCasePrinted","ExamineRectifyWillOrCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePowerOfAttorneyCasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineForeignDomicile","ExamineIncapacityUnderRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineProveForeignWill","ExamineTrustCorporation","ReviewSMEReferral","ExamineProveForeignWillCasePrinted","ExamineSMEReferral","ReviewRegistrarDecision","Redeclaration","ResolveStoppedCase"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDeBonisNon","ExamineFiatWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineInfectedBloodCompensationAuthority","ExamineWindrushScheme","ExamineDigitalCaseProbateReadyToIssue","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme","ExamineInfectedBloodInterimSchemeCasePrinted","ExamineCodicilMisRecital","ExamineRectifyWillOrCodicil","ExamineLostWillOrCodicilCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineInfectedBloodCompensationAuthorityCasePrinted","ExamineLeadingOrFollowingGrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisRecitalCasePrinted","ExamineDeBonisNonCasePrinted","RectifyQACase","ExamineLiteraryEstate","ExamineLostWillOrCodicil","ExamineMinorityInterest","ExamineWillOrCodicilToBeNotatedCasePrinted","ExamineRectifyWillOrCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePowerOfAttorneyCasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineForeignDomicile","ExamineIncapacityUnderRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineProveForeignWill","ExamineTrustCorporation","ReviewSMEReferral","ExamineProveForeignWillCasePrinted","ExamineSMEReferral","ReviewRegistrarDecision","Redeclaration","ResolveStoppedCase","reviewSpecificAccessRequestCTSC"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1vwmxcn">
           <text>"roleCategory"</text>
@@ -487,7 +487,7 @@ else ""</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0vc61zc">
-          <text>"ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders"</text>
+          <text>"ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders","reviewSpecificAccessRequestLegalOps"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1c3zu8v">
           <text>"roleCategory"</text>
@@ -584,6 +584,91 @@ else ""</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0bxkxty">
           <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07hkyjy">
+        <inputEntry id="UnaryTests_09m1dcm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bh0pfd">
+          <text>"reviewSpecificAccessRequestJudiciary", "reviewSpecificAccessRequestLegalOps", "reviewSpecificAccessRequestAdmin","reviewSpecificAccessRequestCTSC"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pszuww">
+          <text>"workType"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rj1bnb">
+          <text>"access_requests"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xr2sr5">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hxs4j4">
+        <inputEntry id="UnaryTests_098jcmr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11l9s39">
+          <text>"reviewSpecificAccessRequestJudiciary", "reviewSpecificAccessRequestLegalOps", "reviewSpecificAccessRequestAdmin","reviewSpecificAccessRequestCTSC"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09vsv27">
+          <text>"additionalProperties_roleAssignmentId"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gx5khg">
+          <text>if (taskAttributes !=null and taskAttributes.roleAssignmentId != null) then taskAttributes.roleAssignmentId else "1234"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yli91b">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0g70l4q">
+        <inputEntry id="UnaryTests_01z7oen">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dsminb">
+          <text>"reviewSpecificAccessRequestJudiciary", "reviewSpecificAccessRequestLegalOps", "reviewSpecificAccessRequestAdmin","reviewSpecificAccessRequestCTSC"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0onhywm">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0o58sdz">
+          <text>if (taskAttributes != null and taskAttributes.taskId != null and taskAttributes.roleAssignmentId != null) then "[Review Access Request](/role-access/" + taskAttributes.taskId+ "/assignment/" + taskAttributes.roleAssignmentId + "/specific-access)" else ""</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y4efit">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01fwyys">
+        <inputEntry id="UnaryTests_0tvijr6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rvm41m">
+          <text>"reviewSpecificAccessRequestJudiciary"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1imj5qb">
+          <text>"roleCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1it7m1u">
+          <text>"JUDICIAL"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10e5fo3">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jdd0b9">
+        <inputEntry id="UnaryTests_0972dsy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17p9n64">
+          <text>"reviewSpecificAccessRequestAdmin"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s2bvw5">
+          <text>"roleCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gzeu2s">
+          <text>"ADMIN"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r7ynqn">
+          <text></text>
         </outputEntry>
       </rule>
     </decisionTable>
