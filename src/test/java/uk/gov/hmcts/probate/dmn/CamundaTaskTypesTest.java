@@ -107,6 +107,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION_TASK_TYPE_NAME;
 
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
@@ -388,6 +390,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
                         "taskTypeId", REVIEW_QA_CASE_AD_COLLIGENDA_BONA
+                ),
+                Map.of(
+                        "taskTypeName", RESOLVE_REDECLARATION_TASK_TYPE_NAME,
+                        "taskTypeId", RESOLVE_REDECLARATION
                 )
 
         );
@@ -404,7 +410,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(64));
+        assertThat(logic.getRules().size(), is(65));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
