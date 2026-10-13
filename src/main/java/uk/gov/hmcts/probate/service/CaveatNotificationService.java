@@ -59,7 +59,9 @@ public class CaveatNotificationService {
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
-                setPaperFormIfNull(caveatDetails);
+                if (null == caveatDetails.getPaperForm()) {
+                    caveatDetails.setPaperForm(YES);
+                }
                 caveatCallbackResponse =
                     caveatCallbackResponseTransformer.transformResponseWithOrgPolicy(caveatCallbackRequest);
             }
@@ -241,11 +243,5 @@ public class CaveatNotificationService {
     public void setPaymentTaken(CaveatCallbackRequest request) {
         CaveatData caveatData = request.getCaseDetails().getData();
         caveatData.setPaymentTaken(YES);
-    }
-
-    private void setPaperFormIfNull(CaveatData caveatData) {
-        if (null == caveatData.getPaperForm()) {
-            caveatData.setPaperForm(YES);
-        }
     }
 }
