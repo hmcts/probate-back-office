@@ -319,7 +319,6 @@ public class ExecutorListMapperService {
                                     .applyingExecutorName(applExecName)
                                     .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                                     .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
-                                    .applicantFamilyDetails(exec.getValue().getApplicantFamilyDetails())
                                     .build());
                 })
                 .collect(Collectors.toList());

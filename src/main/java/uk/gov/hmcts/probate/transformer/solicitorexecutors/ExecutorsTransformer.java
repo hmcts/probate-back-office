@@ -20,6 +20,8 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrNotAllRenouncingTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.GRANT_OF_PROBATE;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
 @Component
 @Slf4j
@@ -147,12 +149,16 @@ public class ExecutorsTransformer {
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null
-                && !caseData.getSolsAdditionalExecutorList().isEmpty()) {
+                && !caseData.getSolsAdditionalExecutorList().isEmpty()
+                && caseData.getCaseType().equals(GRANT_OF_PROBATE.getName())
+        ) {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
         } else if (caseData.getSolsIntestacyExecutorList() != null
-                && !caseData.getSolsIntestacyExecutorList().isEmpty()) {
+                && !caseData.getSolsIntestacyExecutorList().isEmpty()
+                && caseData.getCaseType().equals(INTESTACY.getName())
+        ) {
             // Add intestacy solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData));
