@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
   <decision id="wa-task-types-probate-grantofrepresentation" name="Task Types DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_17knzal" hitPolicy="COLLECT">
       <input id="Input_1">
@@ -691,6 +691,102 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_13t3f1z">
           <text>"Examine SME Referral"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qdptpd">
+        <description>RRD</description>
+        <inputEntry id="UnaryTests_1y4mnqn">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k3ikqj">
+          <text>"ReviewRegistrarDecision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hgsxvx">
+          <text>"Review Registrar's Decision"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12ezbav">
+        <description>RD</description>
+        <inputEntry id="UnaryTests_0x55q5u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ug8qxp">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkfw93">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fand0d">
+        <description>RSC</description>
+        <inputEntry id="UnaryTests_1gjhhg3">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tbs55t">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pyk2z2">
+          <text>"Resolve Stopped Case"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_011l0a3">
+        <description>RQACI</description>
+        <inputEntry id="UnaryTests_0jgcgz7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yu9p2l">
+          <text>"ReviewQACaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02e04gj">
+          <text>"Review QA Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uv4un9">
+        <description>RQACA</description>
+        <inputEntry id="UnaryTests_02i9wfd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ll5n09">
+          <text>"ReviewQACaseAdmon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kgslhl">
+          <text>"Review QA Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hjkrrl">
+        <description>RQACP</description>
+        <inputEntry id="UnaryTests_1kqjck1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1whnf10">
+          <text>"ReviewQACaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l5e5tx">
+          <text>"Review QA Case - Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1i5v7rj">
+        <description>RQACACB</description>
+        <inputEntry id="UnaryTests_0lsqdhj">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1go5y1q">
+          <text>"ReviewQACaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v4y0vb">
+          <text>"Review QA Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07rijil">
+        <description>RRD</description>
+        <inputEntry id="UnaryTests_0ieztq1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bgr3un">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tdx9x9">
+          <text>"Resolve Redeclaration"</text>
         </outputEntry>
       </rule>
     </decisionTable>

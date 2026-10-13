@@ -54,4 +54,24 @@ public class CaseDataBuilder {
         caseData.put("moveToCWEscalationUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setEscalateToRegistrarUserIdamId(String idamId) {
+        caseData.put("escalateToRegistrarUserIdamId", idamId);
+        return this;
+    }
+
+    public CaseDataBuilder setRedeclarationUserIdamId(String idamId) {
+        caseData.put("redeclarationUserIdamId", idamId);
+        return this;
+    }
+
+    public CaseDataBuilder setResolveStoppedCaseUserIdamId(String idamId) {
+        caseData.put("resolveStoppedCaseUserIdamId", idamId);
+        return this;
+    }
+
+    public CaseDataBuilder setResolveRedeclarationUserIdamId(String idamId) {
+        caseData.put("resolveRedeclarationUserIdamId", idamId);
+        return this;
+    }
 }

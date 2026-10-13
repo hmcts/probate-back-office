@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-set -xeu
+set -eu
 workspace=${1}
 env=${2}
 tenant_id=${3}
 product=${4}
 
-s2sSecret=${S2S_SECRET:-AABBCCDDEEFFGGHH}
+s2sSecret=${S2S_AUTH_TOTP_SECRET:-AABBCCDDEEFFGGHH}
 
 if [[ "${ENV}" == 'prod' ]]; then
   s2sSecret=${S2S_SECRET_PROD}
