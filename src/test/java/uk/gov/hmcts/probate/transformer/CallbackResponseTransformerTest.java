@@ -307,6 +307,7 @@ class CallbackResponseTransformerTest {
     private static final String ORDER_NEEDED = YES;
     private static final List<CollectionMember<Reissue>> REISSUE_REASON = emptyList();
     private static final String REISSUE_DATE = "2019-01-01";
+    private static final String TODAY = "2026-09-10";
     private static final String REISSUE_NOTATION = "duplicate";
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
@@ -1628,10 +1629,9 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
-        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+        assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
@@ -2553,10 +2553,9 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
-        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+        assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test

@@ -3,9 +3,9 @@ package uk.gov.hmcts.probate.service.template.pdf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Clock;
@@ -37,7 +37,7 @@ class PlaceholderDecoratorTest {
     @Autowired
     private PlaceholderDecorator placeholderDecorator;
 
-    @Mock
+    @MockitoBean
     private Clock clock;
 
     @BeforeEach
