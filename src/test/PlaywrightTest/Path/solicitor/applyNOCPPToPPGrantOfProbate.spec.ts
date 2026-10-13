@@ -86,6 +86,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedDivorced');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();
@@ -134,6 +135,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
 
     let env = '';
     const url = testConfig.TestBackOfficeUrl;
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (url.includes('demo')) {
       env = 'Demo';
     } else {
@@ -152,6 +154,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
 
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (env === 'Demo') {
       changeOfRepresentativesDetailsConfig.nocTriggeredDate = dateFns.format(new Date(), testConfig.dateFormat);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfig, false);

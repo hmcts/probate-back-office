@@ -18,11 +18,18 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
@@ -102,6 +109,172 @@ class EventValidationServiceTest {
 
         assertEquals(2, fieldErrorResponses.getErrors().size());
 
+    }
+
+    @Test
+    void testErrorSepBeforeBirth() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDateOfBirth())
+                .thenReturn(LocalDate.of(1990, 1, 1));
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(LocalDate.of(2024, 10, 10));
+        when(caseData.getDateOfDivorcedCPJudicially())
+                .thenReturn(LocalDate.of(1989, 12, 25).toString());
+
+        final List<String> actual = eventValidationService.generateErrorsSepDateBounds(caseData);
+
+        assertAll(
+                () -> assertThat(actual, hasSize(2)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEP_DATE_BEFORE_DOB_EN)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEP_DATE_BEFORE_DOB_CY))
+        );
+    }
+
+    @Test
+    void testErrorSepInRange() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDateOfBirth())
+                .thenReturn(LocalDate.of(1990, 1, 1));
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(LocalDate.of(2024, 10, 10));
+        when(caseData.getDateOfDivorcedCPJudicially())
+                .thenReturn(LocalDate.of(2022, 12, 25).toString());
+
+        final List<String> actual = eventValidationService.generateErrorsSepDateBounds(caseData);
+
+        assertThat(actual, empty());
+    }
+
+    @Test
+    void testErrorSepEmptyString() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDateOfBirth())
+                .thenReturn(LocalDate.of(1990, 1, 1));
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(LocalDate.of(2024, 10, 10));
+        when(caseData.getDateOfDivorcedCPJudicially())
+                .thenReturn("");
+
+        final List<String> actual = eventValidationService.generateErrorsSepDateBounds(caseData);
+
+        assertThat(actual, empty());
+    }
+
+    @Test
+    void testErrorSepUnset() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDateOfBirth())
+                .thenReturn(LocalDate.of(1990, 1, 1));
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(LocalDate.of(2024, 10, 10));
+        when(caseData.getDateOfDivorcedCPJudicially())
+                .thenReturn(null);
+
+        final List<String> actual = eventValidationService.generateErrorsSepDateBounds(caseData);
+
+        assertThat(actual, empty());
+    }
+
+    @Test
+    void testErrorSepAfterDeath() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDateOfBirth())
+                .thenReturn(LocalDate.of(1990, 1, 1));
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(LocalDate.of(2024, 10, 10));
+        when(caseData.getDateOfDivorcedCPJudicially())
+                .thenReturn(LocalDate.of(2025, 11, 11).toString());
+
+        final List<String> actual = eventValidationService.generateErrorsSepDateBounds(caseData);
+
+        assertAll(
+                () -> assertThat(actual, hasSize(2)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEP_DATE_AFTER_DOD_EN)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEP_DATE_AFTER_DOD_CY))
+        );
+    }
+
+    @Test
+    void testErrorSepOutsideDivCivil() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .thenReturn("No");
+        when(caseData.getDeceasedMaritalStatus())
+                .thenReturn("divorcedCivilPartnership");
+
+        final List<String> actual = eventValidationService.generateErrorsSepOutsideEngWales(caseData);
+
+        assertAll(
+                () -> assertThat(actual, hasSize(2)),
+                () -> assertThat(actual, hasItem(EventValidationService.DIV_DISS_OUTSIDE_ENG_WALES_EN)),
+                () -> assertThat(actual, hasItem(EventValidationService.DIV_DISS_OUTSIDE_ENG_WALES_CY))
+        );
+    }
+
+    @Test
+    void testErrorSepOutsideJudicially() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .thenReturn("No");
+        when(caseData.getDeceasedMaritalStatus())
+                .thenReturn("judicially");
+
+        final List<String> actual = eventValidationService.generateErrorsSepOutsideEngWales(caseData);
+
+        assertAll(
+                () -> assertThat(actual, hasSize(2)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEPARATION_OUTSIDE_ENG_WALES_EN)),
+                () -> assertThat(actual, hasItem(EventValidationService.SEPARATION_OUTSIDE_ENG_WALES_CY))
+        );
+    }
+
+    @Test
+    void testErrorSepOutsideOther() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .thenReturn("No");
+        when(caseData.getDeceasedMaritalStatus())
+                .thenReturn("other");
+
+        final List<String> actual = eventValidationService.generateErrorsSepOutsideEngWales(caseData);
+
+        assertThat(actual, empty());
+    }
+
+    @Test
+    void testErrorSepInsideDivCivil() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .thenReturn("Yes");
+        when(caseData.getDeceasedMaritalStatus())
+                .thenReturn("divorcedCivilPartnership");
+
+        final List<String> actual = eventValidationService.generateErrorsSepOutsideEngWales(caseData);
+
+        assertThat(actual, empty());
+    }
+
+    @Test
+    void testErrorSepInsideJudicially() {
+        final CaseData caseData = mock();
+
+        when(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .thenReturn("Yes");
+        when(caseData.getDeceasedMaritalStatus())
+                .thenReturn("judicially");
+
+        final List<String> actual = eventValidationService.generateErrorsSepOutsideEngWales(caseData);
+
+        assertThat(actual, empty());
     }
 
     private class SimpleValidationRule implements ValidationRule {

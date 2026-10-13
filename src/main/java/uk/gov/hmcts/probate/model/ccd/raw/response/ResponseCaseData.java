@@ -42,10 +42,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -167,6 +166,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final LegalStatement legalStatement;
     private final Declaration declaration;
     private final String deceasedMarriedAfterWillOrCodicilDate;
+    private final String deceasedMarriedAfterWillOrCodicilDateYN;
+    private final String deceasedSpouseName;
     private final String primaryApplicantPhoneNumber;
 
     private final String boExaminationChecklistQ2;
@@ -314,6 +315,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
@@ -424,4 +426,11 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String issueEarlySwitch;
     private String hasValidMatches;
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
+    private String createTask;
+    private String selectForQAUserIdamId;
+    private String moveToCWEscalationUserIdamId;
+    private String escalateToRegistrarUserIdamId;
+    private String redeclarationUserIdamId;
+    private String resolveStoppedCaseUserIdamId;
+    private String resolveRedeclarationUserIdamId;
 }

@@ -64,6 +64,10 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessor;
+import uk.gov.hmcts.probate.service.wa.CreateTaskProcessorFactory;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -74,13 +78,13 @@ import uk.gov.hmcts.reform.probate.model.Relationship;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
@@ -134,12 +138,11 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
-import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -149,17 +152,19 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @ExtendWith(SpringExtension.class)
 class CallbackResponseTransformerTest {
@@ -495,7 +500,8 @@ class CallbackResponseTransformerTest {
         .givenName("givenname")
         .roles(List.of("caseworker-probate"))
         .build());
-
+    private static final String AUTH_TOKEN = "AUTH_TOKEN";
+    private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationId";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -519,7 +525,13 @@ class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @Mock
+    private CaseDetails caseDetailsBeforeMock;
+
+    @Mock
     private CaseData caseDataMock;
+
+    @Mock
+    private CaseData caseDataBeforeMock;
 
     @Mock
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingMock;
@@ -591,6 +603,10 @@ class CallbackResponseTransformerTest {
     private AuditEventService auditEventService;
     @Mock
     private HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    @Mock
+    private WorkAllocationToggleService workAllocationToggleService;
+    @Mock
+    private CreateTaskProcessorFactory createTaskProcessorFactory;
 
     @BeforeEach
     public void setup() {
@@ -750,7 +766,8 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDateKnown(YES)
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
-            .documentsReceivedNotificationSent(YES);
+            .documentsReceivedNotificationSent(YES)
+            .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -1682,7 +1699,7 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldTransformCallbackRequestToCallbackResponse() {
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
 
         assertCommon(callbackResponse);
     }
@@ -4645,7 +4662,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4660,7 +4677,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(null, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4674,7 +4691,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4688,7 +4705,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4703,7 +4720,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4893,7 +4910,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
     }
 
@@ -4906,7 +4923,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4917,7 +4934,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4928,8 +4945,62 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+        assertNull(callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldSetTaskCreationFlagToYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(INTESTACY_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
+                .thenReturn(Optional.of(new AmendCaseDetailsForAwaitingDocumentation()));
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldSetTaskCreationFlagToNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
+                .thenReturn(Optional.empty());
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        assertEquals(NO, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldNotSetCreationFlagWhenWaDisabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        assertNull(callbackResponse.getData().getCreateTask());
     }
 
     @ParameterizedTest
@@ -4941,7 +5012,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
         assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
@@ -5876,4 +5947,41 @@ class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
     }
+
+    @Test
+    void shouldSetCreateTaskForAttachScannedDocsWhenWAEnabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        CreateTaskProcessor attachScannedDocsProcessor = mock(CreateTaskProcessor.class);
+        doAnswer(inv -> {
+            inv.<ResponseCaseData>getArgument(2).setCreateTask(YES);
+            return null;
+        })
+                .when(attachScannedDocsProcessor).process(any(), any(), any());
+        when(createTaskProcessorFactory.get("attachScannedDocs"))
+                .thenReturn(Optional.of(attachScannedDocsProcessor));
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
+
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldNotSetCreateTaskForAttachScannedDocsWhenWADisabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("attachScannedDocs");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(
+                callbackRequestMock, null, CASEWORKER_USERINFO);
+
+        assertNull(callbackResponse.getData().getCreateTask());
+    }
+
 }

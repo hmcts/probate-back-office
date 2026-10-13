@@ -54,6 +54,7 @@ ccd:
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
+        SESSION_KEYS: '${SESSION_KEYS}'
   ccd-case-print-service:
     enabled: true
     nodejs:
@@ -367,6 +368,8 @@ ccd:
 
   ccd-user-profile-importer:
     image: hmctsprod.azurecr.io/ccd/user-profile-importer:latest
+    # forces before-hook-creation delete policy so a failed hook Job doesn't block the next retry
+    debug: true
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
       - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
@@ -481,6 +484,7 @@ java:
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
     PROBATE_WA_ENABLED: ${PROBATE_WA_ENABLED}
     PROBATE_GS_ENABLED: ${PROBATE_GS_ENABLED}
+    WA_SERVICE_HOST: http://${SERVICE_NAME}-wa-task-management-api
 
   keyVaults:
     probate:

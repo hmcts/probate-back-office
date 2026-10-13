@@ -36,6 +36,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       "Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker";
 
     //if waEnabled = true sign in with ctsc admin else use caseworker
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (waEnabled) {
       // BO Grant of Representation (Personal): Case created -> Grant issued
       await basePage.logInfo(scenarioName, "Login as Ctsc Admin");
@@ -89,6 +90,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await createCasePage.checkMyAnswers(nextStepName);
     const workAllocationCaseRef = await basePage.getCaseRefFromUrl();
 
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (waEnabled) {
       await basePage.logInfo(
         scenarioName,

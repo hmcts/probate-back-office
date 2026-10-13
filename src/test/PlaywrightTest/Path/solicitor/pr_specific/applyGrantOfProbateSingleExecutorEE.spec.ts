@@ -90,6 +90,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedMarried');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2('true', isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();
@@ -211,8 +212,9 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus4, refundRef, refundReviewConfig.rows, false, true);
 
+    authToken = await getAccessToken(idamUrl, testConfig.TestEnvSuperCwUser, testConfig.TestEnvSuperCwPassword);
     serviceAuthToken = await getServiceAuthToken(s2sUrl, 'ccpay_bubble');
-    await callback.refundsApprovalLiberata(env, remissionRefundRef, serviceAuthToken);
+    await callback.refundsApprovalLiberata(env, remissionRefundRef, authToken, serviceAuthToken);
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus5, remissionRefundRef, refundReviewConfig.rows, true, true);
     await signInPage.signOut();
