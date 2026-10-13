@@ -1860,7 +1860,6 @@ class BusinessValidationControllerIT {
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-                //.andExpect(jsonPath("$.data.registryLocation", is("Oxford")));
 
         // Assert
         //verify(notificationService).startAwaitingDocumentationNotificationPeriod(eq(caseDetails));
