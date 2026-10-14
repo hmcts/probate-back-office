@@ -90,6 +90,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_BO_REDECLARATION_COMPLETE_ESCALATE_TO_REGISTER;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.STOPPED_APPLICATIONS;
 
 public class ConfigurationExpectationBuilder {
 
@@ -194,6 +198,11 @@ public class ConfigurationExpectationBuilder {
                 && conditions.get("taskType").equals(RESOLVE_STOPPED_CASE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_RESOLVE_STOPPED_CASE, true);
             builder.expectedValue(WORK_TYPE, RESOLVE_STOPPED_CASE_WORK_TYPE, true);
+            builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(BO_REDEC_NOTIFICATION_SENT_STATE) && conditions.containsKey("taskType")
+                && conditions.get("taskType").equals(RESOLVE_REDECLARATION)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_REDECLARATION_COMPLETE_ESCALATE_TO_REGISTER, true)
+                    .expectedValue(WORK_TYPE, STOPPED_APPLICATIONS, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
