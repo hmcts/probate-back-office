@@ -11,9 +11,11 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.incapacityUnderRule35HandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.incapacityUnderRule35HandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
@@ -158,6 +160,41 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalDataNoHandOffList(),
+                    emptyList()
+            ), //change state event
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(true, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            emptyList(), false),
                     emptyList()
             )
         );
