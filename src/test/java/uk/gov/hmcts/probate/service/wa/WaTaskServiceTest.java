@@ -43,6 +43,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
@@ -74,6 +75,10 @@ class WaTaskServiceTest {
     @InjectMocks
     private WaTaskService waTaskService;
 
+    private final String authToken = "auth-token";
+    private final String caseId = "123456";
+    private final String serviceToken = "service-token";
+
     @Test
     void shouldReturnTrueWhenTaskIsPresent() {
         TaskData task = new TaskData();
@@ -82,10 +87,6 @@ class WaTaskServiceTest {
         GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
                 false,
                 List.of(task));
-
-        String authToken = "auth-token";
-        String caseId = "123456";
-        String serviceToken = "service-token";
 
         when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteriaForAutomaticCompletion(
@@ -98,7 +99,7 @@ class WaTaskServiceTest {
                 authToken,
                 caseId,
                 EVENT_TO_MONITOR,
-                List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
+                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
         assertThat(result).isTrue();
@@ -114,7 +115,7 @@ class WaTaskServiceTest {
                 List.of(task));
 
 
-        when(securityUtils.generateServiceToken()).thenReturn("service-token");
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
@@ -122,10 +123,10 @@ class WaTaskServiceTest {
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
-                "auth-token",
-                "123456",
+                authToken,
+                caseId,
                 EVENT_TO_MONITOR,
-                List.of(TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY)
+                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY)
         );
 
         assertThat(result).isFalse();
@@ -133,7 +134,7 @@ class WaTaskServiceTest {
 
     @Test
     void shouldReturnFalseWhenResponseBodyIsNull() {
-        when(securityUtils.generateServiceToken()).thenReturn("service-token");
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
@@ -141,10 +142,10 @@ class WaTaskServiceTest {
                 .thenReturn(ResponseEntity.ok(null));
 
         boolean result = waTaskService.isTaskPresent(
-                "auth-token",
-                "123456",
+                authToken,
+                caseId,
                 EVENT_TO_MONITOR,
-                List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
+                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
         assertThat(result).isFalse();
@@ -157,7 +158,7 @@ class WaTaskServiceTest {
                 Collections.emptyList());
 
 
-        when(securityUtils.generateServiceToken()).thenReturn("service-token");
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
@@ -165,10 +166,10 @@ class WaTaskServiceTest {
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
-                "auth-token",
-                "123456",
+                authToken,
+                caseId,
                 EVENT_TO_MONITOR,
-                List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
+                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
         assertThat(result).isFalse();
@@ -184,7 +185,7 @@ class WaTaskServiceTest {
                 List.of(task)
         );
 
-        when(securityUtils.generateServiceToken()).thenReturn("service-token");
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
         when(waApi.searchWithCriteriaForAutomaticCompletion(
                 anyString(),
                 anyString(),
@@ -192,10 +193,10 @@ class WaTaskServiceTest {
                 .thenReturn(ResponseEntity.ok(response));
 
         boolean result = waTaskService.isTaskPresent(
-                "auth-token",
-                "123456",
+                authToken,
+                caseId,
                 EVENT_TO_MONITOR,
-                List.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
+                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
         );
 
         assertThat(result).isFalse();
@@ -272,7 +273,7 @@ class WaTaskServiceTest {
                 .thenReturn(CaseData.builder()
                         .boHandoffReasonList(
                                 generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.FOREIGN_DOMICILE))
+                                        Set.of(HandoffReasonId.FOREIGN_DOMICILE))
                         ).build());
         TaskData task = new TaskData();
         task.setType("ExamineDeBonisNon");
@@ -297,7 +298,7 @@ class WaTaskServiceTest {
                         .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(
                                 generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.DOUBLE_PROBATE))
+                                        Set.of(HandoffReasonId.DOUBLE_PROBATE))
                         ).build());
 
         TaskData task = new TaskData();
@@ -338,7 +339,7 @@ class WaTaskServiceTest {
     void shouldReturnHandOffReasonsFromCaseDetails() {
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
-                        .boHandoffReasonList(generateHandOffReasonCollection(List.of(HandoffReasonId.DOUBLE_PROBATE,
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(HandoffReasonId.DOUBLE_PROBATE,
                                 HandoffReasonId.FOREIGN_DOMICILE)))
                         .build());
 
@@ -380,7 +381,7 @@ class WaTaskServiceTest {
                         .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(
                                 generateHandOffReasonCollection(
-                                        List.of(HandoffReasonId.DOUBLE_PROBATE,
+                                        Set.of(HandoffReasonId.DOUBLE_PROBATE,
                                                 HandoffReasonId.LEADING_FOLLOWING_GRANTS,
                                                 HandoffReasonId.FOREIGN_DOMICILE))
                         ).build());
@@ -431,51 +432,6 @@ class WaTaskServiceTest {
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
         );
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
-                .build();
-
-        CaseDataContent result =
-                functionCaptor.getValue().apply(startEventResponse);
-
-        assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
-
-        assertThat(result.getEventToken())
-                .isEqualTo("event-token");
-
-        assertThat(result.getData()).isNotNull();
-    }
-
-    @Test
-    void shouldBuildCorrectCaseDataContentWhenClosingReadyToIssueHandOffs() {
-
-        Long caseId = 123456789L;
-        CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(NO)
-                .build();
-
-        when(caseDetails.getId())
-                .thenReturn(caseId);
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
-
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
-
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
-                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
-                functionCaptor.capture(),
-                isA(SecurityDTO.class));
-
         StartEventResponse startEventResponse = StartEventResponse.builder()
                 .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
                 .token("event-token")
@@ -556,48 +512,125 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldBuildCorrectCaseDataContentWhenClosingAwaitingDocumentationHandOffs() {
+    void shouldReturnAllAssociatedTasks() {
 
-        Long caseId = 123456789L;
-        CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(NO)
+        String examineIbisCasePrinted = "ExamineIBISCasePrinted";
+        TaskData task1 = TaskData.builder()
+                .type(examineIbisCasePrinted)
                 .build();
 
-        when(caseDetails.getId())
-                .thenReturn(caseId);
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
-
-        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
-
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
-                eq(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS),
-                functionCaptor.capture(),
-                isA(SecurityDTO.class));
-
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
+        String examineLostWillCasePrinted = "ExamineLostWillCasePrinted";
+        TaskData task2 = TaskData.builder()
+                .type(examineLostWillCasePrinted)
                 .build();
 
-        CaseDataContent result =
-                functionCaptor.getValue().apply(startEventResponse);
+        GetTasksCompletableResponse<TaskData> response =
+                new GetTasksCompletableResponse<>(
+                        false,
+                        List.of(task1, task2)
+                );
 
-        assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName());
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                eq(authToken),
+                eq(serviceToken),
+                any(SearchEventAndCase.class)
+        )).thenReturn(ResponseEntity.ok(response));
 
-        assertThat(result.getEventToken())
-                .isEqualTo("event-token");
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
 
-        assertThat(result.getData()).isNotNull();
+        Set<String> result =
+                waTaskService.getAllAssociatedTasks(authToken,
+                        caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
+
+        assertThat(result)
+                .containsExactlyInAnyOrder(
+                        examineIbisCasePrinted,
+                        examineLostWillCasePrinted);
+
+        verify(waApi).searchWithCriteriaForAutomaticCompletion(
+                eq(authToken),
+                eq(serviceToken),
+                isA(SearchEventAndCase.class)
+        );
+    }
+
+    @Test
+    void shouldReturnEmptySetWhenNoTasksFound() {
+
+        GetTasksCompletableResponse<TaskData> response =
+                new GetTasksCompletableResponse<>(
+                        false,
+                        List.of()
+                );
+
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                anyString(),
+                anyString(),
+                any(SearchEventAndCase.class)
+        )).thenReturn(ResponseEntity.ok(response));
+
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
+
+        Set<String> result =
+                waTaskService.getAllAssociatedTasks(authToken,
+                        caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void shouldReturnEmptySetWhenResponseBodyIsNull() {
+
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                anyString(),
+                anyString(),
+                any(SearchEventAndCase.class)
+        )).thenReturn(ResponseEntity.ok().build());
+
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
+
+        Set<String> result =
+                waTaskService.getAllAssociatedTasks(authToken,
+                        caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void shouldRemoveDuplicateTaskTypes() {
+
+        TaskData task1 = TaskData.builder()
+                .type("examineDigitalCaseProbate")
+                .build();
+
+        TaskData task2 = TaskData.builder()
+                .type("examineDigitalCaseProbate")
+                .build();
+
+        GetTasksCompletableResponse<TaskData> response =
+                new GetTasksCompletableResponse<>(
+                        false,
+                        List.of(task1, task2)
+                );
+
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                eq(authToken),
+                eq(serviceToken),
+                any(SearchEventAndCase.class)))
+                .thenReturn(ResponseEntity.ok(response));
+
+        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
+
+        Set<String> result =
+                waTaskService.getAllAssociatedTasks(authToken,
+                        caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
+
+        assertThat(result)
+                .containsExactly("examineDigitalCaseProbate");
     }
 
     private void setUpCallbackRequestForCaseType(
@@ -614,7 +647,7 @@ class WaTaskServiceTest {
     }
 
     private List<CollectionMember<HandoffReason>> generateHandOffReasonCollection(
-            List<HandoffReasonId> handOffReasons) {
+            Set<HandoffReasonId> handOffReasons) {
         return handOffReasons.stream()
                 .map(handoffReason ->
                         new CollectionMember<>(

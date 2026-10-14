@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.List;
+import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
@@ -21,7 +21,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
 
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
-    private static final List<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CREATE = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CREATE = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
@@ -42,7 +42,9 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
-        Result result = getResult(callbackRequest, responseCaseData);
+        Result result = getResult(callbackRequest,
+                responseCaseData,
+                request -> true);
 
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged

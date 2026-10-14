@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -57,7 +58,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
     private static final String AUTH_TOKEN = "authToken";
-    private static final List<TaskTypes> taskToCreate = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+    private static final Set<TaskTypes> taskToCreate = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);

@@ -20,6 +20,8 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -66,12 +68,12 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     private static final String AUTH_TOKEN = "authToken";
 
-    private final List<TaskTypes> taskToCLose = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+    private static final Set<TaskTypes> taskToCLose = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
 
-    private static final List<TaskTypes> taskToCreate = List.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+    private static final Set<TaskTypes> taskToCreate = Set.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE);
@@ -145,15 +147,17 @@ class AmendCaseDetailsForReadyToIssueTest {
     @Test
     void shouldSetCreateTaskToNoWhenHandOffReasonsAreSame() {
         setUpHandOffReasonsCallbackRequest(
-                HandoffReasonId.AD_COLLIGENDA_BONA,
-                HandoffReasonId.AD_COLLIGENDA_BONA
+                List.of(HandoffReasonId.AD_COLLIGENDA_BONA),
+                List.of(HandoffReasonId.AD_COLLIGENDA_BONA)
         );
         String caseId = callbackRequest.getCaseDetails().getId().toString();
 
         doReturn(false)
                 .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
-
+        doReturn(Set.of())
+                .when(waTaskService).getAllAssociatedTasks(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION);
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -173,14 +177,18 @@ class AmendCaseDetailsForReadyToIssueTest {
     @Test
     void shouldSetCreateTaskToYesWhenHandOffReasonsAreDifferent() {
         setUpHandOffReasonsCallbackRequest(
-                HandoffReasonId.FIAT_WILL,
-                HandoffReasonId.CODICIL_MIS
+                List.of(HandoffReasonId.FIAT_WILL),
+                List.of(HandoffReasonId.CODICIL_MIS)
         );
         String caseId = callbackRequest.getCaseDetails().getId().toString();
 
         doReturn(false)
                 .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+
+        doReturn(Set.of())
+                .when(waTaskService).getAllAssociatedTasks(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -190,6 +198,37 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .extracting(HandoffReason::getCaseHandoffReason)
                 .containsExactlyInAnyOrder(
                         HandoffReasonId.FIAT_WILL);
+
+        verify(waTaskService)
+                .getCaseTypePredicate();
+        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
+                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenAmendDocHandOffReasonsIsPresent() {
+        setUpHandOffReasonsCallbackRequest(
+                List.of(HandoffReasonId.FIAT_WILL,HandoffReasonId.CODICIL_MIS),
+                List.of(HandoffReasonId.CODICIL_MIS)
+        );
+        String caseId = callbackRequest.getCaseDetails().getId().toString();
+
+        doReturn(false)
+                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
+
+        doReturn(Set.of("ExamineCodicilMisCasePrinted"))
+                .when(waTaskService).getAllAssociatedTasks(AUTH_TOKEN, caseId,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(
+                        HandoffReasonId.FIAT_WILL, HandoffReasonId.CODICIL_MIS);
 
         verify(waTaskService)
                 .getCaseTypePredicate();
@@ -255,25 +294,31 @@ class AmendCaseDetailsForReadyToIssueTest {
     }
 
     private void setUpHandOffReasonsCallbackRequest(
-            HandoffReasonId handOffReasonId,
-            HandoffReasonId handOffReasonBeforeId) {
+            List<HandoffReasonId> handOffReasonIds,
+            List<HandoffReasonId> handOffReasonBeforeIds) {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
         when(callbackRequest.getCaseDetailsBefore())
                 .thenReturn(caseDetailsBefore);
+
+        Function<List<HandoffReasonId>, List<CollectionMember<HandoffReason>>> handOffs = handOffReasons ->
+                handOffReasons.stream()
+                                .map(handoffReasonId -> new CollectionMember<>(null,
+                                        HandoffReason.builder().caseHandoffReason(handoffReasonId).build()))
+                                .toList();
+
+
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
                         .caseHandedOffToLegacySite(YES)
-                        .boHandoffReasonList(List.of(new CollectionMember<>(null,
-                                HandoffReason.builder().caseHandoffReason(handOffReasonId).build())))
+                        .boHandoffReasonList(handOffs.apply(handOffReasonIds))
                         .build());
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
                         .caseHandedOffToLegacySite(YES)
-                        .boHandoffReasonList(List.of(new CollectionMember<>(null,
-                                HandoffReason.builder().caseHandoffReason(handOffReasonBeforeId).build())))
+                        .boHandoffReasonList(handOffs.apply(handOffReasonBeforeIds))
                         .build());
     }
 }

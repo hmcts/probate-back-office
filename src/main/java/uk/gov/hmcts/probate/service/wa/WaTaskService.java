@@ -50,7 +50,35 @@ public class WaTaskService {
     public boolean isTaskPresent(String authToken,
                                  String caseId,
                                  String eventId,
-                                 @NonNull List<TaskTypes> taskNames) {
+                                 @NonNull Set<TaskTypes> taskNames) {
+        GetTasksCompletableResponse<TaskData> taskResponse = getWAResponse(authToken, caseId, eventId);
+
+        return Optional.ofNullable(taskResponse)
+                .map(GetTasksCompletableResponse::tasks)
+                .stream()
+                .flatMap(List::stream)
+                .map(TaskData::getType)
+                .map(TaskTypes::fromValue)
+                .flatMap(Optional::stream)
+                .anyMatch(taskNames::contains);
+    }
+
+    public Set<String> getAllAssociatedTasks(String authToken,
+                                             String caseId,
+                                             String eventId) {
+        GetTasksCompletableResponse<TaskData> taskResponse = getWAResponse(authToken, caseId, eventId);
+
+        return Optional.ofNullable(taskResponse)
+                .map(GetTasksCompletableResponse::tasks)
+                .stream()
+                .flatMap(List::stream)
+                .map(TaskData::getType)
+                .collect(Collectors.toSet());
+    }
+
+    private GetTasksCompletableResponse<TaskData> getWAResponse(String authToken,
+                                                                                String caseId,
+                                                                                String eventId) {
         SearchEventAndCase searchEventAndCase = new SearchEventAndCase(
                 caseId,
                 eventId,
@@ -67,15 +95,8 @@ public class WaTaskService {
         log.info("WA task response status: {} for case id {}",
                 taskResponse.getStatusCode(),
                 caseId);
-
-        return Optional.ofNullable(taskResponse.getBody())
-                .map(GetTasksCompletableResponse::tasks)
-                .stream()
-                .flatMap(List::stream)
-                .map(TaskData::getType)
-                .map(TaskTypes::fromValue)
-                .flatMap(Optional::stream)
-                .anyMatch(taskNames::contains);
+        GetTasksCompletableResponse<TaskData> body = taskResponse.getBody();
+        return taskResponse.getBody();
     }
 
     public BiPredicate<CallbackRequest, String> getCaseTypePredicate() {

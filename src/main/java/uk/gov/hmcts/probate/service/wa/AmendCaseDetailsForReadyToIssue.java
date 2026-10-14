@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.List;
+import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
@@ -26,12 +26,12 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
     private static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
-    private static final List<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = List.of(EXAMINE_DIGITAL_CASE_PROBATE,
+    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
             EXAMINE_DIGITAL_CASE_INTESTACY,
             EXAMINE_DIGITAL_CASE_ADMON_WILL,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
-    private static final List<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE
-            = List.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+    private static final Set<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE
+            = Set.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE,
             EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE);
@@ -49,7 +49,9 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
     }
 
     @Override
-    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(final String authToken,
+                        final CallbackRequest callbackRequest,
+                        final ResponseCaseData responseCaseData) {
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
         boolean taskToClosePresent = !caseTypeChanged
@@ -58,7 +60,17 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                 TASKS_AWAITING_DOCUMENTATION_TO_CLOSE);
 
-        Result result = getResult(callbackRequest, responseCaseData);
+        Result result = getResult(
+                callbackRequest,
+                responseCaseData,
+                request -> {
+                    Long caseId = request.getCaseDetails().getId();
+                    Set<String> allAssociatedTasks = waTaskService.getAllAssociatedTasks(authToken,
+                            caseId.toString(),
+                            BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION);
+                    log.info("case id {}: allAssociatedTasks {}", caseId, allAssociatedTasks);
+                    return allAssociatedTasks.isEmpty();
+                });
 
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
