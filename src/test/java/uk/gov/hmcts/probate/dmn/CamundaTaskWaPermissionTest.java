@@ -147,7 +147,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim,Assign",
+                                        "value", "Read,Own,Claim,Assign",
                                         "roleCategory", ROLE_CATEGORY_CTSC,
                                         "assignmentPriority", 1,
                                         "autoAssignable", false,
@@ -168,7 +168,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim,Assign",
+                                        "value", "Read,Own,Claim,Assign",
                                         "roleCategory", ROLE_CATEGORY_CTSC,
                                         "assignmentPriority", 1,
                                         "autoAssignable", false,
@@ -199,7 +199,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim,Assign",
+                                        "value", "Read,Own,Claim,Assign",
                                         "roleCategory", ROLE_CATEGORY_CTSC,
                                         "assignmentPriority", 1,
                                         "autoAssignable", false,
