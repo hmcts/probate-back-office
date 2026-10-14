@@ -267,15 +267,13 @@ public class CallbackResponseTransformer {
         if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
             cd.getData().setEvidenceHandled(YES);
         }
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(cd,
-                        callbackRequest.getEventId(),
-                        newState.isPresent() ? caseworkerInfo : Optional.empty(),
-                        false)
-                        // set here again to make life easier mocking
-                        .state(newState.orElse(null));
-        clearObsoleteWholeBloodSiblingAnswer(callbackRequest, responseCaseDataBuilder);
-        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        ResponseCaseData responseCaseData = getResponseCaseData(cd,
+                callbackRequest.getEventId(),
+                newState.isPresent() ? caseworkerInfo : Optional.empty(),
+                false)
+                // set here again to make life easier mocking
+                .state(newState.orElse(null))
+                .build();
 
         return transformResponse(responseCaseData);
     }
@@ -893,7 +891,6 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
-        clearObsoleteWholeBloodSiblingAnswer(callbackRequest, responseCaseDataBuilder);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
@@ -916,20 +913,6 @@ public class CallbackResponseTransformer {
         setTaskCreation(authToken, callbackRequest, responseCaseData);
 
         return transformResponse(responseCaseData);
-    }
-
-    private void clearObsoleteWholeBloodSiblingAnswer(CallbackRequest callbackRequest,
-                                                       ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
-        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(callbackRequest.getEventId())) {
-            return;
-        }
-
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        boolean isSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased());
-        boolean hasHalfSiblingAnswer = HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
-        if (!(isSiblingRelationship && hasHalfSiblingAnswer)) {
-            responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
-        }
     }
 
     private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
@@ -1654,7 +1637,7 @@ public class CallbackResponseTransformer {
             .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
-            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
+            .anyLivingWholeBloodSiblings(getAnyLivingWholeBloodSiblingsForResponse(caseData, eventId))
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
@@ -1681,6 +1664,16 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    private String getAnyLivingWholeBloodSiblingsForResponse(CaseData caseData, String eventId) {
+        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(eventId)) {
+            return caseData.getAnyLivingWholeBloodSiblings();
+        }
+
+        boolean isSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased());
+        boolean hasHalfSiblingAnswer = HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
+        return isSiblingRelationship && hasHalfSiblingAnswer ? caseData.getAnyLivingWholeBloodSiblings() : null;
     }
 
     void handleDeceasedAliases(
