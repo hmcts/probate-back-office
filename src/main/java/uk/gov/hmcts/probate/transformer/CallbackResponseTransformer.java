@@ -267,11 +267,11 @@ public class CallbackResponseTransformer {
         if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
             cd.getData().setEvidenceHandled(YES);
         }
-        ResponseCaseData responseCaseData = getResponseCaseData(
-                cd,
-                callbackRequest.getEventId(),
-                newState.isPresent() ? caseworkerInfo : Optional.empty(),
-                false)
+        ResponseCaseData responseCaseData =
+                getResponseCaseData(cd,
+                        callbackRequest.getEventId(),
+                        newState.isPresent() ? caseworkerInfo : Optional.empty(),
+                        false)
                 // set here again to make life easier mocking
                 .state(newState.orElse(null))
                 .build();
