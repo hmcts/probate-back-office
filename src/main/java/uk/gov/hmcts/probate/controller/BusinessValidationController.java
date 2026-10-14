@@ -746,10 +746,10 @@ public class BusinessValidationController {
         registryLocationEpimmsIdMap.put("Bristol", "819890");
         registryLocationEpimmsIdMap.put("ctsc", "815833");
 
-        if ((callbackRequest != null) &&
-                (callbackRequest.getCaseDetails() != null) &&
-                (callbackRequest.getCaseDetails().getData() != null) &&
-                (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null)) {
+        if ((callbackRequest != null)
+                && (callbackRequest.getCaseDetails() != null)
+                && (callbackRequest.getCaseDetails().getData() != null)
+                && (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null)) {
             String taskLocationEpimmsId = registryLocationEpimmsIdMap.get(
                     callbackRequest.getCaseDetails().getData().getRegistryLocation());
             log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
