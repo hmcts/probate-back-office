@@ -95,6 +95,14 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGIST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_SELECT_FOR_QA_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDEC_NOTIFICATION_SENT_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -621,6 +629,47 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", RESOLVE_STOPPED_CASE,
                                         "state", BO_CASE_STOPPED_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_INTESTACY,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_INTESTACY,
+                                        "state", BO_CASE_QA_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_ADMON,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_ADMON,
+                                        "state", BO_CASE_QA_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_PROBATE,
+                                        "state", BO_CASE_QA_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_AD_COLLIGENDA_BONA,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        BO_SELECT_FOR_QA_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_QA_CASE_AD_COLLIGENDA_BONA,
+                                        "state", BO_CASE_QA_STATE)).build()
+                ),
+                Arguments.of(
+                        RESOLVE_REDECLARATION,
+                        CaseDataBuilder.defaultWaCase().isUrgent()
+                                .setResolveRedeclarationUserIdamId(DEFAULT_ASSIGNEE).build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", RESOLVE_REDECLARATION,
+                                        "state", BO_REDEC_NOTIFICATION_SENT_STATE)).build()
                 )
         );
     }
@@ -631,7 +680,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(33, logic.getRules().size());
+        assertEquals(37, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
