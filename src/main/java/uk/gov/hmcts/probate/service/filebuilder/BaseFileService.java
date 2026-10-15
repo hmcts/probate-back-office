@@ -38,8 +38,13 @@ public abstract class BaseFileService {
         fileData.add(address.get(6));
     }
 
-    protected int ageCalculator(CaseData data) {
-        return Period.between(data.getDeceasedDateOfBirth(), data.getDeceasedDateOfDeath()).getYears();
+    protected String ageCalculator(CaseData data) {
+        if (data.getDeceasedDateOfBirth() == null || data.getDeceasedDateOfDeath() == null) {
+            return "";
+        }
+        return String.valueOf(
+                Period.between(data.getDeceasedDateOfBirth(), data.getDeceasedDateOfDeath()).getYears()
+        );
     }
 
     protected List<String> addressManager(SolsAddress address) {
