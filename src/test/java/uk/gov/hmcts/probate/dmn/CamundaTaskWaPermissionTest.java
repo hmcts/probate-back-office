@@ -144,44 +144,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         DUMMY_CASE_DATA,
-                        List.of(
-                                Map.of(
-                                        "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE),
-                                Map.of(
-                                        "name", "ctsc-team-leader",
-                                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE
-                                )
-                        )
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
-                        List.of(
-                                Map.of(
-                                        "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE),
-                                Map.of(
-                                        "name", "ctsc-team-leader",
-                                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE
-                                )
-                        )
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
@@ -196,23 +164,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
-                        List.of(
-                                Map.of(
-                                        "name", "ctsc",
-                                        "value", "Read,Own,Claim,Unclaim",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE),
-                                Map.of(
-                                        "name", "ctsc-team-leader",
-                                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                                        "roleCategory", ROLE_CATEGORY_CTSC,
-                                        "assignmentPriority", 1,
-                                        "autoAssignable", false,
-                                        "authorisations", PROBATE_EXAMINE_SKILL_CODE
-                                )
-                        )
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
