@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
@@ -127,9 +128,9 @@ public class ConfigurationExpectationBuilder {
         builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
-                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
+                .expectedValue(REGION, "12", true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
-                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
+                .expectedValue(LOCATION, LOCATION_VALUE, true)
                 .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
                 .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
                 .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
