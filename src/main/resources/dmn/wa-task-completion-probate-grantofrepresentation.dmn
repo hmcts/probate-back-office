@@ -647,6 +647,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_08tb0un">
+        <inputEntry id="UnaryTests_029zq7s">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mnhza6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09eqmm2">
+          <text></text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
