@@ -119,6 +119,15 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_QA_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_QA_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_QA_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_QA_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -470,6 +479,31 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         RESOLVE_STOPPED_CASE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissionsWithAutoAssign(null, true)
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_INTESTACY,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INTESTACY_QA_SKILL_CODE)
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_ADMON,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(ADMON_QA_SKILL_CODE)
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_PROBATE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_QA_SKILL_CODE)
+                ),
+                Arguments.of(
+                        REVIEW_QA_CASE_AD_COLLIGENDA_BONA,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(AD_COLLIGENDA_BONA_QA_SKILL_CODE)
+                ),
+                Arguments.of(
+                        RESOLVE_REDECLARATION,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissionsWithAutoAssign(null, true)
                 )
         );
     }
@@ -496,7 +530,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(113));
+        assertThat(logic.getRules().size(), is(123));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

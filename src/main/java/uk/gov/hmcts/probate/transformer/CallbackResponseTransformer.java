@@ -1055,7 +1055,11 @@ public class CallbackResponseTransformer {
                         transform);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        return transformResponse(responseCaseDataBuilder.build());
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        setTaskCreation(null, callbackRequest, responseCaseData);
+
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -1644,7 +1648,8 @@ public class CallbackResponseTransformer {
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
             .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
-            .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId());
+            .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
+            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
 
         handleDeceasedAliases(
                 builder,
