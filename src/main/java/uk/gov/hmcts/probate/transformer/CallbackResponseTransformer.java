@@ -1674,7 +1674,12 @@ public class CallbackResponseTransformer {
 
         boolean isSiblingRelationship = SIBLING.equalsIgnoreCase(caseData.getSolsApplicantRelationshipToDeceased());
         boolean hasHalfSiblingAnswer = HALF_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased());
-        return isSiblingRelationship && hasHalfSiblingAnswer ? caseData.getAnyLivingWholeBloodSiblings() : null;
+        boolean isHalfBloodSibling = isSiblingRelationship && hasHalfSiblingAnswer;
+        if (isHalfBloodSibling) {
+            return caseData.getAnyLivingWholeBloodSiblings();
+        }
+
+        return null;
     }
 
     void handleDeceasedAliases(
