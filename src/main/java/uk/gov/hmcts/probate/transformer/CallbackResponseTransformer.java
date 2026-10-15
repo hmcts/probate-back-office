@@ -1638,7 +1638,7 @@ public class CallbackResponseTransformer {
             .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
-            .anyLivingWholeBloodSiblings(getAnyLivingWholeBloodSiblingsForResponse(caseData, eventId))
+            .anyLivingWholeBloodSiblings(getAnyLivingWholeBloodSiblingsForResponse(caseData))
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
@@ -1667,8 +1667,8 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    private String getAnyLivingWholeBloodSiblingsForResponse(CaseData caseData, String eventId) {
-        if (!"solicitorUpdateIntestacy".equalsIgnoreCase(eventId)) {
+    private String getAnyLivingWholeBloodSiblingsForResponse(CaseData caseData) {
+        if (!isDigitalSolicitorIntestacyCase(caseData)) {
             return caseData.getAnyLivingWholeBloodSiblings();
         }
 
@@ -1680,6 +1680,12 @@ public class CallbackResponseTransformer {
         }
 
         return null;
+    }
+
+    private boolean isDigitalSolicitorIntestacyCase(CaseData caseData) {
+        return SOLICITOR.equals(caseData.getApplicationType())
+                && INTESTACY.getName().equalsIgnoreCase(caseData.getCaseType())
+                && CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(caseData.getChannelChoice());
     }
 
     void handleDeceasedAliases(
