@@ -174,6 +174,8 @@ ccd:
       devmemoryRequests: 800Mi
       devmemoryLimits: 1.2G
   elasticsearch:
+    securityContext:
+      allowPrivilegeEscalation: false
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
     image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
@@ -192,6 +194,8 @@ ccd:
       enabled: false
     clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
+    securityContext:
+      allowPrivilegeEscalation: false
     image: hmctsprod.azurecr.io/imported/elastic/logstash
     imageTag: "9.2.4"
     imagePullPolicy: "IfNotPresent"
@@ -211,6 +215,8 @@ ccd:
     devmemoryLimits: 1.5G
     extraInitContainers: |
         - name: download-postgres-jdbc
+          securityContext:
+            allowPrivilegeEscalation: false
           image: hmctsprod.azurecr.io/curl:7.70.0
           command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.7.9.jar', '-o', '/logstash-lib/postgresql.jar']
           volumeMounts:
