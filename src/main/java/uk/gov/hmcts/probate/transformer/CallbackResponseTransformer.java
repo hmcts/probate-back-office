@@ -1195,10 +1195,13 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getRegistryLocation());
             log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
             caseDataTransformer.setTaskLocationEpimmsId(callbackRequest.getCaseDetails(), taskLocationEpimmsId);
+            responseCaseDataBuilder.taskLocationEpimmsId(taskLocationEpimmsId);
+
             String taskLocationName = callbackRequest.getCaseDetails().getData().getRegistryLocation();
             log.info("Setting taskLocationName: {}", taskLocationName);
             caseDataTransformer.setTaskLocationName(callbackRequest.getCaseDetails(),
                     taskLocationName);
+            responseCaseDataBuilder.taskLocationName(taskLocationName);
         }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
