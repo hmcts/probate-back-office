@@ -414,7 +414,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_TRUST_CORPORATION
-                                )
+                                ),
+                                Map.of()
                         )
                 ),
                 Arguments.of(
@@ -1182,7 +1183,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FOREIGN_WILL_CASE_PRINTED
-                                )
+                                ),
+                                Map.of()
                         )
                 ),
                 Arguments.of(
@@ -1300,7 +1302,8 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_TRUST_CORPORATION
-                                )
+                                ),
+                                Map.of()
                         )
                 ),
                 Arguments.of(
