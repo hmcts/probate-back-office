@@ -9,11 +9,15 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_EPIMMS_ID;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_NAME;
 
 public class CaseDataBuilder {
 
@@ -33,6 +37,8 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
+        caseData.put(TASK_LOCATION_EPIMMS_ID, LOCATION_VALUE);
+        caseData.put(TASK_LOCATION_NAME, LOCATION_NAME_VALUE);
         return new CaseDataBuilder(caseData);
     }
 
@@ -72,6 +78,16 @@ public class CaseDataBuilder {
 
     public CaseDataBuilder setResolveRedeclarationUserIdamId(String idamId) {
         caseData.put("resolveRedeclarationUserIdamId", idamId);
+        return this;
+    }
+
+    public CaseDataBuilder setTaskLocationEpimmsId(String taskLocationEpimmsId) {
+        caseData.put("taskLocationEpimmsId", taskLocationEpimmsId);
+        return this;
+    }
+
+    public CaseDataBuilder setTaskLocationName(String taskLocationName) {
+        caseData.put("taskLocationName", taskLocationName);
         return this;
     }
 }

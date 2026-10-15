@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -1838,5 +1839,31 @@ class BusinessValidationControllerIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseDataTransformer).setEscalateToRegistrarUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldInitPaperFormSuccessfully() throws Exception {
+        // Arrange
+        CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .registryLocation("Oxford")
+                .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        // Act
+        mockMvc.perform(post("/case/initPaperForm")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Assert
+        //verify(notificationService).startAwaitingDocumentationNotificationPeriod(eq(caseDetails));
+        //verify(caseDataTransformer).transformCaseDataForEvidenceHandled(eq(callbackRequest));
+        //verify(caseDataTransformer).transformIhtFormCaseDataByDeceasedDOD(eq(callbackRequest));
     }
 }

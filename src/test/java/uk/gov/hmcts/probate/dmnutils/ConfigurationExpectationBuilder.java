@@ -34,6 +34,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_QA_CASE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
@@ -49,6 +51,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NATIONAL_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REGISTRAR_ESCALATION_ORDERS;
@@ -60,7 +63,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
@@ -127,10 +129,10 @@ public class ConfigurationExpectationBuilder {
         builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
-                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
+                .expectedValue(REGION, REGION_NATIONAL_VALUE, true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
-                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
-                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
+                .expectedValue(LOCATION, LOCATION_VALUE, true)
+                .expectedValue(LOCATION_NAME, LOCATION_NAME_VALUE, true)
                 .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
                 .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
                 .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)

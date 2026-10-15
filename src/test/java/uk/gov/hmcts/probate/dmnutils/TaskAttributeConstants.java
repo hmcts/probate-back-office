@@ -24,6 +24,8 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_DATE_ORIGIN_REF = "priorityDateOriginRef";
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID = "additionalProperties_roleAssignmentId";
     public static final String REGISTRY_LOCATION = "registryLocation";
+    public static final String TASK_LOCATION_EPIMMS_ID = "taskLocationEpimmsId";
+    public static final String TASK_LOCATION_NAME = "taskLocationName";
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";
@@ -394,5 +396,8 @@ public class TaskAttributeConstants {
     public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
     public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
+    public static final String REGION_NATIONAL_VALUE = "12";
+    public static final String LOCATION_VALUE = "371016";
+    public static final String LOCATION_NAME_VALUE = "Oxford";
 
 }
