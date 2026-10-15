@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.apache.pdfbox.io.RandomAccessRead;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -359,7 +361,57 @@ public class FunctionalTestUtils {
                 .headers(getHeadersWithCaseworkerUser())
                 .body(caseCreateJson)
                 .when().post(submitForCaseworkerUrl).andReturn();
-        return submitResponse.getBody().asString();
+
+        final String caseId = submitResponse.getBody().jsonPath().get("id").toString();
+        final String response = submitResponse.getBody().asString();
+
+        try {
+            waitForCaseInElasticSearch("Caveat", caseId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        return response;
+    }
+
+    public void waitForCaseInElasticSearch(
+            final String caseType,
+            final String caseId) {
+        boolean foundCase = false;
+        int counter = 0;
+        while (!foundCase) {
+            final String searchForCaseUrl = coreCaseDataApiUrl + "/searchCases";
+
+            final var bodyQuery = new JSONObject(Map.of(
+                    "query", Map.of(
+                            "match", Map.of(
+                                    "reference", Map.of(
+                                            "query", caseId))),
+                    "_source", List.of("reference"),
+                    "size", 1));
+
+            final var jsonPath = RestAssured.given()
+                    .relaxedHTTPSValidation()
+                    .headers(getHeadersWithCaseworkerUser())
+                    .queryParam("ctid", caseType)
+                    .body(bodyQuery.toString())
+                    .when()
+                    .post(searchForCaseUrl)
+                    .getBody()
+                    .jsonPath();
+
+            final var matchingCases = jsonPath
+                    .getList("results");
+            if (matchingCases != null && !matchingCases.isEmpty()) {
+                foundCase = true;
+            } else if (counter++  < 40) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                }
+            } else {
+                throw new RuntimeException("No case %s found after 20 iterations of delaying 500ms".formatted(caseId));
+            }
+        }
     }
 
     public String findCaseAsCaseworker(String caseId) {
