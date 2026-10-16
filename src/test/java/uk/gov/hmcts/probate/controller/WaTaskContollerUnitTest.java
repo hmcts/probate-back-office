@@ -382,7 +382,7 @@ class WaTaskContollerUnitTest {
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeAwaitingDocumentationTasks(callbackRequest, anyString());
+        verify(waTaskService, never()).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
     }
 
     @Test
@@ -390,7 +390,7 @@ class WaTaskContollerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeAwaitingDocumentationTasks(callbackRequest, anyString());
+        doNothing().when(waTaskService).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
 
         String clientConext = "clientConext";
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity
