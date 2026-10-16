@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
-import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.fiatWillHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_CASE_TYPE;
@@ -76,8 +76,8 @@ public class CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvide
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, GOP_CASE_TYPE, true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineDigitalCaseProbateTask)
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -101,8 +101,8 @@ public class CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvide
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineDigitalCaseAdmonTask)
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -120,8 +120,8 @@ public class CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvide
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE, true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineDigitalCaseIntestacyTask)
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -139,8 +139,8 @@ public class CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvide
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineDigitalCaseAdColligendaBonaTask)
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

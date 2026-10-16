@@ -12,11 +12,14 @@ import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.leadingFollowingGrantsHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.leadingFollowingGrantsHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -40,6 +43,13 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -299,6 +309,41 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalDataNoHandOffList(),
+                    emptyList()
+            ), //change state event
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(true, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            emptyList(), false),
                     emptyList()
             )
         );
