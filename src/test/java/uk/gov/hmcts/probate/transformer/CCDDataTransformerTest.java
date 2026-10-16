@@ -233,8 +233,6 @@ class CCDDataTransformerTest {
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getSolsPBANumber()).thenReturn(null);
-        when(caseDataMock.getAnyLivingWholeBloodSiblings()).thenReturn(NO);
-        when(caseDataMock.getWholeBloodSiblingsDiedBeforeDeceased()).thenReturn("YesSome");
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
@@ -257,7 +255,6 @@ class CCDDataTransformerTest {
 
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        assertEquals(NO, ccdData.getApplicant().getAnyLivingWholeBloodSiblings());
     }
 
     @Test

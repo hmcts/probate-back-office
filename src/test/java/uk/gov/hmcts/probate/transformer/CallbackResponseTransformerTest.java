@@ -37,16 +37,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -141,15 +137,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
-import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.PARENT;
-import static uk.gov.hmcts.probate.model.Constants.SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
@@ -512,8 +500,6 @@ class CallbackResponseTransformerTest {
         .givenName("givenname")
         .roles(List.of("caseworker-probate"))
         .build());
-    private static final String EVENT_ID = "eventId";
-
     private static final String AUTH_TOKEN = "AUTH_TOKEN";
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationId";
 
@@ -563,8 +549,6 @@ class CallbackResponseTransformerTest {
     private AssembleLetterTransformer assembleLetterTransformer;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
-
-    private CaseData.CaseDataBuilder caseDataBuilderBefore;
 
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
 
@@ -784,8 +768,6 @@ class CallbackResponseTransformerTest {
             .deceasedWrittenWishes(YES)
             .documentsReceivedNotificationSent(YES)
             .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID);
-
-        caseDataBuilderBefore = CaseData.builder().caseType(CASE_TYPE_INTESTACY);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -3841,6 +3823,7 @@ class CallbackResponseTransformerTest {
         );
     }
 
+
     private void assertCommonPayments(CallbackResponse callbackResponse) {
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
@@ -3866,6 +3849,7 @@ class CallbackResponseTransformerTest {
                         callbackResponse.getData().getLegacyCaseViewUrl())
         );
     }
+
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
         assertEquals(applicationType, callbackResponse.getData().getApplicationType());
@@ -4088,6 +4072,7 @@ class CallbackResponseTransformerTest {
         );
     }
 
+
     @Test
     void bulkScanGrantOfRepresentationTransform() {
         CaseCreationDetails grantOfRepresentationDetails
@@ -4145,6 +4130,7 @@ class CallbackResponseTransformerTest {
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails gorCreationDetails) {
+
         uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData
                 grantOfRepresentationData =
                 (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData)
@@ -5210,361 +5196,6 @@ class CallbackResponseTransformerTest {
                 false);
     }
 
-    @Test
-    void shouldClearChildFieldsWhenRelationshipChangedFromChild() {
-        caseDataBuilder.primaryApplicantRelationshipToDeceased(GRAND_CHILD);
-
-        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased(CHILD)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-    }
-
-    @Test
-    void shouldClearChildFieldsWhenRelationshipChangedFromGrandchild() {
-        caseDataBuilder.primaryApplicantRelationshipToDeceased(GRAND_CHILD);
-
-        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased(CHILD)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES)
-                .primaryApplicantParentAdoptedIn(YES)
-                .primaryApplicantParentAdoptionInEnglandOrWales(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
-    }
-
-
-    @Test
-    void shouldClearSiblingFieldsWhenRelationshipChangesFromSibling() {
-        caseDataBuilder.primaryApplicantRelationshipToDeceased(CHILD);
-
-        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased(SIBLING)
-                .deceasedAnyLivingDescendants(NO)
-                .deceasedAnyLivingParents(NO)
-                .deceasedAdoptedIn(YES)
-                .deceasedAdoptionInEnglandOrWales(YES)
-                .applicantSameParentsAsDeceased(YES)
-                .anyLivingWholeBloodSiblings(YES)
-                .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
-                .wholeBloodNiecesAndNephewsSurvived(YES)
-                .wholeBloodSiblingsOverEighteen(YES)
-                .wholeBloodNiecesAndNephewsOverEighteen(YES)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES)
-                .primaryApplicantForenames("Jane")
-                .primaryApplicantSurname("Smith")
-                .primaryApplicantPhoneNumber("987654321");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
-        assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
-        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
-        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
-        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
-        assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
-        assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getWholeBloodSiblingsOverEighteen());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
-        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-    }
-
-    @Test
-    void shouldClearParentFieldsWhenRelationshipChangesFromParent() {
-        caseDataBuilder.primaryApplicantRelationshipToDeceased(SIBLING);
-
-        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased(PARENT)
-                .deceasedAnyLivingDescendants(NO)
-                .deceasedAnyOtherParentAlive(NO)
-                .deceasedAdoptedIn(YES)
-                .deceasedAdoptionInEnglandOrWales(YES)
-                .primaryApplicantForenames("John")
-                .primaryApplicantSurname("Doe")
-                .primaryApplicantPhoneNumber("123456789");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
-        assertNull(callbackResponse.getData().getDeceasedAnyOtherParentAlive());
-        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
-        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
-        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-    }
-
-    @Test
-    void shouldNotClearFieldsWhenRelationshipUnchanged() {
-        caseDataBuilder.primaryApplicantRelationshipToDeceased(CHILD)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES);
-
-        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased(CHILD)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-    }
-
-    @Test
-    void shouldClearFullSiblingFieldsWhenOnlyOneParentISSame() {
-        caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING);
-
-        caseDataBuilderBefore.applicantSameParentsAsDeceased(WHOLE_SIBLING)
-                .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
-                .wholeBloodNiecesAndNephewsSurvived(YES)
-                .wholeBloodSiblingsOverEighteen(YES)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES)
-                .primaryApplicantForenames("John")
-                .primaryApplicantSurname("Doe")
-                .primaryApplicantPhoneNumber("123456789");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
-        assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
-        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-    }
-
-    @Test
-    void shouldClearHalfSiblingFieldsWhenBothParentISSame() {
-        caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING);
-
-        caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
-                .anyLivingWholeBloodSiblings(YES)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
-                .halfBloodNiecesAndNephewsSurvived(YES)
-                .halfBloodSiblingsOverEighteen(YES)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES)
-                .primaryApplicantForenames("John")
-                .primaryApplicantSurname("Doe")
-                .primaryApplicantPhoneNumber("123456789");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
-        assertNull(callbackResponse.getData().getOtherHalfBloodSiblings());
-        assertNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
-        assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
-        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-    }
-
-    @Test
-    void shouldNotClearFieldsWhenSameParentsOptionIsUnchanged() {
-        caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
-                .halfBloodNiecesAndNephewsSurvived(YES)
-                .halfBloodSiblingsOverEighteen(YES)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES);
-
-        caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
-                .halfBloodNiecesAndNephewsSurvived(YES)
-                .halfBloodSiblingsOverEighteen(YES)
-                .primaryApplicantAdoptedIn(YES)
-                .primaryApplicantAdoptionInEnglandOrWales(YES)
-                .primaryApplicantForenames("John")
-                .primaryApplicantSurname("Doe")
-                .primaryApplicantPhoneNumber("123456789");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
-
-        assertNotNull(callbackResponse.getData().getOtherHalfBloodSiblings());
-        assertNotNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
-    }
-
-    @Test
-    void shouldSetupNewDynamicListForParentRelationship() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(PARENT)
-                .otherExecutorExists(YES);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(CHILD);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
-                response.getData().getSolsIntestacyExecutorList();
-        assertNotNull(executorList);
-        assertEquals(1, executorList.size());
-        IntestacyAdditionalExecutor executor = executorList.getFirst().getValue();
-        assertNotNull(executor.getSolsApplicantFamilyDetails());
-        DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
-        assertNotNull(relationshipList);
-        assertEquals(1, relationshipList.getListItems().size());
-        assertEquals(PARENT, relationshipList.getListItems().getFirst().getCode());
-    }
-
-    @Test
-    void shouldSetupNewDynamicListForGrandchildRelationship() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(GRAND_CHILD)
-                .otherExecutorExists(YES);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(CHILD);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
-                response.getData().getSolsIntestacyExecutorList();
-        assertNotNull(executorList);
-        assertEquals(1, executorList.size());
-        IntestacyAdditionalExecutor executor = executorList.getFirst().getValue();
-        assertNotNull(executor.getSolsApplicantFamilyDetails());
-        DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
-        assertNotNull(relationshipList);
-        assertEquals(2, relationshipList.getListItems().size());
-        assertEquals(GRAND_CHILD, relationshipList.getListItems().get(1).getCode());
-    }
-
-    @Test
-    void shouldSetupNewDynamicListForSiblingRelationship() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .otherExecutorExists(YES)
-                .applicantSameParentsAsDeceased(YES);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(CHILD);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
-                response.getData().getSolsIntestacyExecutorList();
-        assertNotNull(executorList);
-        assertEquals(1, executorList.size());
-        IntestacyAdditionalExecutor executor = executorList.getFirst().getValue();
-        assertNotNull(executor.getSolsApplicantFamilyDetails());
-        DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
-        assertNotNull(relationshipList);
-        assertEquals(2, relationshipList.getListItems().size());
-    }
-
-    @Test
-    void shouldSetupDynamicListWithExistingExecutorList() {
-        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
-                .code("child")
-                .label("Child")
-                .build();
-        DynamicRadioList radioList = DynamicRadioList.builder()
-                .listItems(List.of(radioListElement))
-                .value(radioListElement)
-                .build();
-        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
-                .relationship(radioList)
-                .build();
-        IntestacyAdditionalExecutor existingExecutor = IntestacyAdditionalExecutor.builder()
-                .solsApplicantFamilyDetails(familyDetails)
-                .build();
-        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList =
-                List.of(new CollectionMember<>(existingExecutor));
-
-        caseDataBuilder.solsApplicantRelationshipToDeceased("child")
-                .otherExecutorExists("Yes");
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased("child")
-                .solsIntestacyExecutorList(existingExecutorList);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
-                response.getData().getSolsIntestacyExecutorList();
-        assertNotNull(executorList);
-        assertEquals(1, executorList.size());
-        assertEquals(existingExecutor, executorList.getFirst().getValue());
-    }
-
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
@@ -5603,7 +5234,7 @@ class CallbackResponseTransformerTest {
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5642,7 +5273,7 @@ class CallbackResponseTransformerTest {
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5682,7 +5313,7 @@ class CallbackResponseTransformerTest {
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5768,13 +5399,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5800,13 +5431,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5831,13 +5462,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5862,13 +5493,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5893,13 +5524,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5924,13 +5555,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5954,13 +5585,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -5984,13 +5615,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -6017,13 +5648,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -6054,13 +5685,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
@@ -6091,13 +5722,13 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef, EVENT_ID);
+                caseRef);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
-        verify(builderSpy, never()).deceasedAliasNameList(any());
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
 
         verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
