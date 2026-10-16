@@ -6534,8 +6534,8 @@ class CallbackResponseTransformerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "intestacyRelationshipDraft",
-            "intestacySiblingSameParentDraft"
+        "intestacyRelationshipDraft",
+        "intestacySiblingSameParentDraft"
     })
     void shouldSkipDeceasedAliasConversionForDraftEventsWithCallback(String eventId) {
         final var builder = spy(ResponseCaseData.builder());
