@@ -341,21 +341,24 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
                         List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",false,
-                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
                         emptyList()
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
-                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
                         List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
