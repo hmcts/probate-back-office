@@ -1638,7 +1638,7 @@ public class CallbackResponseTransformer {
             .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
-            .anyLivingWholeBloodSiblings(getAnyLivingWholeBloodSiblingsForResponse(caseData))
+            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
             .createTask(caseData.getCreateTask())
             .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
             .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
