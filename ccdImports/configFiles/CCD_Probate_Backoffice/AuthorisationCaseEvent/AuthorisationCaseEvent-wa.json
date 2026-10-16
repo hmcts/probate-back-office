@@ -22,5 +22,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseStopped", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeReadyToIssueHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeAwaitingDocumentationHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeAwaitingDocumentationHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeAwaitingDocumentationIce", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]

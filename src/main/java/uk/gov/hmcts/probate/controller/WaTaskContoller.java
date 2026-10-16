@@ -142,11 +142,13 @@ public class WaTaskContoller {
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
-    @PostMapping(path = "/trigger/closeAwaitingDocumentationHandOffs",
+    @PostMapping(path = "/trigger/closeAwaitingDocumentationTasks",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse>  closeAwaitingDocumentationHandOffs(
+    public ResponseEntity<CallbackResponse> closeAwaitingDocumentationTasks(
             @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
@@ -156,7 +158,7 @@ public class WaTaskContoller {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-            waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+            waTaskService.closeAwaitingDocumentationTasks(callbackRequest, clientContext);
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }

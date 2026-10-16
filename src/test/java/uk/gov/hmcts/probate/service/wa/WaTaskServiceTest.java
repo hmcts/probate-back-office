@@ -47,6 +47,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -205,8 +206,8 @@ class WaTaskServiceTest {
     @Test
     void shouldReturnTrueWhenCaseTypeHasChanged() {
         setUpCallbackRequestForCaseType(
-                "GrantOfProbate",
-                "GrantOfAdministration"
+                "gop",
+                "intestacy"
         );
 
         BiPredicate<CallbackRequest, String> predicate =
@@ -219,8 +220,8 @@ class WaTaskServiceTest {
     @Test
     void shouldReturnFalseWhenCaseTypeHasNotChanged() {
         setUpCallbackRequestForCaseType(
-                "GrantOfProbate",
-                "GrantOfProbate"
+                "gop",
+                "gop"
         );
 
         BiPredicate<CallbackRequest, String> predicate =
@@ -410,13 +411,12 @@ class WaTaskServiceTest {
 
     @Test
     void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
-        Long caseId = 123456789L;
         CaseData caseData = CaseData.builder()
                 .caseHandedOffToLegacySite(NO)
                 .build();
 
         when(caseDetails.getId())
-                .thenReturn(caseId);
+                .thenReturn(Long.valueOf(caseId));
         when(caseDetails.getData())
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
@@ -427,7 +427,7 @@ class WaTaskServiceTest {
         waTaskService.closeReadyToIssueHandOffs(callbackRequest);
 
         verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
+                eq(caseId),
                 eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
@@ -456,37 +456,106 @@ class WaTaskServiceTest {
     void shouldNotCloseAwaitingDocumentationHandOffsWhenCaseIsHandedOffToLegacySite() {
         CaseData caseData = CaseData.builder()
                 .caseHandedOffToLegacySite(Constants.YES)
+                .caseType("gop")
                 .build();
         when(caseDetails.getData())
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+        when(caseDetailsBefore.getData())
+                .thenReturn(caseData);
 
-        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
         verifyNoInteractions(ccdClientApi);
     }
 
     @Test
+    void shouldNotCloseAwaitingDocumentationIceWhenCaseTypeHasNotChanged() {
+        setUpCallbackRequestForCaseType(
+                "gop",
+                "gop"
+        );
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.empty());
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
+
+        verifyNoInteractions(ccdClientApi);
+    }
+
+    @Test
+    void shouldCloseAwaitingDocumentationIceWhenCaseTypeHasChanged() {
+        setUpCallbackRequestForCaseType(
+                "gop",
+                "intestacy"
+        );
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.empty());
+
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId),
+                eq(CLOSE_AWAITING_DOCUMENTATION_ICE),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class)
+        );
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId(CLOSE_AWAITING_DOCUMENTATION_ICE.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
+                .build();
+
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
+
+        assertThat(result.getEvent().getId())
+                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_ICE.getName());
+
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
+    }
+
+    @Test
     void shouldCloseAwaitingDocumentationHandOffsWhenCaseIsNotHandedOffToLegacySite() {
-        Long caseId = 123456789L;
         CaseData caseData = CaseData.builder()
                 .caseHandedOffToLegacySite(NO)
+                .caseType("gop")
                 .build();
 
         when(caseDetails.getId())
-                .thenReturn(caseId);
+                .thenReturn(Long.valueOf(caseId));
         when(caseDetails.getData())
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+        when(caseDetailsBefore.getData())
+                .thenReturn(caseData);
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .thenReturn(SecurityDTO.builder().build());
 
-        waTaskService.closeAwaitingDocumentationHandOffs(callbackRequest);
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
         verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
+                eq(caseId),
                 eq(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS),
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
@@ -641,7 +710,9 @@ class WaTaskServiceTest {
         when(callbackRequest.getCaseDetailsBefore())
                 .thenReturn(caseDetailsBefore);
         when(caseDetails.getData())
-                .thenReturn(CaseData.builder().caseType(caseType).build());
+                .thenReturn(CaseData.builder()
+                        .caseType(caseType)
+                        .build());
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder().caseType(caseTypeBefore).build());
     }

@@ -38,6 +38,7 @@ import java.util.function.BiPredicate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -381,7 +382,7 @@ class WaTaskContollerUnitTest {
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeAwaitingDocumentationHandOffs(callbackRequest);
+        verify(waTaskService, never()).closeAwaitingDocumentationTasks(callbackRequest, anyString());
     }
 
     @Test
@@ -389,16 +390,18 @@ class WaTaskContollerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeAwaitingDocumentationHandOffs(callbackRequest);
+        doNothing().when(waTaskService).closeAwaitingDocumentationTasks(callbackRequest, anyString());
 
+        String clientConext = "clientConext";
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity
-                = waTaskContoller.closeAwaitingDocumentationHandOffs(callbackRequest,
+                = waTaskContoller.closeAwaitingDocumentationTasks(callbackRequest,
+                clientConext,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        verify(waTaskService).closeAwaitingDocumentationHandOffs(callbackRequest);
+        verify(waTaskService).closeAwaitingDocumentationTasks(callbackRequest, clientConext);
     }
 
 

@@ -284,17 +284,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1n7soue">
-        <inputEntry id="UnaryTests_1hmgdlz">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation","boAmendCaseDetailsForReadyToIssue","handleEvidence"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0nb2nwv">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_09zk775">
-          <text></text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1xuc0fd">
         <inputEntry id="UnaryTests_1eb6s7l">
           <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation","boAmendCaseDetailsForAwaitingDocumentation"</text>
@@ -436,17 +425,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1n43bs1">
           <text>"Auto"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1uaz2rl">
-        <inputEntry id="UnaryTests_0gv1j1s">
-          <text>"boStopCaseForCaseMatchingForExamining"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_12kg7fi">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_15qpiur">
-          <text></text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1jbf64u">
@@ -667,6 +645,17 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_03wtfoy">
           <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08tb0un">
+        <inputEntry id="UnaryTests_029zq7s">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","boAmendCaseDetailsForReadyToIssue","handleEvidence","boStopCaseForCaseMatchingForExamining"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mnhza6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09eqmm2">
+          <text></text>
         </outputEntry>
       </rule>
     </decisionTable>

@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
@@ -161,12 +162,15 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/trigger/closeAwaitingDocumentationHandOffs")
+        mockMvc.perform(post("/waTaskContoller/trigger/closeAwaitingDocumentationTasks")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
                         .content(payload))
                 .andExpect(status().isOk());
 
-        verify(waTaskService).closeAwaitingDocumentationHandOffs(isA(CallbackRequest.class));
+        verify(waTaskService).closeAwaitingDocumentationTasks(isA(CallbackRequest.class), encodedString.get());
     }
 
     @Test

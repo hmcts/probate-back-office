@@ -206,6 +206,29 @@
           <text>"awaitingDocumentationHandOffs"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_07iovqf">
+        <inputEntry id="UnaryTests_0iy3ijo">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wind8q">
+          <text>"closeAwaitingDocumentationIce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1n8bvle">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0fdi710">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mq7udu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kt143m">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kvoxtn">
+          <text>"examineDigitalCaseTypes"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

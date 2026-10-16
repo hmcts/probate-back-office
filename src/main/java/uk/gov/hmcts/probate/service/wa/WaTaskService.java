@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -35,6 +34,7 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
@@ -151,33 +151,45 @@ public class WaTaskService {
     }
 
     public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest) {
-        triggerEvent(callbackRequest, CLOSE_READY_TO_ISSUE_HANDOFFS);
+        triggerCloseHandOffEvent(callbackRequest, CLOSE_READY_TO_ISSUE_HANDOFFS);
     }
 
-    public void closeAwaitingDocumentationHandOffs(CallbackRequest callbackRequest) {
-        triggerEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+    public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
+                                                String clientContext) {
+        triggerCloseHandOffEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+
+        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
+        if (taskData.isEmpty() && getCaseTypePredicate().test(callbackRequest, clientContext)) {
+            log.info("Case id {} : no context task and case type has changed",
+                    callbackRequest.getCaseDetails().getId());
+            triggerEvent(callbackRequest.getCaseDetails(), CLOSE_AWAITING_DOCUMENTATION_ICE);
+        }
     }
 
-    private void triggerEvent(CallbackRequest callbackRequest, EventId eventId) {
+    private void triggerCloseHandOffEvent(CallbackRequest callbackRequest,
+                                          EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
-                .filter(site -> site.equals(Constants.NO))
-                .ifPresent(site -> {
-                    Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
-                            startEventResponse ->
-                                    CaseDataContent.builder()
-                                            .event(Event.builder()
-                                                    .id(startEventResponse.getEventId())
-                                                    .build())
-                                            .eventToken(startEventResponse.getToken())
-                                            .data(startEventResponse.getCaseDetails().getData())
-                                            .build();
+                .filter(NO::equals)
+                .ifPresent(legacySite ->
+                    triggerEvent(caseDetails, eventId));
+    }
 
-                    ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                            eventId,
-                            caseDataContentFunction,
-                            securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-                });
+    private void triggerEvent(CaseDetails caseDetails, EventId eventId) {
+        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
+                startEventResponse ->
+                        CaseDataContent.builder()
+                                .event(Event.builder()
+                                        .id(startEventResponse.getEventId())
+                                        .build())
+                                .eventToken(startEventResponse.getToken())
+                                .data(startEventResponse.getCaseDetails().getData())
+                                .build();
+
+        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
+                eventId,
+                caseDataContentFunction,
+                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
     }
 }
