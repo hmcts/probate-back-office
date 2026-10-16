@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.12.1")
+@Library("Infrastructure@2.12.2")
 
 String product = "probate"
 String component = "back-office"
@@ -244,12 +244,15 @@ withPipeline("java", product, component) {
   syncBranchesWithMaster(branchesToSync)
   afterSuccess('checkout') {
       echo "environment: ${env.ENV}"
-      def subscription = 'nonprod'
-      if (env.ENV == 'demo') {
+      def subscription = env.ENV == 'perftest' ? 'qa' : 'nonprod'
+      if (env.ENV in ['demo', 'perftest']) {
           withSubscription(subscription) {
-              echo "Uploading dmn and bpmn diagrams"
+              echo "Uploading dmn diagrams"
               uploadDmnDiagrams()
-              uploadBpmnDiagram()
+              if (env.ENV == 'demo') {
+                  echo "Uploading bpmn diagrams"
+                  uploadBpmnDiagram()
+              }
           }
       }
   }
@@ -413,8 +416,10 @@ withPipeline("java", product, component) {
 
   onPerftest() {
     env.ENV='perftest'
-    env.PROBATE_WA_ENABLED = false
-    env.PROBATE_GS_ENABLED = false
+    env.PROBATE_WA_ENABLED = true
+    env.PROBATE_GS_ENABLED = true
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal"
+    env.CAMUNDA_BASE_URL = "http://camunda-api-perftest.service.core-compute-perftest.internal"
   }
 
   before('smoketest:preview') {

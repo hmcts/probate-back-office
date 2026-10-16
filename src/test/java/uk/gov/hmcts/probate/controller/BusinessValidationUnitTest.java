@@ -49,8 +49,6 @@ import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
-import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
-import uk.gov.hmcts.probate.validator.CheckIntestacyOtherApplicantRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
@@ -60,11 +58,6 @@ import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
-import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
-import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
-import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationDateValidationRule;
-import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
@@ -98,7 +91,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.Mockito.when;
@@ -117,6 +109,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_SOT_GENERATED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 
@@ -224,23 +218,11 @@ class BusinessValidationUnitTest {
     @Mock
     private IHTFormIDValidationRule ihtFormIDValidationRule;
     @Mock
-    private IntestacyDeceasedDetailsValidationRule intestacyDeceasedDetailsValidationRule;
-    @Mock
-    private IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
-    @Mock
-    private IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
-    @Mock
-    private IntestacyDivorceOrSeparationValidationRule intestacyDivorceOrSeparationValidationRule;
-    @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
-    @Mock
-    private CheckIntestacyMaritalStatusRule checkIntestacyMaritalStatusRule;
-    @Mock
-    private CheckIntestacyOtherApplicantRule checkIntestacyOtherApplicantRule;
     @Mock
     private UserInfoService userInfoServiceMock;
     @Mock
@@ -249,8 +231,6 @@ class BusinessValidationUnitTest {
     private DocumentTransformer documentTransformerMock;
     @Mock
     private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
-    @Mock
-    private IntestacyDivorceOrSeparationDateValidationRule intestacyDivorceOrSeparationDateValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -299,13 +279,6 @@ class BusinessValidationUnitTest {
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
             zeroApplyingExecutorsValidationRule,
-            checkIntestacyOtherApplicantRule,
-            checkIntestacyMaritalStatusRule,
-            intestacyDeceasedDetailsValidationRule,
-            intestacyApplicantDetailsValidationRule,
-            intestacyDivorceOrSeparationValidationRule,
-            intestacyDivorceOrSeparationDateValidationRule,
-            intestacyCoApplicantValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
@@ -1086,6 +1059,36 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    @Test
+    void shouldSetRedeclarationUserWhenChangingStateToSotGenerated() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_SOT_GENERATED);
+        ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setRedeclarationUserIdamId(eq(caseDetailsMock), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserWhenChangingStateToCaseStopped() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_CASE_STOPPED);
+        final ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setResolveStoppedCaseUserIdamId(eq(caseDetailsMock), any());
+        verify(caseDataTransformerMock, never())
+                .setRedeclarationUserIdamId(any(), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
     void shouldResolveCaveatState() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
@@ -1479,90 +1482,6 @@ class BusinessValidationUnitTest {
         verifyNoInteractions(ccdSupplementaryDataService);
     }
 
-    @Test
-    void shouldClearFieldsBasedOnRelationships() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
-        verify(callbackResponseTransformerMock, times(1))
-                .clearFieldsBasedOnRelationships(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldClearSiblingFields() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.clearSiblingFields(callbackRequestMock);
-        verify(callbackResponseTransformerMock, times(1))
-                .clearSiblingFields(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldValidateIntestacyApplicantAndSetupDynamicListWithNoErrors() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
-                .thenReturn(callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
-        CallbackResponse transformedResponse = mock(CallbackResponse.class);
-        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
-                .thenReturn(transformedResponse);
-
-        ResponseEntity<CallbackResponse> response = underTest
-                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(transformedResponse, response.getBody());
-    }
-
-    @Test
-    void shouldValidateIntestacyApplicantAndSetupDynamicListWithErrors() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
-                .thenReturn(callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
-
-        ResponseEntity<CallbackResponse> response = underTest
-                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(callbackResponseMock, response.getBody());
-    }
-
-    @Test
-    void shouldValidateIntestacyCoApplicantWithNoErrors() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
-                .thenReturn(callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
-        CallbackResponse transformedResponse = mock(CallbackResponse.class);
-        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
-                .thenReturn(transformedResponse);
-
-        ResponseEntity<CallbackResponse> response = underTest
-                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, Optional.empty());
-    }
-
-    @Test
-    void shouldValidateIntestacyCoApplicantWithErrors() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
-                .thenReturn(callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
-
-        ResponseEntity<CallbackResponse> response = underTest
-                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
 
     @Test
     void testSolsCreationReportsErrorsSepDate() {

@@ -110,15 +110,6 @@ class CaseDataTransformerTest {
     }
 
     @Test
-    void shouldTransformForValidateIntestacy() {
-        caseDataTransformer.transformCaseDataForValidateIntestacy(callbackRequestMock);
-
-        verify(solicitorApplicationCompletionTransformer)
-                .setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseDataMock);
-        verify(solicitorApplicationCompletionTransformer).mapSolicitorExecutorFieldsOnAppDetailsComplete(caseDataMock);
-    }
-
-    @Test
     void shouldTransformCaseDataForSolicitorExecutorNames() {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
 
