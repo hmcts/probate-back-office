@@ -233,6 +233,10 @@ public class CaveatCallbackResponseTransformer {
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         final CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+        if (null == caveatData.getApplicationSubmittedDate()) {
+            responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        }
+
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
         }
