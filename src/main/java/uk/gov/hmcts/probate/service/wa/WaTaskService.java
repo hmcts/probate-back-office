@@ -95,7 +95,6 @@ public class WaTaskService {
         log.info("WA task response status: {} for case id {}",
                 taskResponse.getStatusCode(),
                 caseId);
-        GetTasksCompletableResponse<TaskData> body = taskResponse.getBody();
         return taskResponse.getBody();
     }
 
