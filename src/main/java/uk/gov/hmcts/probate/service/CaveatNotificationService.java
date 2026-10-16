@@ -53,12 +53,12 @@ public class CaveatNotificationService {
 
         CaveatCallbackResponse caveatCallbackResponse;
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
+        setCaveatExpiryDate(caveatDetails);
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
                 caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
-                setCaveatExpiryDate(caveatDetails);
                 if (null == caveatDetails.getPaperForm()) {
                     caveatDetails.setPaperForm(YES);
                 }
@@ -81,7 +81,6 @@ public class CaveatNotificationService {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-        setCaveatExpiryDate(caveatDetails.getData());
 
         if (caveatDetails.getData().isCaveatEmailNotificationRequested()) {
             caveatCallbackResponse =
@@ -121,7 +120,6 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-        setCaveatExpiryDate(caveatDetails.getData());
 
         Document document = null;
         try {
