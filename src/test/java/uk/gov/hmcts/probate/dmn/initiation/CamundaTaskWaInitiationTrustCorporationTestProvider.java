@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -40,6 +41,12 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
 
         Map<String, Object> examineTrustCorporationTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION,
+                "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String, Object> examineTrustCorporationCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_TRUST_CORPORATION_CHANGE_STATE,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -390,7 +397,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -404,7 +411,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

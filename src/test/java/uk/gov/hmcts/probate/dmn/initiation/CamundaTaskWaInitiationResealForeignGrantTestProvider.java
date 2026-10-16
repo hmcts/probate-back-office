@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCH
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -41,6 +42,12 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
 
         Map<String,Object> examineResealForeignGrantCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
+                "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE,
                 "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -324,7 +331,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -338,7 +345,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

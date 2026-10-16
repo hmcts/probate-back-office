@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCH
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -35,6 +36,13 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
+
+        Map<String,Object> examineProveForeignWillCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_PROVE_FOREIGN_WILL_CHANGE_STATE,
+                "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
 
         return Stream.of(
                 Arguments.of(
@@ -178,7 +186,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -192,7 +200,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

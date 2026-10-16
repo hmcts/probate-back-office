@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -41,6 +42,12 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
 
         Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                "name", DE_BONIS_NON_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDeBonisNonCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON_CHANGE_STATE,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -320,7 +327,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -334,7 +341,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

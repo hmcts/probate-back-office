@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -41,6 +42,12 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
                 "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -335,7 +342,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -349,7 +356,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

@@ -21,6 +21,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -38,6 +39,12 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
 
         Map<String,Object> examineWindrushSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
+                "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_WINDRUSH_SCHEME_CHANGE_STATE,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -321,7 +328,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
-                        List.of(examineWindrushSchemeTaskAttributes)
+                        List.of(examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -335,7 +342,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
-                        List.of(examineWindrushSchemeTaskAttributes)
+                        List.of(examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

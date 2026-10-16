@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCH
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -39,6 +40,12 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
 
         Map<String,Object> examineMinorityInterestTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST,
+                "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineMinorityInterestCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_MINORITY_INTEREST_CHANGE_STATE,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -313,7 +320,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -327,7 +334,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

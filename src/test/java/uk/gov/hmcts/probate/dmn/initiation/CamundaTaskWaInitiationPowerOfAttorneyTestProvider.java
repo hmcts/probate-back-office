@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCH
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -41,6 +42,12 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
 
         Map<String,Object> examinePowerOfAttorneyCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
+                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examinePowerOfAttorneyCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_POWER_OF_ATTORNEY_CHANGE_STATE,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -320,7 +327,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -334,7 +341,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

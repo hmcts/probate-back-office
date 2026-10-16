@@ -13,6 +13,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -40,6 +41,12 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
 
         Map<String,Object> examineLostWillOrCodicilTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL_OR_CODICIL,
+                "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineLostWillOrCodicilCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_LOST_WILL_OR_CODICIL_CHANGE_STATE,
                 "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -326,7 +333,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason), false),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
+                        List.of(examineLostWillOrCodicilCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -340,7 +347,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason), false),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
+                        List.of(examineLostWillOrCodicilCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

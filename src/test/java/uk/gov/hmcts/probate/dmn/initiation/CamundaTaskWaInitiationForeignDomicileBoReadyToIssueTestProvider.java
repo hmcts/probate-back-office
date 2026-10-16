@@ -20,6 +20,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCH
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
@@ -32,6 +33,12 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
 
         Map<String,Object> foreignDomicileTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE,
+                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> foreignDomicileCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -186,7 +193,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason), false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -200,7 +207,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason), false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

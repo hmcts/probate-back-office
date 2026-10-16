@@ -18,6 +18,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -40,6 +41,12 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
 
         Map<String,Object> examineCodicilMisRecitalCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
+                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -319,7 +326,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -333,7 +340,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,

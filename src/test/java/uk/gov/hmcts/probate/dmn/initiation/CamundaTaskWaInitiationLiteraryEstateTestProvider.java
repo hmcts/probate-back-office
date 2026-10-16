@@ -20,6 +20,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -40,6 +41,12 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
 
         Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE,
+                "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_LITERARY_ESTATE_CHANGE_STATE,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -314,7 +321,7 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
-                        List.of(examineLiteraryEstateTaskAttributes)
+                        List.of(examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
@@ -328,7 +335,7 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
-                        List.of(examineLiteraryEstateTaskAttributes)
+                        List.of(examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
