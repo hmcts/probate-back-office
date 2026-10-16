@@ -6532,4 +6532,24 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getCreateTask());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "intestacyRelationshipDraft",
+            "intestacySiblingSameParentDraft"
+    })
+    void shouldSkipDeceasedAliasConversionForDraftEventsWithCallback(String eventId) {
+        final var builder = spy(ResponseCaseData.builder());
+        final CaseData caseData = mock(CaseData.class);
+        final Long caseRef = 1L;
+
+        List<CollectionMember<ProbateAliasName>> aliases = List.of(mock(CollectionMember.class));
+
+        when(caseData.getDeceasedAliasNameList()).thenReturn(aliases);
+
+        underTest.handleDeceasedAliases(builder, caseData, caseRef, eventId);
+
+        verify(builder).deceasedAliasNameList(aliases);
+        verify(builder, never()).solsDeceasedAliasNamesList(any());
+        verify(caseData, never()).getSolsDeceasedAliasNamesList();
+    }
 }
