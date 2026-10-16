@@ -122,6 +122,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "awaitingDocumentationHandOffs",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeAwaitingDocumentationIce",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseTypes",
+                                "Cancel"
+                        )
                 )
         );
     }

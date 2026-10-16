@@ -25,6 +25,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_ICE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 
@@ -53,7 +54,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(8));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
@@ -73,7 +74,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
             assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
-        } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)) {
+        } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
+                || cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_ICE)) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)) {
             assertAmendCaseDetailsReadyToIssueResponse(dmnResultList, cancellationProperties);
