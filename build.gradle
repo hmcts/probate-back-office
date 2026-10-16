@@ -397,7 +397,7 @@ configurations.configureEach {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
 
-  def kotlinVersion = '2.1.0'
+  def kotlinVersion = '2.4.20'
   def jacksonCoreVersion = '3.2.0'
   def angusVersion = '2.1.0-M1'
 
