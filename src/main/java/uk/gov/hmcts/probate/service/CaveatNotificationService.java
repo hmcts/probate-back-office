@@ -114,10 +114,7 @@ public class CaveatNotificationService {
 
         if (StringUtils.isBlank(caveatDetails.getData().getCaveatorEmailAddress())) {
             // Bulk scan may not include caveator email for solicitor.
-            if (null == caveatDetails.getData().getPaperForm()) {
-                caveatDetails.getData().setPaperForm(YES);
-            }
-            return caveatCallbackResponseTransformer.transformResponseWithOrgPolicy(caveatCallbackRequest);
+            return caveatCallbackResponseTransformer.caveatRaisedWithoutEmail(caveatCallbackRequest);
         }
 
         Document document = null;
