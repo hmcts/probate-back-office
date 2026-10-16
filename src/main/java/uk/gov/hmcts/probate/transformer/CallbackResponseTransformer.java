@@ -1055,7 +1055,11 @@ public class CallbackResponseTransformer {
                         transform);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        return transformResponse(responseCaseDataBuilder.build());
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        setTaskCreation(null, callbackRequest, responseCaseData);
+
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {

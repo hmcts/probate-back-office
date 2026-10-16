@@ -55,9 +55,6 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_REGION = "1";
     public static final String DEFAULT_LOCATION = "336559";
     public static final String DEFAULT_LOCATION_NAME = "Glasgow Tribunals Centre";
-    public static final String DEFAULT_DUE_DATE_NON_WORKING_CALENDAR
-        = "https://www.gov.uk/bank-holidays/scotland.json, https://raw.githubusercontent.com/hmcts/sptribs-case-api/master/src/main/resources/dmn/privilege-calendar.json";
-    public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
     public static final String DEFAULT_ASSIGNEE = "someIdamId";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
@@ -152,7 +149,9 @@ public class TaskAttributeConstants {
     public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
     public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
-    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json";
+    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE =
+            "https://www.gov.uk/bank-holidays/england-and-wales.json, "
+            + "https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/privilege-calendar.json";
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
@@ -239,6 +238,7 @@ public class TaskAttributeConstants {
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
+    public static final String BO_CASE_MATCHING_ISSUE_GRANT_STATE = "BOCaseMatchingIssueGrant";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
     public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
@@ -246,6 +246,7 @@ public class TaskAttributeConstants {
     public static final String BO_CASE_STOPPED_AWAIT_REDEC_STATE = "BOCaseStoppedAwaitRedec";
     public static final String BO_CASE_QA_STATE = "BOCaseQA";
     public static final String BO_REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
+    public static final String BO_SOT_GENERATED_STATE = "BOSotGenerated";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";

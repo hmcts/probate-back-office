@@ -12,6 +12,7 @@
     "com.github.hmcts:probate-pact-commons",
     "aac-manage-case-assignment",
     "org.mapstruct:mapstruct-processor",
+    "org.mapstruct:mapstruct-jdk8",
     "org.apache.pdfbox:pdfbox",
     "com.github.hmcts.rse-cft-lib"
   ],
