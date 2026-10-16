@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -170,7 +171,7 @@ public class WaTaskControllerIT {
                         .content(payload))
                 .andExpect(status().isOk());
 
-        verify(waTaskService).closeAwaitingDocumentationTasks(isA(CallbackRequest.class), encodedString.get());
+        verify(waTaskService).closeAwaitingDocumentationTasks(isA(CallbackRequest.class), eq(encodedString.get()));
     }
 
     @Test
