@@ -338,5 +338,8 @@ public class TaskAttributeConstants {
     public static final String REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME = "Review Registrar's Decision";
     public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
     public static final String CLOSE_AWAITING_DOCUMENTATION_HANDOFFS = "closeAwaitingDocumentationHandOffs";
-    public static final String CLOSE_AWAITING_DOCUMENTATION_ICE = "closeAwaitingDocumentationIce";
+    public static final String CLOSE_EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "closeExamineDigitalCaseAdColligendaBona";
+    public static final String CLOSE_EXAMINE_DIGITAL_CASE_PROBATE = "closeExamineDigitalCaseProbate";
+    public static final String CLOSE_EXAMINE_DIGITAL_CASE_INTESTACY = "closeExamineDigitalCaseIntestacy";
+    public static final String CLOSE_EXAMINE_DIGITAL_CASE_ADMON_WILL = "closeExamineDigitalCaseAdmonWill";
 }

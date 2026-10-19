@@ -11,6 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_ICE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 
@@ -54,10 +55,10 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(9));
+        assertThat(logic.getRules().size(), is(12));
     }
 
-    @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
+    @ParameterizedTest(name = "[{index}] map data: {0}")
     @ArgumentsSource(CancellationScenarioBuilder.class)
     void given_multiple_event_ids_should_evaluate_dmn(Map<String, String> cancellationProperties) {
 
@@ -75,13 +76,20 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
             assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
         } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
-                || cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_ICE)) {
+                || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)) {
             assertAmendCaseDetailsReadyToIssueResponse(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
+    }
+
+    private boolean isAwaitingDocIceCancellationTask(String event) {
+        return TaskTypes.examineAwaitingDocIceTasks().stream()
+                .map(TaskTypes::getClosingEventId)
+                .map(EventId::getName)
+                .anyMatch(event::equals);
     }
 
     private void assertAmendCaseDetailsReadyToIssueResponse(List<Map<String, Object>> dmnResultList,

@@ -125,10 +125,37 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "closeAwaitingDocumentationIce",
+                                "closeExamineDigitalCaseAdColligendaBona",
                                 "CasePrinted",
                                 "CasePrinted",
-                                "examineDigitalCaseTypes",
+                                "examineDigitalCaseAdColligendaBona",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseProbate",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseProbate",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseIntestacy",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseIntestacy",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseAdmonWill",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseAdmonWill",
                                 "Cancel"
                         )
                 )

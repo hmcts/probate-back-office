@@ -10,10 +10,6 @@ import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
 @Slf4j
 @Component
@@ -21,10 +17,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
 
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
-    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CREATE = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
-            EXAMINE_DIGITAL_CASE_INTESTACY,
-            EXAMINE_DIGITAL_CASE_ADMON_WILL,
-            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
+    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CREATE = TaskTypes.examineAwaitingDocIceTasks();
 
     private final WaTaskService waTaskService;
 

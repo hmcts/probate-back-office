@@ -34,9 +34,9 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
+import static uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -156,12 +156,30 @@ public class WaTaskService {
     public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
                                                 String clientContext) {
         triggerCloseHandOffEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+        triggerCloseIceEvent(callbackRequest, clientContext);
+    }
 
+    private void triggerCloseIceEvent(CallbackRequest callbackRequest, String clientContext) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         if (taskData.isEmpty() && getCaseTypePredicate().test(callbackRequest, clientContext)) {
+            Long caseId = callbackRequest.getCaseDetails().getId();
+
             log.info("Case id {} : no context task and case type has changed",
-                    callbackRequest.getCaseDetails().getId());
-            triggerEvent(callbackRequest.getCaseDetails(), CLOSE_AWAITING_DOCUMENTATION_ICE);
+                    caseId);
+
+            getAllAssociatedTasks(securityUtils.getSecurityDTO().getAuthorisation(),
+                    caseId.toString(),
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION)
+                    .stream()
+                    .findFirst()
+                    .flatMap(TaskTypes::fromValue)
+                    .map(TaskTypes::getClosingEventId)
+                    .ifPresent(eventId -> {
+                        log.info("Case id {} : triggering closing event {}",
+                                caseId,
+                                eventId);
+                        triggerEvent(callbackRequest.getCaseDetails(), eventId);
+                    });
         }
     }
 

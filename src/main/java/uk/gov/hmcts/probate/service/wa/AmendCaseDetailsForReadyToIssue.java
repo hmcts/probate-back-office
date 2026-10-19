@@ -10,14 +10,6 @@ import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 
 @Slf4j
 @Component
@@ -26,15 +18,8 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
     private static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
-    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
-            EXAMINE_DIGITAL_CASE_INTESTACY,
-            EXAMINE_DIGITAL_CASE_ADMON_WILL,
-            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
-    private static final Set<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE
-            = Set.of(EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
-            EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
-            EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE,
-            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE);
+    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = TaskTypes.examineAwaitingDocIceTasks();
+    private static final Set<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE = TaskTypes.examineReadyToIssueIceTasks();
 
     private final WaTaskService waTaskService;
 

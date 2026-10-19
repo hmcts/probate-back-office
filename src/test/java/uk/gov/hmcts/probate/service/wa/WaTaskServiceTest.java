@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.wa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -47,7 +49,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -77,6 +79,7 @@ class WaTaskServiceTest {
     private WaTaskService waTaskService;
 
     private final String authToken = "auth-token";
+    private final String system_user_authToken = "system_user_authToken";
     private final String caseId = "123456";
     private final String serviceToken = "service-token";
 
@@ -482,11 +485,12 @@ class WaTaskServiceTest {
                 .thenReturn(Optional.empty());
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
+        verifyNoInteractions(waApi);
         verifyNoInteractions(ccdClientApi);
     }
 
     @Test
-    void shouldCloseAwaitingDocumentationIceWhenCaseTypeHasChanged() {
+    void shouldTriggerClosingEventWhenNoContextTaskAndCaseTypeChanged() {
         setUpCallbackRequestForCaseType(
                 "gop",
                 "intestacy"
@@ -494,26 +498,51 @@ class WaTaskServiceTest {
 
         when(caseDetails.getId())
                 .thenReturn(Long.valueOf(caseId));
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
 
         when(taskUtils.getTaskData(CLIENT_CONTEXT))
                 .thenReturn(Optional.empty());
 
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
+                .thenReturn(SecurityDTO.builder()
+                        .authorisation(system_user_authToken)
+                        .build());
+
+        when(securityUtils.getSecurityDTO())
+                .thenReturn(SecurityDTO.builder()
+                        .authorisation(authToken)
+                        .build());
+
+        when(securityUtils.generateServiceToken())
+                .thenReturn(serviceToken);
+
+        String examineIcsProbate = "ExamineDigitalCaseProbate";
+        TaskData task1 = TaskData.builder()
+                .type(examineIcsProbate)
+                .build();
+
+        GetTasksCompletableResponse<TaskData> response =
+                new GetTasksCompletableResponse<>(
+                        false,
+                        List.of(task1)
+                );
+
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                eq(authToken),
+                eq(serviceToken),
+                any(SearchEventAndCase.class)))
+                .thenReturn(ResponseEntity.ok(response));
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
         verify(ccdClientApi).triggerEvent(
                 eq(caseId),
-                eq(CLOSE_AWAITING_DOCUMENTATION_ICE),
+                eq(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE),
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
         );
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_AWAITING_DOCUMENTATION_ICE.getName())
+                .eventId(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE.getName())
                 .token("event-token")
                 .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
                         .data(Map.of())
@@ -524,12 +553,78 @@ class WaTaskServiceTest {
                 functionCaptor.getValue().apply(startEventResponse);
 
         assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_ICE.getName());
+                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE.getName());
 
         assertThat(result.getEventToken())
                 .isEqualTo("event-token");
 
         assertThat(result.getData()).isNotNull();
+    }
+
+   @Test
+    void shouldNotTriggerEventWhenContextTaskExists() {
+       CaseData caseData = CaseData.builder()
+               .caseType("gop")
+               .build();
+       when(caseDetails.getData())
+               .thenReturn(caseData);
+       when(callbackRequest.getCaseDetails())
+               .thenReturn(caseDetails);
+
+        TaskData taskData = TaskData.builder()
+                .type("ExamineDoubleProbate")
+                .build();
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(taskData));
+
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
+
+        verify(waApi, never())
+                .searchWithCriteriaForAutomaticCompletion(any(), any(), any());
+
+        verify(ccdClientApi, never())
+                .triggerEvent(any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldNotTriggerEventWhenNoAssociatedTasksFound() {
+        setUpCallbackRequestForCaseType(
+                "gop",
+                "intestacy"
+        );
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.empty());
+
+
+        when(securityUtils.getSecurityDTO())
+                .thenReturn(SecurityDTO.builder()
+                        .authorisation(authToken)
+                        .build());
+
+        when(securityUtils.generateServiceToken())
+                .thenReturn(serviceToken);
+
+        GetTasksCompletableResponse<TaskData> response =
+                new GetTasksCompletableResponse<>(
+                        false,
+                        List.of()
+                );
+
+        when(waApi.searchWithCriteriaForAutomaticCompletion(
+                eq(authToken),
+                eq(serviceToken),
+                any(SearchEventAndCase.class)))
+                .thenReturn(ResponseEntity.ok(response));
+
+
+        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
+
+        verifyNoInteractions(ccdClientApi);
     }
 
     @Test
