@@ -117,7 +117,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled
     void verifyWelshIntestacyReissueDocument() throws IOException {
         assertResponseContainsValueAtJsonPath(
-                "personalPayloadWelshAdmonWillReissued.json",
+                "personalPayloadWelshIntestacyReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
     }
