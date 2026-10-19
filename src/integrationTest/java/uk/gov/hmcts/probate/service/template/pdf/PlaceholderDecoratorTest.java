@@ -67,8 +67,7 @@ class PlaceholderDecoratorTest {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(DECEASED_DATE_OF_DEATH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholders.put(GRANT_ISSUED_DATE, String.valueOf(LocalDate.of(2019,12,23)));
-        placeholders.put(GRANT_ISSUED_DATE, "2019-12-23");
-        placeholderDecorator.decorate(placeholders, "2019-12-23");
+        placeholderDecorator.decorate(placeholders);
         assertEquals("23 Rhagfyr 2019", placeholders.get(GRANT_ISSUED_DATE_IN_WELSH));
         assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_DEATH_IN_WELSH));
         assertNull(placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
