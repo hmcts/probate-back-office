@@ -238,6 +238,7 @@ ext {
   set("netty.version", libs.versions.netty.get()) // CVE-2025-67735
   set("log4j2.version", libs.versions.log4j2.get()) // CVE-2025-68161
   set("commons-lang3.version", libs.versions.commonsLang3.get()) // CVE-2025-48924
+  set("tomcat.version", "10.1.61")
 }
 
 dependencies {
