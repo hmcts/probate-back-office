@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.wa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -79,7 +78,7 @@ class WaTaskServiceTest {
     private WaTaskService waTaskService;
 
     private final String authToken = "auth-token";
-    private final String system_user_authToken = "system_user_authToken";
+    private final String systemUserAuthToken = "system_user_authToken";
     private final String caseId = "123456";
     private final String serviceToken = "service-token";
 
@@ -504,7 +503,7 @@ class WaTaskServiceTest {
 
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .thenReturn(SecurityDTO.builder()
-                        .authorisation(system_user_authToken)
+                        .authorisation(systemUserAuthToken)
                         .build());
 
         when(securityUtils.getSecurityDTO())
@@ -561,14 +560,14 @@ class WaTaskServiceTest {
         assertThat(result.getData()).isNotNull();
     }
 
-   @Test
+    @Test
     void shouldNotTriggerEventWhenContextTaskExists() {
-       CaseData caseData = CaseData.builder()
+        CaseData caseData = CaseData.builder()
                .caseType("gop")
                .build();
-       when(caseDetails.getData())
+        when(caseDetails.getData())
                .thenReturn(caseData);
-       when(callbackRequest.getCaseDetails())
+        when(callbackRequest.getCaseDetails())
                .thenReturn(caseDetails);
 
         TaskData taskData = TaskData.builder()
