@@ -389,17 +389,21 @@ public class FunctionalTestUtils {
                     "_source", List.of("reference"),
                     "size", 1));
 
-            final var jsonPath = RestAssured.given()
+            final var response = RestAssured.given()
                     .relaxedHTTPSValidation()
                     .headers(getHeadersWithCaseworkerUser())
                     .queryParam("ctid", caseType)
                     .body(bodyQuery.toString())
                     .when()
-                    .post(searchForCaseUrl)
-                    .getBody()
-                    .jsonPath();
+                    .post(searchForCaseUrl);
 
-            final var matchingCases = jsonPath
+            if (response.getStatusCode() < 200 || response.getStatusCode() >= 400) {
+                throw new IllegalStateException("Case search failed with HTTP %d".formatted(response.statusCode()));
+            }
+
+            final var matchingCases = response
+                    .getBody()
+                    .jsonPath()
                     .getList("results");
             if (matchingCases != null && !matchingCases.isEmpty()) {
                 foundCase = true;
@@ -407,9 +411,11 @@ public class FunctionalTestUtils {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
             } else {
-                throw new RuntimeException("No case %s found after 20 iterations of delaying 500ms".formatted(caseId));
+                throw new IllegalStateException(
+                        "No case %s found after 20 iterations of delaying 500ms".formatted(caseId));
             }
         }
     }
