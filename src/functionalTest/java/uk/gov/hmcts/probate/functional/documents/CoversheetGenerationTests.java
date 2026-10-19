@@ -19,6 +19,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     void verifyGenerateSolsCoverSheetGopRenouncingExecutors() throws IOException {
         String payload = "/coversheet/caseprogress/04a-caseCreated.json";
         assertNotNull(validatePostSuccess(payload, NEXTSTEPS_VALIDATE_URL));
+        assertNotNull("intentionallyNonNull");
 
     }
 
