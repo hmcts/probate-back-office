@@ -90,8 +90,11 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -304,6 +307,7 @@ class CallbackResponseTransformerTest {
     private static final String ORDER_NEEDED = YES;
     private static final List<CollectionMember<Reissue>> REISSUE_REASON = emptyList();
     private static final String REISSUE_DATE = "2019-01-01";
+    private static final String TODAY = "2026-09-10";
     private static final String REISSUE_NOTATION = "duplicate";
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
@@ -607,6 +611,9 @@ class CallbackResponseTransformerTest {
     private WorkAllocationToggleService workAllocationToggleService;
     @Mock
     private CreateTaskProcessorFactory createTaskProcessorFactory;
+
+    @Mock
+    private Clock clock;
 
     @BeforeEach
     public void setup() {
@@ -1037,6 +1044,9 @@ class CallbackResponseTransformerTest {
             any(ResponseCaseData.ResponseCaseDataBuilder.class)))
             .thenAnswer(invocation -> invocation.getArgument(1));
         ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
+
+        when(clock.getZone()).thenReturn(ZoneId.of("Europe/London"));
+        when(clock.instant()).thenReturn(Instant.parse("2026-09-10T12:00:00Z"));
     }
 
     @Test
@@ -1618,11 +1628,9 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
-        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+        assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
@@ -2543,11 +2551,26 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
-        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+        assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());
+    }
+
+    @Test
+    void shouldUseProvidedGrantIssuedDate() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .grantIssuedDate("2024-01-01");
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Collections.singletonList(document), null, null, CASEWORKER_USERINFO);
+        assertEquals("2024-01-01", callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
