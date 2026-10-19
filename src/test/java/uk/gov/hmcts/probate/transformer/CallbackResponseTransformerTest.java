@@ -1628,7 +1628,6 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());
@@ -2552,7 +2551,6 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
             Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(TODAY, callbackResponse.getData().getGrantIssuedDate());

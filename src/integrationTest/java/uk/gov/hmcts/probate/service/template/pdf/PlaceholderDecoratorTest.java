@@ -3,10 +3,11 @@ package uk.gov.hmcts.probate.service.template.pdf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.config.documents.WelshMonthTranslation;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -18,6 +19,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -34,16 +36,30 @@ class PlaceholderDecoratorTest {
     private static final String GRANT_REISSUED_DATE_IN_WELSH = "grantReissuedDateInWelsh";
     private static final String TODAY = "2026-09-10";
 
-    @Autowired
+    @InjectMocks
     private PlaceholderDecorator placeholderDecorator;
 
-    @MockitoBean
+    @Mock
     private Clock clock;
+
+    @Mock
+    private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     @BeforeEach
     void setUpClock() {
         when(clock.getZone()).thenReturn(ZoneId.of("Europe/London"));
         when(clock.instant()).thenReturn(Instant.parse("2026-09-10T12:00:00Z"));
+        when(localDateToWelshStringConverter.convert(any(LocalDate.class)))
+                .thenAnswer(invocation -> {
+                    LocalDate date = invocation.getArgument(0);
+                    if (date.equals(LocalDate.of(2019, 12, 23))) {
+                        return "23 Rhagfyr 2019";
+                    }
+                    if (date.equals(LocalDate.of(2018, 10, 19))) {
+                        return "19 Hydref 2018";
+                    }
+                    return "Mocked Welsh Date";
+                });
     }
 
     @Test
@@ -51,7 +67,8 @@ class PlaceholderDecoratorTest {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(DECEASED_DATE_OF_DEATH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholders.put(GRANT_ISSUED_DATE, String.valueOf(LocalDate.of(2019,12,23)));
-        placeholderDecorator.decorate(placeholders);
+        placeholders.put(GRANT_ISSUED_DATE, "2019-12-23");
+        placeholderDecorator.decorate(placeholders, "2019-12-23");
         assertEquals("23 Rhagfyr 2019", placeholders.get(GRANT_ISSUED_DATE_IN_WELSH));
         assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_DEATH_IN_WELSH));
         assertNull(placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
