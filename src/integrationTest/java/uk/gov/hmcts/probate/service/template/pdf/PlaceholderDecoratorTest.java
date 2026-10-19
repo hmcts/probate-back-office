@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.config.documents.WelshMonthTranslation;
 
 import java.time.Clock;
 import java.time.Instant;
