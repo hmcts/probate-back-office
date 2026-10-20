@@ -159,21 +159,6 @@ public class WaTaskContoller {
             }
 
             ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
-            Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
-                    clientContext,
-                    callbackRequest,
-                    paramCallbackRequest -> {
-                        String evidenceHandled = paramCallbackRequest.getCaseDetails().getData().getEvidenceHandled();
-                        return NO.equals(evidenceHandled);
-                    }
-            );
-            encodedClientContext
-                    .ifPresent(value -> {
-                        log.debug("Updated case id's {} client context {}",
-                                callbackRequest.getCaseDetails().getId(),
-                                new String(Base64.getDecoder().decode(value)));
-                        responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
-                    });
 
             log.info("Case Type: {}, Case ID: {}",
                     callbackRequest.getCaseDetails().getData().getCaseType(),
