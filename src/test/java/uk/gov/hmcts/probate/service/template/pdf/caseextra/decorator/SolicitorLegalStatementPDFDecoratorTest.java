@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockMakers;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class SolicitorLegalStatementPDFDecoratorTest {
 
     @InjectMocks
@@ -23,7 +24,7 @@ class SolicitorLegalStatementPDFDecoratorTest {
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
     private IhtEstateNotCompletedBusinessRule ihtEstateNotCompletedBusinessRule;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     @Test

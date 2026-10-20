@@ -3,9 +3,10 @@ package uk.gov.hmcts.probate.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -66,25 +67,24 @@ class DocumentsReceivedNotificationServiceIT {
     private List<Document> expectedNoDocuments = new ArrayList<Document>();
     private List<CollectionMember<Document>> documents = new ArrayList<>();
     private List<CollectionMember<Document>> noDocuments = new ArrayList<>();
-    @InjectMocks
+    @Autowired
     private DocumentsReceivedNotificationService documentsReceivedNotificationService;
 
-    @Mock
+    @MockitoSpyBean
     private NotificationService notificationService;
 
     @Mock
     private PDFManagementService pdfManagementService;
 
-    @Mock
+    @MockitoSpyBean
     private EventValidationService eventValidationService;
 
-    @Mock
+    @MockitoSpyBean
     private CallbackResponseTransformer callbackResponseTransformer;
 
-    @Mock
-    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules = List.of();
 
-    @Mock
+    @MockitoSpyBean
     private FeatureToggleService featureToggleService;
 
     @BeforeEach

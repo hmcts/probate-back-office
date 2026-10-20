@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.Jackson2Tester;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
@@ -23,7 +23,7 @@ class StandingSearchJsonIT {
     private String jsonContent;
 
     @Autowired
-    private JacksonTester<StandingSearchCallbackRequest> jacksonTester;
+    private Jackson2Tester<StandingSearchCallbackRequest> jacksonTester;
 
     private TestUtils testUtils = new TestUtils();
 

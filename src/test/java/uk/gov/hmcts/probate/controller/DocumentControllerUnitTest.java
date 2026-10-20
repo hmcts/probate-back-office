@@ -5,11 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -74,9 +75,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class DocumentControllerUnitTest {
 
     private static final String VALID_FILE_NAME = "valid_file.png";
@@ -429,7 +431,7 @@ class DocumentControllerUnitTest {
     void shouldSuccessfullyValidateAmendLegalStatementWhenFlagSetAndNoErrorReturned() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        CaseData caseDataMock = mock(CaseData.class);
+        CaseData caseDataMock = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         DocumentLink documentLinkMock = mock(DocumentLink.class);
         CallbackResponse callbackResponseMock = mock(CallbackResponse.class);
 
@@ -459,7 +461,7 @@ class DocumentControllerUnitTest {
     void shouldFailToValidateAmendLegalStatementWhenFlagSetAndErrorReturned() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        CaseData caseDataMock = mock(CaseData.class);
+        CaseData caseDataMock = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         DocumentLink documentLinkMock = mock(DocumentLink.class);
         String error = "ERROR";
         CallbackResponse callbackResponseMock = mock(CallbackResponse.class);
@@ -491,7 +493,7 @@ class DocumentControllerUnitTest {
     void shouldNotCallValidateFileTypeForValidateAmendLegalStatementWhenFlagUnset() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        CaseData caseDataMock = mock(CaseData.class);
+        CaseData caseDataMock = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

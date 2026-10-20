@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 class EventValidationServiceTest {
@@ -42,7 +44,7 @@ class EventValidationServiceTest {
     private CCDData ccdDataMock;
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private CaveatDetails caveatDetailsMock;
@@ -113,7 +115,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepBeforeBirth() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDateOfBirth())
                 .thenReturn(LocalDate.of(1990, 1, 1));
@@ -133,7 +135,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepInRange() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDateOfBirth())
                 .thenReturn(LocalDate.of(1990, 1, 1));
@@ -149,7 +151,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepEmptyString() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDateOfBirth())
                 .thenReturn(LocalDate.of(1990, 1, 1));
@@ -165,7 +167,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepUnset() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDateOfBirth())
                 .thenReturn(LocalDate.of(1990, 1, 1));
@@ -181,7 +183,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepAfterDeath() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDateOfBirth())
                 .thenReturn(LocalDate.of(1990, 1, 1));
@@ -201,7 +203,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepOutsideDivCivil() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDivorcedInEnglandOrWales())
                 .thenReturn("No");
@@ -219,7 +221,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepOutsideJudicially() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDivorcedInEnglandOrWales())
                 .thenReturn("No");
@@ -237,7 +239,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepOutsideOther() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDivorcedInEnglandOrWales())
                 .thenReturn("No");
@@ -251,7 +253,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepInsideDivCivil() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDivorcedInEnglandOrWales())
                 .thenReturn("Yes");
@@ -265,7 +267,7 @@ class EventValidationServiceTest {
 
     @Test
     void testErrorSepInsideJudicially() {
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
 
         when(caseData.getDeceasedDivorcedInEnglandOrWales())
                 .thenReturn("Yes");

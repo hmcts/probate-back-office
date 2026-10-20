@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -29,7 +30,7 @@ class ScannedDocumentOrderingServiceTest {
     @InjectMocks
     private ScannedDocumentOrderingService scannedDocumentOrderingService;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseData;
 
     @Mock

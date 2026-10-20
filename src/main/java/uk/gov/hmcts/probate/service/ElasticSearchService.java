@@ -30,7 +30,7 @@ public class ElasticSearchService {
     public MatchedCases runQuery(CaseType caseType, String jsonQuery) {
         log.debug("ElasticSearchService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+            .fromUriString(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, caseType.getCode())
             .build().encode().toUri();
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.DataMigrationException;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 
 class DataMigrationControllerTest {
@@ -80,7 +82,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
 
@@ -112,7 +114,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
 
@@ -151,7 +153,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
 
@@ -183,7 +185,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
 
@@ -218,7 +220,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
 
@@ -266,7 +268,7 @@ class DataMigrationControllerTest {
         when(caseDetails.getId())
                 .thenReturn(caseId);
 
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getData())
                 .thenReturn(caseData);
         when(caseData.getMigrationCallbackMetadata())

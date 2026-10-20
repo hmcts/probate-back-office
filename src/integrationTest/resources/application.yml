@@ -105,7 +105,10 @@ ccd.data.store.api:
   caseMatchingPath: /searchCases
 
 spring:
-  jackson:
+  http:
+    converters:
+      preferred-json-mapper: jackson2
+  jackson2:
     serialization:
       wrap_root_value: false
       write-dates-as-timestamps: false
@@ -119,8 +122,6 @@ spring:
     password:  ${probate.postgresql.password}
 
   database.driverClassName: org.postgresql.Driver
-
-spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value

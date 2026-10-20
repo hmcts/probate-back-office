@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.validator.ApplicationSubmittedDateValidationR
 import static uk.gov.hmcts.probate.validator.ApplicationSubmittedDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD;
 import static uk.gov.hmcts.probate.validator.ApplicationSubmittedDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD_WELSH;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class ApplicationSubmittedDateValidationRuleTest {
 
     @Mock

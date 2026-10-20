@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_GRANT_OF_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
@@ -269,7 +271,7 @@ class SolicitorApplicationCompletionTransformerTest {
     // then primaryApplicantClear is called
     @Test
     void givenCaseWithoutNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataCleared() {
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
         when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
@@ -290,7 +292,7 @@ class SolicitorApplicationCompletionTransformerTest {
     // then primaryApplicantClear is NOT called
     @Test
     void givenCaseNotGOPWoutNoneOfTheseTCTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
 
@@ -312,7 +314,7 @@ class SolicitorApplicationCompletionTransformerTest {
     // then primaryApplicantClear is not called
     @Test
     void givenCaseWithNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
 
@@ -351,7 +353,7 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void givenNoAdditionalExecutorsCausesAdditionalExecutorsIsExplicitlyCleared() {
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
         when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
