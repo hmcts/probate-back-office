@@ -112,7 +112,7 @@ public class FeeService {
 
     private URI buildUri(String event, String amount) {
         UriComponentsBuilder builder =
-            UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
+            UriComponentsBuilder.fromUriString(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
                 .queryParam("service", feeServiceConfiguration.getService())
                 .queryParam("jurisdiction1", feeServiceConfiguration.getJurisdiction1())
                 .queryParam("jurisdiction2", feeServiceConfiguration.getJurisdiction2())

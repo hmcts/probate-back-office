@@ -21,7 +21,6 @@ management:
   endpoint:
     health:
       show-details: always
-      enabled: true
   health:
     db:
       enabled: false
@@ -195,11 +194,14 @@ ccd.data.store.api:
   caseMatchingPath: /searchCases
 
 spring:
+  http:
+    converters:
+      preferred-json-mapper: jackson2
   servlet:
     multipart:
       maxFileSize: ${MAX_FILE_SIZE:10MB}
       maxRequestSize: ${MAX_REQUEST_SIZE:10MB}
-  jackson:
+  jackson2:
     serialization:
       wrap_root_value: false
       write-dates-as-timestamps: false

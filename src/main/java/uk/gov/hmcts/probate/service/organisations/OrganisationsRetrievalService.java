@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
+import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 @Slf4j
 @Service
@@ -66,7 +66,7 @@ public class OrganisationsRetrievalService {
     }
 
     private URI buildUri() {
-        return fromHttpUrl(orgUri + orgApi)
+        return fromUriString(orgUri + orgApi)
             .build().toUri();
     }
 
