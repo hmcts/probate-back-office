@@ -1,5 +1,9 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +14,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
 import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
@@ -22,8 +28,13 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.Event;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
@@ -44,6 +55,8 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
+    private final CoreCaseDataApi coreCaseDataApi;
+    private final IdamApi idamApi;
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -148,5 +161,51 @@ public class WaTaskService {
                             caseDataContentFunction,
                             securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
                 });
+    }
+
+    private SecurityDTO getCaseworkerSecurityDTO() {
+        securityUtils.setSecurityContextUserAsCaseworker();
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        return SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+                .serviceAuthorisation(securityUtils.generateServiceToken())
+                .userId(userId)
+                .build();
+    }
+
+    public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
+                                                 EventId eventId, String summary, String description) {
+        SecurityDTO securityDTO = getCaseworkerSecurityDTO();
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                callbackRequest.getCaseDetails().getData().getCaseType(),
+                callbackRequest.getCaseDetails().getId().toString(),
+                eventId.getName()
+        );
+
+        CaseDataContent caseDataContent = CaseDataContent.builder()
+                .event(Event.builder()
+                        .id(startEventResponse.getEventId())
+                        .summary(summary)
+                        .description(description)
+                        .build())
+                .eventToken(startEventResponse.getToken())
+                .data(startEventResponse.getCaseDetails().getData())
+                .build();
+
+        coreCaseDataApi.submitEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                callbackRequest.getCaseDetails().getData().getCaseType(),
+                callbackRequest.getCaseDetails().getId().toString(),
+                false,
+                caseDataContent
+        );
     }
 }

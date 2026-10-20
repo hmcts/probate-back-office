@@ -25,6 +25,14 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.Event;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +42,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,6 +52,12 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
@@ -69,6 +84,12 @@ class WaTaskServiceTest {
 
     @Captor
     ArgumentCaptor<Function<StartEventResponse, CaseDataContent>> functionCaptor;
+
+    @Mock
+    private CoreCaseDataApi coreCaseDataApi;
+
+    @Mock
+    private IdamApi idamApi;
 
     @InjectMocks
     private WaTaskService waTaskService;
@@ -516,5 +537,196 @@ class WaTaskServiceTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
+    }
+
+    @Test
+    void shouldCreateAndSubmitTaskForSystemUserSuccessfully() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(12345L);
+
+        when(securityUtils.getAuthorisation()).thenReturn("auth-token");
+        when(securityUtils.generateServiceToken()).thenReturn("service-token");
+
+        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
+        Map<String, Object> userDetailsMap = Map.of("id", "user-id");
+        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
+        when(idamApi.getUserDetails("auth-token")).thenReturn(userDetailsResponse);
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId("event-id")
+                .token("event-token")
+                .caseDetails(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class))
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq("auth-token"),
+                eq("service-token"),
+                eq("user-id"),
+                eq("PROBATE"),
+                eq(null),
+                eq("12345"),
+                eq("autoSelectForQACreateTask")
+        )).thenReturn(startEventResponse);
+
+        CaseDataContent caseDataContent = CaseDataContent.builder()
+                .event(Event.builder()
+                        .id("event-id")
+                        .summary("summary")
+                        .description("description")
+                        .build())
+                .eventToken("event-token")
+                .data(Collections.emptyMap())
+                .build();
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+                eq("auth-token"),
+                eq("service-token"),
+                eq("user-id"),
+                eq("PROBATE"),
+                eq(null),
+                eq("12345"),
+                eq(false),
+                eq(caseDataContent)
+        )).thenReturn(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class));
+
+        waTaskService.createAndSubmitTaskForSystemUser(
+                callbackRequest,
+                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
+                "summary",
+                "description"
+        );
+
+        verify(coreCaseDataApi).startEventForCaseWorker(
+                eq("auth-token"),
+                eq("service-token"),
+                eq("user-id"),
+                eq("PROBATE"),
+                eq(null),
+                eq("12345"),
+                eq("autoSelectForQACreateTask")
+        );
+
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                eq("auth-token"),
+                eq("service-token"),
+                eq("user-id"),
+                eq("PROBATE"),
+                eq(null),
+                eq("12345"),
+                eq(false),
+                eq(caseDataContent)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenStartEventFails() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(0L);
+
+        when(securityUtils.getAuthorisation()).thenReturn(null); // Simulate null authorisation
+        when(securityUtils.generateServiceToken()).thenReturn(null); // Simulate null service token
+
+        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
+        Map<String, Object> userDetailsMap = Map.of("id", "userid");
+        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
+        when(idamApi.getUserDetails(null)).thenReturn(userDetailsResponse);
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq(null),
+                eq(null),
+                eq("userid"),
+                eq("PROBATE"),
+                eq(null),
+                eq("0"),
+                eq("autoSelectForQACreateTask")
+        )).thenThrow(new RuntimeException("Start event failed"));
+
+        assertThatThrownBy(() -> waTaskService.createAndSubmitTaskForSystemUser(
+                callbackRequest,
+                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
+                "summary",
+                "description"
+        )).isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Start event failed");
+
+        verify(coreCaseDataApi, never()).submitEventForCaseWorker(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyBoolean(),
+                any(CaseDataContent.class)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenSubmitEventFails() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(0L);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("auth")
+                .userId("userid")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+
+        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
+        Map<String, Object> userDetailsMap = Map.of("id", "userid");
+        doReturn(userDetailsResponse).when(idamApi).getUserDetails(null); // Match null argument
+        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
+
+        StartEventResponse startEventResponse = StartEventResponse.builder()
+                .eventId("eventId")
+                .token("eventToken")
+                .caseDetails(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class))
+                .build();
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq(null),
+                eq(null),
+                eq("userid"),
+                eq("PROBATE"),
+                eq(null),
+                eq("0"),
+                eq("autoSelectForQACreateTask")
+        )).thenReturn(startEventResponse);
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+                eq(null),
+                eq(null),
+                eq("userid"),
+                eq("PROBATE"),
+                eq(null),
+                eq("0"),
+                eq(false),
+                any(CaseDataContent.class)
+        )).thenThrow(new RuntimeException("Submit event failed"));
+
+        assertThatThrownBy(() -> waTaskService.createAndSubmitTaskForSystemUser(
+                callbackRequest,
+                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
+                "summary",
+                "description"
+        )).isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Submit event failed");
     }
 }

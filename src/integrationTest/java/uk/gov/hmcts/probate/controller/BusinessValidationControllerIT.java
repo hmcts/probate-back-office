@@ -1,11 +1,14 @@
 package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -198,8 +201,10 @@ class BusinessValidationControllerIT {
     private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationUserId";
     private static final String CASE_CLOSED_STATE = "BOCaseClosed";
+    private static final String STATE_BO_SOT_GENERATED = "BOSotGenerated";
+    public static final String CHANGE_STATE = "changeState";
+    public static final String BO_CASE_STOPPED = "BOCaseStopped";
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1652,6 +1657,185 @@ class BusinessValidationControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setEscalateToRegistrarUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsBoRedeclarationSoTForCaseStopped() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState("BOCaseStoppedAwaitRedec");
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boRedeclarationSoTForCaseStopped");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(REDECE_SOT)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsResolveCWEscalation() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState("BOCaseStoppedAwaitRedec");
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("resolveCWEscalation");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsChangeState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
+
+        payload.put("event_id", "changeState");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState","BOCaseStoppedAwaitRedec");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @ParameterizedTest()
+    @ValueSource(strings = {"boStopCaseForCaseMatchingForExamining",
+        "boStopCaseForRegistrarEscalations", "boStopCaseForCasePrinted" })
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsBoStop(String eventId) throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId(eventId);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/case-stopped")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsReDeclarationComplete() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId("boRedeclarationComplete");
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/redeclarationComplete")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserIdamIdWhenEventIdIsChangeState() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder
+                .transferToState(BO_CASE_STOPPED).build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId(CHANGE_STATE);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/changeCaseState")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setResolveStoppedCaseUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenEventIdIsChangeStateAndStateIsBORedecNotificationSent() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
+
+        payload.put("event_id", "changeState");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState","BORedecNotificationSent");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(caseDataTransformer).setResolveRedeclarationUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetRedeclarationUserIdamIdWhenCaseStateIsBOSotGenerated() throws Exception {
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO).transferToState(STATE_BO_SOT_GENERATED);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setEventId(CHANGE_STATE);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post("/case/changeCaseState")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("data")));
+
+        verify(caseDataTransformer).setRedeclarationUserIdamId(any(), any());
+    }
+
+    @Test
+    void shouldSetEscalateToRegistrarUserIdamIdWhenEventIdIsChangeStateAndStateIsRegistrarEscalation()
+            throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
+
+        payload.put("event_id", "changeState");
+        ((ObjectNode) payload.get("case_details").get("case_data"))
+                .put("transferToState", "BORegistrarEscalation");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(OBJECT_MAPPER.writeValueAsString(payload))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseDataTransformer).setEscalateToRegistrarUserIdamId(any(), any());
     }
