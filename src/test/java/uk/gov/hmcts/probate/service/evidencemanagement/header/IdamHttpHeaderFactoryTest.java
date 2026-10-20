@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,8 +32,8 @@ class IdamHttpHeaderFactoryTest {
     void getMultiPartHttpHeader() {
         HttpHeaders httpHeaders = underTest.getMultiPartHttpHeader();
 
-        assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
-        assertTrue(httpHeaders.containsKey("user-id"));
+        assertTrue(httpHeaders.containsHeader("ServiceAuthorization"));
+        assertTrue(httpHeaders.containsHeader("user-id"));
         assertEquals(MediaType.MULTIPART_FORM_DATA, httpHeaders.getContentType());
     }
 
@@ -39,8 +41,8 @@ class IdamHttpHeaderFactoryTest {
     void getApplicationJsonHttpHeader() {
         HttpHeaders httpHeaders = underTest.getApplicationJsonHttpHeader();
 
-        assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
-        assertTrue(httpHeaders.containsKey("user-id"));
+        assertTrue(httpHeaders.containsHeader("ServiceAuthorization"));
+        assertTrue(httpHeaders.containsHeader("user-id"));
         assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
     }
 
@@ -48,7 +50,7 @@ class IdamHttpHeaderFactoryTest {
     void getAuthorizationHeaders() {
         HttpHeaders httpHeaders = underTest.getAuthorizationHeaders();
 
-        assertTrue(httpHeaders.containsKey("Authorization"));
+        assertTrue(httpHeaders.containsHeader("Authorization"));
         assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
     }
 
@@ -56,8 +58,9 @@ class IdamHttpHeaderFactoryTest {
     void getAuthorizationHeadersForDocuments() {
         HttpHeaders httpHeaders = underTest.getAuthorizationHeadersForDownloadDocuments();
 
-        assertTrue(httpHeaders.containsKey("Authorization"));
-        assertTrue(httpHeaders.containsKey("user-roles"));
-        assertEquals(IdamHttpHeaderFactory.CASEWORKER_PROBATE_SCHEDULER, httpHeaders.get("user-roles").get(0));
+        assertTrue(httpHeaders.containsHeader("Authorization"));
+        assertTrue(httpHeaders.containsHeader("user-roles"));
+        assertEquals(IdamHttpHeaderFactory.CASEWORKER_PROBATE_SCHEDULER,
+                Objects.requireNonNull(httpHeaders.get("user-roles")).getFirst());
     }
 }
