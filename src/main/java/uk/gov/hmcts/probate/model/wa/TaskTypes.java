@@ -51,4 +51,8 @@ public enum TaskTypes {
                 EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE,
                 EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE);
     }
+
+    public Optional<EventId> getOptionalClosingEventId() {
+        return Optional.ofNullable(closingEventId);
+    }
 }

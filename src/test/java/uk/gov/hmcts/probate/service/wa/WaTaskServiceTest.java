@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -48,6 +49,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
@@ -428,30 +430,7 @@ class WaTaskServiceTest {
 
         waTaskService.closeReadyToIssueHandOffs(callbackRequest);
 
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId),
-                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
-                functionCaptor.capture(),
-                isA(SecurityDTO.class)
-        );
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
-                .build();
-
-        CaseDataContent result =
-                functionCaptor.getValue().apply(startEventResponse);
-
-        assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
-
-        assertThat(result.getEventToken())
-                .isEqualTo("event-token");
-
-        assertThat(result.getData()).isNotNull();
+        verifyIceEvent(CLOSE_READY_TO_ISSUE_HANDOFFS);
     }
 
     @Test
@@ -514,15 +493,18 @@ class WaTaskServiceTest {
         when(securityUtils.generateServiceToken())
                 .thenReturn(serviceToken);
 
-        String examineIcsProbate = "ExamineDigitalCaseProbate";
         TaskData task1 = TaskData.builder()
-                .type(examineIcsProbate)
+                .type("ExamineDigitalCaseProbate")
+                .build();
+
+        TaskData task2 = TaskData.builder()
+                .type("ExamineDigitalCaseIntestacy")
                 .build();
 
         GetTasksCompletableResponse<TaskData> response =
                 new GetTasksCompletableResponse<>(
                         false,
-                        List.of(task1)
+                        List.of(task1, task2)
                 );
 
         when(waApi.searchWithCriteriaForAutomaticCompletion(
@@ -532,16 +514,20 @@ class WaTaskServiceTest {
                 .thenReturn(ResponseEntity.ok(response));
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
+        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE);
+        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY);
+    }
 
+    private void verifyIceEvent(EventId eventId) {
         verify(ccdClientApi).triggerEvent(
                 eq(caseId),
-                eq(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE),
+                eq(eventId),
                 functionCaptor.capture(),
                 isA(SecurityDTO.class)
         );
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE.getName())
+                .eventId(eventId.getName())
                 .token("event-token")
                 .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
                         .data(Map.of())
@@ -552,7 +538,7 @@ class WaTaskServiceTest {
                 functionCaptor.getValue().apply(startEventResponse);
 
         assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE.getName());
+                .isEqualTo(eventId.getName());
 
         assertThat(result.getEventToken())
                 .isEqualTo("event-token");
@@ -648,30 +634,7 @@ class WaTaskServiceTest {
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId),
-                eq(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS),
-                functionCaptor.capture(),
-                isA(SecurityDTO.class)
-        );
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
-                .build();
-
-        CaseDataContent result =
-                functionCaptor.getValue().apply(startEventResponse);
-
-        assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS.getName());
-
-        assertThat(result.getEventToken())
-                .isEqualTo("event-token");
-
-        assertThat(result.getData()).isNotNull();
+        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
     }
 
     @Test

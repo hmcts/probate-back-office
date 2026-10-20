@@ -171,10 +171,11 @@ public class WaTaskService {
                     caseId.toString(),
                     BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION)
                     .stream()
-                    .findFirst()
-                    .flatMap(TaskTypes::fromValue)
-                    .map(TaskTypes::getClosingEventId)
-                    .ifPresent(eventId -> {
+                    .map(TaskTypes::fromValue)
+                    .flatMap(Optional::stream)
+                    .map(TaskTypes::getOptionalClosingEventId)
+                    .flatMap(Optional::stream)
+                    .forEach(eventId -> {
                         log.info("Case id {} : triggering closing event {}",
                                 caseId,
                                 eventId);
