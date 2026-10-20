@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -60,7 +61,7 @@ class PDFDecoratorServiceTest {
     private CaveatCallbackRequest caveatCallbackRequestMock;
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private CaseExtraDecorator caseExtraDecoratorMock;

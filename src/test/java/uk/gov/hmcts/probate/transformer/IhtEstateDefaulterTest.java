@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,7 +19,7 @@ class IhtEstateDefaulterTest {
     @InjectMocks
     private IhtEstateDefaulter ihtEstateDefaulter;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilderMock;

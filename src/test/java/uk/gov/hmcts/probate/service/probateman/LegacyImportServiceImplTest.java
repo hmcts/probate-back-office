@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.Mockito;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class LegacyImportServiceImplTest {
     private static final String DO_IMPORT_YES = "Yes";
     private static final Long LEGACY_ID = 20001L;
@@ -46,7 +47,7 @@ class LegacyImportServiceImplTest {
     @Mock
     private Map<ProbateManType, JpaRepository> repositories;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     @BeforeEach

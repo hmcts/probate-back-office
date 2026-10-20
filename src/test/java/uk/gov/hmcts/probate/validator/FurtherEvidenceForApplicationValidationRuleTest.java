@@ -2,8 +2,11 @@ package uk.gov.hmcts.probate.validator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -13,13 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class FurtherEvidenceForApplicationValidationRuleTest {
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     private static final String VALID_INFORMATION = "Some Further Evidence";

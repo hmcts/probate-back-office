@@ -3,11 +3,12 @@ package uk.gov.hmcts.probate.service.notification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -71,7 +72,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
 
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
-    @InjectMocks
+    @Autowired
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
     @MockitoBean
     private PDFManagementService pdfManagementService;
@@ -83,7 +84,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private SendEmailResponse sendEmailResponse;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
+    @MockitoSpyBean
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
     @Spy
     private DateFormatterService dateFormatterService = new DateFormatterService();

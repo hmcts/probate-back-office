@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
@@ -71,7 +72,7 @@ class AssembleLetterTransformerTest {
     private AssembleWill assembleWill;
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     private AssembleLetterTransformer assembleLetterTransformer;
