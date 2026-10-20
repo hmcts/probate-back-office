@@ -107,9 +107,9 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(9));
+        assertThat(logic.getInputs().size(), is(10));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(89));
+        assertThat(logic.getRules().size(), is(90));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -159,6 +159,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationResolveRedeclarationTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateReviewQaCaseTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationEvidenceHandledPresentTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
