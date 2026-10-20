@@ -398,6 +398,7 @@ public class FunctionalTestUtils {
                 throw new IllegalStateException("Case search failed with HTTP %d".formatted(response.statusCode()));
             }
 
+            log.info("Case Id: {}\n{}", caseId, new JSONObject(response.getBody().asString()).toString(2));
             final var matchingCases = response
                     .getBody()
                     .jsonPath()
