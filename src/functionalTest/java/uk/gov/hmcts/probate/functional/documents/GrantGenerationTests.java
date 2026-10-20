@@ -152,6 +152,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             + "purposes only of collecting getting in and receiving the estate and doing such acts as may be necessary "
             + "for the preservation of the same in particular, to deal with issues and if necessary to sell";
     private static final String LIMITATION_TEXT = "medical negligence";
+    private static final String DATE_OF_ISSUE_LABEL = "Date of Issue:";
 
     @Test
     void verifySolicitorGenerateGrantShouldReturnOkResponseCode() throws IOException {
@@ -799,7 +800,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
     @Test
     void verifySuccessForGetDigitalGrantWithSingleExecutorSols() throws IOException {
-
+        final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -808,6 +809,34 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
+        assertTrue(response.contains(DATE_OF_ISSUE_LABEL + " " + caseData.convertDate(LocalDate.now())));
+
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
+    }
+
+    @Test
+    void verifySuccessForGetDigitalGrantWithSingleExecutorSolsWithGrantIssuedDate() throws IOException {
+        final CaseData caseData = CaseData.builder().build();
+        final String payload = replaceAllInString(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+                "\"caseType\": \"gop\",",
+                "\"caseType\": \"gop\",\n      \"grantIssuedDate\": \"2026-09-01\",");
+        final String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
+        assertTrue(response.contains(DATE_OF_ISSUE_LABEL + " 1st September 2026"));
 
         assertFalse(response.contains(PA));
         assertFalse(response.contains(WILL_MESSAGE));
@@ -822,6 +851,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
     @Test
     void verifySuccessForGetDigitalGrantWithSingleExecutorPA() throws IOException {
+        final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -829,6 +859,33 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(PRESUMED_DIED_ON));
+        assertTrue(response.contains(DATE_OF_ISSUE_LABEL + " " + caseData.convertDate(LocalDate.now())));
+
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
+
+    }
+
+    @Test
+    void verifySuccessForGetDigitalGrantWithSingleExecutorPAWithGrantIssuedDate() throws IOException {
+        final CaseData caseData = CaseData.builder().build();
+        final String payload = replaceAllInString(utils.getJsonFromFile(DEFAULT_PA_PAYLOAD),
+                "\"caseType\": \"gop\",",
+                "\"caseType\": \"gop\",\n      \"grantIssuedDate\": \"2026-09-01\",");
+        final String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PA));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(PRESUMED_DIED_ON));
+        assertTrue(response.contains(DATE_OF_ISSUE_LABEL + " 1st September 2026"));
 
         assertFalse(response.contains(WILL_MESSAGE));
         assertFalse(response.contains(ADMIN_MESSAGE));
