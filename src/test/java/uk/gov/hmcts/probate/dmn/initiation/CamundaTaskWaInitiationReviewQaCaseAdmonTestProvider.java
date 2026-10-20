@@ -78,7 +78,7 @@ public class CamundaTaskWaInitiationReviewQaCaseAdmonTestProvider implements Arg
                         AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, ADMON_WILL_CASE_TYPE, false, emptyList(), false),
-                        emptyList()
+                        List.of(reviewQaCaseAdmonTaskAttributes)
                 ),
                 Arguments.of(
                         AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
