@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
@@ -42,7 +42,7 @@ import static uk.gov.hmcts.probate.model.NotificationType.SECOND_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class SendNotificationsTaskTest {
 
     @Mock

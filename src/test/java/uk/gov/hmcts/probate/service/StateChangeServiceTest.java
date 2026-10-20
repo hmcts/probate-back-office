@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
@@ -76,7 +77,7 @@ class StateChangeServiceTest {
     private UpdateApplicationRule updateApplicationRule;
     @Mock
     private NoNotorialWillCopyRule noNotorialWillCopyRule;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     private List<CollectionMember<ExecutorsApplyingNotification>> execList;
     private CollectionMember<ExecutorsApplyingNotification> execResponseReceived;

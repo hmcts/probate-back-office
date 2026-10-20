@@ -10,9 +10,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.ApplicationState;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -53,7 +53,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +81,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.NOC;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class NotificationControllerUnitTest {
 
     @Mock
@@ -141,7 +140,7 @@ class NotificationControllerUnitTest {
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
-            .roles(Arrays.asList("caseworker-probate"))
+            .roles(List.of("caseworker-probate"))
             .build());
 
     @BeforeEach
