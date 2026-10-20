@@ -364,6 +364,7 @@ public class FunctionalTestUtils {
 
         final String caseId = submitResponse.getBody().jsonPath().get("id").toString();
         final String response = submitResponse.getBody().asString();
+        log.info("Case Id: {}\n{}", caseId, new JSONObject(response).toString(2));
 
         waitForCaseInElasticSearch("Caveat", caseId);
         return response;
