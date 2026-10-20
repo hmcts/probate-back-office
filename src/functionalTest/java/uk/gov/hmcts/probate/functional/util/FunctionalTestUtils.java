@@ -405,11 +405,13 @@ public class FunctionalTestUtils {
                 foundCase = true;
             } else if (counter++  < 40) {
                 try {
+                    log.info("Waiting for case {} to be found", caseId);
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             } else {
+                log.error("Case {} not found", caseId);
                 throw new IllegalStateException(
                         "No case %s found after 20 iterations of delaying 500ms".formatted(caseId));
             }
