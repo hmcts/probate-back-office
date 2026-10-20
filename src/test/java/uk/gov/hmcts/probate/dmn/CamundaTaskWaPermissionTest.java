@@ -119,6 +119,16 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_PROVE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_JUDICIAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_ADMIN;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -470,6 +480,26 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         RESOLVE_STOPPED_CASE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissionsWithAutoAssign(null, true)
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY,
+                        DUMMY_CASE_DATA,
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_JUDICIARY, ROLE_CATEGORY_JUDICIAL)
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS,
+                        DUMMY_CASE_DATA,
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_LEGAL_OPS, ROLE_CATEGORY_LO)
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN,
+                        DUMMY_CASE_DATA,
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_ADMIN, ROLE_CATEGORY_ADMIN)
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC,
+                        DUMMY_CASE_DATA,
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_CTSC, ROLE_CATEGORY_CTSC)
                 )
         );
     }
@@ -556,5 +586,17 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
         return getCtscExaminePermissionsWithAutoAssign(skillCode, false);
+    }
+
+    private static List<Map<String, Object>> getSpecificAccessPermissions(String name, String roleCategory) {
+
+        Map<String, Object> basePermissions = Map.of(
+                "name", name,
+                "value", "Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn",
+                "roleCategory", roleCategory,
+                "autoAssignable", false
+        );
+
+        return List.of(basePermissions);
     }
 }

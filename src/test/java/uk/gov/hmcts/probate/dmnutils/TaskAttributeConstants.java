@@ -360,5 +360,12 @@ public class TaskAttributeConstants {
     public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
     public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
-
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY = "reviewSpecificAccessRequestJudiciary";
+    public static final String SPECIFIC_ACCESS_JUDICIARY = "specific-access-approver-judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS = "reviewSpecificAccessRequestLegalOps";
+    public static final String SPECIFIC_ACCESS_LEGAL_OPS = "specific-access-approver-legal-ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN = "reviewSpecificAccessRequestAdmin";
+    public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
+    public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
 }
