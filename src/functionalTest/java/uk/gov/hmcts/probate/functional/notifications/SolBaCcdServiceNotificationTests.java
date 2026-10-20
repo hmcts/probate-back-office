@@ -4,7 +4,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -168,16 +167,19 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyPaperApplicationReceivedNotificationSentForNullInPaperForm() throws IOException {
-        final ResponseBody responseBody =
-            validatePostSuccess("paperApplicationRecievedPayloadForCitizen.json", APPLICATION_RECEIVED);
-        assertTrue(responseBody.asString().contains("DocumentLink"));
+        assertResponseContainsObjectAtJsonPath(
+                "paperApplicationRecievedPayloadForCitizen.json",
+                APPLICATION_RECEIVED,
+                "DocumentLink");
     }
 
     @Test
     void verifyPaperApplicationReceivedNotificationNotSent() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json",
+        final ResponseBody responseBody = validatePostSuccess(
+                "paperApplicationRecievedPayload.json",
                 APPLICATION_RECEIVED);
         assertTrue(!responseBody.asString().contains("DocumentLink"));
+        assertTrue(responseBody.asString().isBlank());
     }
 
     @Test
