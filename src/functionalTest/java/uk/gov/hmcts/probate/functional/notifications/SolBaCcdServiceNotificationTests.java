@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "paperApplicationRecievedCitizenFromCaseworkerPayload.json",
                 PAPER_FORM,
                 EMAIL_NOTIFICATION_URL);
@@ -62,7 +63,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyGrantReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadGrantReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -71,7 +72,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyIntestacyReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadIntestacyReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -80,7 +81,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyAdmonWillReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadAdmonWillReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -89,7 +90,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadGrantReissuedNameWithApostrophe.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -98,7 +99,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyGrantReissueDocumentAppNameDoubleBarrelled() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadGrantReissuedNameDoubleBarrelled.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -106,7 +107,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyWelshGrantReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadWelshGrantReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -116,7 +117,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyWelshIntestacyReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadWelshIntestacyReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -125,7 +126,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyWelshAdmonWillReissueDocument() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadWelshAdmonWillReissued.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -133,7 +134,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyWelshGrantReissueDocumentAppNameWithApostrophe() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadWelshGrantReissuedNameWithApostrophe.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -142,7 +143,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifyWelshGrantReissueDocumentAppNameDoubleBarrelled() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadWelshGrantReissuedNameDoubleBarrelled.json",
                 GRANT_REISSUED,
                 GENERATED_DOCUMENT_URL);
@@ -150,7 +151,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyDigitalGOPApplicationReceivedNotificationEmailText() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "digitalApplicationRecievedPayload.json",
                 APPLICATION_RECEIVED,
                 EMAIL_NOTIFICATION_DOCUMENT_URL);
@@ -181,7 +182,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextSolicitorWelsh() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "digitalApplicationRecievedPayloadSolicitorWelsh.json",
                 APPLICATION_RECEIVED,
                 EMAIL_NOTIFICATION_DOCUMENT_URL);
@@ -211,7 +212,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantRaisedShouldReturnOkResponseCode() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "solicitorPayloadNotifications.json",
                 GRANT_RAISED,
                 EMAIL_NOTIFICATION_URL);
@@ -234,7 +235,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "solicitorPayloadNotifications.json",
                 DOCUMENTS_RECEIVED,
                 EMAIL_NOTIFICATION_URL);
@@ -258,7 +259,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantIssuedShouldReturnOkResponseCode() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "solicitorPayloadNotifications.json",
                 GRANT_ISSUED,
                 EMAIL_NOTIFICATION_URL);
@@ -266,7 +267,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "solicitorPayloadNotificationsIntestacy.json",
                 GRANT_ISSUED,
                 EMAIL_NOTIFICATION_URL);
@@ -282,7 +283,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     @Disabled
     void verifySolicitorGrantReissuedShouldReturnOkResponseCode() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "solicitorPayloadNotifications.json",
                 GRANT_REISSUED,
                 EMAIL_NOTIFICATION_URL);
@@ -320,7 +321,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanPayload.json",
                 GRANT_RAISED,
                 EMAIL_NOTIFICATION_URL);
@@ -328,7 +329,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanSolicitorPayload.json",
                 GRANT_RAISED,
                 EMAIL_NOTIFICATION_URL);
@@ -336,7 +337,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanPayloadWelsh.json",
                 GRANT_RAISED,
                 EMAIL_NOTIFICATION_URL);
@@ -344,7 +345,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
                 GRANT_RAISED,
                 EMAIL_NOTIFICATION_URL);
@@ -389,7 +390,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifyPersonalApplicantRequestInformationEmailContentIsOk() throws IOException {
-        assertResponseContainsValueAtJsonPath(
+        assertResponseContainsStringAtJsonPath(
                 "personalPayloadNotifications.json",
                 INFORMATION_REQUEST,
                 EMAIL_NOTIFICATION_URL);
@@ -421,7 +422,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         return caseId;
     }
 
-    private void assertResponseContainsValueAtJsonPath(
+    private void assertResponseContainsStringAtJsonPath(
             final String payloadFileName,
             final String apiPath,
             final String atJsonPath)
@@ -431,8 +432,23 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
                 apiPath);
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        final String documentUrl = jsonPath.get(atJsonPath);
+        final String documentUrl = jsonPath.getString(atJsonPath);
 
         assertNotNull(documentUrl);
+    }
+
+    private void assertResponseContainsObjectAtJsonPath(
+            final String payloadFileName,
+            final String apiPath,
+            final String atJsonPath)
+            throws IOException {
+        final ResponseBody responseBody = validatePostSuccess(
+                payloadFileName,
+                apiPath);
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final Object object = jsonPath.getJsonObject(atJsonPath);
+
+        assertNotNull(object);
     }
 }
