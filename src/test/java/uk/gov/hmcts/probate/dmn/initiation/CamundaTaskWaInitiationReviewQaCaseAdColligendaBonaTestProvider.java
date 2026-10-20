@@ -77,12 +77,12 @@ public class CamundaTaskWaInitiationReviewQaCaseAdColligendaBonaTestProvider imp
                         additionalData(false, "", false, emptyList(), false),
                         emptyList()
                 ),
-                // Negative: evidence already handled
+                // Evidence already handled
                 Arguments.of(
                         AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, AD_COLLIGENDA_BONA_CASE_TYPE, false, emptyList(), false),
-                        emptyList()
+                        List.of(reviewQaCaseProbateTaskAttributes)
                 ),
                 // Negative: no additional data
                 Arguments.of(
