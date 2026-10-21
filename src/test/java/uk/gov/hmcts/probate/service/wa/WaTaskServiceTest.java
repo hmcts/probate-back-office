@@ -2,6 +2,9 @@ package uk.gov.hmcts.probate.service.wa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -19,20 +22,14 @@ import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
-import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
-import uk.gov.hmcts.reform.ccd.client.model.Event;
-import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
-import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +39,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,14 +49,13 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -250,40 +246,6 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldReturnTrueWhenEvidenceHasIsNo() {
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-
-        when(caseDetails.getData())
-                .thenReturn(CaseData.builder()
-                        .evidenceHandled(NO)
-                        .build());
-
-        BiPredicate<CallbackRequest, String> predicate =
-                waTaskService.getEvidenceHandledPredicate();
-
-        assertThat(predicate.test(callbackRequest, ""))
-                .isTrue();
-    }
-
-    @Test
-    void shouldReturnTrueWhenEvidenceHasIsYes() {
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-
-        when(caseDetails.getData())
-                .thenReturn(CaseData.builder()
-                        .evidenceHandled(YES)
-                        .build());
-
-        BiPredicate<CallbackRequest, String> predicate =
-                waTaskService.getEvidenceHandledPredicate();
-
-        assertThat(predicate.test(callbackRequest, ""))
-                .isFalse();
-    }
-
-    @Test
     void shouldReturnTrueWhenHandOffReasonsHaveChanged() {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
@@ -449,51 +411,6 @@ class WaTaskServiceTest {
                 eq(caseId.toString()),
                 eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
                 functionCaptor.capture(),
-                isA(SecurityDTO.class)
-        );
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(CLOSE_READY_TO_ISSUE_HANDOFFS.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
-                .build();
-
-        CaseDataContent result =
-                functionCaptor.getValue().apply(startEventResponse);
-
-        assertThat(result.getEvent().getId())
-                .isEqualTo(CLOSE_READY_TO_ISSUE_HANDOFFS.getName());
-
-        assertThat(result.getEventToken())
-                .isEqualTo("event-token");
-
-        assertThat(result.getData()).isNotNull();
-    }
-
-    @Test
-    void shouldBuildCorrectCaseDataContentWhenClosingReadyToIssueHandOffs() {
-
-        Long caseId = 123456789L;
-        CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(NO)
-                .build();
-
-        when(caseDetails.getId())
-                .thenReturn(caseId);
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
-
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
-
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
-                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
-                functionCaptor.capture(),
                 isA(SecurityDTO.class));
 
         StartEventResponse startEventResponse = StartEventResponse.builder()
@@ -541,192 +458,89 @@ class WaTaskServiceTest {
 
     @Test
     void shouldCreateAndSubmitTaskForSystemUserSuccessfully() {
-        CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetails.getId()).thenReturn(12345L);
-
-        when(securityUtils.getAuthorisation()).thenReturn("auth-token");
-        when(securityUtils.generateServiceToken()).thenReturn("service-token");
-
-        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
-        Map<String, Object> userDetailsMap = Map.of("id", "user-id");
-        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
-        when(idamApi.getUserDetails("auth-token")).thenReturn(userDetailsResponse);
-
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId("event-id")
-                .token("event-token")
-                .caseDetails(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class))
-                .build();
-        when(coreCaseDataApi.startEventForCaseWorker(
-                eq("auth-token"),
-                eq("service-token"),
-                eq("user-id"),
-                eq("PROBATE"),
-                eq(null),
-                eq("12345"),
-                eq("autoSelectForQACreateTask")
-        )).thenReturn(startEventResponse);
-
-        CaseDataContent caseDataContent = CaseDataContent.builder()
-                .event(Event.builder()
-                        .id("event-id")
-                        .summary("summary")
-                        .description("description")
-                        .build())
-                .eventToken("event-token")
-                .data(Collections.emptyMap())
-                .build();
-
-        when(coreCaseDataApi.submitEventForCaseWorker(
-                eq("auth-token"),
-                eq("service-token"),
-                eq("user-id"),
-                eq("PROBATE"),
-                eq(null),
-                eq("12345"),
-                eq(false),
-                eq(caseDataContent)
-        )).thenReturn(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class));
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
 
         waTaskService.createAndSubmitTaskForSystemUser(
                 callbackRequest,
-                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
-                "summary",
-                "description"
+                AUTO_SELECT_FOR_QA_CREATE_TASK
         );
 
-        verify(coreCaseDataApi).startEventForCaseWorker(
-                eq("auth-token"),
-                eq("service-token"),
-                eq("user-id"),
-                eq("PROBATE"),
-                eq(null),
-                eq("12345"),
-                eq("autoSelectForQACreateTask")
+        verify(ccdClientApi).triggerEvent(
+                eq(String.valueOf(caseDetails.getId())),
+                eq(AUTO_SELECT_FOR_QA_CREATE_TASK),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class)
         );
-
-        verify(coreCaseDataApi).submitEventForCaseWorker(
-                eq("auth-token"),
-                eq("service-token"),
-                eq("user-id"),
-                eq("PROBATE"),
-                eq(null),
-                eq("12345"),
-                eq(false),
-                eq(caseDataContent)
-        );
-    }
-
-    @Test
-    void shouldThrowExceptionWhenStartEventFails() {
-        CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getId()).thenReturn(0L);
-
-        when(securityUtils.getAuthorisation()).thenReturn(null); // Simulate null authorisation
-        when(securityUtils.generateServiceToken()).thenReturn(null); // Simulate null service token
-
-        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
-        Map<String, Object> userDetailsMap = Map.of("id", "userid");
-        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
-        when(idamApi.getUserDetails(null)).thenReturn(userDetailsResponse);
-
-        when(coreCaseDataApi.startEventForCaseWorker(
-                eq(null),
-                eq(null),
-                eq("userid"),
-                eq("PROBATE"),
-                eq(null),
-                eq("0"),
-                eq("autoSelectForQACreateTask")
-        )).thenThrow(new RuntimeException("Start event failed"));
-
-        assertThatThrownBy(() -> waTaskService.createAndSubmitTaskForSystemUser(
-                callbackRequest,
-                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
-                "summary",
-                "description"
-        )).isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Start event failed");
-
-        verify(coreCaseDataApi, never()).submitEventForCaseWorker(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyBoolean(),
-                any(CaseDataContent.class)
-        );
-    }
-
-    @Test
-    void shouldThrowExceptionWhenSubmitEventFails() {
-        CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails caseDetails =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails.class);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseData caseData =
-                mock(uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getId()).thenReturn(0L);
-
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation("auth")
-                .userId("userid")
-                .serviceAuthorisation("serviceAuth")
-                .build();
-
-        ResponseEntity<Map<String, Object>> userDetailsResponse = mock(ResponseEntity.class);
-        Map<String, Object> userDetailsMap = Map.of("id", "userid");
-        doReturn(userDetailsResponse).when(idamApi).getUserDetails(null); // Match null argument
-        when(userDetailsResponse.getBody()).thenReturn(userDetailsMap);
-
         StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId("eventId")
-                .token("eventToken")
-                .caseDetails(mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class))
+                .eventId(AUTO_SELECT_FOR_QA_CREATE_TASK.getName())
+                .token("event-token")
+                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(Map.of())
+                        .build())
                 .build();
 
-        when(coreCaseDataApi.startEventForCaseWorker(
-                eq(null),
-                eq(null),
-                eq("userid"),
-                eq("PROBATE"),
-                eq(null),
-                eq("0"),
-                eq("autoSelectForQACreateTask")
-        )).thenReturn(startEventResponse);
+        CaseDataContent result =
+                functionCaptor.getValue().apply(startEventResponse);
 
-        when(coreCaseDataApi.submitEventForCaseWorker(
-                eq(null),
-                eq(null),
-                eq("userid"),
-                eq("PROBATE"),
-                eq(null),
-                eq("0"),
-                eq(false),
-                any(CaseDataContent.class)
-        )).thenThrow(new RuntimeException("Submit event failed"));
+        assertThat(result.getEvent().getId())
+                .isEqualTo(AUTO_SELECT_FOR_QA_CREATE_TASK.getName());
 
-        assertThatThrownBy(() -> waTaskService.createAndSubmitTaskForSystemUser(
-                callbackRequest,
-                EventId.AUTO_SELECT_FOR_QA_CREATE_TASK,
-                "summary",
-                "description"
-        )).isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Submit event failed");
+        assertThat(result.getEventToken())
+                .isEqualTo("event-token");
+
+        assertThat(result.getData()).isNotNull();
+    }
+
+    @ParameterizedTest(
+            name = "[{index}] State: {0}, Evidence Handled: {1}, Expected: {2}"
+    )
+    @MethodSource("evidenceHandledScenarios")
+    void shouldEvaluateEvidenceHandledPredicate(
+            String state,
+            String evidenceHandled,
+            boolean expected) {
+
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        when(caseDetails.getState())
+                .thenReturn(state);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .evidenceHandled(evidenceHandled)
+                        .build());
+
+        boolean result = waTaskService
+                .getEvidenceHandledPredicate()
+                .test(callbackRequest, null);
+
+        assertThat(result).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> evidenceHandledScenarios() {
+        return Stream.of(
+                Arguments.of(STATE_BO_CASE_STOPPED, YES, true),
+                Arguments.of(STATE_BO_CASE_STOPPED, NO, false),
+                Arguments.of(STATE_BO_CASE_STOPPED, null, false),
+
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, NO, true),
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, YES, false),
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, null, false),
+
+                Arguments.of(STATE_BO_REDEC_NOTIFICATION_SENT, YES, true),
+                Arguments.of(STATE_BO_REDEC_NOTIFICATION_SENT, NO, false),
+                Arguments.of(STATE_BO_REDEC_NOTIFICATION_SENT, null, false),
+
+                Arguments.of(STATE_CASE_PRINTED, YES, true),
+                Arguments.of(STATE_CASE_PRINTED, NO, true),
+                Arguments.of(STATE_CASE_PRINTED, null, true)
+        );
     }
 }

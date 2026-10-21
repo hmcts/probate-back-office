@@ -2345,7 +2345,7 @@
       </rule>
       <rule id="DecisionRule_0h88eyv">
         <inputEntry id="UnaryTests_1rqu7pb">
-          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+          <text>"ExaminePOACasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_13c5acc">
           <text></text>
@@ -2374,7 +2374,7 @@
       </rule>
       <rule id="DecisionRule_1spd263">
         <inputEntry id="UnaryTests_06t7ymr">
-          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+          <text>"ExaminePOACasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_05ufrkb">
           <text></text>
@@ -2577,7 +2577,7 @@
       </rule>
       <rule id="DecisionRule_1xhonkt">
         <inputEntry id="UnaryTests_1xgm8ek">
-          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+          <text>"ExamineIncapacityRule35CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bo36ip">
           <text></text>
@@ -2606,7 +2606,7 @@
       </rule>
       <rule id="DecisionRule_16vgz2n">
         <inputEntry id="UnaryTests_0jol6hy">
-          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+          <text>"ExamineIncapacityRule35CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1seid9v">
           <text></text>

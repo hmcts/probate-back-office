@@ -30,19 +30,15 @@ import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
-import uk.gov.hmcts.probate.service.wa.WaTaskService;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import java.util.UUID;
 import java.util.function.BiPredicate;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,12 +54,12 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INCAPACITY_RULE35;
-import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 
 @ExtendWith(MockitoExtension.class)
-class WaTaskContollerUnitTest {
+public class WaTaskControllerUnitTest {
     public static final String ENCODED_CLIENT_CONTEXT = "encodedClientContext";
     @Mock
     private CallbackRequest callbackRequest;
@@ -92,14 +88,10 @@ class WaTaskContollerUnitTest {
     @Mock
     private CcdClientApi ccdClientApi;
     @Mock
-    private SecurityUtils securityUtils;
-    @Mock
     private CoreCaseDataApi coreCaseDataApi;
     @Mock
     private uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel;
     @Mock
-    private WaTaskService waTaskService;
-
     private WaTaskService waTaskService;
 
     private WaTaskContoller waTaskContoller;
@@ -129,7 +121,7 @@ class WaTaskContollerUnitTest {
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
-                 any()))
+                any()))
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
@@ -149,7 +141,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -171,7 +163,7 @@ class WaTaskContollerUnitTest {
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
-                 any()))
+                any()))
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
@@ -192,7 +184,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isTrue();
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isTrue();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -217,7 +209,7 @@ class WaTaskContollerUnitTest {
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
-                 any()))
+                any()))
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         Optional<TaskData> examineIncapacityRule35 = Optional.of(TaskData.builder()
@@ -245,7 +237,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest, clientContext)).isFalse();
+                .test(callbackRequest, clientContext)).isFalse();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -266,7 +258,7 @@ class WaTaskContollerUnitTest {
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
-                 any()))
+                any()))
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         Optional<TaskData> examineIncapacityRule35 = Optional.of(TaskData.builder()
@@ -294,7 +286,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest, clientContext)).isTrue();
+                .test(callbackRequest, clientContext)).isTrue();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -314,7 +306,7 @@ class WaTaskContollerUnitTest {
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
                 eq(callbackRequest),
-                 any()))
+                any()))
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         Optional<TaskData> examineForeignDomicile = Optional.of(TaskData.builder()
@@ -343,7 +335,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-               .test(callbackRequest, clientContext)).isTrue();
+                .test(callbackRequest, clientContext)).isTrue();
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -444,17 +436,18 @@ class WaTaskContollerUnitTest {
 
     static Stream<Arguments> evidenceHandledPredicateTestCases() {
         return Stream.of(
-            Arguments.of("BOCaseStopped", NO, false),
-            Arguments.of("BOCaseWorkerEscalation", YES, false),
-            Arguments.of("BOCaseStopped", YES, true),
-            Arguments.of("BORedecNotificationSent", YES, true)
+                Arguments.of("BOCaseStopped", NO, false),
+                Arguments.of("BOCaseWorkerEscalation", YES, false),
+                Arguments.of("BOCaseStopped", YES, true),
+                Arguments.of("BORedecNotificationSent", YES, true)
         );
     }
 
     @ParameterizedTest
     @MethodSource("evidenceHandledPredicateTestCases")
     void shouldEvaluateTaskCompletionPredicateByStateAndEvidenceHandled(String state, String evidenceHandled,
-                                                         boolean expectedResult) throws JsonProcessingException {
+                                                                        boolean expectedResult)
+            throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -485,7 +478,7 @@ class WaTaskContollerUnitTest {
                 predicateArgumentCaptor.capture());
 
         assertThat(predicateArgumentCaptor.getValue()
-                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isFalse();
+                .test(callbackRequest, ENCODED_CLIENT_CONTEXT)).isEqualTo(expectedResult);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -597,19 +590,11 @@ class WaTaskContollerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseData.getCaseType()).thenReturn("gop");
 
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId("eventId")
-                .token("eventToken")
-                .caseDetails(caseDetailsModel)
-                .build();
-
         waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
 
         verify(waTaskService).createAndSubmitTaskForSystemUser(
-                eq(callbackRequest),
-                eq(AUTO_SELECT_FOR_QA_CREATE_TASK),
-                eq("Auto Select For QA Create Task"),
-                eq("Auto Select For QA Create Task")
+                callbackRequest,
+                AUTO_SELECT_FOR_QA_CREATE_TASK
         );
     }
 

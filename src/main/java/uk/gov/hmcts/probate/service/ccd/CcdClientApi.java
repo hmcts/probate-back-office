@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_NAME;
-import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
 @Component
@@ -90,7 +89,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                PROBATE.name(),
+                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 eventId.getName()
@@ -109,7 +108,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                PROBATE.name(),
+                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 false,
@@ -126,7 +125,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                PROBATE.name(),
+                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 eventId.getName()
@@ -139,7 +138,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                PROBATE.name(),
+                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 false,
@@ -153,7 +152,7 @@ public class CcdClientApi implements CoreCaseDataService {
             securityDTO.getAuthorisation(),
             securityDTO.getServiceAuthorisation(),
             securityDTO.getUserId(),
-            PROBATE.name(),
+            uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
             caseType.getName(),
             caseId
         );

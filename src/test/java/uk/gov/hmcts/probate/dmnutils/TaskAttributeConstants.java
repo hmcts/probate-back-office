@@ -96,12 +96,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
     public static final String EXAMINE_SECTION_116 = "ExamineSection116";
     public static final String EXAMINE_POA = "ExaminePOA";
-    public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
-    public static final String EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED = "ExaminePowerOfAttorneyCasePrinted";
+    public static final String EXAMINE_POA_CASE_PRINTED = "ExaminePOACasePrinted";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT = "ExamineResealForeignGrant";
     public static final String EXAMINE_IBIS = "ExamineIBIS";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED = "ExamineResealForeignGrantCasePrinted";
-    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
     public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
     public static final String EXAMINE_MINORITY_INTEREST_CASE_PRINTED = "ExamineMinorityInterestCasePrinted";
     public static final String RECTIFY_QA_CASE = "RectifyQACase";
@@ -293,7 +291,7 @@ public class TaskAttributeConstants {
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME
             = "Examine - Infected Blood Compensation Authority";
     public static final String EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME = "Examine - Double Probate";
-    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
+    public static final String EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity rule 35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
             = "Examine - Leading or following Grants";
     public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME = "Examine - Windrush Scheme";
@@ -366,8 +364,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME = "Examine - Foreign Domicile";
     public static final String EXAMINE_FOREIGN_DOMICILE_SKILL_CODE = "SKILL:ABA6:ForeignDomicile";
 
-    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED
-            = "ExamineIncapacityUnderRule35CasePrinted";
+    public static final String EXAMINE_INCAPACITY_RULE_35_CASE_PRINTED
+            = "ExamineIncapacityRule35CasePrinted";
     public static final String PROBATE_SME_SKILL_CODE = "SKILL:ABA6:ProbateSME";
 
     public static final String DECISION_MAKING_WORK_TYPE_PROBATE = "decision_making_work";
