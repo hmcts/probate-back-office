@@ -228,15 +228,12 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CaveatCallbackResponse caveatRaisedWithoutEmail(CaveatCallbackRequest caveatCallbackRequest) {
+
+    public CaveatCallbackResponse transformResponseWithOrgPolicy(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaveatDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         final CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
-        if (null == caveatData.getPaperForm()) {
-            responseCaveatDataBuilder.paperForm(YES);
-        }
-
         if (null == caveatData.getApplicantOrganisationPolicy() && SOLICITOR.equals(caveatData.getApplicationType())) {
             responseCaveatDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
         }
