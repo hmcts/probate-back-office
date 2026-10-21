@@ -2679,7 +2679,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ate6dk">
         <inputEntry id="UnaryTests_05ymew6">
-          <text>"serviceRequestPaymentSuccess", "handleEvidence",  "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"serviceRequestPaymentSuccess", "handleEvidence",  "boResolveStop", "resolveCWEscalation", "changeState", "solicitorPaymentSuccessCase"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vbvspz">
           <text>"CasePrinted"</text>
@@ -2688,7 +2688,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_02i1f64">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1k006h1">
           <text></text>
@@ -2732,7 +2732,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1blhdrk">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hwf7rj">
           <text></text>
