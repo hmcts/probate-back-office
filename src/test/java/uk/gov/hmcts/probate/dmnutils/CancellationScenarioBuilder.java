@@ -134,6 +134,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "BOCaseQA",
                                 "BOCaseQA"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "changeState",
+                                null,
+                                null,
+                                "case progression",
+                                "Cancel"
+                        )
                 )
         );
     }
