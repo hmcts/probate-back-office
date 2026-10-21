@@ -369,7 +369,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
+        validatePostSuccessForPayload(payload, CASE_STOPPED);
     }
 
     @Test
@@ -378,7 +378,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
+        validatePostSuccessForPayload(payload, CASE_STOPPED);
     }
 
     @Test
@@ -387,7 +387,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("personalPayloadNotificationsSpecialCharacters.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        validatePostSuccessForCaseStopped(payload, CASE_STOPPED);
+        validatePostSuccessForPayload(payload, CASE_STOPPED);
     }
 
     @Test
