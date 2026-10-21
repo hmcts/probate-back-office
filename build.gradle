@@ -196,7 +196,6 @@ def versions = [
         springDocOpenUi                 : '2.9.1',
         swaggerAnnotations              : '2.2.55',
         springSecurityVersion           : '6.5.11',
-        tomcat                          : '11.0.27',
         camunda                         : '7.24.0'
 ]
 
@@ -238,6 +237,7 @@ ext {
   set("netty.version", libs.versions.netty.get()) // CVE-2025-67735
   set("log4j2.version", libs.versions.log4j2.get()) // CVE-2025-68161
   set("commons-lang3.version", libs.versions.commonsLang3.get()) // CVE-2025-48924
+  set("tomcat.version", libs.versions.tomcat.get())
 }
 
 dependencies {
@@ -253,10 +253,6 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
   //Solves CVE-2025-48976
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
-  //Solves CVE-2025-48989
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: versions.tomcat
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
 
   implementation group: 'com.google.guava', name: 'guava', version: '33.7.2-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootVersion
@@ -397,7 +393,7 @@ configurations.configureEach {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
 
-  def kotlinVersion = '2.1.0'
+  def kotlinVersion = '2.4.20'
   def jacksonCoreVersion = '3.2.0'
   def angusVersion = '2.1.0-M1'
 
