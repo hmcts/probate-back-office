@@ -26,7 +26,7 @@
       <input id="InputClause_1maphet" label="evidenceHandledPresent">
         <inputExpression id="LiteralExpression_0jtdz1c" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
-            additionalData.Data.evidenceHandled = "No") then true else false
+            additionalData.Data.evidenceHandled != null) then true else false
           </text>
         </inputExpression>
       </input>
