@@ -41,8 +41,8 @@ public class NumberOfApplyingExecutorsValidationRule {
         int applyingExecutorsCount = executors.size();
 
         // make sure it counts primary applicant as executor and not only the executors applying
-        // also will only count if name filled in
-        if (primaryApplicantExists(caseData)) {
+        // will only count if name is filled
+        if (!caseData.getPrimaryApplicantFullName().isEmpty()) {
             applyingExecutorsCount++;
         }
 
@@ -51,9 +51,5 @@ public class NumberOfApplyingExecutorsValidationRule {
                 "The total number executors applying cannot exceed 4 for case id " + caseDetails.getId(),
                     userMessageWelsh);
         }
-    }
-
-    private boolean primaryApplicantExists(CaseData caseData) {
-        return (caseData.isPrimaryApplicantApplying() && !caseData.getPrimaryApplicantFullName().isEmpty());
     }
 }
