@@ -364,9 +364,11 @@ public class FunctionalTestUtils {
 
         final String caseId = submitResponse.getBody().jsonPath().get("id").toString();
         final String response = submitResponse.getBody().asString();
-        log.info("Case Id: {}\n{}", caseId, new JSONObject(response).toString(2));
+
+        log.info("caveat case {} created, wait for availability in elasticsearch", caseId);
 
         waitForCaseInElasticSearch("Caveat", caseId);
+        log.info("found caveat case {} in elasticsearch", caseId);
         return response;
     }
 
@@ -398,12 +400,11 @@ public class FunctionalTestUtils {
                 throw new IllegalStateException("Case search failed with HTTP %d".formatted(response.statusCode()));
             }
 
-            log.info("Case Id: {}\n{}", caseId, new JSONObject(response.getBody().asString()).toString(2));
             final var matchingCases = response
                     .getBody()
                     .jsonPath()
-                    .getList("results");
-            if (matchingCases != null && !matchingCases.isEmpty()) {
+                    .getLong("total");
+            if (matchingCases != 0) {
                 foundCase = true;
             } else if (counter++  < 40) {
                 try {
