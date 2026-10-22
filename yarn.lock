@@ -1629,7 +1629,7 @@ __metadata:
     chai-http: "npm:^4.3.0"
     chai-string: "npm:^1.6.0"
     date-fns: "npm:^2.21.3"
-    dotenv: "npm:^17.4.2"
+    dotenv: "npm:^18.0.0"
     dotenv-extended: "npm:^2.9.0"
     eslint: "npm:^10.8.1"
     eslint-plugin-playwright: "npm:^2.0.0"
@@ -2886,10 +2886,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^17.4.2":
-  version: 17.4.2
-  resolution: "dotenv@npm:17.4.2"
-  checksum: 10/ca1b6f54d58e39914901e1518958e86083aca8deb5aa2e7f2a51acd53291d97852479b0ab26ed949b6a45a0e9adcc7b0d1c3c72375e8ea670f7005e341c6daba
+"dotenv@npm:^18.0.0":
+  version: 18.0.8
+  resolution: "dotenv@npm:18.0.8"
+  bin:
+    dotenv: dist/index.cjs
+  checksum: 10/db96395978bb0fb6c634c11f03040315588b0f5d534a7a49b37d931114918848765c6bdf54f2746231f429eadf17252a33daae9292431510d1a21750bdaa5a52
   languageName: node
   linkType: hard
 
