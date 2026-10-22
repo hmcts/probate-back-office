@@ -31,8 +31,6 @@ public class CamundaTaskWaInitiationEvidenceHandledPresentTestProvider implement
         );
 
         return Stream.of(
-            // evidenceHandledPresent = false (evidenceHandled is boolean, not "No")
-            // → new rule (evidenceHandledPresent=true) does not fire; old intestacy rule fires
             Arguments.of(
                     CREATE_CASE_EVENT,
                     CASE_PRINTED_STATE,
