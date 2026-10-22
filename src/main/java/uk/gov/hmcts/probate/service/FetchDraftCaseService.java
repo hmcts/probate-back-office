@@ -84,7 +84,13 @@ public class FetchDraftCaseService {
     private void processCases(List<CaseDetails> cases, List<CaseDetails> successfulPaymentCases) {
         for (CaseDetails caseDetails : cases) {
             log.info("Draft state case id: {}", caseDetails.getId());
-            boolean hasSuccessfulPayment = paymentsService.hasSuccessfulPaymentByCaseId(caseDetails.getId().toString());
+            boolean hasSuccessfulPayment;
+            try {
+                hasSuccessfulPayment = paymentsService.hasSuccessfulPaymentByCaseId(caseDetails.getId().toString());
+            } catch (Exception ex) {
+                log.error("Error checking payment status for draft case id: {}", caseDetails.getId(), ex);
+                continue;
+            }
 
             if (hasSuccessfulPayment) {
                 log.info("Payment status is Success for case id: {}", caseDetails.getId());
