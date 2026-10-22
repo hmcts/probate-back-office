@@ -385,7 +385,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         additionalDataNoHandOffList(),
                         emptyList()
                 ),
-                // SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT - HSE No / Yes / Blank
+                // SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT - HSE No/Yes/Blank
                 Arguments.of(
                         SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
                         CASE_PRINTED_STATE,
