@@ -14,15 +14,14 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.powerOfAttorneyHandOffReason;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POA_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 
 
@@ -33,21 +32,15 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
 
 
         Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
-                "taskId", EXAMINE_POA,
+                "taskId", EXAMINE_POWER_OF_ATTORNEY,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
 
         Map<String,Object> examinePowerOfAttorneyCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_POA_CASE_PRINTED,
+                "taskId", EXAMINE_POWER_OF_ATTORNEY_CASE_PRINTED,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
-        );
-
-        Map<String,Object> examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes = Map.of(
-                "taskId", EXAMINE_POA,
-                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -319,14 +312,6 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false,
-                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason)),
-                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

@@ -99,7 +99,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wwwv9d">
-          <text>"ExamineIBCA"</text>
+          <text>"ExamineInfectedBloodCompensationAuthority"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_12z1m1a">
           <text>"Examine - Infected Blood Compensation Authority"</text>
@@ -123,7 +123,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_06zlqkp">
-          <text>"ExamineWillCodicilNotated"</text>
+          <text>"ExamineWillOrCodicilToBeNotated"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0f5knzm">
           <text>"Examine - Will or Codicil to be Notated"</text>
@@ -207,10 +207,10 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1f7anys">
-          <text>"ExamineIncapacityRule35"</text>
+          <text>"ExamineIncapacityUnderRule35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tqugxz">
-          <text>"Examine - Incapacity rule 35"</text>
+          <text>"Examine - Incapacity under rule 35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_08eqx2u">
@@ -219,7 +219,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0dep4hw">
-          <text>"ExamineLeadingFollowing Grants"</text>
+          <text>"ExamineLeadingOrFollowingGrants"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0s92gqd">
           <text>"Examine - Leading or following Grants"</text>
@@ -243,7 +243,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_type_id">
-          <text>"ExaminePOA"</text>
+          <text>"ExaminePowerOfAttorney"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_power_of_attorney_type_name">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -267,7 +267,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_type_id">
-          <text>"ExamineIBIS"</text>
+          <text>"ExamineInfectedBloodInterimScheme"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_infected_blood_interim_type_name">
           <text>"Examine - Infected Blood Interim Scheme"</text>
@@ -279,7 +279,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0f6rq1d">
-          <text>"ExamineRectifyWillCodicil"</text>
+          <text>"ExamineRectifyWillOrCodicil"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0009nbc">
           <text>"Examine - Rectify a Will or Codicil"</text>
@@ -291,7 +291,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1qexp82">
-          <text>"ExamineCodicilMis"</text>
+          <text>"ExamineCodicilMisRecital"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_030o68g">
           <text>"Examine - Codicil Mis-Recital"</text>
@@ -303,7 +303,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_05qo65m">
-          <text>"ExamineIBISCasePrinted"</text>
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16n0d3e">
           <text>"Examine - Infected Blood Interim Scheme"</text>
@@ -315,7 +315,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0i4n1fh">
-          <text>"ExamineLostWillCasePrinted"</text>
+          <text>"ExamineLostWillOrCodicilCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_051c3rt">
           <text>"Examine - Lost Will or Codicil"</text>
@@ -339,7 +339,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1s9bbu6">
-          <text>"ExamineIBCACasePrinted"</text>
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_13m3f8f">
           <text>"Examine - Infected Blood Compensation Authority"</text>
@@ -351,7 +351,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_15z0jzc">
-          <text>"ExamineLeadingFollowing GrantsCasePrinted"</text>
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1e1ycx1">
           <text>"Examine - Leading or following Grants"</text>
@@ -387,7 +387,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1cii8vf">
-          <text>"ExamineCodicilMisCasePrinted"</text>
+          <text>"ExamineCodicilMisRecitalCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1wu3c6z">
           <text>"Examine - Codicil Mis-Recital"</text>
@@ -435,7 +435,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_10uohhl">
-          <text>"ExamineLostWill"</text>
+          <text>"ExamineLostWillOrCodicil"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_150ktey">
           <text>"Examine - Lost Will or Codicil"</text>
@@ -459,7 +459,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1krzlj8">
-          <text>"ExamineWillCodicilNotatedCasePrinted"</text>
+          <text>"ExamineWillOrCodicilToBeNotatedCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_054ajfd">
           <text>"Examine - Will or Codicil to be Notated"</text>
@@ -471,7 +471,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1w4m6fj">
-          <text>"ExamineRectifyWillCodicilCasePrinted"</text>
+          <text>"ExamineRectifyWillOrCodicilCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_02kdq3z">
           <text>"Examine - Rectify a Will or Codicil"</text>
@@ -531,7 +531,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1d00c0u">
-          <text>"ExaminePOACasePrinted"</text>
+          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1z0t4cw">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -579,10 +579,10 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02hmfxt">
-          <text>"ExamineIncapacityRule35CasePrinted"</text>
+          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1uxbgus">
-          <text>"Examine - Incapacity rule 35"</text>
+          <text>"Examine - Incapacity under rule 35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fts7ky">
@@ -615,7 +615,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_11fj62e">
-          <text>"ExamineForeignWill"</text>
+          <text>"ExamineProveForeignWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ic4hv5">
           <text>"Examine - Prove a foreign will"</text>
@@ -675,7 +675,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1lko6uy">
-          <text>"ExamineForeignWillCasePrinted"</text>
+          <text>"ExamineProveForeignWillCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0enj924">
           <text>"Examine - Prove a Foreign Will"</text>

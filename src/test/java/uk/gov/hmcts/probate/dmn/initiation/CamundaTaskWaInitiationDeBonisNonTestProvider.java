@@ -14,7 +14,6 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.deBonisNonHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -31,12 +30,6 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examineDeBonisNonReadyToIssueHandOffsTaskAttributes = Map.of(
-                "taskId", EXAMINE_DE_BONIS_NON,
-                "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
-        );
 
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
@@ -75,7 +68,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -115,7 +108,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -149,7 +142,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -177,7 +170,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -319,14 +312,6 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
-                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
-                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

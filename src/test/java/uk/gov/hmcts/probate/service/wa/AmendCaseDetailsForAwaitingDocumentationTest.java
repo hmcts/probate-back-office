@@ -1,23 +1,17 @@
 package uk.gov.hmcts.probate.service.wa;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,26 +22,11 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Mock
-    private WaApi waApi;
-    @Mock
-    private SecurityUtils securityUtils;
-    @Mock
-    private TaskUtils taskUtils;
-    @Mock
-    private CcdClientApi ccdClientApi;
 
-    private WaTaskService waTaskService;
-
+    @InjectMocks
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
-    private static final String AUTH_TOKEN = "authToken";
-
-    @BeforeEach
-    void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
-        processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
-    }
+    private static final String authToken = "authToken";
 
     @Test
     void shouldReturnCorrectEventId() {
@@ -57,38 +36,34 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
     @Test
     void shouldSetCreateTaskToNoWhenCaseTypesAreSame() {
-        setUpCaseTypeCallbackRequest(
-                CaseType.GRANT_OF_REPRESENTATION.name(),
-                CaseType.GRANT_OF_REPRESENTATION.name()
+        setUpCallbackRequest(
+                "GrantOfRepresentation",
+                "GrantOfRepresentation"
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
-        verify(waTaskService)
-                .getCaseTypePredicate();
     }
 
     @Test
     void shouldSetCreateTaskToYesWhenCaseTypesAreDifferent() {
-        setUpCaseTypeCallbackRequest(
-                CaseType.GRANT_OF_REPRESENTATION.name(),
-                CaseType.CAVEAT.name()
+        setUpCallbackRequest(
+                "CaveatGrantOfRepresentation",
+                "Caveat"
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(authToken, callbackRequest, responseCaseData);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.YES);
-        verify(waTaskService)
-                .getCaseTypePredicate();
     }
 
-    private void setUpCaseTypeCallbackRequest(
+    private void setUpCallbackRequest(
             String caseType,
             String caseTypeBefore) {
         when(callbackRequest.getCaseDetails())

@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.JurisdictionId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -23,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -33,8 +33,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
 @ExtendWith(SpringExtension.class)
 class CcdClientApiTest {
@@ -46,19 +44,13 @@ class CcdClientApiTest {
 
     @Mock
     private CoreCaseDataApi coreCaseDataApi;
-    @Mock
-    private Function<StartEventResponse, CaseDataContent> caseDataContentFunction;
-    @Mock
-    private StartEventResponse startEventResponse;
-    @Mock
-    private CaseDataContent caseDataContent;
 
     @InjectMocks
     private CcdClientApi ccdClientApi;
 
     @Test
     void shouldCreateCase() {
-        CcdCaseType ccdCaseType = GRANT_OF_REPRESENTATION;
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         CaseData caseData = CaseData.builder().build();
         EventId eventId = EventId.IMPORT_GOR_CASE;
         SecurityDTO securityDTO = SecurityDTO.builder()
@@ -75,7 +67,7 @@ class CcdClientApiTest {
             AUTHORISATION,
             SERVICE_AUTHORISATION,
             USER_ID,
-            PROBATE.name(),
+            JurisdictionId.PROBATE.name(),
             ccdCaseType.getName(),
             eventId.getName())).thenReturn(startEventResponse);
 
@@ -83,7 +75,7 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
+            eq(JurisdictionId.PROBATE.name()),
             eq(ccdCaseType.getName()),
             eq(false),
             any(CaseDataContent.class))).thenReturn(caseDetails);
@@ -97,7 +89,7 @@ class CcdClientApiTest {
             AUTHORISATION,
             SERVICE_AUTHORISATION,
             USER_ID,
-            PROBATE.name(),
+            JurisdictionId.PROBATE.name(),
             ccdCaseType.getName(),
             eventId.getName());
 
@@ -105,7 +97,7 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
+            eq(JurisdictionId.PROBATE.name()),
             eq(ccdCaseType.getName()),
             eq(false),
             any(CaseDataContent.class));
@@ -113,7 +105,7 @@ class CcdClientApiTest {
 
     @Test
     void shouldRetrieveCase() {
-        CcdCaseType ccdCaseType = GRANT_OF_REPRESENTATION;
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails = CaseDetails.builder().build();
         List<CaseDetails> caseDetailsList = Arrays.asList(caseDetails);
@@ -141,7 +133,7 @@ class CcdClientApiTest {
 
     @Test
     void shouldNotFindCase() {
-        CcdCaseType ccdCaseType = GRANT_OF_REPRESENTATION;
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
 
         when(coreCaseDataApi.searchForCaseworker(
@@ -186,13 +178,13 @@ class CcdClientApiTest {
             .userId(USER_ID)
             .build();
         assertThrows(IllegalStateException.class, () -> {
-            ccdClientApi.retrieveCaseByLegacyId(GRANT_OF_REPRESENTATION.getName(), legacyId, securityDTO);
+            ccdClientApi.retrieveCaseByLegacyId(CcdCaseType.GRANT_OF_REPRESENTATION.getName(), legacyId, securityDTO);
         });
     }
 
     @Test
     void shouldReadCaseDetails() {
-        CcdCaseType ccdCaseType = GRANT_OF_REPRESENTATION;
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
 
         CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
@@ -217,7 +209,7 @@ class CcdClientApiTest {
 
     @Test
     void updateCaseAsCitizen() {
-        CcdCaseType ccdCaseType = GRANT_OF_REPRESENTATION;
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
 
         CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
         StartEventResponse startEventResponse = StartEventResponse.builder().build();
@@ -227,7 +219,7 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
+            eq(JurisdictionId.PROBATE.name()),
             eq(ccdCaseType.getName()),
             any(),
             any())).thenReturn(startEventResponse);
@@ -239,7 +231,7 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
+            eq(JurisdictionId.PROBATE.name()),
             eq(ccdCaseType.getName()),
             eq("1"),
             eq(false),
@@ -253,7 +245,7 @@ class CcdClientApiTest {
 
 
         CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCitizen(
-            GRANT_OF_REPRESENTATION,
+            CcdCaseType.GRANT_OF_REPRESENTATION,
             "1",
             grantOfRepresentationData,
             eventId,
@@ -276,8 +268,8 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
-            eq(GRANT_OF_REPRESENTATION.getName()),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
             any(),
             any())).thenReturn(startEventResponse);
 
@@ -292,8 +284,8 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
-            eq(GRANT_OF_REPRESENTATION.getName()),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
             eq("1"),
             eq(false),
             any(CaseDataContent.class))).thenReturn(responseCaseDetails);
@@ -306,7 +298,7 @@ class CcdClientApiTest {
 
 
         CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
-            GRANT_OF_REPRESENTATION,
+            CcdCaseType.GRANT_OF_REPRESENTATION,
             "1",
             timeLastModified,
             grantOfRepresentationData,
@@ -328,8 +320,8 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
-            eq(GRANT_OF_REPRESENTATION.getName()),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
             any(),
             any())).thenReturn(startEventResponse);
 
@@ -344,8 +336,8 @@ class CcdClientApiTest {
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
-            eq(PROBATE.name()),
-            eq(GRANT_OF_REPRESENTATION.getName()),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
             eq("1"),
             eq(false),
             any(CaseDataContent.class))).thenReturn(responseCaseDetails);
@@ -360,7 +352,7 @@ class CcdClientApiTest {
         assertThrows(ConcurrentDataUpdateException.class,
             () -> {
                 ccdClientApi.updateCaseAsCaseworker(
-                    GRANT_OF_REPRESENTATION,
+                    CcdCaseType.GRANT_OF_REPRESENTATION,
                     "1",
                     timeLastModified,
                     grantOfRepresentationData,
@@ -371,62 +363,4 @@ class CcdClientApiTest {
 
             });
     }
-
-    @Test
-    void shouldTriggerEvent() {
-
-        String caseId = "123456789";
-        EventId eventId = EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
-
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation("auth-token")
-                .serviceAuthorisation("service-token")
-                .userId("user-id")
-                .build();
-
-        when(coreCaseDataApi.startEventForCaseWorker(
-                "auth-token",
-                "service-token",
-                "user-id",
-                PROBATE.name(),
-                GRANT_OF_REPRESENTATION.getName(),
-                caseId,
-                eventId.getName()
-        )).thenReturn(startEventResponse);
-
-        when(caseDataContentFunction.apply(startEventResponse))
-                .thenReturn(caseDataContent);
-
-        ccdClientApi.triggerEvent(
-                caseId,
-                eventId,
-                caseDataContentFunction,
-                securityDTO
-        );
-
-        verify(coreCaseDataApi).startEventForCaseWorker(
-                "auth-token",
-                "service-token",
-                "user-id",
-                PROBATE.name(),
-                GRANT_OF_REPRESENTATION.getName(),
-                caseId,
-                eventId.getName()
-        );
-
-        verify(caseDataContentFunction)
-                .apply(startEventResponse);
-
-        verify(coreCaseDataApi).submitEventForCaseWorker(
-                "auth-token",
-                "service-token",
-                "user-id",
-                PROBATE.name(),
-                GRANT_OF_REPRESENTATION.getName(),
-                caseId,
-                false,
-                caseDataContent
-        );
-    }
 }
-
