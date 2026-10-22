@@ -97,7 +97,7 @@
   "dependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@date-fns/upgrade": "^1.0.3",
-    "dotenv-extended": "^2.9.0",
+    "dotenv-extended": "^3.0.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
