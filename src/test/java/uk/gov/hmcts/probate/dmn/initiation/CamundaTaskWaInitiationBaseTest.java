@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTest {
 
@@ -92,6 +93,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                         caseHandedOffToLegacySiteVar, true
                 )
         );
+    }
+
+    protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
+            String caseType,
+            boolean caseHandedOffToLegacySite,
+            List<Map<String,Object>> boHandoffReasonList,
+            boolean createTask) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(caseTypeVar, caseType);
+        data.put(caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite);
+        data.put(boHandoffReasonListVar, boHandoffReasonList);
+        data.put(createTaskVar, createTask);
+        data.put(escalationReasonVar, "");
+        return Map.of("Data", data);
     }
 
     protected static List<Map<String,Object>> handOffReasonListWithHandOffReason(String handOffReason) {

@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataEvidenceHandledBlank;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_PAYMENT_SUCCESS_EVENT;
@@ -31,69 +32,96 @@ public class CamundaTaskWaInitiationEvidenceHandledPresentTestProvider implement
         );
 
         return Stream.of(
-            // evidenceHandledPresent = false (evidenceHandled is boolean, not "No")
-            // → new rule (evidenceHandledPresent=true) does not fire; old intestacy rule fires
-            Arguments.of(
-                    CREATE_CASE_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "intestacy", false, emptyList(), true),
-                    List.of(examineDigitalCaseIntestacyTaskAttributes)
-            ),
-            Arguments.of(
-                    CREATE_CASE_PAYMENT_SUCCESS_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "intestacy", false, emptyList(), true),
-                    List.of(examineDigitalCaseIntestacyTaskAttributes)
-            ),
-            Arguments.of(
-                    PAYMENT_SUCCESS_APP_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "intestacy", false, emptyList(), true),
-                    List.of(examineDigitalCaseIntestacyTaskAttributes)
-            ),
-            Arguments.of(
-                    SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "intestacy", false, emptyList(), true),
-                    List.of(examineDigitalCaseIntestacyTaskAttributes)
-            ),
-            Arguments.of(
-                    SERVICE_REQUEST_PAYMENT_SUCCESS,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "intestacy", false, emptyList(), true),
-                    List.of(examineDigitalCaseIntestacyTaskAttributes)
-            ),
-            // evidenceHandled = true → evidenceHandledPresent = false and evidenceHandled check fails → no task
-            Arguments.of(
-                    CREATE_CASE_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(true, "intestacy", false, emptyList(), true),
-                    emptyList()
-            ),
-            Arguments.of(
-                    CREATE_CASE_PAYMENT_SUCCESS_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(true, "intestacy", false, emptyList(), true),
-                    emptyList()
-            ),
-            Arguments.of(
-                    PAYMENT_SUCCESS_APP_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(true, "intestacy", false, emptyList(), true),
-                    emptyList()
-            ),
-            Arguments.of(
-                    SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(true, "intestacy", false, emptyList(), true),
-                    emptyList()
-            ),
-            Arguments.of(
-                    SERVICE_REQUEST_PAYMENT_SUCCESS,
-                    CASE_PRINTED_STATE,
-                    additionalData(true, "intestacy", false, emptyList(), true),
-                    emptyList()
-            )
+                Arguments.of(
+                        CREATE_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "intestacy", false, emptyList(), false),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CASE_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "intestacy", false, emptyList(), false),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        PAYMENT_SUCCESS_APP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "intestacy", false, emptyList(), false),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "intestacy", false, emptyList(), false),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "intestacy", false, emptyList(), false),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CASE_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        PAYMENT_SUCCESS_APP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CASE_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        PAYMENT_SUCCESS_APP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("intestacy", false, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("intestacy", false, emptyList(), false),
+                        emptyList()
+                )
         );
     }
 }
