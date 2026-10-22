@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -168,6 +169,7 @@ public class CallbackResponseTransformer {
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
     private final Clock clock;
     private final CreateTaskProcessorFactory createTaskProcessorFactory;
+    private final RegistryDetailsService registryDetailsService;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -1196,7 +1198,7 @@ public class CallbackResponseTransformer {
                 && (callbackRequest.getCaseDetails() != null)
                 && (callbackRequest.getCaseDetails().getData() != null)
                 && (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null)) {
-            String taskLocationEpimmsId = registryLocationEpimmsIdMap.get(
+            String taskLocationEpimmsId = registryDetailsService.getEpimmsId(
                     callbackRequest.getCaseDetails().getData().getRegistryLocation());
             log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
             caseDataTransformer.setTaskLocationEpimmsId(callbackRequest.getCaseDetails(), taskLocationEpimmsId);
