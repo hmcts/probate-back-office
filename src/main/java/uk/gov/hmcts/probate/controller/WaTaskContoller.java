@@ -27,6 +27,7 @@ import java.util.function.BiPredicate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 
 @Slf4j
 @Controller
@@ -55,7 +56,6 @@ public class WaTaskContoller {
                 request,
                 waTaskService.getCaseTypePredicate());
     }
-
 
     @PostMapping(path = "/updateHandOffClientContext",
             consumes = APPLICATION_JSON_VALUE,
@@ -141,6 +141,33 @@ public class WaTaskContoller {
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
+
+    @PostMapping(path = "/select-for-qa/setup-wa-task",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> selectForQASetupWATask(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            logRequest(request.getRequestURI(), callbackRequest);
+
+            if (bindingResult.hasErrors()) {
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+                throw new BadRequestException("Invalid payload", bindingResult);
+            }
+
+            log.info("Case Type: {}, Case ID: {}",
+                    callbackRequest.getCaseDetails().getData().getCaseType(),
+                    callbackRequest.getCaseDetails().getId().toString());
+
+            waTaskService.createAndSubmitTaskForSystemUser(callbackRequest, AUTO_SELECT_FOR_QA_CREATE_TASK);
+        }
+        return ResponseEntity.ok(CallbackResponse.builder().build());
+    }
+
 
     @PostMapping(path = "/trigger/closeAwaitingDocumentationTasks",
             consumes = APPLICATION_JSON_VALUE,

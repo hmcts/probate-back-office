@@ -96,14 +96,28 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
-                    additionalData(false, "admonWill", false, 
+                    additionalData(false, "admonWill", false,
                             emptyList(), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "admonWill", false,
+                            emptyList(), true),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,
                     CASE_PRINTED_STATE,
-                    additionalData(true, "admonWill", false, 
+                    additionalData(true, "admonWill", false,
+                            emptyList(), true),
+                    emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "admonWill", false,
                             emptyList(), false),
                     emptyList()
             ),

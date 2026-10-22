@@ -210,7 +210,7 @@
           <text>"ExamineIncapacityRule35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tqugxz">
-          <text>"Examine - Incapacity under rule 35"</text>
+          <text>"Examine - Incapacity rule 35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_08eqx2u">
@@ -531,7 +531,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1d00c0u">
-          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+          <text>"ExaminePOACasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1z0t4cw">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -579,10 +579,10 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02hmfxt">
-          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+          <text>"ExamineIncapacityRule35CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1uxbgus">
-          <text>"Examine - Incapacity under rule 35"</text>
+          <text>"Examine - Incapacity rule 35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fts7ky">
@@ -703,6 +703,90 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1hgsxvx">
           <text>"Review Registrar's Decision"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12ezbav">
+        <description>RD</description>
+        <inputEntry id="UnaryTests_0x55q5u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ug8qxp">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkfw93">
+          <text>"Redeclaration"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fand0d">
+        <description>RSC</description>
+        <inputEntry id="UnaryTests_1gjhhg3">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tbs55t">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pyk2z2">
+          <text>"Resolve Stopped Case"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_011l0a3">
+        <description>RQACI</description>
+        <inputEntry id="UnaryTests_0jgcgz7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yu9p2l">
+          <text>"ReviewQACaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02e04gj">
+          <text>"Review QA Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uv4un9">
+        <description>RQACA</description>
+        <inputEntry id="UnaryTests_02i9wfd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ll5n09">
+          <text>"ReviewQACaseAdmon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kgslhl">
+          <text>"Review QA Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hjkrrl">
+        <description>RQACP</description>
+        <inputEntry id="UnaryTests_1kqjck1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1whnf10">
+          <text>"ReviewQACaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l5e5tx">
+          <text>"Review QA Case - Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1i5v7rj">
+        <description>RQACACB</description>
+        <inputEntry id="UnaryTests_0lsqdhj">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1go5y1q">
+          <text>"ReviewQACaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v4y0vb">
+          <text>"Review QA Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07rijil">
+        <description>RRD</description>
+        <inputEntry id="UnaryTests_0ieztq1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bgr3un">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tdx9x9">
+          <text>"Resolve Redeclaration"</text>
         </outputEntry>
       </rule>
     </decisionTable>

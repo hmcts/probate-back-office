@@ -90,7 +90,7 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineProveForeignWill),
-                                false),
+                                true),
                         List.of(proveForeignWillTaskAttributes)
                 ),
                 Arguments.of(
@@ -101,6 +101,14 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                                 false,
                                 handOffReasonListWithHandOffReason(examineProveForeignWill)),
                         List.of(proveForeignWillHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill),
+                                false),
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,

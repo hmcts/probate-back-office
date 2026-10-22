@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -33,6 +34,9 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
@@ -135,8 +139,16 @@ public class WaTaskService {
 
     public BiPredicate<CallbackRequest, String> getEvidenceHandledPredicate() {
         return (callbackRequest, clientContext) -> {
-            String evidenceHandled = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
-            return NO.equals(evidenceHandled);
+
+            log.debug("paramCallbackRequest.getCaseDetails().getState() {}", callbackRequest
+                    .getCaseDetails().getState());
+            String evidenceHandled = callbackRequest.getCaseDetails().getData()
+                    .getEvidenceHandled();
+            return switch (callbackRequest.getCaseDetails().getState()) {
+                case STATE_BO_CASE_STOPPED, STATE_BO_REDEC_NOTIFICATION_SENT -> YES.equals(evidenceHandled);
+                case STATE_BO_CASE_WORKER_ESCALATION -> NO.equals(evidenceHandled);
+                case null, default -> true;
+            };
         };
     }
 
@@ -205,6 +217,24 @@ public class WaTaskService {
                                 .data(startEventResponse.getCaseDetails().getData())
                                 .build();
 
+        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
+                eventId,
+                caseDataContentFunction,
+                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
+    }
+
+    public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
+                                                 EventId eventId) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
+                startEventResponse ->
+                        CaseDataContent.builder()
+                                .event(Event.builder()
+                                        .id(startEventResponse.getEventId())
+                                        .build())
+                                .eventToken(startEventResponse.getToken())
+                                .data(startEventResponse.getCaseDetails().getData())
+                                .build();
         ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                 eventId,
                 caseDataContentFunction,
