@@ -164,7 +164,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gmkc20">
-          <text>"case progression,examineDigitalCaseTypes"</text>
+          <text>"case progression,examineDigitalCaseTypes,examineDigitalCaseProbate"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0p8qcwb">
@@ -252,7 +252,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0jddfn3">
-          <text>"case progression,examineDigitalCaseTypes"</text>
+          <text>"case progression,examineDigitalCaseTypes,examineDigitalCaseIntestacy"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1cnacr3">
@@ -648,7 +648,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0eruvnn">
-          <text>"case progression,examineDigitalCaseTypes"</text>
+          <text>"case progression,examineDigitalCaseTypes,examineDigitalCaseAdmonWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0cn884k">
@@ -5743,7 +5743,7 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "POA")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0fg3akf">
-          <text>"ExaminePowerOfAttorneyCasePrinted"</text>
+          <text>"ExaminePOACasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10ohqo5">
           <text>"Examine - Power of Attorney (POA)"</text>
@@ -5875,10 +5875,10 @@ else false</text>
           <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "IncapacityRule35")</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1jac1vn">
-          <text>"ExamineIncapacityUnderRule35CasePrinted"</text>
+          <text>"ExamineIncapacityRule35CasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tfmg3w">
-          <text>"Examine - Incapacity under rule 35"</text>
+          <text>"Examine - Incapacity rule 35"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_03up8ne">
           <text></text>

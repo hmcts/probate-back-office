@@ -35,8 +35,8 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
         );
 
         Map<String,Object> incapacityUnderRule35HandOffsTaskAttributes = Map.of(
-                "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CASE_PRINTED,
-                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                "taskId", EXAMINE_INCAPACITY_RULE_35_CASE_PRINTED,
+                "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
                 "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 

@@ -46,7 +46,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35HandOffsTaskTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_INCAPACITY_RULE_35,
-                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                "name", EXAMINE_INCAPACITY_RULE_35,
                 "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
