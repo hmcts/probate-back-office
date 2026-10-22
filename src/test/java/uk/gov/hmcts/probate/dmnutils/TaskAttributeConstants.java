@@ -64,8 +64,6 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
             = "ExamineDigitalCaseIntestacyReadyToIssue";
-    public static final String EXAMINE_DIGITAL_CASE_INTESTACY_CASE_PRINTED
-            = "ExamineDigitalCaseIntestacyCasePrinted";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_DE_BONIS_NON_CASE_PRINTED = "ExamineDeBonisNonCasePrinted";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
