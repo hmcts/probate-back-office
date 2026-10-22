@@ -63,9 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
@@ -1180,20 +1178,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
         }
 
-        Map<String, String> registryLocationEpimmsIdMap = new HashMap<>();
-        registryLocationEpimmsIdMap.put("Oxford", "371016");
-        registryLocationEpimmsIdMap.put("Birmingham", "231596");
-        registryLocationEpimmsIdMap.put("Manchester", "701411");
-        registryLocationEpimmsIdMap.put("Leeds", "495952");
-        registryLocationEpimmsIdMap.put("Liverpool", "448077");
-        registryLocationEpimmsIdMap.put("Brighton", "478896");
-        registryLocationEpimmsIdMap.put("London", "356855");
-        registryLocationEpimmsIdMap.put("Cardiff", "779109");
-        registryLocationEpimmsIdMap.put("Newcastle", "562808");
-        registryLocationEpimmsIdMap.put("Winchester", "886493");
-        registryLocationEpimmsIdMap.put("Bristol", "819890");
-        registryLocationEpimmsIdMap.put("ctsc", "815833");
-
         if ((callbackRequest != null)
                 && (callbackRequest.getCaseDetails() != null)
                 && (callbackRequest.getCaseDetails().getData() != null)
@@ -1201,13 +1185,12 @@ public class CallbackResponseTransformer {
             String taskLocationEpimmsId = registryDetailsService.getEpimmsId(
                     callbackRequest.getCaseDetails().getData().getRegistryLocation());
             log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
-            caseDataTransformer.setTaskLocationEpimmsId(callbackRequest.getCaseDetails(), taskLocationEpimmsId);
+            //caseDataTransformer.setTaskLocationEpimmsId(callbackRequest.getCaseDetails(), taskLocationEpimmsId);
             responseCaseDataBuilder.taskLocationEpimmsId(taskLocationEpimmsId);
 
             String taskLocationName = callbackRequest.getCaseDetails().getData().getRegistryLocation();
             log.info("Setting taskLocationName: {}", taskLocationName);
-            caseDataTransformer.setTaskLocationName(callbackRequest.getCaseDetails(),
-                    taskLocationName);
+            //caseDataTransformer.setTaskLocationName(callbackRequest.getCaseDetails(), taskLocationName);
             responseCaseDataBuilder.taskLocationName(taskLocationName);
         }
 
