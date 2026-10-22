@@ -323,6 +323,10 @@ public class TaskAttributeConstants {
     public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Review QA Case - Ad Colligenda Bona";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
+    public static final String CREATE_CASE_EVENT = "createCase";
+    public static final String CREATE_CASE_PAYMENT_SUCCESS_EVENT = "createCasePaymentSuccess";
+    public static final String PAYMENT_SUCCESS_APP_EVENT = "paymentSuccessApp";
+    public static final String SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT = "solicitorPaymentSuccessCase";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
             = "boAmendCaseDetailsForAwaitingDocumentation";
     public static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT
