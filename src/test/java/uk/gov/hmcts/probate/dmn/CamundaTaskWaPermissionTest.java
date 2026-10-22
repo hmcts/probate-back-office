@@ -34,7 +34,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
@@ -185,11 +184,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
-                        DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(INTESTACY_EXAMINE_SKILL_CODE)
-                ),
-                Arguments.of(
-                        EXAMINE_DIGITAL_CASE_INTESTACY_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INTESTACY_EXAMINE_SKILL_CODE)
                 ),
