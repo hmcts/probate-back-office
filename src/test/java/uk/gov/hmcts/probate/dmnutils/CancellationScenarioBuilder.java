@@ -143,6 +143,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "case progression",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeReadyToIssueHandOffs",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue",
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
                 )
         );
     }
