@@ -59,6 +59,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -611,6 +612,8 @@ class CallbackResponseTransformerTest {
     private WorkAllocationToggleService workAllocationToggleService;
     @Mock
     private CreateTaskProcessorFactory createTaskProcessorFactory;
+    @Mock
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private Clock clock;
