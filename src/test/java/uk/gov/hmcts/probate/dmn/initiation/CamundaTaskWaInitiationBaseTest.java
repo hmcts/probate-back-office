@@ -108,6 +108,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         data.put(escalationReasonVar, "");
         return Map.of("Data", data);
     }
+
     protected static List<Map<String,Object>> handOffReasonListWithHandOffReason(String handOffReason) {
         return List.of(
                 Map.of(
