@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.util.FileUtils;
 
 import java.io.File;
@@ -30,7 +31,10 @@ import static org.hamcrest.core.Is.is;
 
 class IronMountainFileServiceTest {
 
-    private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
+    private IronMountainFileService ironmountainFileService = new IronMountainFileService(
+            new DateFormatterService(),
+            new TextFileBuilderService()
+    );
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseData;
     private CaseData.CaseDataBuilder caseData2;
