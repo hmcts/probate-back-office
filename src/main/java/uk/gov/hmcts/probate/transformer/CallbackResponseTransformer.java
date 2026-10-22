@@ -1178,19 +1178,14 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
         }
 
-        if ((callbackRequest != null)
-                && (callbackRequest.getCaseDetails() != null)
-                && (callbackRequest.getCaseDetails().getData() != null)
-                && (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null)) {
+        if (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null) {
             String taskLocationEpimmsId = registryDetailsService.getEpimmsId(
                     callbackRequest.getCaseDetails().getData().getRegistryLocation());
             log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
-            //caseDataTransformer.setTaskLocationEpimmsId(callbackRequest.getCaseDetails(), taskLocationEpimmsId);
             responseCaseDataBuilder.taskLocationEpimmsId(taskLocationEpimmsId);
 
             String taskLocationName = callbackRequest.getCaseDetails().getData().getRegistryLocation();
             log.info("Setting taskLocationName: {}", taskLocationName);
-            //caseDataTransformer.setTaskLocationName(callbackRequest.getCaseDetails(), taskLocationName);
             responseCaseDataBuilder.taskLocationName(taskLocationName);
         }
 
