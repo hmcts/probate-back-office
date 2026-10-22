@@ -240,6 +240,7 @@ public class TaskAttributeConstants {
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
+    public static final String BO_CASE_MATCHING_ISSUE_GRANT_STATE = "BOCaseMatchingIssueGrant";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
     public static final String BO_CASE_STOPPED_STATE = "BOCaseStopped";
     public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
