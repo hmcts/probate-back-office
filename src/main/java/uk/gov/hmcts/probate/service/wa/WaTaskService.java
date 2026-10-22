@@ -39,7 +39,6 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICAT
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
-import static uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -175,18 +174,14 @@ public class WaTaskService {
         if (taskData.isEmpty() && getCaseTypePredicate().test(callbackRequest, clientContext)) {
             Long caseId = callbackRequest.getCaseDetails().getId();
 
-            log.info("Case id {} : no context task and case type has changed",
-                    caseId);
+            String caseTypeBefore = callbackRequest.getCaseDetailsBefore().getData().getCaseType();
 
-            getAllAssociatedTasks(securityUtils.getSecurityDTO().getAuthorisation(),
-                    caseId.toString(),
-                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION)
-                    .stream()
-                    .map(TaskTypes::fromValue)
-                    .flatMap(Optional::stream)
-                    .map(TaskTypes::getOptionalClosingEventId)
-                    .flatMap(Optional::stream)
-                    .forEach(eventId -> {
+            log.info("Case id {} : no context task and case type has changed from {}",
+                    caseId,
+                    caseTypeBefore);
+
+            TaskTypes.getAwaitingDocIceClosingEventId(caseTypeBefore)
+                    .ifPresent(eventId -> {
                         log.info("Case id {} : triggering closing event {}",
                                 caseId,
                                 eventId);

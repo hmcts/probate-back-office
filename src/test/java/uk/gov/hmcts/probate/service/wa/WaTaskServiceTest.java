@@ -59,7 +59,6 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -561,36 +560,7 @@ class WaTaskServiceTest {
                         .authorisation(systemUserAuthToken)
                         .build());
 
-        when(securityUtils.getSecurityDTO())
-                .thenReturn(SecurityDTO.builder()
-                        .authorisation(authToken)
-                        .build());
-
-        when(securityUtils.generateServiceToken())
-                .thenReturn(serviceToken);
-
-        TaskData task1 = TaskData.builder()
-                .type("ExamineDigitalCaseProbate")
-                .build();
-
-        TaskData task2 = TaskData.builder()
-                .type("ExamineDigitalCaseIntestacy")
-                .build();
-
-        GetTasksCompletableResponse<TaskData> response =
-                new GetTasksCompletableResponse<>(
-                        false,
-                        List.of(task1, task2)
-                );
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
-        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE);
         verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY);
     }
 
@@ -646,46 +616,6 @@ class WaTaskServiceTest {
 
         verify(ccdClientApi, never())
                 .triggerEvent(any(), any(), any(), any());
-    }
-
-    @Test
-    void shouldNotTriggerEventWhenNoAssociatedTasksFound() {
-        setUpCallbackRequestForCaseType(
-                "gop",
-                "intestacy"
-        );
-
-        when(caseDetails.getId())
-                .thenReturn(Long.valueOf(caseId));
-
-        when(taskUtils.getTaskData(CLIENT_CONTEXT))
-                .thenReturn(Optional.empty());
-
-
-        when(securityUtils.getSecurityDTO())
-                .thenReturn(SecurityDTO.builder()
-                        .authorisation(authToken)
-                        .build());
-
-        when(securityUtils.generateServiceToken())
-                .thenReturn(serviceToken);
-
-        GetTasksCompletableResponse<TaskData> response =
-                new GetTasksCompletableResponse<>(
-                        false,
-                        List.of()
-                );
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-
-        waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
-
-        verifyNoInteractions(ccdClientApi);
     }
 
     @Test
