@@ -45,7 +45,6 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
-    private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
 
     @Mock
     private CallbackRequest callbackRequest;
@@ -103,10 +102,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
 
-        doReturn(true)
-                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE, taskToCreate);
-
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -119,8 +114,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
                         taskToCLose);
-        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE, taskToCreate);
     }
 
     @Test
@@ -245,11 +238,12 @@ class AmendCaseDetailsForReadyToIssueTest {
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
+                        .caseHandedOffToLegacySite(NO)
                         .build());
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
-                        .caseHandedOffToLegacySite(NO)
+                        .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(List.of(new CollectionMember<>(null,
                                 HandoffReason.builder().caseHandoffReason(HandoffReasonId.FIAT_WILL).build())))
                         .build());
@@ -258,10 +252,6 @@ class AmendCaseDetailsForReadyToIssueTest {
         doReturn(false)
                 .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
-
-        doReturn(false)
-                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE, taskToCreate);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -273,8 +263,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 .getCaseTypePredicate();
         verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
                 BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCLose);
-        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE, taskToCreate);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);

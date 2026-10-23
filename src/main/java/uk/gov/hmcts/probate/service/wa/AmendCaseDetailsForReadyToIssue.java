@@ -19,8 +19,6 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
             = "boAmendCaseDetailsForAwaitingDocumentation";
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
     private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = TaskTypes.examineAwaitingDocIceTasks();
-    private static final Set<TaskTypes> TASKS_READY_TO_ISSUE_TO_CREATE = TaskTypes.examineReadyToIssueIceTasks();
-
     private final WaTaskService waTaskService;
 
     public AmendCaseDetailsForReadyToIssue(WaTaskService waTaskService) {
@@ -60,10 +58,7 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
                 && !result.caseHandedOffToLegacySite()
-                && !waTaskService.isTaskPresent(authToken,
-                        callbackRequest.getCaseDetails().getId().toString(),
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE,
-                        TASKS_READY_TO_ISSUE_TO_CREATE);
+                && areAllHandOffsRemoved(callbackRequest);
 
         responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
                 || result.newHandOffPresent() || isInitialCaseExaminationTaskRequired

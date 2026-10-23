@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -58,5 +59,12 @@ public class AbstractAmendCaseDetails {
                 ).toList();
 
         responseCaseData.setWaHandoffReasonList(newHandOffReasons);
+    }
+
+    protected boolean areAllHandOffsRemoved(final CallbackRequest callbackRequest) {
+        return YES.equals(callbackRequest.getCaseDetailsBefore()
+                .getData().getCaseHandedOffToLegacySite())
+                && NO.equals(callbackRequest.getCaseDetails()
+                .getData().getCaseHandedOffToLegacySite());
     }
 }

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -81,12 +80,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
                 CaseType.GRANT_OF_REPRESENTATION.name(),
                 CaseType.GRANT_OF_REPRESENTATION.name()
         );
-
-        String caseId = callbackRequest.getCaseDetails().getId().toString();
-
-        doReturn(true)
-                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCreate);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
@@ -170,14 +163,10 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType(CaseType.CAVEAT.name())
+                        .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(List.of(new CollectionMember<>(null,
                                 HandoffReason.builder().caseHandoffReason(HandoffReasonId.FIAT_WILL).build())))
                         .build());
-        String caseId = callbackRequest.getCaseDetails().getId().toString();
-
-        doReturn(false)
-                .when(waTaskService).isTaskPresent(AUTH_TOKEN, caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCreate);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -187,9 +176,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
-
-        verify(waTaskService).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCreate);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);

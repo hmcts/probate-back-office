@@ -2,13 +2,10 @@ package uk.gov.hmcts.probate.service.wa;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.Set;
-
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -17,7 +14,6 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
 
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
-    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CREATE = TaskTypes.examineAwaitingDocIceTasks();
 
     private final WaTaskService waTaskService;
 
@@ -42,14 +38,11 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
                         && !result.caseHandedOffToLegacySite()
-                        && !waTaskService.isTaskPresent(authToken,
-                        callbackRequest.getCaseDetails().getId().toString(),
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
-                        TASKS_AWAITING_DOCUMENTATION_TO_CREATE);
+                        && areAllHandOffsRemoved(callbackRequest);
 
         responseCaseData.setCreateTask(caseTypeChanged || result.newHandOffPresent()
                 || isInitialCaseExaminationTaskRequired
-                ? YES : Constants.NO);
+                ? YES : NO);
 
         log.info("case id {}: caseTypeChanged {},  newHandOffPresent {}"
                         + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
