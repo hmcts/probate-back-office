@@ -16,6 +16,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.trustCorporationHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ATTACH_SCANNED_DOCS_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -42,6 +43,12 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                 "taskId", EXAMINE_TRUST_CORPORATION,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String, Object> examineTrustCorporationReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_TRUST_CORPORATION,
+                "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -384,6 +391,14 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 // SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT - HSE No/Yes/Blank
                 Arguments.of(
