@@ -1510,6 +1510,7 @@ public class CallbackResponseTransformer {
             builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
             builder.taskLocationName(caseData.getRegistryLocation());
             builder.taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
+            builder.taskRegionName(registryDetailsService.getRegionName(caseData.getRegistryLocation()));
         }
 
         handleDeceasedAliases(

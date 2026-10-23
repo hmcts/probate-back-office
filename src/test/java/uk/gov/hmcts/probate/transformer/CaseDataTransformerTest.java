@@ -573,4 +573,15 @@ class CaseDataTransformerTest {
 
         assertEquals(region, caseDetailsMock.getData().getTaskRegion());
     }
+
+    @Test
+    void shouldSetTaskRegionName() {
+        String regionName = "National";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setTaskRegionName(caseDetailsMock, regionName);
+
+        assertEquals(regionName, caseDetailsMock.getData().getTaskRegionName());
+    }
 }

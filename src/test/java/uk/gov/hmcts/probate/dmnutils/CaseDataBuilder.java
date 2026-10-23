@@ -12,6 +12,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NAME_NATIONAL_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NATIONAL_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
@@ -20,6 +21,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_EPIMMS_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_REGION_NAME;
 
 public class CaseDataBuilder {
 
@@ -42,6 +44,7 @@ public class CaseDataBuilder {
         caseData.put(TASK_LOCATION_EPIMMS_ID, LOCATION_VALUE);
         caseData.put(TASK_LOCATION_NAME, LOCATION_NAME_VALUE);
         caseData.put(TASK_REGION, REGION_NATIONAL_VALUE);
+        caseData.put(TASK_REGION_NAME, REGION_NAME_NATIONAL_VALUE);
         return new CaseDataBuilder(caseData);
     }
 
@@ -96,6 +99,11 @@ public class CaseDataBuilder {
 
     public CaseDataBuilder setTaskRegion(String taskRegion) {
         caseData.put("taskRegion", taskRegion);
+        return this;
+    }
+
+    public CaseDataBuilder setTaskRegionName(String taskRegionName) {
+        caseData.put("taskRegionName", taskRegionName);
         return this;
     }
 }

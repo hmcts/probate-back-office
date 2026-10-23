@@ -122,6 +122,23 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1vvgto6">
+        <inputEntry id="UnaryTests_0xgs57p">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zdg5mx">
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDeBonisNon","ExamineFiatWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineInfectedBloodCompensationAuthority","ExamineWindrushScheme","ExamineDigitalCaseProbateReadyToIssue","ExamineWillOrCodicilToBeNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants", "ExamineSection116", "ExaminePowerOfAttorney", "ExamineResealForeignGrant", "ExamineInfectedBloodInterimScheme","ExamineInfectedBloodInterimSchemeCasePrinted","ExamineCodicilMisRecital","ExamineRectifyWillOrCodicil","ExamineLostWillOrCodicilCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineInfectedBloodCompensationAuthorityCasePrinted","ExamineLeadingOrFollowingGrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisRecitalCasePrinted","ExamineDeBonisNonCasePrinted","RectifyQACase","ExamineLiteraryEstate","ExamineLostWillOrCodicil","ExamineMinorityInterest","ExamineWillOrCodicilToBeNotatedCasePrinted","ExamineRectifyWillOrCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePowerOfAttorneyCasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineForeignDomicile","ExamineIncapacityUnderRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineProveForeignWill","ExamineTrustCorporation","ReviewSMEReferral","ResolveRegistrarEscalationReferrals","ResolveRegistrarEscalationOrders","ExamineProveForeignWillCasePrinted","ExamineSMEReferral","ReviewRegistrarDecision","Redeclaration","ResolveStoppedCase","ReviewQACaseIntestacy","ReviewQACaseAdmon","ReviewQACaseProbate","ReviewQACaseAdColligendaBona","ResolveRedeclaration"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1n9pqm7">
+          <text>"regionName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vguznm">
+          <text>caseData.taskRegionName</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1938tgq">
+          <text>true</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0q6iroy">
         <inputEntry id="UnaryTests_1xolkxo">
           <text></text>
