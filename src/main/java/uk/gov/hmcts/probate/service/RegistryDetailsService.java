@@ -35,4 +35,9 @@ public class RegistryDetailsService {
         Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
         return registry.getEpimmsId();
     }
+
+    public String getRegion(String registryLocation) {
+        Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
+        return registry.getRegion();
+    }
 }

@@ -26,6 +26,7 @@ public class TaskAttributeConstants {
     public static final String REGISTRY_LOCATION = "registryLocation";
     public static final String TASK_LOCATION_EPIMMS_ID = "taskLocationEpimmsId";
     public static final String TASK_LOCATION_NAME = "taskLocationName";
+    public static final String TASK_REGION = "taskRegion";
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";

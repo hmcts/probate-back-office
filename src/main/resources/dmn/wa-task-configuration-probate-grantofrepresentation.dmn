@@ -116,7 +116,7 @@
           <text>"region"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1duwa2u">
-          <text>"12"</text>
+          <text>caseData.taskRegion</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gcz5d0">
           <text>true</text>

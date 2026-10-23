@@ -1178,17 +1178,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
         }
 
-        if (callbackRequest.getCaseDetails().getData().getRegistryLocation() != null) {
-            String taskLocationEpimmsId = registryDetailsService.getEpimmsId(
-                    callbackRequest.getCaseDetails().getData().getRegistryLocation());
-            log.info("Setting taskLocationEpimmsId: {}", taskLocationEpimmsId);
-            responseCaseDataBuilder.taskLocationEpimmsId(taskLocationEpimmsId);
-
-            String taskLocationName = callbackRequest.getCaseDetails().getData().getRegistryLocation();
-            log.info("Setting taskLocationName: {}", taskLocationName);
-            responseCaseDataBuilder.taskLocationName(taskLocationName);
-        }
-
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
         return transformResponse(responseCaseDataBuilder
@@ -1516,8 +1505,11 @@ public class CallbackResponseTransformer {
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
             .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
-            .taskLocationEpimmsId(caseData.getTaskLocationEpimmsId())
-            .taskLocationName(caseData.getTaskLocationName());
+            .taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()))
+            .taskLocationName(caseData.getRegistryLocation())
+            .taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
+
+
 
         handleDeceasedAliases(
                 builder,

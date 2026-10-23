@@ -435,4 +435,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String resolveRedeclarationUserIdamId;
     private String taskLocationEpimmsId;
     private String taskLocationName;
+    private String taskRegion;
 }

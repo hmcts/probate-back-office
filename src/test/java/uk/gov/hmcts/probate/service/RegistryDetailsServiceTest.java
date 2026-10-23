@@ -44,6 +44,7 @@ class RegistryDetailsServiceTest {
         registry.setPostcode("postcode");
         registry.setTown("town");
         registry.setEpimmsId("123456");
+        registry.setRegion("12");
 
         registryMap = new HashMap<>();
         registryMap.put(REGISTRY_LOCATION, registry);
@@ -80,5 +81,12 @@ class RegistryDetailsServiceTest {
         String actualEpimmsId = registryDetailsService.getEpimmsId(REGISTRY_LOCATION);
 
         assertThat(actualEpimmsId, is(registry.getEpimmsId()));
+    }
+
+    @Test
+    void shouldReturnRegionForRegistryLocation() {
+        String actualRegion = registryDetailsService.getRegion(REGISTRY_LOCATION);
+
+        assertThat(actualRegion, is(registry.getRegion()));
     }
 }
