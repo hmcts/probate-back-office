@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_EPIMMS_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_LOCATION_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.TASK_REGION;
 
 public class CaseDataBuilder {
 
@@ -40,6 +41,7 @@ public class CaseDataBuilder {
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
         caseData.put(TASK_LOCATION_EPIMMS_ID, LOCATION_VALUE);
         caseData.put(TASK_LOCATION_NAME, LOCATION_NAME_VALUE);
+        caseData.put(TASK_REGION, REGION_NATIONAL_VALUE);
         return new CaseDataBuilder(caseData);
     }
 

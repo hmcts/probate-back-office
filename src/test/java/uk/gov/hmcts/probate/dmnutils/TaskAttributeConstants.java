@@ -148,7 +148,7 @@ public class TaskAttributeConstants {
     public static final String CASE_TYPE_VALUE = "someCaseType";
     public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
     public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
-    public static final String REGISTRY_LOCATION_VALUE = "someRegistryLocation";
+    public static final String REGISTRY_LOCATION_VALUE = "Oxford";
     public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
     public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
