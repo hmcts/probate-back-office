@@ -1504,12 +1504,13 @@ public class CallbackResponseTransformer {
             .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
-            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
-            .taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()))
-            .taskLocationName(caseData.getRegistryLocation())
-            .taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
+            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
 
-
+        if (caseData.getRegistryLocation() != null) {
+            builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
+            builder.taskLocationName(caseData.getRegistryLocation());
+            builder.taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
+        }
 
         handleDeceasedAliases(
                 builder,

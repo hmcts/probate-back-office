@@ -2398,7 +2398,8 @@ class CallbackResponseTransformerTest {
             .paperPaymentMethod("debitOrCredit")
             .paymentReferenceNumberPaperform(IHT_REFERENCE)
             .paperForm(YES)
-            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
+            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE)
+            .registryLocation(REGISTRY_LOCATION);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
