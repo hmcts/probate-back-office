@@ -15,5 +15,4 @@ public class Registry {
     private String postcode;
     private String epimmsId;
     private String region;
-    private String regionName;
 }

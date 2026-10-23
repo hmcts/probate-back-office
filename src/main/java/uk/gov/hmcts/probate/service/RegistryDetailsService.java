@@ -40,9 +40,4 @@ public class RegistryDetailsService {
         Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
         return registry.getRegion();
     }
-
-    public String getRegionName(String registryLocation) {
-        Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
-        return registry.getRegionName();
-    }
 }

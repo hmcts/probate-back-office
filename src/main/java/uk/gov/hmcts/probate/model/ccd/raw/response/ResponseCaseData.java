@@ -436,5 +436,4 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String taskLocationEpimmsId;
     private String taskLocationName;
     private String taskRegion;
-    private String taskRegionName;
 }

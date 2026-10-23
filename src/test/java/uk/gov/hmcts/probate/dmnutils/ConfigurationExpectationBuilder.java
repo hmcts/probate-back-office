@@ -51,8 +51,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NAME_NATIONAL_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_NATIONAL_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
@@ -106,7 +104,7 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_WORKING_DAYS_OF_WEEK, WORK_TYPE, ROLE_CATEGORY,
             DUE_DATE_INTERVAL_DAYS,
             ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, DESCRIPTION, PRIORITY_DATE_ORIGIN_REF, DUE_DATE_ORIGIN,
-            DUE_DATE_TIME, ASSIGNEE, REGION_NAME
+            DUE_DATE_TIME, ASSIGNEE
     );
 
     private static final List<String> REVIEW_QA_CASE_TASK_TYPES = List.of(
@@ -132,7 +130,6 @@ public class ConfigurationExpectationBuilder {
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
                 .expectedValue(REGION, REGION_NATIONAL_VALUE, true)
-                .expectedValue(REGION_NAME, REGION_NAME_NATIONAL_VALUE, true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
                 .expectedValue(LOCATION, LOCATION_VALUE, true)
                 .expectedValue(LOCATION_NAME, LOCATION_NAME_VALUE, true)

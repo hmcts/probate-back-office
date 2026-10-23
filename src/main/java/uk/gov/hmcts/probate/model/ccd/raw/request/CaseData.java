@@ -392,7 +392,6 @@ public class CaseData extends CaseDataParent {
     private String taskLocationEpimmsId;
     private String taskLocationName;
     private String taskRegion;
-    private String taskRegionName;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;

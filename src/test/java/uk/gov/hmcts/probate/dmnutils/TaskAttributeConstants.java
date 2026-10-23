@@ -8,7 +8,6 @@ public class TaskAttributeConstants {
     public static final String CASE_NAME = "caseName";
     public static final String CASE_MANAGEMENT_CATEGORY = "caseManagementCategory";
     public static final String REGION = "region";
-    public static final String REGION_NAME = "regionName";
     public static final String LOCATION = "location";
     public static final String LOCATION_NAME = "locationName";
     public static final String DUE_DATE_NON_WORKING_CALENDAR = "dueDateNonWorkingCalendar";
@@ -28,7 +27,6 @@ public class TaskAttributeConstants {
     public static final String TASK_LOCATION_EPIMMS_ID = "taskLocationEpimmsId";
     public static final String TASK_LOCATION_NAME = "taskLocationName";
     public static final String TASK_REGION = "taskRegion";
-    public static final String TASK_REGION_NAME = "taskRegionName";
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";
@@ -401,7 +399,6 @@ public class TaskAttributeConstants {
     public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
     public static final String REGION_NATIONAL_VALUE = "12";
-    public static final String REGION_NAME_NATIONAL_VALUE = "National";
     public static final String LOCATION_VALUE = "371016";
     public static final String LOCATION_NAME_VALUE = "Oxford";
 

@@ -561,6 +561,5 @@
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveRedeclarationUserIdamId", "Label": "Select for Resolve Redeclaration User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskLocationEpimmsId", "Label": "Task Location Epimms Id", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskLocationName", "Label": "Task Location Name", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskRegion", "Label": "Task Region", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskRegionName", "Label": "Task Region Name", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskRegion", "Label": "Task Region", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

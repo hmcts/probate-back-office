@@ -295,8 +295,4 @@ public class CaseDataTransformer {
     public void setTaskRegion(CaseDetails caseDetails, String taskRegion) {
         caseDetails.getData().setTaskRegion(taskRegion);
     }
-
-    public void setTaskRegionName(CaseDetails caseDetails, String taskRegionName) {
-        caseDetails.getData().setTaskRegionName(taskRegionName);
-    }
 }
