@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -134,7 +135,7 @@ public class WaTaskControllerIT {
     }
 
     @Test
-    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsNotEnabled() throws Exception {
+    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsEnabled() throws Exception {
         String payload = testUtils.getStringFromFile("waTaskCaseType.json");
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);
@@ -149,6 +150,27 @@ public class WaTaskControllerIT {
                 .andExpect(status().isOk());
 
         verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
+    }
+
+    @Test
+    void shouldTriggerCloseAwaitingDocumentationHandOffsWhenProbateWaIsEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskCaseType.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/trigger/closeAwaitingDocumentationTasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
+                        .content(payload))
+                .andExpect(status().isOk());
+
+        verify(waTaskService).closeAwaitingDocumentationTasks(isA(CallbackRequest.class), eq(encodedString.get()));
     }
 
     @Test

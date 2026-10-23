@@ -152,6 +152,51 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "readyToIssueHandOffs",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeAwaitingDocumentationHandOffs",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "awaitingDocumentationHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseAdColligendaBona",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseAdColligendaBona",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseProbate",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseProbate",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseIntestacy",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseIntestacy",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseAdmonWill",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseAdmonWill",
+                                "Cancel"
+                        )
                 )
         );
     }

@@ -16,6 +16,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.willOrCodicilToBeNotatedHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -35,6 +36,12 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String, Object> examineWillOrCodicilToBeNotatedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
+                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
@@ -318,6 +325,14 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
                         List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 )
         );
     }

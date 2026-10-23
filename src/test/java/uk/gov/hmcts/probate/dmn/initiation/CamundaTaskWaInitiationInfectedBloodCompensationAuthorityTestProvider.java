@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.infectedBloodCompensationAuthorityHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -35,6 +36,12 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                 "taskId", EXAMINE_IBCA_CASE_PRINTED,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> infectedBloodCompensationAuthorityHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_IBCA_CASE_PRINTED,
+                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                "processCategories", "case progression,awaitingDocumentationHandOffs"
         );
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
@@ -351,6 +358,17 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                                 false,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
                         List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(
+                                        infectedBloodCompensationAuthorityHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(
+                                        infectedBloodCompensationAuthorityHandOffReason)),
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 )
         );
     }

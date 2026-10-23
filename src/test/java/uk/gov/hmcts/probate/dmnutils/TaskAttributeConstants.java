@@ -398,4 +398,5 @@ public class TaskAttributeConstants {
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
 
     public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
+    public static final String CLOSE_AWAITING_DOCUMENTATION_HANDOFFS = "closeAwaitingDocumentationHandOffs";
 }

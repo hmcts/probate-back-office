@@ -11,16 +11,22 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -50,16 +56,18 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CANCELLATION_PROBATE;
     }
 
+
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(9));
+        assertThat(logic.getRules().size(), is(15));
     }
 
-    @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
+    @ParameterizedTest(name = "[{index}] map data: {0}")
     @ArgumentsSource(CancellationScenarioBuilder.class)
     void given_multiple_event_ids_should_evaluate_dmn(Map<String, String> cancellationProperties) {
 
@@ -76,9 +84,14 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_REDECLARATION_SOT_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
+        } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
+            assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
+        } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
+                || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
+            assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)
                 || cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
-            assertResponse(dmnResultList, cancellationProperties);
+            assertAmendCaseDetailsReadyToIssueResponse(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             testChangeStateEvent(dmnResultList, cancellationProperties);
         } else {
@@ -86,22 +99,45 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         }
     }
 
-    private void assertResponse(List<Map<String, Object>> dmnResultList,
-                                Map<String, String> cancellationProperties) {
+    private boolean isAwaitingDocIceCancellationTask(String event) {
+        return TaskTypes.examineAwaitingDocIceTasks().stream()
+                .map(TaskTypes::getClosingEventId)
+                .map(EventId::getName)
+                .anyMatch(event::equals);
+    }
+
+    private void assertAmendCaseDetailsReadyToIssueResponse(List<Map<String, Object>> dmnResultList,
+                                                            Map<String, String> cancellationProperties) {
+        List<String> expectedProcessCategories = List.of("examineDigitalCaseTypes", "awaitingDocumentationHandOffs");
         long occurrence = cancellationProperties.values().stream()
                 .filter(READY_TO_ISSUE_STATE::equals)
                 .count();
 
         if (occurrence == 2) {
-            Assertions.assertEquals(1, dmnResultList.size());
-            Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
-                    cancellationProperties.get("processCategories"));
-            Assertions.assertEquals(dmnResultList.getFirst().get("action"),
-                    cancellationProperties.get("action"));
+            List<Object> processCategories = dmnResultList.stream()
+                    .filter(result -> "Cancel".equals(result.get("action")))
+                    .map(result -> result.get("processCategories"))
+                    .toList();
+
+            Assertions.assertEquals(expectedProcessCategories,
+                    processCategories);
+        }
+    }
+
+    private void assertResponse(List<Map<String, Object>> dmnResultList,
+                                Map<String, String> cancellationProperties,
+                                Predicate<String> stateFilter) {
+        long occurrence = cancellationProperties.values().stream()
+                .filter(stateFilter)
+                .count();
+
+        if (occurrence == 2) {
+            validate(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
     }
+
 
     private VariableMap putAllCancellationProperties(VariableMap inputVariables,
                                                  Map<String, String> cancellationProperties) {
@@ -131,14 +167,18 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(BO_CASE_STOPPED_AWAIT_REDEC_STATE)
                 || cancellationProperties.containsValue(BO_CASE_QA_STATE))
                 && cancellationProperties.containsValue(BO_CASE_CLOSED)) {
-            Assertions.assertEquals(1, dmnResultList.size());
-            Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
-                    cancellationProperties.get("processCategories"));
-            Assertions.assertEquals(dmnResultList.getFirst().get("action"),
-                    cancellationProperties.get("action"));
+            validate(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
+    }
+
+    private void validate(List<Map<String, Object>> dmnResultList, Map<String, String> cancellationProperties) {
+        Assertions.assertEquals(1, dmnResultList.size());
+        Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
+                cancellationProperties.get("processCategories"));
+        Assertions.assertEquals(dmnResultList.getFirst().get("action"),
+                cancellationProperties.get("action"));
     }
 
     private void testChangeStateEvent(List<Map<String, Object>> dmnResultList,

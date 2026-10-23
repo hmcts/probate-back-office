@@ -1197,5 +1197,10 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeReadyToIssueHandOffs", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeReadyToIssueHandOffs", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeAwaitingDocumentationHandOffs", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseProbate", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseIntestacy", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseAdmonWill", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseAdColligendaBona", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
 ]

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -227,6 +227,144 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1a3ztio">
           <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07dkft6">
+        <inputEntry id="UnaryTests_01bi4oc">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14da86o">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jyqrf7">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xdi3o7">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jtbkds">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p2vcx0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19418hg">
+          <text>"awaitingDocumentationHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0juks9x">
+        <inputEntry id="UnaryTests_08hzy0x">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pdbt8g">
+          <text>"closeAwaitingDocumentationHandOffs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ezjcu0">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05px82x">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15v4k36">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13fvvl5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1q1il4z">
+          <text>"awaitingDocumentationHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ankylg">
+        <inputEntry id="UnaryTests_1tn7ts2">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k7g1c4">
+          <text>"closeExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f1qz9z">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0icnluj">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03yb08f">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dg6rcf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cnlfud">
+          <text>"examineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uux0z6">
+        <inputEntry id="UnaryTests_1dvtxx5">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_049telc">
+          <text>"closeExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02ava4k">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0t9snjm">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vmgwfx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pwmqfo">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nl5sgu">
+          <text>"examineDigitalCaseProbate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0a9xi46">
+        <inputEntry id="UnaryTests_1e5y6ar">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16xn74t">
+          <text>"closeExamineDigitalCaseIntestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f4qtxn">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kld5w3">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ct8h2p">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07ditxb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ofet88">
+          <text>"examineDigitalCaseIntestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j5fvqx">
+        <inputEntry id="UnaryTests_0zkilrd">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13lquz8">
+          <text>"closeExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1567ry0">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0du9c77">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vc7u00">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tca7mm">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sxg5rj">
+          <text>"examineDigitalCaseAdmonWill"</text>
         </outputEntry>
       </rule>
     </decisionTable>
