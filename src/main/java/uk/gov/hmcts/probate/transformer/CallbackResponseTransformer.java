@@ -1506,7 +1506,7 @@ public class CallbackResponseTransformer {
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
             .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
 
-        if (caseData.getRegistryLocation() != null) {
+        if (caseData.getRegistryLocation() != null && !caseData.getRegistryLocation().equals("")) {
             builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
             builder.taskLocationName(caseData.getRegistryLocation());
             builder.taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
