@@ -1200,6 +1200,8 @@ public class CallbackResponseTransformer {
 
     ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
                                                       Optional<UserInfo> caseworkerInfo, boolean transform) {
+        log.info("event {} caseDetails.getState(): {} ", eventId, caseDetails.getState());
+        
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
