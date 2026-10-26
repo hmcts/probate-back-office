@@ -28,13 +28,16 @@ public class AttachScannedDocs implements CreateTaskProcessor {
 
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+        caseworkerInfo.getCaseworkerInfo()
+                .map(UserInfo::getRoles)
+                .ifPresent(roles -> log.info("Processing attach scanned docs roles : {}", roles));
         String createTask = caseworkerInfo.getCaseworkerInfo()
                 .map(UserInfo::getRoles)
                 .filter(roles -> roles.contains(CASEWORKER_PROBATE_SYSTEM_UPDATE)
                         || roles.contains(IDAM_SERVICE_ACCOUNT))
                 .map(roles -> YES)
                 .orElse(NO);
-        log.info("Processing attach scanned docs set creatTask : {} ", createTask);
+        log.info("Processing attach scanned docs set createTask : {} ", createTask);
         responseCaseData.setCreateTask(createTask);
     }
 }
