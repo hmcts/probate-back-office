@@ -24,6 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsProvider {
@@ -46,6 +48,12 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
 
         Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                "name", DE_BONIS_NON_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDeBonisNonCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON_CHANGE_STATE,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -75,7 +83,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -115,7 +123,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -149,7 +157,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -177,7 +185,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "",true, 
+                        additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
@@ -327,6 +335,41 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
                         List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
+                        List.of(examineDeBonisNonCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }
