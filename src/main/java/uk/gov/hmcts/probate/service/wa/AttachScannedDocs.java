@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.List;
 
