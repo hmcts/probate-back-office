@@ -75,8 +75,8 @@ public class CaseDataBuilder {
         return this;
     }
 
-    public CaseDataBuilder setState(String state) {
-        caseData.put("state", state);
+    public CaseDataBuilder setWaCaseState(String state) {
+        caseData.put("waCaseState", state);
         return this;
     }
 }

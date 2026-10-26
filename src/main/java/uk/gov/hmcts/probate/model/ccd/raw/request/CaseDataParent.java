@@ -91,7 +91,6 @@ public class CaseDataParent {
     private final String solsPBAPaymentReference;
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
-    private String state;
 
     // This has to be mutable to permit us to rollback DTSPB-5005. mutation is done by
     // clearApplicantOrganisationPolicy() which we should remove after that migration completes and make this

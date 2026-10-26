@@ -119,7 +119,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent()
                                 .build(),
                         HANDLE_EVIDENCE_EVENT,
@@ -129,7 +129,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent()
                                 .build(),
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
@@ -139,7 +139,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent()
                                 .build(),
                         HANDLE_EVIDENCE_EVENT,
@@ -149,7 +149,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent()
                                 .build(),
                         HANDLE_EVIDENCE_EVENT,
@@ -159,7 +159,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent()
                                 .build(),
                         HANDLE_EVIDENCE_EVENT,
@@ -169,7 +169,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_FIAT_WILL,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -179,7 +179,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_IBCA,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -190,7 +190,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                Arguments.of(
                     EXAMINE_WINDRUSH_SCHEME,
                     CaseDataBuilder.defaultWaCase()
-                           .setState(READY_TO_ISSUE_STATE)
+                           .setWaCaseState(READY_TO_ISSUE_STATE)
                            .isUrgent()
                            .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -201,7 +201,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -211,7 +211,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -222,7 +222,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_WILL_CODICIL_NOTATED,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -233,7 +233,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_WITNESS_INTERVIEW,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -243,7 +243,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_HORIZON_SCHEME,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -253,7 +253,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(CASE_PRINTED_STATE)
+                            .setWaCaseState(CASE_PRINTED_STATE)
                             .isUrgent()
                             .build(),
                     HANDLE_EVIDENCE_EVENT,
@@ -264,7 +264,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder
@@ -274,7 +274,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -283,7 +283,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_DOUBLE_PROBATE,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -293,7 +293,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_INCAPACITY_RULE_35,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -303,7 +303,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_LEADING_FOLLOWING_GRANTS,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -313,7 +313,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_SECTION_116,
                     CaseDataBuilder.defaultWaCase()
-                        .setState(READY_TO_ISSUE_STATE)
+                        .setWaCaseState(READY_TO_ISSUE_STATE)
                         .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -322,7 +322,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_POA,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -331,7 +331,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_RESEAL_FOREIGN_GRANT,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -340,7 +340,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_IBIS,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -350,7 +350,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_CODICIL_MIS,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -360,7 +360,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_RECTIFY_WILL_CODICIL,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(READY_TO_ISSUE_STATE)
+                            .setWaCaseState(READY_TO_ISSUE_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -370,7 +370,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_IBIS_CASE_PRINTED,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(CASE_PRINTED_STATE)
+                            .setWaCaseState(CASE_PRINTED_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -380,7 +380,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_LOST_WILL_CASE_PRINTED,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(CASE_PRINTED_STATE)
+                            .setWaCaseState(CASE_PRINTED_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -390,7 +390,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                     EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
                     CaseDataBuilder.defaultWaCase()
-                            .setState(CASE_PRINTED_STATE)
+                            .setWaCaseState(CASE_PRINTED_STATE)
                             .isUrgent().build(),
                     HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -400,7 +400,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_IBCA_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -410,7 +410,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -420,7 +420,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -430,7 +430,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -440,7 +440,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_CODICIL_MIS_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -450,7 +450,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -460,7 +460,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RECTIFY_QA_CASE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_STOPPED_STATE)
+                                .setWaCaseState(BO_CASE_STOPPED_STATE)
                                 .isUrgent().setSelectForQAUserIdamId(DEFAULT_ASSIGNEE).build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -470,7 +470,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_LITERARY_ESTATE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -479,7 +479,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_LOST_WILL,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -489,7 +489,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_MINORITY_INTEREST,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -498,7 +498,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -508,7 +508,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -518,7 +518,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -528,7 +528,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -538,7 +538,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_SECTION_116_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -548,7 +548,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -558,7 +558,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_POA_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -568,7 +568,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -578,7 +578,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_FIAT_WILL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -588,7 +588,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_FOREIGN_DOMICILE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -598,7 +598,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_INCAPACITY_RULE_35_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -608,7 +608,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -618,7 +618,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -628,7 +628,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_FOREIGN_WILL,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -638,7 +638,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_TRUST_CORPORATION,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(READY_TO_ISSUE_STATE)
+                                .setWaCaseState(READY_TO_ISSUE_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -648,7 +648,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_SME_REFERRAL,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_WORKER_ESCALATION)
+                                .setWaCaseState(BO_CASE_WORKER_ESCALATION)
                                 .isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -658,7 +658,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_REFERRALS,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_REGISTRAR_ESCALATION)
+                                .setWaCaseState(BO_REGISTRAR_ESCALATION)
                                 .isUrgent().build(),
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -669,7 +669,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RESOLVE_REGISTRAR_ESCALATION_ORDERS,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_REGISTRAR_ESCALATION)
+                                .setWaCaseState(BO_REGISTRAR_ESCALATION)
                                 .isUrgent().build(),
                         RESOLVE_REGISTRAR_ESCALATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -680,7 +680,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(CASE_PRINTED_STATE)
+                                .setWaCaseState(CASE_PRINTED_STATE)
                                 .isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
@@ -691,7 +691,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_SME_REFERRAL,
                         CaseDataBuilder.defaultWaCase()
                                 .isUrgent()
-                                .setState(BO_CASE_WORKER_ESCALATION)
+                                .setWaCaseState(BO_CASE_WORKER_ESCALATION)
                                 .setMoveToCWEscalationUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
                         "handleEvidence",
@@ -702,7 +702,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_REGISTRAR_DECISION,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_REGISTRAR_ESCALATION)
+                                .setWaCaseState(BO_REGISTRAR_ESCALATION)
                                 .isUrgent()
                                 .setEscalateToRegistrarUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -715,7 +715,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REDECLARATION,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_STOPPED_AWAIT_REDEC_STATE)
+                                .setWaCaseState(BO_CASE_STOPPED_AWAIT_REDEC_STATE)
                                 .isUrgent()
                                 .setRedeclarationUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -727,7 +727,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_SME_REFERRAL,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_WORKER_ESCALATION)
+                                .setWaCaseState(BO_CASE_WORKER_ESCALATION)
                                 .isUrgent()
                                 .setMoveToCWEscalationUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -739,7 +739,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         RESOLVE_STOPPED_CASE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_STOPPED_STATE)
+                                .setWaCaseState(BO_CASE_STOPPED_STATE)
                                 .isUrgent()
                                 .setResolveStoppedCaseUserIdamId(DEFAULT_ASSIGNEE)
                                 .build(),
@@ -751,7 +751,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_QA_CASE_INTESTACY,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_QA_STATE)
+                                .setWaCaseState(BO_CASE_QA_STATE)
                                 .isUrgent()
                                 .build(),
                         BO_SELECT_FOR_QA_EVENT,
@@ -762,7 +762,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_QA_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_QA_STATE)
+                                .setWaCaseState(BO_CASE_QA_STATE)
                                 .isUrgent()
                                 .build(),
                         BO_SELECT_FOR_QA_EVENT,
@@ -773,7 +773,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_QA_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_QA_STATE)
+                                .setWaCaseState(BO_CASE_QA_STATE)
                                 .isUrgent()
                                 .build(),
                         BO_SELECT_FOR_QA_EVENT,
@@ -784,7 +784,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         REVIEW_QA_CASE_AD_COLLIGENDA_BONA,
                         CaseDataBuilder.defaultWaCase()
-                                .setState(BO_CASE_QA_STATE)
+                                .setWaCaseState(BO_CASE_QA_STATE)
                                 .isUrgent()
                                 .build(),
                         BO_SELECT_FOR_QA_EVENT,
@@ -796,7 +796,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         RESOLVE_REDECLARATION,
                         CaseDataBuilder.defaultWaCase().isUrgent()
                                 .setResolveRedeclarationUserIdamId(DEFAULT_ASSIGNEE)
-                                .setState(BO_REDEC_NOTIFICATION_SENT_STATE)
+                                .setWaCaseState(BO_REDEC_NOTIFICATION_SENT_STATE)
                                 .build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(

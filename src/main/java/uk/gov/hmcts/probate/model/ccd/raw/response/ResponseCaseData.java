@@ -59,7 +59,8 @@ import java.util.List;
 @Data
 public class ResponseCaseData extends ResponseCaseDataParent {
 
-    private String state;
+    private final String state;
+    private final String waCaseState;
     private final ApplicationType applicationType;
     private final String registryLocation;
 
