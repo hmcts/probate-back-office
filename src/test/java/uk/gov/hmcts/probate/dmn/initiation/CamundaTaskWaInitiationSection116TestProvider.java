@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.section116HandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
@@ -41,6 +42,12 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                 "taskId", EXAMINE_SECTION_116_CASE_PRINTED,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineSection116ReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_SECTION_116,
+                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -317,6 +324,14 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason)),
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 )
         );
     }

@@ -331,6 +331,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
 
     private List<CollectionMember<HandoffReason>> boHandoffReasonList;
+    private List<CollectionMember<HandoffReason>> waHandoffReasonList;
 
     private final String boStopDetails;
 
