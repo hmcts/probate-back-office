@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -17,23 +19,23 @@ import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
@@ -56,7 +58,31 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CANCELLATION_PROBATE;
     }
 
+    static Stream<Arguments> reconfigureScenarioProvider() {
 
+        return Stream.of(
+                Arguments.of(
+                        null,
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        List.of(
+                                Map.of(
+                                        "action", "Reconfigure"
+                                )
+                        )
+                ),
+                Arguments.of(
+                        null,
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        List.of(
+                                Map.of(
+                                        "action", "Reconfigure"
+                                )
+                        )
+                )
+        );
+    }
 
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
@@ -64,7 +90,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(15));
+        assertThat(logic.getRules().size(), is(17));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -97,6 +123,21 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
+    }
+
+    @ParameterizedTest(name = "[{index}] from state: {0}, event id: {1}, state: {2}")
+    @MethodSource("reconfigureScenarioProvider")
+    void given_multiple_event_ids_should_evaluate_dmn(String fromState,
+                                                      String eventId,
+                                                      String state,
+                                                      List<Map<String, String>> expectation) {
+
+        VariableMap inputVariables = new VariableMapImpl();
+        inputVariables.putValue("fromState", fromState);
+        inputVariables.putValue("event", eventId);
+        inputVariables.putValue("state", state);
+        DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
+        Assertions.assertEquals(expectation, dmnDecisionTableResult.getResultList());
     }
 
     private boolean isAwaitingDocIceCancellationTask(String event) {

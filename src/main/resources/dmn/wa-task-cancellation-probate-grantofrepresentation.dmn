@@ -367,6 +367,52 @@
           <text>"examineDigitalCaseAdmonWill"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1m75pmy">
+        <inputEntry id="UnaryTests_145c3fu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vghqil">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iv1g4h">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tm75qb">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pjxeax">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nshbow">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14asqzm">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1k3x2ky">
+        <inputEntry id="UnaryTests_1fpo7d0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ahisbn">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fcdz9w">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bt7562">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vmo1j3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s35mtu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y2mo0y">
+          <text></text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

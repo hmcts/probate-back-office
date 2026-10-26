@@ -59,7 +59,7 @@ import java.util.List;
 @Data
 public class ResponseCaseData extends ResponseCaseDataParent {
 
-    private final String state;
+    private String state;
     private final ApplicationType applicationType;
     private final String registryLocation;
 

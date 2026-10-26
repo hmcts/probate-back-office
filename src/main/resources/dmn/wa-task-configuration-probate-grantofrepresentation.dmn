@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
@@ -25,32 +25,15 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0a3bnkb">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineIBISCasePrinted","ExamineLostWillCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineIBCACasePrinted","ExamineLeadingFollowing GrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisCasePrinted","ExamineDeBonisNonCasePrinted","ExamineWillCodicilNotatedCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineIBCACasePrinted","ExamineLeadingFollowing GrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisCasePrinted","ExamineDeBonisNonCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePOACasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineIncapacityRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineForeignWillCasePrinted"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBona","ExamineIBISCasePrinted","ExamineLostWillCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineIBCACasePrinted","ExamineLeadingFollowing GrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisCasePrinted","ExamineDeBonisNonCasePrinted","ExamineWillCodicilNotatedCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineHorizonSchemeCasePrinted","ExamineIBCACasePrinted","ExamineLeadingFollowing GrantsCasePrinted","ExamineLiteraryEstateCasePrinted","ExamineMinorityInterestCasePrinted","ExamineCodicilMisCasePrinted","ExamineDeBonisNonCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineRectifyWillCodicilCasePrinted","ExamineWindrushSchemeCasePrinted","ExamineWitnessInterviewCasePrinted","ExamineSection116CasePrinted","ExamineDoubleProbateCasePrinted","ExaminePOACasePrinted","ExamineResealForeignGrantCasePrinted","ExamineFiatWillCasePrinted","ExamineIncapacityRule35CasePrinted","ExamineTrustCorporationCasePrinted","ExamineForeignDomicileCasePrinted","ExamineForeignWillCasePrinted","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDeBonisNon", "ExamineFiatWill","ExamineIBCA", "ExamineWindrushScheme","ExamineWillCodicilNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDoubleProbate","ExamineIncapacityRule35","ExamineLeadingFollowing Grants", "ExamineSection116", "ExaminePOA", "ExamineResealForeignGrant", "ExamineIBIS","ExamineCodicilMis","ExamineRectifyWillCodicil", "ExamineLiteraryEstate", "ExamineLostWill", "ExamineMinorityInterest","ExamineForeignDomicile","ExamineForeignWill","ExamineTrustCorporation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1whdf9l">
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0n1yxlg">
-          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)"</text>
+          <text>if (caseData.state != null and caseData.state = "CasePrinted") then "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)" else "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForReadyToIssue)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cvv017">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0ien17h">
-        <inputEntry id="UnaryTests_0m1zmgk">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1x02bny">
-          <text>"ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0plzlgf">
-          <text>"description"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0la9ztl">
-          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForReadyToIssue)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_06qeoi0">
           <text>true</text>
         </outputEntry>
       </rule>
@@ -272,23 +255,6 @@
           <text>"16:00"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1mz9vju">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0zqxk1i">
-        <inputEntry id="UnaryTests_0m3unah">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ico2r9">
-          <text>"ExamineDeBonisNon", "ExamineFiatWill","ExamineIBCA", "ExamineWindrushScheme","ExamineWillCodicilNotated","ExamineWitnessInterview","ExamineHorizonScheme","ExamineDoubleProbate","ExamineIncapacityRule35","ExamineLeadingFollowing Grants", "ExamineSection116", "ExaminePOA", "ExamineResealForeignGrant", "ExamineIBIS","ExamineCodicilMis","ExamineRectifyWillCodicil", "ExamineLiteraryEstate", "ExamineLostWill", "ExamineMinorityInterest","ExamineForeignDomicile","ExamineForeignWill","ExamineTrustCorporation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1eszbgu">
-          <text>"description"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0dik0k3">
-          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForReadyToIssue)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0x6smwi">
           <text>true</text>
         </outputEntry>
       </rule>
