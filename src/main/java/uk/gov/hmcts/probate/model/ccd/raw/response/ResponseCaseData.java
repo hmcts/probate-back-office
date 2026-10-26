@@ -432,4 +432,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String escalateToRegistrarUserIdamId;
     private String redeclarationUserIdamId;
     private String resolveStoppedCaseUserIdamId;
+    private String resolveRedeclarationUserIdamId;
+    private List<CollectionMember<HandoffReason>> waHandoffReasonList;
 }

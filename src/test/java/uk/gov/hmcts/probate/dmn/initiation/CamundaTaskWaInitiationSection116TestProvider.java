@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.section116HandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CASE_PRINTED;
@@ -23,6 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDEN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsProvider {
@@ -41,6 +44,18 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                 "taskId", EXAMINE_SECTION_116_CASE_PRINTED,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineSection116CaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_SECTION_116_CHANGE_STATE,
+                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineSection116ReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_SECTION_116,
+                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -316,6 +331,49 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason)),
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                        List.of(examineSection116CaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
+                        List.of(examineSection116CaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 )
         );
