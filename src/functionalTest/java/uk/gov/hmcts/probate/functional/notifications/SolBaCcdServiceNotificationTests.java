@@ -322,7 +322,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
+    void verifyBulkScanPaperFormGOPGrantReceivedHasNotificationDocUrl() throws IOException {
         assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanPayload.json",
                 GRANT_RAISED,
@@ -330,7 +330,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() throws IOException {
+    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationHasNotificationDocUrl() throws IOException {
         assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanSolicitorPayload.json",
                 GRANT_RAISED,
@@ -338,7 +338,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
+    void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelshHasNotificationDocUrl() throws IOException {
         assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanPayloadWelsh.json",
                 GRANT_RAISED,
@@ -346,7 +346,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() throws IOException {
+    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelshHasNotificationDocUrl() throws IOException {
         assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
                 GRANT_RAISED,
