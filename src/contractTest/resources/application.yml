@@ -526,16 +526,15 @@ registry:
       epimmsId: 815833
       region: 12
     bristol:
-      name: Bristol District Probate Registry
+      name: Bristol Civil and Family Justice Centre
       phone: 0300 303 0648
       emailReplyToId: "6d98cad6-adb4-4446-b37e-5c3f0441a0c8"
-      addressline1: 3rd Floor, Cardiff Magistrates’ Court
-      addressline2: Fitzalan Place
-      addressline3: Cardiff
-      town: South Wales
-      postcode: CF24 0RZ
+      addressline1: 2
+      addressline2: Redcliff Street
+      town: Bristol
+      postcode: BS1 6GR
       epimmsId: 819890
-      region: 12
+      region: 6
 
 document:
   retriever:
