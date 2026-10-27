@@ -29,7 +29,7 @@ public class AttachScannedDocs implements CreateTaskProcessor {
 
     @Override
     public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        String createTask = caseworkerInfo.getCaseworkerInfo()
+        String createTask = caseworkerInfo.getCaseworkerInfoIncludingSystemUsers()
                 .map(userInfo -> {
                     List<String> roles = userInfo.getRoles();
                     boolean shouldCreateTask = roles.contains(CASEWORKER_PROBATE_SYSTEM_UPDATE)
