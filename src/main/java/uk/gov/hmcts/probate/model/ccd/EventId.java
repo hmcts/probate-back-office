@@ -36,11 +36,13 @@ public enum EventId {
     AUTO_NOTIFICATION_DORMANT_REMINDER("autoNotificationDormantReminder"),
     AUTO_NOTIFICATION_UNSUBMITTED_APPLICATION("autoNotificationUnsubmittedApplication"),
     AUTO_NOTIFICATION_DECLARATION_NOT_SIGNED("autoNotificationDeclarationNotSigned"),
+    AUTO_SELECT_FOR_QA_CREATE_TASK("autoSelectForQACreateTask"),
 
     CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION("caveatExpiredForAwaitingCaveatResolution"),
     CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED("caveatExpiredForCaveaNotMatched"),
     CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION("caveatExpiredForWarningValidation"),
-    CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE("caveatExpiredForAwaitingWarningResponse");
+    CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE("caveatExpiredForAwaitingWarningResponse"),
+    CLOSE_READY_TO_ISSUE_HANDOFFS("closeReadyToIssueHandOffs");
     @Getter
     private final String name;
 

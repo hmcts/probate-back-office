@@ -428,4 +428,10 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private String createTask;
     private String selectForQAUserIdamId;
+    private String moveToCWEscalationUserIdamId;
+    private String escalateToRegistrarUserIdamId;
+    private String redeclarationUserIdamId;
+    private String resolveStoppedCaseUserIdamId;
+    private String resolveRedeclarationUserIdamId;
+    private List<CollectionMember<HandoffReason>> waHandoffReasonList;
 }
