@@ -119,15 +119,16 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROVE_FOREIGN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REDECLARATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_QA_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_QA_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_QA_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_QA_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_ADMON;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CASE_AD_COLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_JUDICIAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SPECIFIC_ACCESS_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_ADMIN;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -481,29 +482,24 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissionsWithAutoAssign(null, true)
                 ),
                 Arguments.of(
-                        REVIEW_QA_CASE_INTESTACY,
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(INTESTACY_QA_SKILL_CODE)
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_JUDICIARY, ROLE_CATEGORY_JUDICIAL)
                 ),
                 Arguments.of(
-                        REVIEW_QA_CASE_ADMON,
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(ADMON_QA_SKILL_CODE)
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_LEGAL_OPS, ROLE_CATEGORY_LO)
                 ),
                 Arguments.of(
-                        REVIEW_QA_CASE_PROBATE,
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(PROBATE_QA_SKILL_CODE)
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_ADMIN, ROLE_CATEGORY_ADMIN)
                 ),
                 Arguments.of(
-                        REVIEW_QA_CASE_AD_COLLIGENDA_BONA,
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(AD_COLLIGENDA_BONA_QA_SKILL_CODE)
-                ),
-                Arguments.of(
-                        RESOLVE_REDECLARATION,
-                        DUMMY_CASE_DATA,
-                        getCtscExaminePermissionsWithAutoAssign(null, true)
+                        getSpecificAccessPermissions(SPECIFIC_ACCESS_CTSC, ROLE_CATEGORY_CTSC)
                 )
         );
     }
@@ -530,7 +526,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(123));
+        assertThat(logic.getRules().size(), is(117));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -590,5 +586,17 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
         return getCtscExaminePermissionsWithAutoAssign(skillCode, false);
+    }
+
+    private static List<Map<String, Object>> getSpecificAccessPermissions(String name, String roleCategory) {
+
+        Map<String, Object> basePermissions = Map.of(
+                "name", name,
+                "value", "Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn",
+                "roleCategory", roleCategory,
+                "autoAssignable", false
+        );
+
+        return List.of(basePermissions);
     }
 }
