@@ -183,4 +183,13 @@ class UserInfoServiceTest {
                 () -> assertEquals(userInfo, result.get())
         );
     }
+
+    @Test
+    void shouldReturnEmptyWhenSecurityDTOIsNullForCaseworkerInfoIncludingSystemUsers() {
+        when(securityUtils.getSecurityDTO()).thenReturn(null);
+        Optional<UserInfo> result = userInfoService.getCaseworkerInfoIncludingSystemUsers();
+
+        assertTrue(result.isEmpty());
+        verify(securityUtils, never()).getUserInfo(any());
+    }
 }
