@@ -795,6 +795,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
 
+        log.info("response: {}", response);
+        log.info("expectedText: {}", expectedText);
         assertTrue(response.contains(expectedText));
     }
 
