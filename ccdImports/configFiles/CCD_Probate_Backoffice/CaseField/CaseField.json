@@ -232,6 +232,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "casePrinted", "Label": "Case has been printed and entered into ProbateMan", "FieldType": "FixedList", "FieldTypeParameter": "casePrintedTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "registryLocations", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "applicationTypes", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "state", "Label": "State Field", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "waCaseState", "Label": "State Field", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedMarriedAfterWillOrCodicilDate", "Label": "Deceased Married After Will Or Codicil Date", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boCaseStopReasonList", "Label": "Case stop reason", "HintText": "Reason for stopping the case", "FieldType": "Collection", "FieldTypeParameter": "boCaseStopReason", "SecurityClassification": "Public"},
