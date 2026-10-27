@@ -239,12 +239,18 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySite() {
-        CaseData caseData = CaseData.builder()
-                .caseHandedOffToLegacySite(Constants.YES)
-                .build();
+    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsRetained() {
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(Constants.YES)
+                        .build());
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+
         when(caseDetails.getData())
-                .thenReturn(caseData);
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(Constants.YES)
+                        .build());
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
 
@@ -254,7 +260,30 @@ class WaTaskServiceTest {
     }
 
     @Test
+    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsAdded() {
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+
+        verifyNoInteractions(ccdClientApi);
+    }
+
+
+    @Test
     void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(YES)
+                        .build());
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+
         CaseData caseData = CaseData.builder()
                 .caseHandedOffToLegacySite(NO)
                 .build();
@@ -459,13 +488,12 @@ class WaTaskServiceTest {
 
     @Test
     void shouldNotTriggerEventWhenContextTaskExists() {
-        CaseData caseData = CaseData.builder()
-                .caseType("gop")
-                .build();
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
 
         TaskData taskData = TaskData.builder()
                 .type("ExamineDoubleProbate")
@@ -482,6 +510,13 @@ class WaTaskServiceTest {
 
     @Test
     void shouldCloseAwaitingDocumentationHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+        when(caseDetailsBefore.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(YES)
+                        .build());
+        when(callbackRequest.getCaseDetailsBefore())
+                .thenReturn(caseDetailsBefore);
+
         CaseData caseData = CaseData.builder()
                 .caseHandedOffToLegacySite(NO)
                 .caseType("gop")
@@ -493,10 +528,7 @@ class WaTaskServiceTest {
                 .thenReturn(caseData);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-        when(caseDetailsBefore.getData())
-                .thenReturn(caseData);
+
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .thenReturn(SecurityDTO.builder().build());
 

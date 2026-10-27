@@ -25,7 +25,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
@@ -120,7 +119,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(23));
+        assertThat(logic.getRules().size(), is(21));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -145,8 +144,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
                 || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
-        } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)
-                || cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
+        } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
             assertAmendCaseDetailsReadyToIssueResponse(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             testChangeStateEvent(dmnResultList, cancellationProperties);

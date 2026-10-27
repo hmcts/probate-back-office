@@ -137,10 +137,11 @@ public class WaTaskService {
                                           EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
-                .filter(NO::equals)
-                .ifPresent(legacySite ->
-                    triggerEvent(caseDetails, eventId));
+        if (YES.equals(callbackRequest.getCaseDetailsBefore()
+                .getData().getCaseHandedOffToLegacySite())
+                && NO.equals(caseDetails.getData().getCaseHandedOffToLegacySite())) {
+            triggerEvent(caseDetails, eventId);
+        }
     }
 
     private void triggerEvent(CaseDetails caseDetails, EventId eventId) {

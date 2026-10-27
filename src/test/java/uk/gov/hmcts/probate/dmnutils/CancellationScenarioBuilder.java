@@ -98,15 +98,6 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "boAmendCaseDetailsForReadyToIssue",
-                                "BOReadyToIssue",
-                                "BOReadyToIssue",
-                                "examineDigitalCaseTypes",
-                                "Cancel"
-                        )
-                ),
-                Arguments.of(
-                        cancelWithProperties(
                                 "boWithdrawApplicationForCaseQA",
                                 "BOCaseQA",
                                 "BOCaseClosed",
