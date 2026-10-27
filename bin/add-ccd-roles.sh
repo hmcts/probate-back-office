@@ -60,3 +60,4 @@ ${dir}/ccd-add-role.sh caseworker-privatelaw-courtadmin
 ${dir}/ccd-add-role.sh caseworker-privatelaw-la
 ${dir}/ccd-add-role.sh caseworker-privatelaw
 ${dir}/ccd-add-role.sh judiciary
+${dir}/ccd-add-role.sh prd-admin
