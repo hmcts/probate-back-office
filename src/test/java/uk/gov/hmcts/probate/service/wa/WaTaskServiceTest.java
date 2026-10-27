@@ -10,17 +10,13 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
-import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -30,7 +26,6 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,14 +37,12 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
@@ -64,10 +57,8 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOF
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskServiceTest {
-    public static final String EVENT_TO_MONITOR = "boAmendCaseDetailsForAwaitingDocumentation";
+
     public static final String CLIENT_CONTEXT = "client_context";
-    @Mock
-    private WaApi waApi;
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -87,133 +78,8 @@ class WaTaskServiceTest {
     @InjectMocks
     private WaTaskService waTaskService;
 
-    private final String authToken = "auth-token";
     private final String systemUserAuthToken = "system_user_authToken";
     private final String caseId = "123456";
-    private final String serviceToken = "service-token";
-
-    @Test
-    void shouldReturnTrueWhenTaskIsPresent() {
-        TaskData task = new TaskData();
-        task.setType("ExamineDigitalCaseProbate");
-
-        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
-                false,
-                List.of(task));
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-        boolean result = waTaskService.isTaskPresent(
-                authToken,
-                caseId,
-                EVENT_TO_MONITOR,
-                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
-        );
-
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    void shouldReturnFalseWhenTaskIsNotPresent() {
-        TaskData task = new TaskData();
-        task.setType("ExamineDigitalCaseProbate");
-
-        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
-                false,
-                List.of(task));
-
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-        boolean result = waTaskService.isTaskPresent(
-                authToken,
-                caseId,
-                EVENT_TO_MONITOR,
-                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY)
-        );
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    void shouldReturnFalseWhenResponseBodyIsNull() {
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(null));
-
-        boolean result = waTaskService.isTaskPresent(
-                authToken,
-                caseId,
-                EVENT_TO_MONITOR,
-                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
-        );
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    void shouldReturnFalseWhenTasksListIsEmpty() {
-        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
-                false,
-                Collections.emptyList());
-
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-        boolean result = waTaskService.isTaskPresent(
-                authToken,
-                caseId,
-                EVENT_TO_MONITOR,
-                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
-        );
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    void shouldReturnFalseWhenTaskTypeIsUnknown() {
-        TaskData task = new TaskData();
-        task.setType("UnknownTaskType");
-
-        GetTasksCompletableResponse<TaskData> response = new GetTasksCompletableResponse<>(
-                false,
-                List.of(task)
-        );
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-        boolean result = waTaskService.isTaskPresent(
-                authToken,
-                caseId,
-                EVENT_TO_MONITOR,
-                Set.of(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE)
-        );
-
-        assertThat(result).isFalse();
-    }
 
     @Test
     void shouldReturnTrueWhenCaseTypeHasChanged() {
@@ -538,7 +404,6 @@ class WaTaskServiceTest {
                 .thenReturn(Optional.empty());
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verifyNoInteractions(waApi);
         verifyNoInteractions(ccdClientApi);
     }
 
@@ -611,9 +476,6 @@ class WaTaskServiceTest {
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verify(waApi, never())
-                .searchWithCriteriaForAutomaticCompletion(any(), any(), any());
-
         verify(ccdClientApi, never())
                 .triggerEvent(any(), any(), any(), any());
     }
@@ -643,127 +505,6 @@ class WaTaskServiceTest {
         verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
     }
 
-    @Test
-    void shouldReturnAllAssociatedTasks() {
-
-        String examineIbisCasePrinted = "ExamineIBISCasePrinted";
-        TaskData task1 = TaskData.builder()
-                .type(examineIbisCasePrinted)
-                .build();
-
-        String examineLostWillCasePrinted = "ExamineLostWillCasePrinted";
-        TaskData task2 = TaskData.builder()
-                .type(examineLostWillCasePrinted)
-                .build();
-
-        GetTasksCompletableResponse<TaskData> response =
-                new GetTasksCompletableResponse<>(
-                        false,
-                        List.of(task1, task2)
-                );
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                any(SearchEventAndCase.class)
-        )).thenReturn(ResponseEntity.ok(response));
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-
-        Set<String> result =
-                waTaskService.getAllAssociatedTasks(authToken,
-                        caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
-
-        assertThat(result)
-                .containsExactlyInAnyOrder(
-                        examineIbisCasePrinted,
-                        examineLostWillCasePrinted);
-
-        verify(waApi).searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                isA(SearchEventAndCase.class)
-        );
-    }
-
-    @Test
-    void shouldReturnEmptySetWhenNoTasksFound() {
-
-        GetTasksCompletableResponse<TaskData> response =
-                new GetTasksCompletableResponse<>(
-                        false,
-                        List.of()
-                );
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)
-        )).thenReturn(ResponseEntity.ok(response));
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-
-        Set<String> result =
-                waTaskService.getAllAssociatedTasks(authToken,
-                        caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
-
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void shouldReturnEmptySetWhenResponseBodyIsNull() {
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                anyString(),
-                anyString(),
-                any(SearchEventAndCase.class)
-        )).thenReturn(ResponseEntity.ok().build());
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-
-        Set<String> result =
-                waTaskService.getAllAssociatedTasks(authToken,
-                        caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
-
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void shouldRemoveDuplicateTaskTypes() {
-
-        TaskData task1 = TaskData.builder()
-                .type("examineDigitalCaseProbate")
-                .build();
-
-        TaskData task2 = TaskData.builder()
-                .type("examineDigitalCaseProbate")
-                .build();
-
-        GetTasksCompletableResponse<TaskData> response =
-                new GetTasksCompletableResponse<>(
-                        false,
-                        List.of(task1, task2)
-                );
-
-        when(waApi.searchWithCriteriaForAutomaticCompletion(
-                eq(authToken),
-                eq(serviceToken),
-                any(SearchEventAndCase.class)))
-                .thenReturn(ResponseEntity.ok(response));
-
-        when(securityUtils.generateServiceToken()).thenReturn(serviceToken);
-
-        Set<String> result =
-                waTaskService.getAllAssociatedTasks(authToken,
-                        caseId,
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT);
-
-        assertThat(result)
-                .containsExactly("examineDigitalCaseProbate");
-    }
 
     private List<CollectionMember<HandoffReason>> generateHandOffReasonCollection(
             Set<HandoffReasonId> handOffReasons) {

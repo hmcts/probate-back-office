@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -26,23 +25,21 @@ public class AbstractAmendCaseDetails {
     }
 
     protected Result getResult(CallbackRequest callbackRequest,
-                             ResponseCaseData responseCaseData,
-                             Predicate<CallbackRequest> predicate) {
+                             ResponseCaseData responseCaseData) {
         boolean caseHandedOffToLegacySite = Optional.ofNullable(callbackRequest.getCaseDetails()
                         .getData().getCaseHandedOffToLegacySite()).map(value -> value.equals(YES))
                 .orElse(false);
 
         boolean newHandOffPresent = false;
         if (caseHandedOffToLegacySite) {
-            setHandoffReasons(callbackRequest, responseCaseData, predicate);
+            setHandoffReasons(callbackRequest, responseCaseData);
             newHandOffPresent = !responseCaseData.getWaHandoffReasonList().isEmpty();
         }
         return new Result(caseHandedOffToLegacySite, newHandOffPresent);
     }
 
     private void setHandoffReasons(CallbackRequest callbackRequest,
-                                   ResponseCaseData responseCaseData,
-                                   Predicate<CallbackRequest> predicate) {
+                                   ResponseCaseData responseCaseData) {
         Set<HandoffReason> handOffReasonBefore = waTaskService
                 .getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
         Set<HandoffReason> handOffReasonAfter = waTaskService
@@ -50,9 +47,7 @@ public class AbstractAmendCaseDetails {
 
         Set<HandoffReason> handOffReasons = new HashSet<>(handOffReasonAfter);
 
-        if (predicate.test(callbackRequest)) {
-            handOffReasons.removeAll(handOffReasonBefore);
-        }
+        handOffReasons.removeAll(handOffReasonBefore);
 
         List<CollectionMember<HandoffReason>> newHandOffReasons = handOffReasons.stream()
                 .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason)

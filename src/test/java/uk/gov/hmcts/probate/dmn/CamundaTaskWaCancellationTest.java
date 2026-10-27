@@ -31,11 +31,14 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_ST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
@@ -60,26 +63,53 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     static Stream<Arguments> reconfigureScenarioProvider() {
 
+        List<Map<String, String>> action = List.of(
+                Map.of(
+                        "action", "Reconfigure"
+                )
+        );
         return Stream.of(
                 Arguments.of(
                         null,
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                         CASE_PRINTED_STATE,
-                        List.of(
-                                Map.of(
-                                        "action", "Reconfigure"
-                                )
-                        )
+                        action
                 ),
                 Arguments.of(
                         null,
-                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        action
+                ),
+                Arguments.of(
+                        null,
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        action
+                ),
+                Arguments.of(
+                        null,
+                        RESOLVE_SME_REFERRAL_EVENT,
                         READY_TO_ISSUE_STATE,
-                        List.of(
-                                Map.of(
-                                        "action", "Reconfigure"
-                                )
-                        )
+                        action
+                ),
+                Arguments.of(
+                        null,
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        action
+                ),
+                Arguments.of(
+                        null,
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        action
+                ),
+                Arguments.of(
+                        null,
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        action
                 )
         );
     }
@@ -90,7 +120,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(17));
+        assertThat(logic.getRules().size(), is(23));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")

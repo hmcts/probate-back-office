@@ -15,8 +15,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Component
 public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails implements CreateTaskProcessor {
 
-    private static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
-            = "boAmendCaseDetailsForAwaitingDocumentation";
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
     private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = TaskTypes.examineAwaitingDocIceTasks();
     private final WaTaskService waTaskService;
@@ -37,38 +35,23 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
                         final ResponseCaseData responseCaseData) {
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
-        boolean taskToClosePresent = !caseTypeChanged
-                && waTaskService.isTaskPresent(authToken,
-                callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION,
-                TASKS_AWAITING_DOCUMENTATION_TO_CLOSE);
-
         Result result = getResult(
                 callbackRequest,
-                responseCaseData,
-                request -> {
-                    Long caseId = request.getCaseDetails().getId();
-                    Set<String> allAssociatedTasks = waTaskService.getAllAssociatedTasks(authToken,
-                            caseId.toString(),
-                            BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION);
-                    log.info("case id {}: allAssociatedTasks {}", caseId, allAssociatedTasks);
-                    return allAssociatedTasks.isEmpty();
-                });
+                responseCaseData);
 
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
                 && !result.caseHandedOffToLegacySite()
                 && areAllHandOffsRemoved(callbackRequest);
 
-        responseCaseData.setCreateTask(caseTypeChanged || taskToClosePresent
+        responseCaseData.setCreateTask(caseTypeChanged
                 || result.newHandOffPresent() || isInitialCaseExaminationTaskRequired
                 ? YES : Constants.NO);
 
-        log.info("case id {}: caseTypeChanged {}, taskToClosePresent {}, newHandOffPresent {}"
+        log.info("case id {}: caseTypeChanged {},  newHandOffPresent {}"
                         + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
                 callbackRequest.getCaseDetails().getId(),
                 caseTypeChanged,
-                taskToClosePresent,
                 result.newHandOffPresent(),
                 responseCaseData.getWaHandoffReasonList(),
                 isInitialCaseExaminationTaskRequired);

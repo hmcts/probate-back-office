@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
@@ -20,20 +19,13 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.service.wa.AmendCaseDetailsForAwaitingDocumentation.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION;
 
 @ExtendWith(MockitoExtension.class)
 class AmendCaseDetailsForAwaitingDocumentationTest {
@@ -43,8 +35,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Mock
-    private WaApi waApi;
     @Mock
     private SecurityUtils securityUtils;
     @Mock
@@ -57,14 +47,10 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     private AmendCaseDetailsForAwaitingDocumentation processor;
 
     private static final String AUTH_TOKEN = "authToken";
-    private static final Set<TaskTypes> taskToCreate = Set.of(EXAMINE_DIGITAL_CASE_PROBATE,
-            EXAMINE_DIGITAL_CASE_INTESTACY,
-            EXAMINE_DIGITAL_CASE_ADMON_WILL,
-            EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA);
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
         processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
     }
 
@@ -105,8 +91,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
                 .isEqualTo(Constants.YES);
         verify(waTaskService)
                 .getCaseTypePredicate();
-        verify(waTaskService, never()).isTaskPresent(AUTH_TOKEN, callbackRequest.getCaseDetails().getId().toString(),
-                BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION, taskToCreate);
     }
 
     @Test

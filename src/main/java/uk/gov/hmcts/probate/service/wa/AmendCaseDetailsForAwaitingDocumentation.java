@@ -32,8 +32,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
         Result result = getResult(callbackRequest,
-                responseCaseData,
-                request -> true);
+                responseCaseData);
 
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged

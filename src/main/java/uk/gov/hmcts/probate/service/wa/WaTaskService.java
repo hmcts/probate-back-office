@@ -1,17 +1,13 @@
 package uk.gov.hmcts.probate.service.wa;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.wa.GetTasksCompletableResponse;
-import uk.gov.hmcts.probate.model.wa.SearchEventAndCase;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -38,67 +34,14 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESC
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class WaTaskService {
-    private final WaApi waApi;
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
-
-    public boolean isTaskPresent(String authToken,
-                                 String caseId,
-                                 String eventId,
-                                 @NonNull Set<TaskTypes> taskNames) {
-        GetTasksCompletableResponse<TaskData> taskResponse = getWAResponse(authToken, caseId, eventId);
-
-        return Optional.ofNullable(taskResponse)
-                .map(GetTasksCompletableResponse::tasks)
-                .stream()
-                .flatMap(List::stream)
-                .map(TaskData::getType)
-                .map(TaskTypes::fromValue)
-                .flatMap(Optional::stream)
-                .anyMatch(taskNames::contains);
-    }
-
-    public Set<String> getAllAssociatedTasks(String authToken,
-                                             String caseId,
-                                             String eventId) {
-        GetTasksCompletableResponse<TaskData> taskResponse = getWAResponse(authToken, caseId, eventId);
-
-        return Optional.ofNullable(taskResponse)
-                .map(GetTasksCompletableResponse::tasks)
-                .stream()
-                .flatMap(List::stream)
-                .map(TaskData::getType)
-                .collect(Collectors.toSet());
-    }
-
-    private GetTasksCompletableResponse<TaskData> getWAResponse(String authToken,
-                                                                                String caseId,
-                                                                                String eventId) {
-        SearchEventAndCase searchEventAndCase = new SearchEventAndCase(
-                caseId,
-                eventId,
-                PROBATE.name(),
-                "grantofrepresentation"
-        );
-
-        ResponseEntity<GetTasksCompletableResponse<TaskData>> taskResponse =
-                waApi.searchWithCriteriaForAutomaticCompletion(
-                        authToken,
-                        securityUtils.generateServiceToken(),
-                        searchEventAndCase);
-
-        log.info("WA task response status: {} for case id {}",
-                taskResponse.getStatusCode(),
-                caseId);
-        return taskResponse.getBody();
-    }
 
     public BiPredicate<CallbackRequest, String> getCaseTypePredicate() {
         return (callbackRequest, clientContext) ->
