@@ -144,9 +144,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
                 || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
-        } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
-            assertAmendCaseDetailsReadyToIssueResponse(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
+        }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             testChangeStateEvent(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
@@ -173,24 +171,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 .map(TaskTypes::getClosingEventId)
                 .map(EventId::getName)
                 .anyMatch(event::equals);
-    }
-
-    private void assertAmendCaseDetailsReadyToIssueResponse(List<Map<String, Object>> dmnResultList,
-                                                            Map<String, String> cancellationProperties) {
-        List<String> expectedProcessCategories = List.of("examineDigitalCaseTypes", "awaitingDocumentationHandOffs");
-        long occurrence = cancellationProperties.values().stream()
-                .filter(READY_TO_ISSUE_STATE::equals)
-                .count();
-
-        if (occurrence == 2) {
-            List<Object> processCategories = dmnResultList.stream()
-                    .filter(result -> "Cancel".equals(result.get("action")))
-                    .map(result -> result.get("processCategories"))
-                    .toList();
-
-            Assertions.assertEquals(expectedProcessCategories,
-                    processCategories);
-        }
     }
 
     private void assertResponse(List<Map<String, Object>> dmnResultList,
