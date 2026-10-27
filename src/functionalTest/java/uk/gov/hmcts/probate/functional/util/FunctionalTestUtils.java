@@ -200,11 +200,9 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
-        return "";
-//        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
-//
-//        return parsePDFToString(jsonResponse.getBody().asInputStream());
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
 
+        return parsePDFToString(jsonResponse.getBody().asInputStream());
     }
 
     private Response getDocumentResponse(String documentUrl, Headers headers) {

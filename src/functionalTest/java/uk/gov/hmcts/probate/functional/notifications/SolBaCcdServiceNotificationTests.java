@@ -346,7 +346,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelshHasNotificationDocUrl() throws IOException {
+    void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelshHasNotificationDocUrl()
+            throws IOException {
         assertResponseContainsStringAtJsonPath(
                 "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json",
                 GRANT_RAISED,
