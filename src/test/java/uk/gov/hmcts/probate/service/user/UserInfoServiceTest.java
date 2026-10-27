@@ -167,4 +167,20 @@ class UserInfoServiceTest {
 
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void shouldReturnUserInfoWhenUserHasExcludedRoles() {
+        securityDTO = mock(SecurityDTO.class);
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityDTO.getAuthorisation()).thenReturn(AUTH_TOKEN);
+
+        UserInfo userInfo = UserInfo.builder().roles(List.of("caseworker-probate", "some-other-role")).build();
+        when(securityUtils.getUserInfo(AUTH_TOKEN)).thenReturn(userInfo);
+
+        Optional<UserInfo> result = userInfoService.getCaseworkerInfoIncludingSystemUsers();
+        assertAll(
+                () -> assertTrue(result.isPresent()),
+                () -> assertEquals(userInfo, result.get())
+        );
+    }
 }
