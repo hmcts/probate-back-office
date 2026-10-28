@@ -38,7 +38,7 @@ class AttachScannedDocsTest {
 
     @Test
     void shouldSetCreateTaskToYesWhenUserHasSystemUpdateRole() {
-        when(userInfoService.getCaseworkerInfo()).thenReturn(Optional.of(
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
@@ -49,7 +49,7 @@ class AttachScannedDocsTest {
 
     @Test
     void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRole() {
-        when(userInfoService.getCaseworkerInfo()).thenReturn(Optional.of(
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
@@ -60,7 +60,7 @@ class AttachScannedDocsTest {
 
     @Test
     void shouldSetCreateTaskToNoWhenUserHasOtherRole() {
-        when(userInfoService.getCaseworkerInfo()).thenReturn(Optional.of(
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("caseworker-probate-caseadmin")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
@@ -71,7 +71,7 @@ class AttachScannedDocsTest {
 
     @Test
     void shouldSetCreateTaskToNoWhenUserInfoIsEmpty() {
-        when(userInfoService.getCaseworkerInfo()).thenReturn(Optional.empty());
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.empty());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);

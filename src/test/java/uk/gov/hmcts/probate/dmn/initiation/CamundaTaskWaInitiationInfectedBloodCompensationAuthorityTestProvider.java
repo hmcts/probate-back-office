@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
@@ -25,6 +26,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDEN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvider implements ArgumentsProvider {
@@ -46,6 +49,12 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA,
+                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -358,6 +367,44 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                                 false,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
                         List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
+                        List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false),
+                        List.of(examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,

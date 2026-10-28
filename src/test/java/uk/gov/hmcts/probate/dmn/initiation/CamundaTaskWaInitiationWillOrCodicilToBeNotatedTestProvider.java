@@ -26,6 +26,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider implements ArgumentsProvider {
 
@@ -46,6 +48,12 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED,
+                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWillOrCodicilToBeNotatedCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CHANGE_STATE,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -325,6 +333,41 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
                         List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
+                        List.of(examineWillOrCodicilToBeNotatedCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,

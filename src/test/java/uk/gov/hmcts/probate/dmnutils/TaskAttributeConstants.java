@@ -121,6 +121,34 @@ public class TaskAttributeConstants {
     public static final String REVIEW_QA_CASE_INTESTACY = "ReviewQACaseIntestacy";
     public static final String REVIEW_QA_CASE_ADMON = "ReviewQACaseAdmon";
     public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA = "ReviewQACaseAdColligendaBona";
+    // temp variables will be removed before merge
+    public static final String EXAMINE_DE_BONIS_NON_CHANGE_STATE = "ExamineDeBonisNon";
+    public static final String EXAMINE_WINDRUSH_SCHEME_CHANGE_STATE = "ExamineWindrushScheme";
+    public static final String EXAMINE_FIAT_WILL_CHANGE_STATE = "ExamineFiatWill";
+    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE
+            = "ExamineIBCA";
+    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CHANGE_STATE
+            = "ExamineWillCodicilNotated";
+    public static final String EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE
+            = "ExamineWitnessInterview";
+    public static final String EXAMINE_HORIZON_SCHEME_CHANGE_STATE
+            = "ExamineHorizonScheme";
+    public static final String EXAMINE_DOUBLE_PROBATE_CHANGE_STATE = "ExamineDoubleProbate";
+    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_CHANGE_STATE = "ExamineIncapacityRule35";
+    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE = "ExamineLeadingFollowing Grants";
+    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_CHANGE_STATE = "ExamineRectifyWillCodicil";
+    public static final String EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE = "ExamineCodicilMis";
+    public static final String EXAMINE_SECTION_116_CHANGE_STATE = "ExamineSection116";
+    public static final String EXAMINE_POWER_OF_ATTORNEY_CHANGE_STATE = "ExaminePOA";
+    public static final String EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE = "ExamineResealForeignGrant";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CHANGE_STATE
+           = "ExamineIBIS";
+    public static final String EXAMINE_LITERARY_ESTATE_CHANGE_STATE = "ExamineLiteraryEstate";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL_CHANGE_STATE = "ExamineLostWill";
+    public static final String EXAMINE_MINORITY_INTEREST_CHANGE_STATE = "ExamineMinorityInterest";
+    public static final String EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE = "ExamineForeignDomicile";
+    public static final String EXAMINE_PROVE_FOREIGN_WILL_CHANGE_STATE = "ExamineForeignWill";
+    public static final String EXAMINE_TRUST_CORPORATION_CHANGE_STATE = "ExamineTrustCorporation";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";

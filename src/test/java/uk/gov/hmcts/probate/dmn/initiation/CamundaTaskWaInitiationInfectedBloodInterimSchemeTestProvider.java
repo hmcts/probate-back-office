@@ -25,6 +25,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider implements ArgumentsProvider {
@@ -46,6 +48,12 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
 
         Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBIS_CASE_PRINTED,
+                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineInfectedBloodInterimSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CHANGE_STATE,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -337,6 +345,41 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
                         List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
+                        List.of(examineInfectedBloodInterimSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
+                        List.of(examineInfectedBloodInterimSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,

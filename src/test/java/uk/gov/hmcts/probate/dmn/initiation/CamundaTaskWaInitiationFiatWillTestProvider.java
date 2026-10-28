@@ -22,7 +22,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
-
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsProvider {
 
@@ -39,6 +40,13 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                 "name", FIAT_WILL_TASK_TYPE_NAME,
                 "processCategories", "case progression,readyToIssueHandOffs"
         );
+
+        Map<String,Object> examineFiatWillCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_FIAT_WILL_CHANGE_STATE,
+                "name", FIAT_WILL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
 
         return Stream.of(
                 Arguments.of(
@@ -200,6 +208,41 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason)),
                         List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
+                        List.of(examineFiatWillCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
+                        List.of(examineFiatWillCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }
