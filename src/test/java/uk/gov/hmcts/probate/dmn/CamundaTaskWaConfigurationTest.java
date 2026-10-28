@@ -812,7 +812,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(44, logic.getRules().size());
+        assertEquals(40, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
