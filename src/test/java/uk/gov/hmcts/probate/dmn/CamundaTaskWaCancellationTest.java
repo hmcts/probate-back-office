@@ -119,7 +119,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(21));
+        assertThat(logic.getRules().size(), is(25));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")

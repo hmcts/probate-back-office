@@ -149,7 +149,7 @@ public class WaTaskControllerIT {
                         .content(payload))
                 .andExpect(status().isOk());
 
-        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
+        verify(waTaskService).closeReadyToIssueTasks(isA(CallbackRequest.class), eq(encodedString.get()));
     }
 
     @Test

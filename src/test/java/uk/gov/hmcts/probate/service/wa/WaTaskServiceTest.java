@@ -51,7 +51,7 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICAT
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
@@ -242,6 +242,7 @@ class WaTaskServiceTest {
     void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsRetained() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
+                        .caseType("gop")
                         .caseHandedOffToLegacySite(Constants.YES)
                         .build());
         when(callbackRequest.getCaseDetailsBefore())
@@ -249,12 +250,13 @@ class WaTaskServiceTest {
 
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
+                        .caseType("gop")
                         .caseHandedOffToLegacySite(Constants.YES)
                         .build());
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
 
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
 
         verifyNoInteractions(ccdClientApi);
     }
@@ -263,13 +265,24 @@ class WaTaskServiceTest {
     void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsAdded() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
+                        .caseType("gop")
                         .caseHandedOffToLegacySite(NO)
                         .build());
         when(callbackRequest.getCaseDetailsBefore())
                 .thenReturn(caseDetailsBefore);
 
+        CaseData caseData = CaseData.builder()
+                .caseType("gop")
+                .caseHandedOffToLegacySite(YES)
+                .build();
 
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+
+        waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
 
         verifyNoInteractions(ccdClientApi);
     }
@@ -279,12 +292,14 @@ class WaTaskServiceTest {
     void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
+                        .caseType("gop")
                         .caseHandedOffToLegacySite(YES)
                         .build());
         when(callbackRequest.getCaseDetailsBefore())
                 .thenReturn(caseDetailsBefore);
 
         CaseData caseData = CaseData.builder()
+                .caseType("gop")
                 .caseHandedOffToLegacySite(NO)
                 .build();
 
@@ -297,7 +312,7 @@ class WaTaskServiceTest {
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .thenReturn(SecurityDTO.builder().build());
 
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
 
         verifyIceEvent(CLOSE_READY_TO_ISSUE_HANDOFFS);
     }
@@ -455,7 +470,7 @@ class WaTaskServiceTest {
                         .build());
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
-        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY);
+        verifyIceEvent(CLOSE_ICE_INTESTACY);
     }
 
     private void verifyIceEvent(EventId eventId) {

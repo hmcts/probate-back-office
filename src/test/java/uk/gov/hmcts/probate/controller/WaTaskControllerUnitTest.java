@@ -358,10 +358,11 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
+                clientContext,
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService, never()).closeReadyToIssueTasks(eq(callbackRequest), anyString());
     }
 
     @Test
@@ -369,16 +370,17 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        doNothing().when(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
 
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
+                clientContext,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
     }
 
     @Test
@@ -386,10 +388,11 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
+                clientContext,
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
+        verify(waTaskService, never()).closeReadyToIssueTasks(eq(callbackRequest), anyString());
     }
 
     @Test
@@ -602,6 +605,7 @@ public class WaTaskControllerUnitTest {
         assertThatThrownBy(() ->
                 waTaskContoller.closeReadyToIssueHandOffs(
                         callbackRequest,
+                        clientContext,
                         bindingResult,
                         httpServletRequest
                 )

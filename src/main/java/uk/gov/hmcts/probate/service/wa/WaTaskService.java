@@ -102,17 +102,21 @@ public class WaTaskService {
                 .collect(Collectors.toSet());
     }
 
-    public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest) {
+    public void closeReadyToIssueTasks(CallbackRequest callbackRequest,
+                                       String clientContext) {
         triggerCloseHandOffEvent(callbackRequest, CLOSE_READY_TO_ISSUE_HANDOFFS);
+        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineReadyToIssueIceTasks());
     }
 
     public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
                                                 String clientContext) {
         triggerCloseHandOffEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
-        triggerCloseIceEvent(callbackRequest, clientContext);
+        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineAwaitingDocIceTasks());
     }
 
-    private void triggerCloseIceEvent(CallbackRequest callbackRequest, String clientContext) {
+    private void triggerCloseIceEvent(CallbackRequest callbackRequest,
+                                      String clientContext,
+                                      Set<TaskTypes> taskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         if (taskData.isEmpty() && getCaseTypePredicate().test(callbackRequest, clientContext)) {
             Long caseId = callbackRequest.getCaseDetails().getId();
@@ -123,7 +127,10 @@ public class WaTaskService {
                     caseId,
                     caseTypeBefore);
 
-            TaskTypes.getAwaitingDocIceClosingEventId(caseTypeBefore)
+            taskTypes.stream()
+                    .filter(taskType -> taskType.getCaseType().equals(caseTypeBefore))
+                    .findFirst()
+                    .flatMap(TaskTypes::getOptionalClosingEventId)
                     .ifPresent(eventId -> {
                         log.info("Case id {} : triggering closing event {}",
                                 caseId,

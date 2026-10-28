@@ -44,10 +44,10 @@ public enum EventId {
     CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE("caveatExpiredForAwaitingWarningResponse"),
     CLOSE_READY_TO_ISSUE_HANDOFFS("closeReadyToIssueHandOffs"),
     CLOSE_AWAITING_DOCUMENTATION_HANDOFFS("closeAwaitingDocumentationHandOffs"),
-    CLOSE_AWAITING_DOCUMENTATION_ICE_PROBATE("closeExamineDigitalCaseProbate"),
-    CLOSE_AWAITING_DOCUMENTATION_ICE_INTESTACY("closeExamineDigitalCaseIntestacy"),
-    CLOSE_AWAITING_DOCUMENTATION_ICE_ADMON_WILL("closeExamineDigitalCaseAdmonWill"),
-    CLOSE_AWAITING_DOCUMENTATION_ICE_AD_COLLIGENDA_BONA("closeExamineDigitalCaseAdColligendaBona");
+    CLOSE_ICE_PROBATE("closeExamineDigitalCaseProbate"),
+    CLOSE_ICE_INTESTACY("closeExamineDigitalCaseIntestacy"),
+    CLOSE_ICE_ADMON_WILL("closeExamineDigitalCaseAdmonWill"),
+    CLOSE_ICE_AD_COLLIGENDA_BONA("closeExamineDigitalCaseAdColligendaBona");
     @Getter
     private final String name;
 
