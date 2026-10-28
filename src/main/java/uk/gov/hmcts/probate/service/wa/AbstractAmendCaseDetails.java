@@ -9,11 +9,9 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -26,9 +24,8 @@ public class AbstractAmendCaseDetails {
 
     protected Result getResult(CallbackRequest callbackRequest,
                              ResponseCaseData responseCaseData) {
-        boolean caseHandedOffToLegacySite = Optional.ofNullable(callbackRequest.getCaseDetails()
-                        .getData().getCaseHandedOffToLegacySite()).map(value -> value.equals(YES))
-                .orElse(false);
+        boolean caseHandedOffToLegacySite = YES.equals(callbackRequest.getCaseDetails().getData()
+                        .getCaseHandedOffToLegacySite());
 
         boolean newHandOffPresent = false;
         if (caseHandedOffToLegacySite) {
@@ -54,12 +51,5 @@ public class AbstractAmendCaseDetails {
                 ).toList();
 
         responseCaseData.setWaHandoffReasonList(newHandOffReasons);
-    }
-
-    protected boolean areAllHandOffsRemoved(final CallbackRequest callbackRequest) {
-        return YES.equals(callbackRequest.getCaseDetailsBefore()
-                .getData().getCaseHandedOffToLegacySite())
-                && NO.equals(callbackRequest.getCaseDetails()
-                .getData().getCaseHandedOffToLegacySite());
     }
 }

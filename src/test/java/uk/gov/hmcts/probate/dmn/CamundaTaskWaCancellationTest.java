@@ -145,7 +145,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
-            testChangeStateEvent(dmnResultList, cancellationProperties);
+            validate(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
@@ -223,15 +223,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     private void validate(List<Map<String, Object>> dmnResultList, Map<String, String> cancellationProperties) {
-        Assertions.assertEquals(1, dmnResultList.size());
-        Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
-                cancellationProperties.get("processCategories"));
-        Assertions.assertEquals(dmnResultList.getFirst().get("action"),
-                cancellationProperties.get("action"));
-    }
-
-    private void testChangeStateEvent(List<Map<String, Object>> dmnResultList,
-                                                Map<String, String> cancellationProperties) {
         Assertions.assertEquals(1, dmnResultList.size());
         Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
                 cancellationProperties.get("processCategories"));

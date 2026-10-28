@@ -102,7 +102,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 List.of(HandoffReasonId.AD_COLLIGENDA_BONA),
                 List.of(HandoffReasonId.AD_COLLIGENDA_BONA)
         );
-        String caseId = callbackRequest.getCaseDetails().getId().toString();
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
@@ -123,8 +122,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                 List.of(HandoffReasonId.FIAT_WILL),
                 List.of(HandoffReasonId.CODICIL_MIS)
         );
-        String caseId = callbackRequest.getCaseDetails().getId().toString();
-
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
@@ -178,7 +175,6 @@ class AmendCaseDetailsForReadyToIssueTest {
                         .boHandoffReasonList(List.of(new CollectionMember<>(null,
                                 HandoffReason.builder().caseHandoffReason(HandoffReasonId.FIAT_WILL).build())))
                         .build());
-        String caseId = callbackRequest.getCaseDetails().getId().toString();
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);

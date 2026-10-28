@@ -137,11 +137,16 @@ public class WaTaskService {
                                           EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        if (YES.equals(callbackRequest.getCaseDetailsBefore()
-                .getData().getCaseHandedOffToLegacySite())
-                && NO.equals(caseDetails.getData().getCaseHandedOffToLegacySite())) {
+        if (isAllHandOffsRemoved(callbackRequest)) {
             triggerEvent(caseDetails, eventId);
         }
+    }
+
+    public boolean isAllHandOffsRemoved(final CallbackRequest callbackRequest) {
+        return YES.equals(callbackRequest.getCaseDetailsBefore()
+                .getData().getCaseHandedOffToLegacySite())
+                && NO.equals(callbackRequest.getCaseDetails()
+                .getData().getCaseHandedOffToLegacySite());
     }
 
     private void triggerEvent(CaseDetails caseDetails, EventId eventId) {

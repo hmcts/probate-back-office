@@ -37,7 +37,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
                         && !result.caseHandedOffToLegacySite()
-                        && areAllHandOffsRemoved(callbackRequest);
+                        && waTaskService.isAllHandOffsRemoved(callbackRequest);
 
         responseCaseData.setCreateTask(caseTypeChanged || result.newHandOffPresent()
                 || isInitialCaseExaminationTaskRequired

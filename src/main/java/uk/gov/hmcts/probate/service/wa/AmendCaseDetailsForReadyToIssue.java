@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
-
-import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -41,7 +38,7 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
         boolean isInitialCaseExaminationTaskRequired =
                 !caseTypeChanged
                 && !result.caseHandedOffToLegacySite()
-                && areAllHandOffsRemoved(callbackRequest);
+                && waTaskService.isAllHandOffsRemoved(callbackRequest);
 
         responseCaseData.setCreateTask(caseTypeChanged
                 || result.newHandOffPresent() || isInitialCaseExaminationTaskRequired
