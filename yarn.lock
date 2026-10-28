@@ -5,7 +5,7 @@ __metadata:
   version: 10
   cacheKey: 10
 
-"@axe-core/playwright@npm:^4.11.0, @axe-core/playwright@npm:^4.13.0":
+"@axe-core/playwright@npm:^4.11.0, @axe-core/playwright@npm:^4.14.0":
   version: 4.14.0
   resolution: "@axe-core/playwright@npm:4.14.0"
   dependencies:
@@ -257,7 +257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/playwright-common@npm:^1.1.4":
+"@hmcts/playwright-common@npm:^1.1.7":
   version: 1.1.7
   resolution: "@hmcts/playwright-common@npm:1.1.7"
   dependencies:
@@ -857,7 +857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.62.1":
+"@playwright/test@npm:^1.64.1":
   version: 1.64.1
   resolution: "@playwright/test@npm:1.64.1"
   dependencies:
@@ -1160,7 +1160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.13.3":
+"@types/node@npm:^24.19.2":
   version: 24.19.2
   resolution: "@types/node@npm:24.19.2"
   dependencies:
@@ -1365,7 +1365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/tsconfig-utils@npm:8.71.2, @typescript-eslint/tsconfig-utils@npm:^8.71.2":
+"@typescript-eslint/tsconfig-utils@npm:8.71.2":
   version: 8.71.2
   resolution: "@typescript-eslint/tsconfig-utils@npm:8.71.2"
   peerDependencies:
@@ -1374,7 +1374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/tsconfig-utils@npm:8.72.1, @typescript-eslint/tsconfig-utils@npm:^8.72.1":
+"@typescript-eslint/tsconfig-utils@npm:8.72.1, @typescript-eslint/tsconfig-utils@npm:^8.71.2, @typescript-eslint/tsconfig-utils@npm:^8.72.1":
   version: 8.72.1
   resolution: "@typescript-eslint/tsconfig-utils@npm:8.72.1"
   peerDependencies:
@@ -1415,14 +1415,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.71.2, @typescript-eslint/types@npm:^8.71.2":
+"@typescript-eslint/types@npm:8.71.2":
   version: 8.71.2
   resolution: "@typescript-eslint/types@npm:8.71.2"
   checksum: 10/23bd123ce82a6e92b53b5a3f04573603b463beaf94c0f24f8943c65dbb27dde22d8c70a00fedb34fb966ee3339fe5b056e4526370219c06919b7e48d1a16ed55
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.72.1, @typescript-eslint/types@npm:^8.72.1":
+"@typescript-eslint/types@npm:8.72.1, @typescript-eslint/types@npm:^8.71.2, @typescript-eslint/types@npm:^8.72.1":
   version: 8.72.1
   resolution: "@typescript-eslint/types@npm:8.72.1"
   checksum: 10/5df4d298766f25b95beae1ca2374d0a01719b3ac12f5f6a9977241d5ac7808064a72d07002b09bcdc6876453fb3a1bc8bc4988cd10ff2d07b4fb4fbcf71bd706
@@ -1603,27 +1603,27 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "BackOffice@workspace:."
   dependencies:
-    "@axe-core/playwright": "npm:^4.13.0"
+    "@axe-core/playwright": "npm:^4.14.0"
     "@date-fns/upgrade": "npm:^1.0.3"
-    "@hmcts/playwright-common": "npm:^1.1.4"
-    "@playwright/test": "npm:^1.62.1"
-    "@types/node": "npm:^24.13.3"
-    axios: "npm:^1.19.0"
+    "@hmcts/playwright-common": "npm:^1.1.7"
+    "@playwright/test": "npm:^1.64.1"
+    "@types/node": "npm:^24.19.2"
+    axios: "npm:^1.21.0"
     chai: "npm:^4.5.0"
-    chai-http: "npm:^4.3.0"
+    chai-http: "npm:^4.4.0"
     chai-string: "npm:^1.6.0"
     date-fns: "npm:^2.21.3"
     dotenv: "npm:^17.4.2"
     dotenv-extended: "npm:^2.9.0"
-    eslint: "npm:^10.8.1"
-    eslint-plugin-playwright: "npm:^2.0.0"
+    eslint: "npm:^10.13.0"
+    eslint-plugin-playwright: "npm:^2.12.1"
     html_codesniffer: "npm:^2.5.1"
     husky: "npm:^8.0.3"
     istanbul: "npm:^0.4.5"
     mocha: "npm:^11.8.0"
     mocha-junit-reporter: "npm:^2.2.1"
     mocha-multi: "npm:^1.1.7"
-    mochawesome: "npm:^8.0.1"
+    mochawesome: "npm:^8.1.1"
     mochawesome-merge: "npm:^5.1.1"
     mochawesome-report-generator: "npm:^6.3.2"
     moment: "npm:^2.31.0"
@@ -1637,10 +1637,10 @@ __metadata:
     sinon-chai: "npm:^3.7.0"
     supertest: "npm:^7.0.0"
     typescript: "npm:^5.9.3"
-    typescript-eslint: "npm:^8.67.0"
-    webdriverio: "npm:^9.30.1"
+    typescript-eslint: "npm:^8.72.1"
+    webdriverio: "npm:^9.32.0"
     when: "npm:^3.7.8"
-    yaml: "npm:^2.9.0"
+    yaml: "npm:^2.9.1"
   languageName: unknown
   linkType: soft
 
@@ -1896,14 +1896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axe-core@npm:^4.11.0, axe-core@npm:^4.11.1":
-  version: 4.13.0
-  resolution: "axe-core@npm:4.13.0"
-  checksum: 10/b9319bedc705fde00e4abd981d8724202cc20102e4ae6d8edfde33cb5265e0fb8f67f32adcb4ad33fbd4a2c8d7ad7ef5af1d933d9ad859bed90e3eae0ee8c52f
-  languageName: node
-  linkType: hard
-
-"axe-core@npm:~4.14.0":
+"axe-core@npm:^4.11.0, axe-core@npm:^4.11.1, axe-core@npm:~4.14.0":
   version: 4.14.0
   resolution: "axe-core@npm:4.14.0"
   checksum: 10/b41f9c5fb670b3e1812ba203b17570efa026071e6c722cd8384bacbe5f2be1578fc5d7544acf06df7758eb755c7d23629df922e86cc0655d656784157c0d8df5
@@ -1921,7 +1914,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.19.0":
+"axios@npm:^1.21.0":
   version: 1.21.0
   resolution: "axios@npm:1.21.0"
   dependencies:
@@ -2072,20 +2065,20 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.2":
-  version: 2.1.4
-  resolution: "brace-expansion@npm:2.1.4"
+  version: 2.1.7
+  resolution: "brace-expansion@npm:2.1.7"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10/11e18dc39706037331abedbb742af1da733267042f94c0f08487ef1a63cee068c1859f8d5f95523869725191133eb1a69753de457ed4b76b7c187d9ea0646737
+  checksum: 10/4763be07b688136db4f98f71ab96c4a1a73b6785f69864c130c748f4429be961c6a9a4129c0a81aad4f9cfb08e31a3cf2809b2427509bf2990d1490b7b5dd2d0
   languageName: node
   linkType: hard
 
 "brace-expansion@npm:^5.0.8":
-  version: 5.0.9
-  resolution: "brace-expansion@npm:5.0.9"
+  version: 5.0.12
+  resolution: "brace-expansion@npm:5.0.12"
   dependencies:
     balanced-match: "npm:^4.0.2"
-  checksum: 10/d8683d612919212c7cf298861acd1c15101e7e2ad186e7ae9747390e5b3fc9e9b55ce71107570d32985784d9d88fbbe438d725863aed7b0f3d08d5f080535eec
+  checksum: 10/65b550f1836e3b43f512f12afbc3be96616eee5c353e16d70181b7dffec8c08beabffb51d69a3bbdb27d675840725cbab025fda9d10716b5cda7dd864dc7bc4a
   languageName: node
   linkType: hard
 
@@ -2224,7 +2217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai-http@npm:^4.3.0":
+"chai-http@npm:^4.4.0":
   version: 4.4.0
   resolution: "chai-http@npm:4.4.0"
   dependencies:
@@ -3116,7 +3109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-playwright@npm:^2.0.0, eslint-plugin-playwright@npm:^2.5.1":
+"eslint-plugin-playwright@npm:^2.12.1, eslint-plugin-playwright@npm:^2.5.1":
   version: 2.12.1
   resolution: "eslint-plugin-playwright@npm:2.12.1"
   dependencies:
@@ -3170,7 +3163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.1":
+"eslint@npm:^10.13.0":
   version: 10.13.0
   resolution: "eslint@npm:10.13.0"
   dependencies:
@@ -4557,13 +4550,13 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^4.1.0, js-yaml@npm:^4.3.0":
-  version: 4.3.1
-  resolution: "js-yaml@npm:4.3.1"
+  version: 4.3.2
+  resolution: "js-yaml@npm:4.3.2"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10/2ce71b5d632abbd77da80447bf860e8a0264e54bffe94840984887d58b023761495b523727547904517a6107a1ef189854b361e0fc44995ee13a84f222d7bd42
+  checksum: 10/05c44b9c73e4901d92703b155e76518df64bf01ac62e4c036b47de4b391e19b72e32656e8954d51b436307f08cc9d0c0d4ec617d061cf2f65fffee9f3114bee7
   languageName: node
   linkType: hard
 
@@ -5268,7 +5261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mochawesome@npm:^8.0.1":
+"mochawesome@npm:^8.1.1":
   version: 8.1.1
   resolution: "mochawesome@npm:8.1.1"
   dependencies:
@@ -7028,7 +7021,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.54.0, typescript-eslint@npm:^8.67.0":
+"typescript-eslint@npm:^8.54.0, typescript-eslint@npm:^8.72.1":
   version: 8.72.1
   resolution: "typescript-eslint@npm:8.72.1"
   dependencies:
@@ -7126,9 +7119,9 @@ __metadata:
   linkType: hard
 
 "undici@npm:^7.19.0":
-  version: 7.30.0
-  resolution: "undici@npm:7.30.0"
-  checksum: 10/eb9e4bb5f1b4c35cb934c0d04fe676b62c3be06fb3be4a256ff73699bd77abc3d41f262597a4debd41f334c95ca3ea6e763268c3768882c3fc88a5d33234b8f6
+  version: 7.30.1
+  resolution: "undici@npm:7.30.1"
+  checksum: 10/306a28e4c715652a0e2cd59bcc98cf8b6083b989151054fafaac27bdab6f2bc7e0f33f5847f72f5ba257971226372d04705e0e984b26b42a03271d5a35eb99b1
   languageName: node
   linkType: hard
 
@@ -7226,7 +7219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriverio@npm:^9.30.1":
+"webdriverio@npm:^9.32.0":
   version: 9.32.0
   resolution: "webdriverio@npm:9.32.0"
   dependencies:
@@ -7479,7 +7472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.9.0":
+"yaml@npm:^2.9.1":
   version: 2.9.1
   resolution: "yaml@npm:2.9.1"
   bin:
