@@ -9,5 +9,16 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "SummonsOrdered", "UserRole": "GS_profile", "CRUD": "R"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "ReviewAppearance", "UserRole": "GS_profile", "CRUD": "R"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatImported", "UserRole": "GS_profile", "CRUD": "R"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatPermanent", "UserRole": "GS_profile", "CRUD": "R"}
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatPermanent", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatRaised", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatNotMatched", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatClosed", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatMatching", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "AwaitingWarningResponse", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "AwaitingCaveatResolution", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "WarningValidation", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "SummonsOrdered", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "ReviewAppearance", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatImported", "UserRole": "caseworker-ras-validation", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "Caveat", "CaseStateID": "CaveatPermanent", "UserRole": "caseworker-ras-validation", "CRUD": "R"}
 ]
