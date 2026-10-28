@@ -16,7 +16,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails implements CreateTaskProcessor {
 
     private static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE = "boAmendCaseDetailsForReadyToIssue";
-    private static final Set<TaskTypes> TASKS_AWAITING_DOCUMENTATION_TO_CLOSE = TaskTypes.examineAwaitingDocIceTasks();
     private final WaTaskService waTaskService;
 
     public AmendCaseDetailsForReadyToIssue(WaTaskService waTaskService) {
