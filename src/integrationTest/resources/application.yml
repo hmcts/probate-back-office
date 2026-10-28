@@ -438,8 +438,6 @@ registry:
       addressline2: Redcliff Street
       town: Bristol
       postcode: BS1 6GR
-      epimmsId: 819890
-      region: 6
 
 auth.idam.client.baseUrl: http://localhost:5000
 

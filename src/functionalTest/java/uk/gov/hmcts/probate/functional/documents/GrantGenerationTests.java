@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.documents;
 
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -787,7 +788,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
+    //TODO: Enabled this test once DTSPB-5804 is deployed onto aat
     @Test
+    @Disabled("Disabled until the new DTSPB-5804 is ready on aat")
     void verifyTelephoneForBristolGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
@@ -795,8 +798,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
 
-        log.info("response: {}", response);
-        log.info("expectedText: {}", expectedText);
         assertTrue(response.contains(expectedText));
     }
 
