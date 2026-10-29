@@ -16,6 +16,9 @@ public class FileExtractDateFormatter {
     private static final DateTimeFormatter DATE_FORMAT_HMRC = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 
     public String formatDataDate(LocalDate date) {
+        if (date == null) {
+            return "";
+        }
         return DATE_FORMAT.format(date).toUpperCase();
     }
 
