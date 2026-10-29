@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataEvidenceHandledBlank;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.trustCorporationHandOffReason;
@@ -28,6 +29,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_R
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_TRUST_CORPORATION_CHANGE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT;
 
 public class CamundaTaskWaInitiationTrustCorporationTestProvider implements ArgumentsProvider {
 
@@ -439,6 +441,76 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
+                        emptyList()
+                ),
+                // SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT - HSE No/Yes/Blank
+                Arguments.of(
+                        SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                // SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT - Case Printed only
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(true, "", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "", true, emptyList(), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
                         emptyList()
                 )
         );
