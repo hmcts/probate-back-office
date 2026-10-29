@@ -43,7 +43,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
         Map<String,Object> lostWillOrCodicilHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL_CASE_PRINTED,
                 "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineLostWillOrCodicilTaskAttributes = Map.of(
@@ -61,7 +61,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
         Map<String,Object> examineLostWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL,
                 "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(

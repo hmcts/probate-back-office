@@ -44,7 +44,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
         Map<String,Object> infectedBloodCompensationAuthorityHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA_CASE_PRINTED,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
@@ -62,7 +62,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
         Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(

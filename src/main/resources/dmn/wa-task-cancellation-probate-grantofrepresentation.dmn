@@ -203,7 +203,7 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a3ztio">
-          <text>"readyToIssueHandOffs"</text>
+          <text>"handOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0juks9x">
@@ -226,7 +226,7 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1q1il4z">
-          <text>"awaitingDocumentationHandOffs"</text>
+          <text>"handOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ankylg">

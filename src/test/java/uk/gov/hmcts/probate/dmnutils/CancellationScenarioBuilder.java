@@ -140,7 +140,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "closeHandOffs",
                                 "BOReadyToIssue",
                                 "BOReadyToIssue",
-                                "readyToIssueHandOffs",
+                                "handOffs",
                                 "Cancel"
                         )
                 ),
@@ -149,7 +149,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "closeHandOffs",
                                 "CasePrinted",
                                 "CasePrinted",
-                                "awaitingDocumentationHandOffs",
+                                "handOffs",
                                 "Cancel"
                         )
                 ),

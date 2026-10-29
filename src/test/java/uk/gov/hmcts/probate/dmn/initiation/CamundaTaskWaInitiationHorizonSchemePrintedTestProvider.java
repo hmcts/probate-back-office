@@ -43,7 +43,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> horizonSchemeHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineHorizonSchemeTaskAttributes = Map.of(
@@ -55,7 +55,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> examineHorizonSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME,
                 "name", "Examine - Horizon Scheme",
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(

@@ -44,7 +44,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
         Map<String,Object> examineWitnessInterviewCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
@@ -56,7 +56,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
         Map<String,Object> examineWitnessInterviewReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes = Map.of(

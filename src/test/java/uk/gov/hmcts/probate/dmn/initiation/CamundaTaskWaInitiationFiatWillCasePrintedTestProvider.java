@@ -39,7 +39,7 @@ public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements A
         Map<String,Object> fiatWillHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FIAT_WILL_CASE_PRINTED,
                 "name", FIAT_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(

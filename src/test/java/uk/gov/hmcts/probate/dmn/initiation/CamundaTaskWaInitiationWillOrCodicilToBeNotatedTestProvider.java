@@ -43,7 +43,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
         Map<String, Object> examineWillOrCodicilToBeNotatedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression,awaitingDocumentationHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
@@ -61,7 +61,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
         Map<String,Object> examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(
