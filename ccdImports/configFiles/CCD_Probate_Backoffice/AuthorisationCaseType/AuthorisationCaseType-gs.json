@@ -1,4 +1,3 @@
 [
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "GS_profile", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-ras-validation", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "GS_profile", "CRUD": "R"}
 ]
