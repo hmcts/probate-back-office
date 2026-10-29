@@ -146,6 +146,9 @@ public class WaTaskControllerIT {
 
         mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
                         .content(payload))
                 .andExpect(status().isOk());
 
