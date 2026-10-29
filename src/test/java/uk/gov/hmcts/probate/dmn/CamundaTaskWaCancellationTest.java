@@ -33,8 +33,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_READY_TO_ISSUE_HANDOFFS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -139,9 +138,11 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_REDECLARATION_SOT_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
+        } else if (cancellationProperties.containsValue(CLOSE_HANDOFFS)
+                && cancellationProperties.containsValue(READY_TO_ISSUE_STATE)) {
             assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
-        } else if (cancellationProperties.containsValue(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS)
+        } else if ((cancellationProperties.containsValue(CLOSE_HANDOFFS)
+                && cancellationProperties.containsValue(CASE_PRINTED_STATE))
                 || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {

@@ -32,8 +32,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -104,13 +103,13 @@ public class WaTaskService {
 
     public void closeReadyToIssueTasks(CallbackRequest callbackRequest,
                                        String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest, CLOSE_READY_TO_ISSUE_HANDOFFS);
+        triggerCloseHandOffEvent(callbackRequest);
         triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineReadyToIssueIceTasks());
     }
 
     public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
                                                 String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest, CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+        triggerCloseHandOffEvent(callbackRequest);
         triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineAwaitingDocIceTasks());
     }
 
@@ -140,12 +139,11 @@ public class WaTaskService {
         }
     }
 
-    private void triggerCloseHandOffEvent(CallbackRequest callbackRequest,
-                                          EventId eventId) {
+    private void triggerCloseHandOffEvent(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         if (isAllHandOffsRemoved(callbackRequest)) {
-            triggerEvent(caseDetails, eventId);
+            triggerEvent(caseDetails, CLOSE_HANDOFFS);
         }
     }
 

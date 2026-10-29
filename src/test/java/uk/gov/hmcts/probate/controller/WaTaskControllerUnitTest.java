@@ -386,13 +386,13 @@ public class WaTaskControllerUnitTest {
     @Test
     void shouldByPassCloseAwaitingDocumentationHandOffs() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
-        waTaskContoller.closeReadyToIssueHandOffs(
+        waTaskContoller.closeAwaitingDocumentationTasks(
                 callbackRequest,
                 clientContext,
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeReadyToIssueTasks(eq(callbackRequest), anyString());
+        verify(waTaskService, never()).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
     }
 
     @Test

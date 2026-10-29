@@ -188,7 +188,7 @@
           <text>"BOReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gbj487">
-          <text>"closeReadyToIssueHandOffs"</text>
+          <text>"closeHandOffs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1loli00">
           <text>"BOReadyToIssue"</text>
@@ -211,7 +211,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pdbt8g">
-          <text>"closeAwaitingDocumentationHandOffs"</text>
+          <text>"closeHandOffs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ezjcu0">
           <text>"CasePrinted"</text>

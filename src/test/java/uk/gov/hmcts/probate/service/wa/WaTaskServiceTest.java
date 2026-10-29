@@ -50,9 +50,8 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESC
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_AWAITING_DOCUMENTATION_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -314,7 +313,7 @@ class WaTaskServiceTest {
 
         waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verifyIceEvent(CLOSE_READY_TO_ISSUE_HANDOFFS);
+        verifyIceEvent(CLOSE_HANDOFFS);
     }
 
     private void setUpCallbackRequestForCaseType(
@@ -549,7 +548,7 @@ class WaTaskServiceTest {
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verifyIceEvent(CLOSE_AWAITING_DOCUMENTATION_HANDOFFS);
+        verifyIceEvent(CLOSE_HANDOFFS);
     }
 
 
