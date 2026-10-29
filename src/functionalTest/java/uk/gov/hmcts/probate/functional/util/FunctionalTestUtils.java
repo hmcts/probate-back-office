@@ -93,6 +93,9 @@ public class FunctionalTestUtils {
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
 
+    private static final int NUM_LOOPS_FOR_ELASTICSEARCH = 40;
+    private static final int DELAY_FOR_ELASTICSEARCH_IN_MS = 500;
+
     private final Cache<String, String> cachedToken = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES).build();
 
@@ -361,6 +364,8 @@ public class FunctionalTestUtils {
                 .body(caseCreateJson)
                 .when().post(submitForCaseworkerUrl).andReturn();
 
+        submitResponse.then().assertThat().statusCode(200);
+
         final String caseId = submitResponse.getBody().jsonPath().get("id").toString();
         final String response = submitResponse.getBody().asString();
 
@@ -405,17 +410,21 @@ public class FunctionalTestUtils {
                     .getLong("total");
             if (matchingCases != 0) {
                 foundCase = true;
-            } else if (counter++  < 40) {
+            } else if (counter++  < NUM_LOOPS_FOR_ELASTICSEARCH) {
                 try {
                     log.info("Waiting for case {} to be found", caseId);
-                    Thread.sleep(500);
+                    Thread.sleep(DELAY_FOR_ELASTICSEARCH_IN_MS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
+                    log.warn("Interrupted while waiting for case {} to be found", caseId);
                 }
             } else {
                 log.error("Case {} not found", caseId);
                 throw new IllegalStateException(
-                        "No case %s found after 20 iterations of delaying 500ms".formatted(caseId));
+                        "No case %s found after %d iterations of delaying %d ms".formatted(
+                                caseId,
+                                NUM_LOOPS_FOR_ELASTICSEARCH,
+                                DELAY_FOR_ELASTICSEARCH_IN_MS));
             }
         }
     }
