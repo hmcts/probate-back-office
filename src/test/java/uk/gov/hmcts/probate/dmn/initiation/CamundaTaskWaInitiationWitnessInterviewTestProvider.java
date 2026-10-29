@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
@@ -24,6 +25,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements ArgumentsProvider {
@@ -42,11 +45,17 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
-        
+
         Map<String,Object> examineWitnessInterviewReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                 "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE,
+                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                "processCategories", "case progression"
         );
 
         return Stream.of(
@@ -326,6 +335,41 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
                         List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }
