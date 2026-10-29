@@ -8,15 +8,12 @@ product=${4}
 
 s2sSecret=${S2S_AUTH_TOTP_SECRET:-AABBCCDDEEFFGGHH}
 
-if [[ "${ENV}" == 'prod' ]]; then
-  s2sSecret=${S2S_SECRET_PROD}
-fi
-
 serviceToken=$($(realpath $workspace)/bin/utils/idam-lease-service-token.sh probate_backend \
   $(docker run --rm toolbelt/oathtool --totp -b ${s2sSecret}))
 
 dmnFilepath="$(realpath $workspace)/src/main/resources/dmn"
 
+failed=0
 for file in $(find ${dmnFilepath} -name '*.dmn')
 do
   uploadResponse=$(curl --insecure -v --silent -w "\n%{http_code}" --show-error -X POST \
@@ -38,6 +35,7 @@ if [[ "${upload_http_code}" == '200' ]]; then
 fi
 
 echo "$(basename ${file}) upload failed with http code ${upload_http_code} and response (${upload_response_content})"
-continue;
+failed=1
 
 done
+exit ${failed}
