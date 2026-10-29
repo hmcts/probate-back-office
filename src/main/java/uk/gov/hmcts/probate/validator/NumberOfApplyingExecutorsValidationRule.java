@@ -8,10 +8,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
-import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,9 +34,7 @@ public class NumberOfApplyingExecutorsValidationRule {
             executorsTransformer.createCaseworkerApplyingList(caseData);
         execsApplying = executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
 
-        String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
-        List<String> executors = Arrays.asList(execsApplyingNames.split(","));
-        int applyingExecutorsCount = executors.size();
+        int applyingExecutorsCount = execsApplying.size();
 
         // make sure it counts primary applicant as executor and not only the executors applying
         // will only count if name is filled
