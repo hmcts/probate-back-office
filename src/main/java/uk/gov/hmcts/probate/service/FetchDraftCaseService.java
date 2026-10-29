@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,8 +88,9 @@ public class FetchDraftCaseService {
             boolean hasSuccessfulPayment;
             try {
                 hasSuccessfulPayment = paymentsService.hasSuccessfulPaymentByCaseId(caseDetails.getId().toString());
-            } catch (Exception ex) {
-                log.error("Error checking payment status for draft case id: {}", caseDetails.getId(), ex);
+            } catch (FeignException ex) {
+                log.error("Failed to check payment status for draft case id: {}, status: {}",
+                        caseDetails.getId(), ex.status(), ex);
                 continue;
             }
 
