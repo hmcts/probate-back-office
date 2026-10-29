@@ -3605,7 +3605,7 @@
           <text>"specific-access-approver-judiciary"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_12be2p5">
-          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn"</text>
+          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn,Cancel"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0jkyhwc">
           <text>"JUDICIAL"</text>
@@ -3635,7 +3635,7 @@
           <text>"specific-access-approver-legal-ops"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1qa45z2">
-          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn"</text>
+          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn,Cancel"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_06zjq08">
           <text>"LEGAL_OPERATIONS"</text>
@@ -3665,7 +3665,7 @@
           <text>"specific-access-approver-admin"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_02qqfuc">
-          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn"</text>
+          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn,Cancel"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00p9w8g">
           <text>"ADMIN"</text>
@@ -3695,7 +3695,7 @@
           <text>"specific-access-approver-ctsc"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bk2utf">
-          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn"</text>
+          <text>"Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn,Cancel"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_11g7ppf">
           <text>"CTSC"</text>
