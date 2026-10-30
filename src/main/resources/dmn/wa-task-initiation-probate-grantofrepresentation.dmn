@@ -3283,7 +3283,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0vr8sci">
         <inputEntry id="UnaryTests_0rue9wy">
-          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess"</text>
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess","solicitorPaymentSuccessCase"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ftm8hl">
           <text>"CasePrinted"</text>

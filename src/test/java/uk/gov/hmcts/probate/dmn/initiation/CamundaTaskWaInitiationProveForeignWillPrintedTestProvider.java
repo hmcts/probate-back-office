@@ -24,6 +24,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SERVICE_REQUEST_PAYMENT_SUCCESS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT;
 
 public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implements ArgumentsProvider {
 
@@ -344,6 +345,53 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                 ),
                 Arguments.of(
                         SERVICE_REQUEST_PAYMENT_SUCCESS,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill),
+                                false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataEvidenceHandledBlank("", true,
                                 handOffReasonListWithHandOffReason(examineProveForeignWill), false),
