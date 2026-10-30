@@ -5,18 +5,15 @@ workspace=${1}
 
 s2sSecret=${S2S_AUTH_TOTP_SECRET:-AABBCCDDEEFFGGHH}
 
-if [[ "${ENV}" == 'prod' ]]; then
-  s2sSecret=${S2S_SECRET_PROD}
-fi
-
 serviceToken=$($(realpath $workspace)/utils/idam-lease-service-token.sh probate_backend \
   $(docker run --rm toolbelt/oathtool --totp -b ${s2sSecret}))
 
 filepath="$(realpath $workspace)/resources"
 
+failed=0
 for file in $(find ${filepath} -name '*.bpmn')
 do
-  uploadResponse=$(curl --insecure -v --silent -w "\n%{http_code}" --show-error -X POST \
+  uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
     ${CAMUNDA_BASE_URL:-http://localhost:9404}/engine-rest/deployment/create \
     -H "Accept: application/json" \
     -H "ServiceAuthorization: Bearer ${serviceToken}" \
@@ -32,7 +29,7 @@ if [[ "${upload_http_code}" == '200' ]]; then
 fi
 
 echo "$(basename ${file}) upload failed with http code ${upload_http_code} and response (${upload_response_content})"
-continue;
+failed=1
 
 done
-exit 0;
+exit ${failed}
