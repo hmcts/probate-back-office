@@ -99,20 +99,6 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                 "",emptyList());
     }
 
-    protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
-            String caseType,
-            boolean caseHandedOffToLegacySite,
-            List<Map<String,Object>> boHandoffReasonList,
-            boolean createTask) {
-        Map<String, Object> data = new HashMap<>();
-        data.put(caseTypeVar, caseType);
-        data.put(caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite);
-        data.put(boHandoffReasonListVar, boHandoffReasonList);
-        data.put(createTaskVar, createTask);
-        data.put(escalationReasonVar, "");
-        return Map.of("Data", data);
-    }
-
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
@@ -131,6 +117,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                         waHandoffReasonListVar, waHandoffReasonList
                 )
         );
+    }
+
+    protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
+            String caseType,
+            boolean caseHandedOffToLegacySite,
+            List<Map<String,Object>> boHandoffReasonList,
+            boolean createTask) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(caseTypeVar, caseType);
+        data.put(caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite);
+        data.put(boHandoffReasonListVar, boHandoffReasonList);
+        data.put(createTaskVar, createTask);
+        data.put(escalationReasonVar, "");
+        return Map.of("Data", data);
     }
 
     protected static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
