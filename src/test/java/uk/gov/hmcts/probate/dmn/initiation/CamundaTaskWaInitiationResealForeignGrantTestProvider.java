@@ -24,6 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements ArgumentsProvider {
@@ -40,6 +42,12 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
 
         Map<String,Object> examineResealForeignGrantCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
+                "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE,
                 "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -331,6 +339,41 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason)),
                         List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
+                        List.of(examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
+                        List.of(examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }

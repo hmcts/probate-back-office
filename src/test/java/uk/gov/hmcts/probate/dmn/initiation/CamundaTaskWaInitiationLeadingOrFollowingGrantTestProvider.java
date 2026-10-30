@@ -24,6 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implements ArgumentsProvider {
@@ -48,6 +50,13 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
+                "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -332,6 +341,41 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
                     List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
+            ), //change state event
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(true, "",true,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                    additionalData(false, "",true,
+                            emptyList(), false),
+                    emptyList()
             )
         );
     }
