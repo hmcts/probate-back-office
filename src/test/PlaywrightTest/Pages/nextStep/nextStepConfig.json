@@ -22,5 +22,6 @@
   "resolveStop": "Resolve stop",
   "postGrantIssue": "Post Grant Issue",
   "resolvePostGrantIssue": "Resolve Post Grant Issue",
-  "registrarEscalation": "Escalate to registrar"
+  "registrarEscalation": "Escalate to registrar",
+  "smeReferral": "SME Referral"
 }
