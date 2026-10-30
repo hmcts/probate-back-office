@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +99,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                 "",emptyList());
     }
 
+    protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
+            String caseType,
+            boolean caseHandedOffToLegacySite,
+            List<Map<String,Object>> boHandoffReasonList,
+            boolean createTask) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(caseTypeVar, caseType);
+        data.put(caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite);
+        data.put(boHandoffReasonListVar, boHandoffReasonList);
+        data.put(createTaskVar, createTask);
+        data.put(escalationReasonVar, "");
+        return Map.of("Data", data);
+    }
+
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
                                                                    boolean caseHandedOffToLegacySite,
@@ -141,7 +156,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(10));
+        assertThat(logic.getInputs().size(), is(11));
         assertThat(logic.getOutputs().size(), is(4));
         assertThat(logic.getRules().size(), is(135));
     }
