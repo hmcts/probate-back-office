@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
+import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataEvidenceHandledBlank;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.examineProveForeignWill;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
@@ -23,6 +24,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SERVICE_REQUEST_PAYMENT_SUCCESS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT;
 
 public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implements ArgumentsProvider {
 
@@ -79,6 +81,13 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
@@ -129,6 +138,13 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        ATTACH_SCANNED_DOCS_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
@@ -177,6 +193,13 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
@@ -219,6 +242,13 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
@@ -267,6 +297,13 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         SERVICE_REQUEST_PAYMENT_SUCCESS,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
@@ -304,6 +341,60 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         SERVICE_REQUEST_PAYMENT_SUCCESS,
                         CASE_PRINTED_STATE,
                         null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SERVICE_REQUEST_PAYMENT_SUCCESS,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill),
+                                false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                Collections.emptyList(), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalDataEvidenceHandledBlank("", true,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill), false),
                         Collections.emptyList()
                 )
         );
