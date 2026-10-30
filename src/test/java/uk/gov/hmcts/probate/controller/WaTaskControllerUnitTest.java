@@ -25,7 +25,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.service.wa.WaApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
@@ -43,6 +42,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -82,8 +82,6 @@ public class WaTaskControllerUnitTest {
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
     @Mock
-    private WaApi waApi;
-    @Mock
     private SecurityUtils securityUtils;
     @Mock
     private CcdClientApi ccdClientApi;
@@ -103,7 +101,7 @@ public class WaTaskControllerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 
@@ -360,10 +358,11 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
+                clientContext,
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService, never()).closeReadyToIssueTasks(eq(callbackRequest), anyString());
     }
 
     @Test
@@ -371,16 +370,48 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        doNothing().when(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
 
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
+                clientContext,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
+    }
+
+    @Test
+    void shouldByPassCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        waTaskContoller.closeAwaitingDocumentationTasks(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService, never()).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
+    }
+
+    @Test
+    void shouldInvokeCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
+
+        String clientConext = "clientConext";
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity
+                = waTaskContoller.closeAwaitingDocumentationTasks(callbackRequest,
+                clientConext,
+                bindingResult,
+                httpServletRequest);
+        assertThat(callbackResponseResponseEntity.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        verify(waTaskService).closeAwaitingDocumentationTasks(callbackRequest, clientConext);
     }
 
 
@@ -574,6 +605,7 @@ public class WaTaskControllerUnitTest {
         assertThatThrownBy(() ->
                 waTaskContoller.closeReadyToIssueHandOffs(
                         callbackRequest,
+                        clientContext,
                         bindingResult,
                         httpServletRequest
                 )

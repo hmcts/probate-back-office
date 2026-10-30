@@ -128,6 +128,8 @@ public class WaTaskContoller {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
             @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
@@ -137,7 +139,7 @@ public class WaTaskContoller {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-            waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+            waTaskService.closeReadyToIssueTasks(callbackRequest, clientContext);
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
@@ -168,6 +170,27 @@ public class WaTaskContoller {
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
+
+    @PostMapping(path = "/trigger/closeAwaitingDocumentationTasks",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> closeAwaitingDocumentationTasks(
+            @Valid @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            logRequest(request.getRequestURI(), callbackRequest);
+
+            if (bindingResult.hasErrors()) {
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+                throw new BadRequestException("Invalid payload", bindingResult);
+            }
+            waTaskService.closeAwaitingDocumentationTasks(callbackRequest, clientContext);
+        }
+        return ResponseEntity.ok(CallbackResponse.builder().build());
+    }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {

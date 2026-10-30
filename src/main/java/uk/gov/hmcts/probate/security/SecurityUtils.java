@@ -58,7 +58,7 @@ public class SecurityUtils {
     private String authClientSecret;
 
     @Value("${auth.provider.client.email}")
-    private String caseworkerUserName; //
+    private String caseworkerUserName;
 
     @Value("${auth.provider.client.password}")
     private String caseworkerPassword;

@@ -34,13 +34,13 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
         Map<String,Object> examineDigitalCaseIntestacyTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_INTESTACY,
                 "name", INTESTACY_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression,examineDigitalCaseIntestacy"
         );
 
         Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
                 "name", INTESTACY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseIntestacyReadyToIssue"
         );
 
 

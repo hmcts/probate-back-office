@@ -376,7 +376,7 @@ class CcdClientApiTest {
     void shouldTriggerEvent() {
 
         String caseId = "123456789";
-        EventId eventId = EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
+        EventId eventId = EventId.CLOSE_HANDOFFS;
 
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .authorisation("auth-token")

@@ -16,6 +16,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -39,6 +40,12 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> horizonSchemeHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
+                "name", EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs"
+        );
+
         Map<String,Object> examineHorizonSchemeTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME,
                 "name", "Examine - Horizon Scheme",
@@ -48,7 +55,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> examineHorizonSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME,
                 "name", "Examine - Horizon Scheme",
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
@@ -326,6 +333,15 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason)),
+                        List.of(horizonSchemeHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,

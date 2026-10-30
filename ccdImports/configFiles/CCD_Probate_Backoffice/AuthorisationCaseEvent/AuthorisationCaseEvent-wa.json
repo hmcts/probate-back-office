@@ -27,5 +27,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFailQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeReadyToIssueHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseProbate", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseIntestacy", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseAdmonWill", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineDigitalCaseAdColligendaBona", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
