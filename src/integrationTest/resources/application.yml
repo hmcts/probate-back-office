@@ -431,7 +431,7 @@ registry:
       town: Harlow
       postcode: CM20 9QE
     bristol:
-      name: Bristol Civil and Family Justice Centre
+      name: Bristol District Probate Registry
       phone: 0300 303 0648
       emailReplyToId: "bristol-emailReplyToId"
       addressline1: 2
