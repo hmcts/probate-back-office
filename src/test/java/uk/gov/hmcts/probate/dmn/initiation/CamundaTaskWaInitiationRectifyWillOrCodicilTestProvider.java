@@ -23,6 +23,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements ArgumentsProvider {
@@ -47,6 +49,12 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
 
         Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
+                "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_RECTIFY_WILL_OR_CODICIL_CHANGE_STATE,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -332,6 +340,41 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason)),
                         List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
+                        List.of(examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
+                        List.of(examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }

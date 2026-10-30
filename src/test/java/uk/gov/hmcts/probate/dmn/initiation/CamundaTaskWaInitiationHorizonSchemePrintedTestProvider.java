@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.horizonSchemeCasePrintedHandOffReason;
@@ -24,6 +25,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZ
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements ArgumentsProvider {
 
@@ -41,11 +44,17 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                 "name", "Examine - Horizon Scheme",
                 "processCategories", "case progression"
         );
-        
+
         Map<String,Object> examineHorizonSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME,
                 "name", "Examine - Horizon Scheme",
                 "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_HORIZON_SCHEME_CHANGE_STATE,
+                "name", "Examine - Horizon Scheme",
+                "processCategories", "case progression"
         );
 
         return Stream.of(
@@ -325,6 +334,41 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason)),
                         List.of(examineHorizonSchemeReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason), false),
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason), false),
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }

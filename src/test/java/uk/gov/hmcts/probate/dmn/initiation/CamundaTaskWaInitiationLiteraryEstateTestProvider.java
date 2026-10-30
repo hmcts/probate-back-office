@@ -24,6 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDEN
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements ArgumentsProvider {
@@ -39,6 +41,12 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
 
         Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE,
+                "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_LITERARY_ESTATE_CHANGE_STATE,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
                 "processCategories", "case progression"
         );
@@ -321,6 +329,41 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                                 handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
                                 handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
                         List.of(examineLiteraryEstateReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
+                        List.of(examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }
