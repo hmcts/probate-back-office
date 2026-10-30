@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.apache.pdfbox.io.RandomAccessRead;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -90,6 +92,9 @@ public class FunctionalTestUtils {
 
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
+
+    private static final int NUM_LOOPS_FOR_ELASTICSEARCH = 40;
+    private static final int DELAY_FOR_ELASTICSEARCH_IN_MS = 500;
 
     private final Cache<String, String> cachedToken = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES).build();
@@ -201,7 +206,6 @@ public class FunctionalTestUtils {
         Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
 
         return parsePDFToString(jsonResponse.getBody().asInputStream());
-
     }
 
     private Response getDocumentResponse(String documentUrl, Headers headers) {
@@ -359,7 +363,70 @@ public class FunctionalTestUtils {
                 .headers(getHeadersWithCaseworkerUser())
                 .body(caseCreateJson)
                 .when().post(submitForCaseworkerUrl).andReturn();
-        return submitResponse.getBody().asString();
+
+        submitResponse.then().assertThat().statusCode(200);
+
+        final String caseId = submitResponse.getBody().jsonPath().get("id").toString();
+        final String response = submitResponse.getBody().asString();
+
+        log.info("caveat case {} created, wait for availability in elasticsearch", caseId);
+
+        waitForCaseInElasticSearch("Caveat", caseId);
+        log.info("found caveat case {} in elasticsearch", caseId);
+        return response;
+    }
+
+    public void waitForCaseInElasticSearch(
+            final String caseType,
+            final String caseId) {
+        boolean foundCase = false;
+        int counter = 0;
+        while (!foundCase) {
+            final String searchForCaseUrl = coreCaseDataApiUrl + "/searchCases";
+
+            final var bodyQuery = new JSONObject(Map.of(
+                    "query", Map.of(
+                            "match", Map.of(
+                                    "reference", Map.of(
+                                            "query", caseId))),
+                    "_source", List.of("reference"),
+                    "size", 1));
+
+            final var response = RestAssured.given()
+                    .relaxedHTTPSValidation()
+                    .headers(getHeadersWithCaseworkerUser())
+                    .queryParam("ctid", caseType)
+                    .body(bodyQuery.toString())
+                    .when()
+                    .post(searchForCaseUrl);
+
+            if (response.getStatusCode() < 200 || response.getStatusCode() >= 400) {
+                throw new IllegalStateException("Case search failed with HTTP %d".formatted(response.statusCode()));
+            }
+
+            final var matchingCases = response
+                    .getBody()
+                    .jsonPath()
+                    .getLong("total");
+            if (matchingCases != 0) {
+                foundCase = true;
+            } else if (counter++  < NUM_LOOPS_FOR_ELASTICSEARCH) {
+                try {
+                    log.info("Waiting for case {} to be found", caseId);
+                    Thread.sleep(DELAY_FOR_ELASTICSEARCH_IN_MS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    log.warn("Interrupted while waiting for case {} to be found", caseId);
+                }
+            } else {
+                log.error("Case {} not found", caseId);
+                throw new IllegalStateException(
+                        "No case %s found after %d iterations of delaying %d ms".formatted(
+                                caseId,
+                                NUM_LOOPS_FOR_ELASTICSEARCH,
+                                DELAY_FOR_ELASTICSEARCH_IN_MS));
+            }
+        }
     }
 
     public String findCaseAsCaseworker(String caseId) {
