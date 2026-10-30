@@ -529,4 +529,48 @@ class CaseDataTransformerTest {
 
         assertEquals(idamUserId, caseDetailsMock.getData().getResolveStoppedCaseUserIdamId());
     }
+
+    @Test
+    void shouldSetResolveRedeclarationUserIdamId() {
+        String idamUserId = "test-idam-user-id";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setResolveRedeclarationUserIdamId(caseDetailsMock, idamUserId);
+
+        assertEquals(idamUserId, caseDetailsMock.getData().getResolveRedeclarationUserIdamId());
+    }
+
+    @Test
+    void shouldSetTaskLocationEpimmsId() {
+        String epimmsId = "someEpimmsId";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setTaskLocationEpimmsId(caseDetailsMock, epimmsId);
+
+        assertEquals(epimmsId, caseDetailsMock.getData().getTaskLocationEpimmsId());
+    }
+
+    @Test
+    void shouldSetTaskLocationName() {
+        String locationName = "someLocationName";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setTaskLocationName(caseDetailsMock, locationName);
+
+        assertEquals(locationName, caseDetailsMock.getData().getTaskLocationName());
+    }
+
+    @Test
+    void shouldSetTaskRegion() {
+        String region = "12";
+        caseDataMock = CaseData.builder().build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        caseDataTransformer.setTaskRegion(caseDetailsMock, region);
+
+        assertEquals(region, caseDetailsMock.getData().getTaskRegion());
+    }
 }

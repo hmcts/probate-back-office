@@ -390,6 +390,9 @@ public class CaseData extends CaseDataParent {
     private String redeclarationUserIdamId;
     private String resolveStoppedCaseUserIdamId;
     private String resolveRedeclarationUserIdamId;
+    private String taskLocationEpimmsId;
+    private String taskLocationName;
+    private String taskRegion;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;
