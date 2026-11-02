@@ -44,7 +44,7 @@ class RegistryDetailsServiceTest {
         registry.setPostcode("postcode");
         registry.setTown("town");
         registry.setEpimmsId("123456");
-        registry.setRegion("12");
+        registry.setTaskRegion("12");
 
         registryMap = new HashMap<>();
         registryMap.put(REGISTRY_LOCATION, registry);
@@ -84,9 +84,9 @@ class RegistryDetailsServiceTest {
     }
 
     @Test
-    void shouldReturnRegionForRegistryLocation() {
-        String actualRegion = registryDetailsService.getRegion(REGISTRY_LOCATION);
+    void shouldReturnTaskRegionForRegistryLocation() {
+        String actualRegion = registryDetailsService.getTaskRegion(REGISTRY_LOCATION);
 
-        assertThat(actualRegion, is(registry.getRegion()));
+        assertThat(actualRegion, is(registry.getTaskRegion()));
     }
 }

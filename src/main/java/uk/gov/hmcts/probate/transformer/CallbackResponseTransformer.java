@@ -1509,7 +1509,7 @@ public class CallbackResponseTransformer {
         if (caseData.getRegistryLocation() != null && !caseData.getRegistryLocation().equals("")) {
             builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
             builder.taskLocationName(caseData.getRegistryLocation());
-            builder.taskRegion(registryDetailsService.getRegion(caseData.getRegistryLocation()));
+            builder.taskRegion(registryDetailsService.getTaskRegion(caseData.getRegistryLocation()));
         }
 
         handleDeceasedAliases(

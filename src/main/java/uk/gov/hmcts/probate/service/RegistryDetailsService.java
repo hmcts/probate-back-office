@@ -36,8 +36,8 @@ public class RegistryDetailsService {
         return registry.getEpimmsId();
     }
 
-    public String getRegion(String registryLocation) {
+    public String getTaskRegion(String registryLocation) {
         Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
-        return registry.getRegion();
+        return registry.getTaskRegion();
     }
 }
