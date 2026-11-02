@@ -16,5 +16,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "escalateToRegistrarUserIdamId", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "redeclarationUserIdamId", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveStoppedCaseUserIdamId", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveRedeclarationUserIdamId", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveRedeclarationUserIdamId", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "waTasksPresent", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
 ]

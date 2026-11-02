@@ -28,7 +28,8 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
     @Override
     public void process(final String authToken,
                         final CallbackRequest callbackRequest,
-                        final ResponseCaseData responseCaseData) {
+                        final ResponseCaseData responseCaseData,
+                        final String clientContext) {
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
         Result result = getResult(
@@ -51,5 +52,10 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
                 result.newHandOffPresent(),
                 responseCaseData.getWaHandoffReasonList(),
                 isInitialCaseExaminationTaskRequired);
+
+        waTaskService.updateWaTaskPresent(callbackRequest, responseCaseData, clientContext);
+        if (responseCaseData.getCreateTask().equals(YES)) {
+            log.info("New task to be added to waTasksPresent");
+        }
     }
 }

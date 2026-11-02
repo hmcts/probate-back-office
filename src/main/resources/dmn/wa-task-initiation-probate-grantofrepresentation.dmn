@@ -81,7 +81,7 @@ else false</text>
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -125,7 +125,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_10tvvcr">
         <inputEntry id="UnaryTests_0p1r98q">
-          <text>"attachScannedDocs"</text>
+          <text>"handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0re0lpr">
           <text>"CasePrinted"</text>
@@ -213,7 +213,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0o5itpr">
         <inputEntry id="UnaryTests_1s2vxl8">
-          <text>"attachScannedDocs"</text>
+          <text>"handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0g5ta0f">
           <text>"CasePrinted"</text>
@@ -609,7 +609,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_00rrh35">
         <inputEntry id="UnaryTests_1bw1915">
-          <text>"attachScannedDocs"</text>
+          <text>"handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_14cvzyp">
           <text>"CasePrinted"</text>
@@ -692,6 +692,50 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1124ndl">
+          <text>"case progression,examineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ywl4e2">
+        <inputEntry id="UnaryTests_1p8v8ac">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pwkokc">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gipzer">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19ja3k2">
+          <text>"adColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15onaau">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zym08t">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ztw9ww">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12hx0p6">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12h3sff">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04naurt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00bsa01">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01ae0r6">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06skwvu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10wr1hz">
           <text>"case progression,examineDigitalCaseAdColligendaBona"</text>
         </outputEntry>
       </rule>

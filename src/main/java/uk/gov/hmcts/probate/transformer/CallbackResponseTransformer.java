@@ -884,7 +884,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
-                                      String authToken) {
+                                      String authToken, String clientContext) {
         ResponseCaseData responseCaseData = getResponseCaseData(
                 callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(),
@@ -893,16 +893,18 @@ public class CallbackResponseTransformer {
         ).build();
 
         //Setting task creation flag as mid event doesnt persist
-        setTaskCreation(authToken, callbackRequest, responseCaseData);
+        setTaskCreation(authToken, callbackRequest, responseCaseData, clientContext);
 
         return transformResponse(responseCaseData);
     }
 
-    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData,
+                                 String clientContext) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             responseCaseData.setCreateTask(Constants.NO);
             createTaskProcessorFactory.get(callbackRequest.getEventId())
-                    .ifPresent(processor -> processor.process(authToken, callbackRequest, responseCaseData));
+                    .ifPresent(processor ->
+                            processor.process(authToken, callbackRequest, responseCaseData, clientContext));
         }
     }
 
@@ -945,7 +947,7 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        setTaskCreation(null, callbackRequest, responseCaseData);
+        setTaskCreation(null, callbackRequest, responseCaseData, null);
 
         return transformResponse(responseCaseData);
     }

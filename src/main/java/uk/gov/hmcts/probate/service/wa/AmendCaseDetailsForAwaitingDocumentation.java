@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -17,7 +18,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
 
     private final WaTaskService waTaskService;
 
-    public AmendCaseDetailsForAwaitingDocumentation(WaTaskService waTaskService) {
+    public AmendCaseDetailsForAwaitingDocumentation(WaTaskService waTaskService, TaskUtils taskUtils) {
         super(waTaskService);
         this.waTaskService = waTaskService;
     }
@@ -28,7 +29,10 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
     }
 
     @Override
-    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(final String authToken,
+                        final CallbackRequest callbackRequest,
+                        final ResponseCaseData responseCaseData,
+                        final String clientContext) {
         boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
 
         Result result = getResult(callbackRequest,
@@ -50,5 +54,10 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
                 result.newHandOffPresent(),
                 responseCaseData.getWaHandoffReasonList(),
                 isInitialCaseExaminationTaskRequired);
+        
+        waTaskService.updateWaTaskPresent(callbackRequest, responseCaseData, clientContext);
+        if (responseCaseData.getCreateTask().equals(YES)) {
+            log.info("New task to be added to waTasksPresent");
+        }
     }
 }

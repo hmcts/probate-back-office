@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -187,5 +188,36 @@ public class WaTaskService {
                 eventId,
                 caseDataContentFunction,
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
+    }
+
+    public void updateWaTaskPresent(final CallbackRequest callbackRequest,
+                                    final ResponseCaseData responseCaseData, final
+                                    String clientContext) {
+
+        taskUtils.getCompletableTaskType(clientContext)
+                        .ifPresent(taskType -> {
+                            log.info("case id {}: wa tasks present {} and task to remove {}",
+                                    callbackRequest.getCaseDetails().getId(),
+                                    responseCaseData.getWaTasksPresent(),
+                                    taskType);
+                            responseCaseData.getWaTasksPresent()
+                                    .removeIf(task -> task.getValue().equals(taskType));
+                        });
+    }
+
+    public void setCreateTask(final CallbackRequest callbackRequest,
+                              final ResponseCaseData responseCaseData,
+                              final Optional<TaskTypes> taskTypeInfo) {
+        responseCaseData.setCreateTask(YES);
+        taskTypeInfo.flatMap(taskType -> responseCaseData.getWaTasksPresent().stream()
+                .map(CollectionMember::getValue)
+                .filter(value -> value.equals(taskType.getValue()))
+                .findAny())
+                .ifPresent(taskName -> {
+                    log.info("case id {}: wa task present {}",
+                            callbackRequest.getCaseDetails().getId(),
+                            taskName);
+                    responseCaseData.setCreateTask(NO);
+                });
     }
 }

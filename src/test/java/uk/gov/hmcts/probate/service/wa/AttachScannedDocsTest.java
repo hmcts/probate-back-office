@@ -42,7 +42,7 @@ class AttachScannedDocsTest {
                 UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.YES);
     }
@@ -53,7 +53,7 @@ class AttachScannedDocsTest {
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.YES);
     }
@@ -64,7 +64,7 @@ class AttachScannedDocsTest {
                 UserInfo.builder().roles(List.of("caseworker-probate-caseadmin")).build()));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.NO);
     }
@@ -74,7 +74,7 @@ class AttachScannedDocsTest {
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.empty());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.NO);
     }

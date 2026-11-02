@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +51,29 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     private static final String AUTH_TOKEN = "authToken";
 
+    private static final String CLIENT_CONTEXT = """
+        {
+          "client_context": {
+            "user_task": {
+              "complete_task" : true,
+               "task_data" : {
+                  "type": "ExamineDigitalCaseProbate"
+               }
+            }
+          }
+        }
+        """;
+
+    private static final String ENCODED_CLIENT_CONTEXT;
+
+    static {
+        try {
+            ENCODED_CLIENT_CONTEXT = WaTestUtils.encodedClientContext(CLIENT_CONTEXT);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @BeforeEach
     void setUp() {
         waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
@@ -71,12 +95,14 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(Constants.NO);
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -88,12 +114,14 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -105,7 +133,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
 
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
@@ -114,6 +142,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -124,7 +154,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
@@ -134,6 +164,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -144,7 +176,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         );
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .extracting(CollectionMember::getValue)
@@ -154,6 +186,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
     }
 
@@ -177,7 +211,7 @@ class AmendCaseDetailsForReadyToIssueTest {
                         .build());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
         assertThat(responseCaseData.getWaHandoffReasonList())
                 .isNullOrEmpty();
@@ -187,6 +221,8 @@ class AmendCaseDetailsForReadyToIssueTest {
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
+        verify(waTaskService)
+                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     private void setUpCaseTypeCallbackRequest(

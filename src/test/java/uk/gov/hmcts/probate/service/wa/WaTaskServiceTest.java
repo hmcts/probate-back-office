@@ -16,7 +16,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskData;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -560,5 +562,99 @@ class WaTaskServiceTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
+    }
+
+    @Test
+    void shouldRemoveTaskWhenCompletableTaskIsPresent() {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        responseCaseData.getWaTasksPresent().addAll(List.of(
+                new CollectionMember<>("1", "ExamineDoubleProbate"),
+                new CollectionMember<>("2", "ExamineDigitalCaseProbate")
+        ));
+
+        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
+                .thenReturn(Optional.of("ExamineDoubleProbate"));
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        waTaskService.updateWaTaskPresent(
+                callbackRequest, responseCaseData, CLIENT_CONTEXT);
+
+        assertThat(responseCaseData.getWaTasksPresent())
+                .extracting(CollectionMember::getValue)
+                .containsExactly("ExamineDigitalCaseProbate");
+    }
+
+    @Test
+    void shouldNotRemoveTaskWhenCompletableTaskDoesNotMatch() {
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        responseCaseData.getWaTasksPresent().add(
+                new CollectionMember<>("1", "ExamineDigitalCaseProbate")
+        );
+
+        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
+                .thenReturn(Optional.of("ExamineDoubleProbate"));
+
+        waTaskService.updateWaTaskPresent(
+                callbackRequest, responseCaseData, CLIENT_CONTEXT);
+
+        assertThat(responseCaseData.getWaTasksPresent())
+                .extracting(CollectionMember::getValue)
+                .containsExactly("ExamineDigitalCaseProbate");
+    }
+
+    @Test
+    void shouldNotRemoveTaskWhenClientContextHasNoCompletableTask() {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        responseCaseData.getWaTasksPresent().add(
+                new CollectionMember<>("1", "ExamineDoubleProbate")
+        );
+
+        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
+                .thenReturn(Optional.empty());
+
+        waTaskService.updateWaTaskPresent(
+                callbackRequest, responseCaseData, CLIENT_CONTEXT);
+
+        assertThat(responseCaseData.getWaTasksPresent())
+                .hasSize(1);
+    }
+
+    @ParameterizedTest(name = "Task present: {0}, expected: {1}")
+    @MethodSource("createTaskScenarios")
+    void shouldSetCreateTask(
+            boolean taskPresent,
+            String expected) {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
+        if (taskPresent) {
+            responseCaseData.getWaTasksPresent().add(
+                    new CollectionMember<>("1", taskType.getValue())
+            );
+
+            when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+            when(caseDetails.getId()).thenReturn(123456789L);
+        }
+
+        waTaskService.setCreateTask(
+                callbackRequest,
+                responseCaseData,
+                Optional.of(taskType)
+        );
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> createTaskScenarios() {
+        return Stream.of(
+                Arguments.of(true, NO),
+                Arguments.of(false, YES)
+        );
     }
 }

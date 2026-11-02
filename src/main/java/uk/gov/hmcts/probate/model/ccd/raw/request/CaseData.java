@@ -385,6 +385,7 @@ public class CaseData extends CaseDataParent {
     private final String caseType;
     private final String createTask;
     private final String waCaseState;
+    private final List<CollectionMember<String>> waTasksPresent;
     private String selectForQAUserIdamId;
     private String moveToCWEscalationUserIdamId;
     private String escalateToRegistrarUserIdamId;

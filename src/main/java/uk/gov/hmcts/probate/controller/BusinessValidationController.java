@@ -86,6 +86,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
@@ -184,9 +185,12 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/validate-further-evidence", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
+    public ResponseEntity<CallbackResponse> validateFurtherEvidence(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
+            @RequestBody CallbackRequest request) {
         furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty(), ""));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request,
+                Optional.empty(), "", clientContext));
     }
 
     @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -205,6 +209,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateSolsCreate(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
             @Validated({ApplicationCreatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest) {
 
@@ -212,7 +217,8 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
+            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest,
+                    Optional.empty(), "", clientContext));
         }
         return ResponseEntity.ok(response);
     }
@@ -413,9 +419,12 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> solsValidateIHT400Date(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
+            @RequestBody CallbackRequest callbackRequest) {
         validateIHT400Date(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty(), ""));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest,
+                Optional.empty(), "", clientContext));
     }
 
     @PostMapping(path = "/sols-default-iht400421Page", produces = {APPLICATION_JSON_VALUE})
@@ -427,6 +436,7 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCaseDetails(
         @RequestHeader(value = "Authorization") String authToken,
+        @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
         HttpServletRequest request) {
@@ -437,7 +447,8 @@ public class BusinessValidationController {
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty(), authToken);
+            response = callbackResponseTransformer.transform(callbackRequest,
+                    Optional.empty(), authToken, clientContext);
         }
 
         return ResponseEntity.ok(response);
@@ -525,6 +536,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/case-worker-escalated", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> caseworkerEscalated(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
@@ -545,7 +557,8 @@ public class BusinessValidationController {
 
         }
 
-        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, "");
+        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest,
+                caseworkerInfo, "", clientContext);
 
         return ResponseEntity.ok(response);
     }
@@ -816,7 +829,8 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/redeclarationSot", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationSot(
-        @RequestBody CallbackRequest callbackRequest) {
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
+            @RequestBody CallbackRequest callbackRequest) {
 
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
 
@@ -826,7 +840,8 @@ public class BusinessValidationController {
         }
 
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, caseworkerInfo, ""));
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest,
+                caseworkerInfo, "", clientContext));
     }
 
     @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_VALUE, produces = {
