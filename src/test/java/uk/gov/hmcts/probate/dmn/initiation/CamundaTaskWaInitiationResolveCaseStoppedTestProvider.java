@@ -49,7 +49,7 @@ public class CamundaTaskWaInitiationResolveCaseStoppedTestProvider implements Ar
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_CASE_STOPPED_STATE,
-                        additionalData(false, "", false, Collections.emptyList(), false),
+                        additionalData(false, "", false, Collections.emptyList(), true),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
@@ -139,25 +139,25 @@ public class CamundaTaskWaInitiationResolveCaseStoppedTestProvider implements Ar
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_CASE_STOPPED_STATE,
-                        additionalData(false, GOP_CASE_TYPE, false, Collections.emptyList(), false),
+                        additionalData(false, GOP_CASE_TYPE, false, Collections.emptyList(), true),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_CASE_STOPPED_STATE,
-                        additionalData(false, ADMON_WILL_CASE_TYPE, false, Collections.emptyList(), false),
+                        additionalData(false, ADMON_WILL_CASE_TYPE, false, Collections.emptyList(), true),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_CASE_STOPPED_STATE,
-                        additionalData(false, INTESTACY_CASE_TYPE, false, Collections.emptyList(), false),
+                        additionalData(false, INTESTACY_CASE_TYPE, false, Collections.emptyList(), true),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_CASE_STOPPED_STATE,
-                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, Collections.emptyList(), false),
+                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, Collections.emptyList(), true),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
