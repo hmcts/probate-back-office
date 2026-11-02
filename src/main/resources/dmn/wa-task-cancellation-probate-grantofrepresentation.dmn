@@ -204,6 +204,7 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1oewdsu">
           <text>"case progression"</text>
+          <text>"changeStateCancellable"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ug4r4u">
