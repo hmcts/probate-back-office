@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,16 +119,6 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         );
     }
 
-    protected static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
-        return Map.of(
-                "Data", Map.of(
-                        evidenceHandledVar, false,
-                        caseTypeVar, "",
-                        caseHandedOffToLegacySiteVar, true
-                )
-        );
-    }
-
     protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
             String caseType,
             boolean caseHandedOffToLegacySite,
@@ -141,6 +132,16 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         data.put(escalationReasonVar, "");
         data.put(waHandoffReasonListVar, emptyList());
         return Map.of("Data", data);
+    }
+
+    protected static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
+        return Map.of(
+                "Data", Map.of(
+                        evidenceHandledVar, false,
+                        caseTypeVar, "",
+                        caseHandedOffToLegacySiteVar, true
+                )
+        );
     }
 
     protected static List<Map<String,Object>> handOffReasonListWithHandOffReason(String handOffReason) {
