@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
@@ -143,6 +144,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         );
     }
 
+    protected static Map<String, Map<String, Object>> additionalDataEvidenceHandledBlank(
+            String caseType,
+            boolean caseHandedOffToLegacySite,
+            List<Map<String,Object>> boHandoffReasonList,
+            boolean createTask) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(caseTypeVar, caseType);
+        data.put(caseHandedOffToLegacySiteVar, caseHandedOffToLegacySite);
+        data.put(boHandoffReasonListVar, boHandoffReasonList);
+        data.put(createTaskVar, createTask);
+        data.put(escalationReasonVar, "");
+        return Map.of("Data", data);
+    }
+
     protected static List<Map<String,Object>> handOffReasonListWithHandOffReason(String handOffReason) {
         return List.of(
                 Map.of(
@@ -208,6 +223,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationResolveRedeclarationTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateReviewQaCaseTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationEvidenceHandledPresentTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
