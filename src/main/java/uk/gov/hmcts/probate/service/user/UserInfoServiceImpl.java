@@ -37,6 +37,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         return shouldSetAuthorName(userInfo) ? Optional.of(userInfo) : Optional.empty();
     }
 
+    @Override
+    public Optional<UserInfo> getCaseworkerInfoIncludingSystemUsers() {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        if (securityDTO == null) {
+            return Optional.empty();
+        }
+        UserInfo userInfo = securityUtils.getUserInfo(securityDTO.getAuthorisation());
+        return Optional.ofNullable(userInfo);
+    }
+
     private boolean shouldSetAuthorName(UserInfo userInfo) {
         return userInfo != null && userInfo.getRoles().stream().noneMatch(EXCLUDED_ROLE_LIST::contains)
             && userInfo.getRoles().contains(CASEWORKER_ROLE);

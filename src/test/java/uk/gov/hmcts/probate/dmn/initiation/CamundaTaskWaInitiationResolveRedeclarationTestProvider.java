@@ -86,7 +86,7 @@ public class CamundaTaskWaInitiationResolveRedeclarationTestProvider implements 
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_REDEC_NOTIFICATION_SENT_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(resolveRedeclarationTaskAttributes)
                 ),
                 Arguments.of(
@@ -100,35 +100,35 @@ public class CamundaTaskWaInitiationResolveRedeclarationTestProvider implements 
                         ATTACH_SCANNED_DOCS_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_REDEC_NOTIFICATION_SENT_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(resolveRedeclarationTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_REDEC_NOTIFICATION_SENT_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(resolveRedeclarationTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_REDEC_NOTIFICATION_SENT_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(resolveRedeclarationTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
                         BO_REDEC_NOTIFICATION_SENT_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(resolveRedeclarationTaskAttributes)
                 ),
                 Arguments.of(

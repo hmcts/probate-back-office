@@ -78,7 +78,7 @@ public class CamundaTaskWaInitiationReviewQaCaseIntestacyTestProvider implements
                         AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, INTESTACY_CASE_TYPE, false, emptyList(), false),
-                        emptyList()
+                        List.of(reviewQaCaseIntestacyTaskAttributes)
                 ),
                 Arguments.of(
                         AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT,

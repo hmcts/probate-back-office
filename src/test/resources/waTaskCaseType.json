@@ -38,6 +38,14 @@
         "AddressLine3": ""
       },
       "evidenceHandled": "Yes",
+      "boHandoffReasonList": [
+        {
+          "id": "33c2afbb-11ab-4dc0-84b7-59b05d03c8ca",
+          "value": {
+            "caseHandoffReason": "IBIS"
+          }
+        }
+      ],
       "caseType": "gop",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
@@ -315,6 +323,14 @@
         "AddressLine3": ""
       },
       "caseType": "intestacy",
+      "boHandoffReasonList": [
+        {
+          "id": "33c2afbb-11ab-4dc0-84b7-59b05d03c8ca",
+          "value": {
+            "caseHandoffReason": "DoubleProbate"
+          }
+        }
+      ],
       "deceasedAnyOtherNames": "No",
       "willHasCodicils": "No",
       "deceasedDateOfBirth": "1900-01-01",

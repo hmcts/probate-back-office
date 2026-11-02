@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRAR_ESCALATION_REASON_REFERRALS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
@@ -94,6 +96,42 @@ public class CamundaTaskWaInitiationReviewRegistrarDecisionTestProvider implemen
                         BO_REGISTRAR_ESCALATION,
                         additionalData(true, "admonWill", false, Collections.emptyList(), false),
                         emptyList()
+                ),
+                //Change State scenarios
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(reviewRegistrarDecisionTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "gop", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(reviewRegistrarDecisionTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "intestacy", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(reviewRegistrarDecisionTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "adColligendaBona", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(reviewRegistrarDecisionTask)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        BO_REGISTRAR_ESCALATION,
+                        additionalData(false, "admonWill", false, Collections.emptyList(), false,
+                                REGISTRAR_ESCALATION_REASON_REFERRALS),
+                        List.of(reviewRegistrarDecisionTask)
                 )
         );
 
