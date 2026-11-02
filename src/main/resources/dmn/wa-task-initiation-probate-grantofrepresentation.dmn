@@ -3293,7 +3293,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0765g2w">
         <inputEntry id="UnaryTests_0ydtqnf">
-          <text>"handleEvidence","attachScannedDocs","citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
+          <text>"handleEvidence","citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cu0lxp">
           <text>"BOCaseStopped"</text>
@@ -3332,6 +3332,50 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15cy1tl">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15opzac">
+        <inputEntry id="UnaryTests_0ygur8g">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1k4hfo8">
+          <text>"BOCaseStopped"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hyhwcs">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0y7st2y">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nzcq3d">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1php5ws">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kcwhf5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0j41pqy">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19y3ru1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pcgjk4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1at74ec">
+          <text>"ResolveStoppedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rjr77b">
+          <text>"Resolve Stopped Case"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i5hw8j">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kmv1z4">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
@@ -3513,7 +3557,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_03cfali">
         <inputEntry id="UnaryTests_0hnhp6k">
-          <text>"handleEvidence", "attachScannedDocs", "changeState"</text>
+          <text>"handleEvidence", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ob66vl">
           <text>"BORedecNotificationSent"</text>
@@ -3552,6 +3596,50 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0mkwp19">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_096p6c6">
+        <inputEntry id="UnaryTests_09ra5od">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19zbpww">
+          <text>"BORedecNotificationSent"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01zpgjt">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1et07ux">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09k0opo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12i01qa">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ks18vn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z24yhb">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dawceu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19n38ra">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hyddka">
+          <text>"ResolveRedeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0grq5zj">
+          <text>"Resolve Redeclaration"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06pyjgl">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00mkqxd">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
