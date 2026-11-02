@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -18,7 +17,7 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
 
     private final WaTaskService waTaskService;
 
-    public AmendCaseDetailsForAwaitingDocumentation(WaTaskService waTaskService, TaskUtils taskUtils) {
+    public AmendCaseDetailsForAwaitingDocumentation(WaTaskService waTaskService) {
         super(waTaskService);
         this.waTaskService = waTaskService;
     }

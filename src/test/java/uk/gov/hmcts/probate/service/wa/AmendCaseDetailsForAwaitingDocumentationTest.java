@@ -77,7 +77,7 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     @BeforeEach
     void setUp() {
         waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
-        processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService, taskUtils);
+        processor = new AmendCaseDetailsForAwaitingDocumentation(waTaskService);
     }
 
     @Test

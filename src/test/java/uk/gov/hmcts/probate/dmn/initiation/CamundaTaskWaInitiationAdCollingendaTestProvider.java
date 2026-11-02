@@ -92,7 +92,7 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         "handleEvidence",
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false,
-                                Collections.emptyList(), false),
+                                Collections.emptyList(), true),
                         List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
                 ),
                 Arguments.of(

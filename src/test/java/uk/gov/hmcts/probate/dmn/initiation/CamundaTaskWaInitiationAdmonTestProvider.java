@@ -56,7 +56,7 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
-                            emptyList(), false),
+                            emptyList(), true),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(

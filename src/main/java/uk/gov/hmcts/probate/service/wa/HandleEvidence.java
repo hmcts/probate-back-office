@@ -31,7 +31,7 @@ public class HandleEvidence implements CreateTaskProcessor {
                         final CallbackRequest callbackRequest,
                         final ResponseCaseData responseCaseData,
                         final String clientContext) {
-        responseCaseData.setCreateTask(YES);
+
         String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
         switch (callbackRequest.getCaseDetails().getState()) {
             case STATE_CASE_PRINTED: {
@@ -44,6 +44,8 @@ public class HandleEvidence implements CreateTaskProcessor {
                         .setCreateTask(callbackRequest, responseCaseData, TaskTypes.getReadyToIssueIceTask(caseType));
                 break;
             }
+            default:
+                responseCaseData.setCreateTask(YES);
         }
     }
 }

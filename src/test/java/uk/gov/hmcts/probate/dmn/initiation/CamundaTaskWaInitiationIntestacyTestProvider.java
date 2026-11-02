@@ -147,7 +147,7 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     "handleEvidence",
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
-                            Collections.emptyList(), false),
+                            Collections.emptyList(), true),
                     List.of(examineDigitalCaseIntestacyTaskAttributes)
             ),
             Arguments.of(
