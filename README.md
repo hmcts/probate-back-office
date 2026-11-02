@@ -804,5 +804,5 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 6. load your locally generated XLSX file from the root jsonToXLS folder
 7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
 8. Check your XUI for any new gs XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
-9. unset PROBATE_GS_ENABLED if needed or set to false
+9. unset PROBATE_GS_ENABLED if needed or set to false2
 
