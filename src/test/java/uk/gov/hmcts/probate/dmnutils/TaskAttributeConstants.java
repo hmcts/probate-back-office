@@ -370,7 +370,6 @@ public class TaskAttributeConstants {
     public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
     public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT = "autoSelectForQACreateTask";
     public static final String SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT = "serviceRequestPaymentSuccess";
-    public static final String SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT = "solicitorPaymentSuccessCase";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
