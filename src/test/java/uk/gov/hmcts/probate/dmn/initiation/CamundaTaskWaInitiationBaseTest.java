@@ -10,9 +10,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
@@ -209,6 +209,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationResolveRedeclarationTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateReviewQaCaseTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationEvidenceHandledPresentTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileEvidenceHandledTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
