@@ -31,6 +31,9 @@ public class ApplyforGrantPaperApplicationMan implements CreateTaskProcessor {
                         final ResponseCaseData responseCaseData,
                         final String clientContext) {
         String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
+        log.info("Processing case id {} with case type {}",
+                callbackRequest.getCaseDetails().getId(),
+                caseType);
         TaskTypes.getAwaitingDocIceTask(caseType)
                 .map(TaskTypes::getValue)
                 .ifPresent(taskName -> responseCaseData.getWaTasksPresent()

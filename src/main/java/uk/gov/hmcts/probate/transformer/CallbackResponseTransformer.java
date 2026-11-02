@@ -912,6 +912,7 @@ public class CallbackResponseTransformer {
 
         boolean transform = doTransform(callbackRequest);
 
+
         ResponseCaseData responseCaseData = getResponseCaseData(
             callbackRequest.getCaseDetails(),
             callbackRequest.getEventId(),
@@ -919,6 +920,7 @@ public class CallbackResponseTransformer {
             transform
         ).build();
 
+        setTaskCreation(null, callbackRequest, responseCaseData, null);
         return transformResponse(responseCaseData);
     }
 
@@ -1179,7 +1181,7 @@ public class CallbackResponseTransformer {
         }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-
+        setTaskCreation(null, callbackRequest, responseCaseDataBuilder.build(), null);
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
                 .build()

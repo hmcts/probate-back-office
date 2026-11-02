@@ -31,8 +31,10 @@ public class HandleEvidence implements CreateTaskProcessor {
                         final CallbackRequest callbackRequest,
                         final ResponseCaseData responseCaseData,
                         final String clientContext) {
-
         String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
+        log.info("Processing case id {} with case type {}",
+                callbackRequest.getCaseDetails().getId(),
+                caseType);
         switch (callbackRequest.getCaseDetails().getState()) {
             case STATE_CASE_PRINTED: {
                 waTaskService
