@@ -69,7 +69,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, createTask,
                 "", emptyList());
     }
-    //empty
+
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                      String caseType,
                                                                      boolean caseHandedOffToLegacySite,
