@@ -187,7 +187,7 @@ def versions = [
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '9.0.0',
         probateCommonsVersion           : '2.4.0-DTSPB-5111-v1',
-        restAssured                     : '6.2.0',
+        restAssured                     : '6.3.0',
         sendLetterClientVersion         : '6.0.0',
         serenity                        : '5.4.2',
         serviceAuthVersion              : '6.1.2',
@@ -208,11 +208,11 @@ jacocoTestReport {
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
-    }
+  mavenLocal()
+  mavenCentral()
+  maven {
+      url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+  }
 }
 
 dependencyManagement {
@@ -231,9 +231,8 @@ dependencyManagement {
 }
 
 ext {
-  set("netty.version", libs.versions.netty.get()) // CVE-2025-67735
-  set("log4j2.version", libs.versions.log4j2.get()) // CVE-2025-68161
-  set("commons-lang3.version", libs.versions.commonsLang3.get()) // CVE-2025-48924
+  set("log4j2.version", libs.versions.log4j2.get())
+  set("commons-lang3.version", libs.versions.commonsLang3.get())
 }
 
 dependencies {
@@ -393,7 +392,7 @@ configurations.configureEach {
   exclude group: 'com.vaadin.external.google', module: 'android-json'
 
   def kotlinVersion = '2.4.21'
-  def jacksonCoreVersion = '3.2.3'
+  def jacksonCoreVersion = '3.2.4'
   def angusVersion = '2.1.0-M1'
 
   resolutionStrategy.eachDependency { details ->
