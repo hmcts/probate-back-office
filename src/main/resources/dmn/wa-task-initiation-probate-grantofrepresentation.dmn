@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -2955,7 +2955,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0kewu5p">
         <inputEntry id="UnaryTests_1sd8e9v">
-          <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "applyforGrantPaperApplicationMan",  "handleEvidence",  "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "solicitorPaymentSuccessCase", "applyforGrantPaperApplicationMan",  "handleEvidence",  "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0d76wix">
           <text>"CasePrinted"</text>
@@ -2964,7 +2964,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1pvf3mg">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0x13y9z">
           <text></text>
@@ -3011,7 +3011,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0kpqav2">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_05jml9l">
           <text></text>
@@ -3284,7 +3284,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0vr8sci">
         <inputEntry id="UnaryTests_0rue9wy">
-          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess"</text>
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess","solicitorPaymentSuccessCase"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ftm8hl">
           <text>"CasePrinted"</text>
@@ -3293,7 +3293,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0d83oxt">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0zaqfnr">
           <text></text>
@@ -3340,7 +3340,7 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0qq0k5l">
-          <text></text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1q6ekqh">
           <text></text>
