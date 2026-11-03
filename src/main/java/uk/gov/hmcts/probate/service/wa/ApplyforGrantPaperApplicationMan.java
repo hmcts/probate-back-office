@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -31,12 +32,16 @@ public class ApplyforGrantPaperApplicationMan implements CreateTaskProcessor {
                         final ResponseCaseData responseCaseData,
                         final String clientContext) {
         String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
-        log.info("Processing case id {} with case type {}",
-                callbackRequest.getCaseDetails().getId(),
-                caseType);
-        TaskTypes.getAwaitingDocIceTask(caseType)
+        Optional<TaskTypes> awaitingDocIceTask = TaskTypes.getAwaitingDocIceTask(caseType);
+
+        awaitingDocIceTask
                 .map(TaskTypes::getValue)
                 .ifPresent(taskName -> responseCaseData.getWaTasksPresent()
                         .add(new CollectionMember<>(UUID.randomUUID().toString(), taskName)));
+        log.info("Processing case id {} with case type {} awaitingDocIceTask {} response data {}",
+                callbackRequest.getCaseDetails().getId(),
+                caseType,
+                awaitingDocIceTask,
+                responseCaseData.getWaTasksPresent());
     }
 }
