@@ -39,6 +39,12 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                 "processCategories", "case progression,examineDigitalCaseTypes"
         );
 
+        Map<String, Object> examineDigitalCaseProbateCancellableTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
+                "name", PROBATE_TASK_TYPE_NAME,
+                "processCategories", "case progression,examineDigitalCaseTypes,changeStateCancellable"
+        );
+
         Map<String, Object> examineDigitalCaseProbateReadyToIssueTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                 "name", PROBATE_TASK_TYPE_NAME,
@@ -59,7 +65,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
-                    List.of(examineDigitalCaseProbateTaskAttributes)
+                    List.of(examineDigitalCaseProbateCancellableTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -135,7 +141,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
-                    List.of(examineDigitalCaseProbateTaskAttributes)
+                    List.of(examineDigitalCaseProbateCancellableTaskAttributes)
             ),
             Arguments.of(
                     APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
@@ -219,7 +225,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
-                    List.of(examineDigitalCaseProbateTaskAttributes)
+                    List.of(examineDigitalCaseProbateCancellableTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
@@ -303,7 +309,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
-                    List.of(examineDigitalCaseProbateTaskAttributes)
+                    List.of(examineDigitalCaseProbateCancellableTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
@@ -345,7 +351,7 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
-                    List.of(examineDigitalCaseProbateTaskAttributes)
+                    List.of(examineDigitalCaseProbateCancellableTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CASE_FROM_BULK_SCAN_EVENT,

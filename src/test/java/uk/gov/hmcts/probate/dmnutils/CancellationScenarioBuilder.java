@@ -140,7 +140,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "changeState",
                                 null,
                                 null,
-                                "case progression",
+                                "changeStateCancellable",
                                 "Cancel"
                         )
                 ),

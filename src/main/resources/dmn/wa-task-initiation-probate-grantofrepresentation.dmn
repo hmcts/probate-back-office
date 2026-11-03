@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -88,7 +88,7 @@ else false</text>
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -130,6 +130,53 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
+          <text>"case progression,examineDigitalCaseTypes,changeStateCancellable"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05hnnhr">
+        <inputEntry id="UnaryTests_0puvn0t">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a5ywlg">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rp2olr">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dyo186">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d3bji4">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jqfud2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0d7wnfh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_152fg9u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0smfyro">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tywpnn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wg9pqj">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wgou84">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rhcfmr">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t0rcfz">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1m8m9ig">
           <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
