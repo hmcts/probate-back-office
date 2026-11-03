@@ -10,9 +10,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -51,6 +51,7 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_DRAFT_NAME = "draftName";
     private static final String PERSONALISATION_CASE_TYPE = "caseType";
     private static final String SUBJECT = "Draft cases with payment success extract from :fromDate to :toDate";
+    private final DateFormatterService dateFormatterService;
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     public Map<String, Object> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -158,9 +159,11 @@ public class GrantOfRepresentationPersonalisationService {
                 data.append(", ");
                 data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
                 data.append(", ");
-                data.append(EXELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
+                data.append(dateFormatterService.formatDateSafely(
+                        currentCase.getData().getDeceasedDateOfBirth(), EXELA_CONTENT_DATE));
                 data.append(", ");
-                data.append(EXELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
+                data.append(dateFormatterService.formatDateSafely(
+                        currentCase.getData().getGrantIssuedDate(), EXELA_CONTENT_DATE));
                 data.append(", ");
                 data.append(currentCase.getId().toString());
                 data.append(", ");
