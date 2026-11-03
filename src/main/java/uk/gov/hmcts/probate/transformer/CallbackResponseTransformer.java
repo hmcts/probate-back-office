@@ -894,6 +894,9 @@ public class CallbackResponseTransformer {
 
         //Setting task creation flag as mid event doesnt persist
         setTaskCreation(authToken, callbackRequest, responseCaseData, clientContext);
+        log.info("before responding {}: wa tasks present {}",
+                callbackRequest.getCaseDetails().getId(),
+                responseCaseData.getWaTasksPresent());
 
         return transformResponse(responseCaseData);
     }

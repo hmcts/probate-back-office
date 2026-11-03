@@ -203,6 +203,9 @@ public class WaTaskService {
                             responseCaseData.getWaTasksPresent()
                                     .removeIf(task -> task.getValue().equals(taskType));
                         });
+        log.info("after removing case id {}: wa tasks present {}",
+                callbackRequest.getCaseDetails().getId(),
+                responseCaseData.getWaTasksPresent());
     }
 
     public void setCreateTask(final CallbackRequest callbackRequest,
