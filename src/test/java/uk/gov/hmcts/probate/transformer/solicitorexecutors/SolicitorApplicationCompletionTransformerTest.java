@@ -336,19 +336,18 @@ class SolicitorApplicationCompletionTransformerTest {
     // then primaryApplicantClear is not called
     @Test
     void givenCaseWoutNoneOfTheseTitleClearingTypeANDWoutPrmryApplicant_whenChecked_thenPrmryApplicantDataNOTCleared() {
-        final CaseData realCaseData = CaseData.builder().build();
-        final CaseData spyCaseData = spy(realCaseData);
-        final CaseDetails caseDetails = new CaseDetails(spyCaseData, null, 0L);
-
-
-        when(spyCaseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
-        when(spyCaseData.getTitleAndClearingType()).thenReturn("");
-        when(spyCaseData.isPrimaryApplicantApplying()).thenReturn(false);
+        final CaseData caseData = CaseData.builder()
+                .caseType(CASE_TYPE_GRANT_OF_PROBATE)
+                .titleAndClearingType("")
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .build();
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
         solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
                 caseDetails);
 
-        verify(spyCaseData, times(0)).clearPrimaryApplicant();
+        assertEquals(EXEC_FIRST_NAME, caseData.getPrimaryApplicantForenames());
     }
 
     @Test
