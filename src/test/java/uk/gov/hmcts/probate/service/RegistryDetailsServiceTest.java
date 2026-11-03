@@ -84,9 +84,23 @@ class RegistryDetailsServiceTest {
     }
 
     @Test
+    void shouldReturnEmptyStringEpimmsIdForUnknownRegistryLocation() {
+        String actualEpimmsId = registryDetailsService.getEpimmsId("otherLocation");
+
+        assertThat(actualEpimmsId, is(""));
+    }
+
+    @Test
     void shouldReturnTaskRegionForRegistryLocation() {
         String actualRegion = registryDetailsService.getTaskRegion(REGISTRY_LOCATION);
 
         assertThat(actualRegion, is(registry.getTaskRegion()));
+    }
+
+    @Test
+    void shouldReturnEmptyStringTaskRegionForUnknownRegistryLocation() {
+        String actualRegion = registryDetailsService.getTaskRegion("otherLocation");
+
+        assertThat(actualRegion, is(""));
     }
 }

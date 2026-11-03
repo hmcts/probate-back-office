@@ -344,7 +344,7 @@ registry:
       town: Oxford
       postcode: OX1 1LY
       epimmsId: 371016
-      regionTask: 12
+      taskRegion: 12
     birmingham:
       name: Birmingham Probate Registry
       phone: 0300 303 0648
@@ -354,7 +354,7 @@ registry:
       town: Birmingham
       postcode: B4 6DU
       epimmsId: 231596
-      regionTask: 12
+      taskRegion: 12
     manchester:
       name: Manchester Probate Registry
       phone: 0300 303 0648
@@ -366,7 +366,7 @@ registry:
       town: Manchester
       postcode: M60 1WJ
       epimmsId: 701411
-      regionTask: 12
+      taskRegion: 12
     leeds:
       name: Leeds Probate Registry
       phone: 0300 303 0648
@@ -376,7 +376,7 @@ registry:
       town: Leeds
       postcode: LS1 2BA
       epimmsId: 495952
-      regionTask: 12
+      taskRegion: 12
     liverpool:
       name: Liverpool Probate Registry
       phone: 0300 303 0648
@@ -386,7 +386,7 @@ registry:
       town: Liverpool
       postcode: L2 1XA
       epimmsId: 448077
-      regionTask: 12
+      taskRegion: 12
     brighton:
       name: Brighton Probate Registry
       phone: 0300 303 0648
@@ -395,7 +395,7 @@ registry:
       town: Brighton
       postcode: BN2 0RF
       epimmsId: 478896
-      regionTask: 12
+      taskRegion: 12
     london:
       name: London Probate Department
       phone: 0300 303 0648
@@ -406,7 +406,7 @@ registry:
       town: London
       postcode: WC1V 6NP
       epimmsId: 356855
-      regionTask: 12
+      taskRegion: 12
     cardiff:
       name: Probate Registry of Wales
       phone: 0300 303 0648
@@ -417,7 +417,7 @@ registry:
       town: South Wales
       postcode: CF24 0RZ
       epimmsId: 779109
-      regionTask: 12
+      taskRegion: 12
     newcastle:
       name: Newcastle District Probate Registry
       phone: 0300 303 0648
@@ -428,7 +428,7 @@ registry:
       town: North Shields
       postcode: NE29 6AR
       epimmsId: 562808
-      regionTask: 12
+      taskRegion: 12
     winchester:
       name: Winchester Probate Registry
       phone: 0300 303 0648
@@ -440,7 +440,7 @@ registry:
       town: Hampshire
       postcode: S023 9EL
       epimmsId: 886493
-      regionTask: 12
+      taskRegion: 12
     ctsc:
       name: CTSC
       phone: 0300 303 0648
@@ -451,7 +451,7 @@ registry:
       town: Harlow
       postcode: CM20 9QE
       epimmsId: 815833
-      regionTask: 12
+      taskRegion: 12
     bristol:
       name: Bristol District Probate Registry
       phone: 0300 303 0648
@@ -461,7 +461,7 @@ registry:
       town: Bristol
       postcode: BS1 6GR
       epimmsId: 819890
-      regionTask: 12
+      taskRegion: 12
 
 auth.idam.client.baseUrl: http://localhost:5000
 
