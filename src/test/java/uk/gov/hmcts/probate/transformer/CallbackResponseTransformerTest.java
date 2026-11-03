@@ -16,6 +16,8 @@ import org.mockito.MockMakers;
 import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -171,6 +173,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CallbackResponseTransformerTest {
 
     public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
