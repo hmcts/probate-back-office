@@ -10,9 +10,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
@@ -92,20 +92,20 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
 
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
-                                                                   String caseType,
-                                                                   boolean caseHandedOffToLegacySite,
-                                                                   List<Map<String,Object>> boHandoffReasonList) {
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList) {
         return additionalData(evidenceHandled, caseType, caseHandedOffToLegacySite, boHandoffReasonList, false,
                 "",emptyList());
     }
 
     protected static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
-                                                                   String caseType,
-                                                                   boolean caseHandedOffToLegacySite,
-                                                                   List<Map<String,Object>> boHandoffReasonList,
-                                                                   boolean createTask,
-                                                                   String escalationReason,
-                                                                   List<Map<String,Object>> waHandoffReasonList) {
+                                                                     String caseType,
+                                                                     boolean caseHandedOffToLegacySite,
+                                                                     List<Map<String,Object>> boHandoffReasonList,
+                                                                     boolean createTask,
+                                                                     String escalationReason,
+                                                                     List<Map<String,Object>> waHandoffReasonList) {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, evidenceHandled,
@@ -115,16 +115,6 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                         createTaskVar, createTask,
                         escalationReasonVar, escalationReason,
                         waHandoffReasonListVar, waHandoffReasonList
-                )
-        );
-    }
-
-    protected static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
-        return Map.of(
-                "Data", Map.of(
-                        evidenceHandledVar, false,
-                        caseTypeVar, "",
-                        caseHandedOffToLegacySiteVar, true
                 )
         );
     }
@@ -140,7 +130,18 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         data.put(boHandoffReasonListVar, boHandoffReasonList);
         data.put(createTaskVar, createTask);
         data.put(escalationReasonVar, "");
+        data.put(waHandoffReasonListVar, emptyList());
         return Map.of("Data", data);
+    }
+
+    protected static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
+        return Map.of(
+                "Data", Map.of(
+                        evidenceHandledVar, false,
+                        caseTypeVar, "",
+                        caseHandedOffToLegacySiteVar, true
+                )
+        );
     }
 
     protected static List<Map<String,Object>> handOffReasonListWithHandOffReason(String handOffReason) {
@@ -209,6 +210,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateCaseMatchingIssueGrantTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationChangeStateReviewQaCaseTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationEvidenceHandledPresentTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProveForeignWillEvidenceHandledTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationForeignDomicileEvidenceHandledTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
