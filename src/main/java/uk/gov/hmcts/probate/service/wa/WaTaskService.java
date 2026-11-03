@@ -211,6 +211,10 @@ public class WaTaskService {
     public void setCreateTask(final CallbackRequest callbackRequest,
                               final ResponseCaseData responseCaseData,
                               final Optional<TaskTypes> taskTypeInfo) {
+        //TODO:: REMOVE
+        log.info("case id {}: wa task present {}",
+                callbackRequest.getCaseDetails().getId(),
+                taskTypeInfo);
         responseCaseData.setCreateTask(YES);
         taskTypeInfo.flatMap(taskType -> responseCaseData.getWaTasksPresent().stream()
                 .map(CollectionMember::getValue)
