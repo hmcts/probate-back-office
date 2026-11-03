@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -72,7 +73,7 @@ class NoDocumentsRequiredBusinessRuleTest {
     void shouldNotBeApplicableWhenSpouseApplyingAndIHT400421NoDocumentsUploaded() {
         mockCaseData = CaseData.builder()
             .solsWillType(GRANT_TYPE_INTESTACY)
-            .solsLegalStatementUpload(mockDocumentLink)
+            .solsLegalStatementUpload(null)
             .ihtFormId(IHT400421)
             .solsApplicantRelationshipToDeceased(SPOUSE_OR_CIVIL)
             .deceasedMaritalStatus(MARRIED_VALUE)
@@ -84,7 +85,7 @@ class NoDocumentsRequiredBusinessRuleTest {
     @Test
     void shouldNotBeApplicableWhenSpouseApplyingAndIHT400421NoTIntestacyApplication() {
         mockCaseData = CaseData.builder()
-            .solsWillType(GRANT_TYPE_INTESTACY)
+            .solsWillType(GRANT_TYPE_PROBATE)
             .solsLegalStatementUpload(mockDocumentLink)
             .ihtFormId(IHT400421)
             .solsApplicantRelationshipToDeceased(SPOUSE_OR_CIVIL)
@@ -319,7 +320,7 @@ class NoDocumentsRequiredBusinessRuleTest {
     void shouldNotBeApplicableWhenSpouseApplyingAndExceptedEstateNoDocumentsUploaded() {
         mockCaseData = CaseData.builder()
             .solsWillType(GRANT_TYPE_INTESTACY)
-            .solsLegalStatementUpload(mockDocumentLink)
+            .solsLegalStatementUpload(null)
             .ihtFormEstateValuesCompleted(NO)
             .solsApplicantRelationshipToDeceased(SPOUSE_OR_CIVIL)
             .deceasedMaritalStatus(MARRIED_VALUE)
@@ -332,7 +333,7 @@ class NoDocumentsRequiredBusinessRuleTest {
     @Test
     void shouldNotBeApplicableWhenSpouseApplyingAndExceptedEstateNotIntestacy() {
         mockCaseData = CaseData.builder()
-            .solsWillType(GRANT_TYPE_INTESTACY)
+            .solsWillType(GRANT_TYPE_PROBATE)
             .solsLegalStatementUpload(mockDocumentLink)
             .ihtFormEstateValuesCompleted(NO)
             .solsApplicantRelationshipToDeceased(SPOUSE_OR_CIVIL)
