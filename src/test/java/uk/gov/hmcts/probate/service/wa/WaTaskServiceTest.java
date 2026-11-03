@@ -614,6 +614,9 @@ class WaTaskServiceTest {
 
     @Test
     void shouldNotRemoveTaskWhenClientContextHasNoCompletableTask() {
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .waTasksPresent(new ArrayList<>())
                 .build();
