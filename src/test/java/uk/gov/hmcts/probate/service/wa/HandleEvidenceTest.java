@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -53,7 +54,9 @@ class HandleEvidenceTest {
     void setUp() {
         waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
         processor = new HandleEvidence(waTaskService);
-        responseCaseData = ResponseCaseData.builder().build();
+        responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
 
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);

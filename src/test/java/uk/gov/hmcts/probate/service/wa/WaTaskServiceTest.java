@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -566,7 +567,9 @@ class WaTaskServiceTest {
 
     @Test
     void shouldRemoveTaskWhenCompletableTaskIsPresent() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
         responseCaseData.getWaTasksPresent().addAll(List.of(
                 new CollectionMember<>("1", "ExamineDoubleProbate"),
                 new CollectionMember<>("2", "ExamineDigitalCaseProbate")
@@ -591,7 +594,9 @@ class WaTaskServiceTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getId()).thenReturn(123456789L);
 
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
         responseCaseData.getWaTasksPresent().add(
                 new CollectionMember<>("1", "ExamineDigitalCaseProbate")
         );
@@ -609,7 +614,9 @@ class WaTaskServiceTest {
 
     @Test
     void shouldNotRemoveTaskWhenClientContextHasNoCompletableTask() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
         responseCaseData.getWaTasksPresent().add(
                 new CollectionMember<>("1", "ExamineDoubleProbate")
         );
@@ -629,7 +636,9 @@ class WaTaskServiceTest {
     void shouldSetCreateTask(
             boolean taskPresent,
             String expected) {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
         TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
         if (taskPresent) {

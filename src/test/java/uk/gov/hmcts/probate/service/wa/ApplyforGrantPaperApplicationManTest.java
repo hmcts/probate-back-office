@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -41,7 +42,9 @@ class ApplyforGrantPaperApplicationManTest {
             String caseType,
             String expectedTaskName) {
 
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .waTasksPresent(new ArrayList<>())
+                .build();
 
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
