@@ -435,5 +435,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String resolveStoppedCaseUserIdamId;
     private String resolveRedeclarationUserIdamId;
     private List<CollectionMember<HandoffReason>> waHandoffReasonList;
-    private final List<CollectionMember<String>> waTasksPresent = new ArrayList<>();
+    private final List<CollectionMember<String>> waTasksPresent;
 }

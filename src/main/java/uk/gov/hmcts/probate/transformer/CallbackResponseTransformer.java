@@ -1507,7 +1507,8 @@ public class CallbackResponseTransformer {
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
             .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
-            .waCaseState(caseDetails.getState());
+            .waCaseState(caseDetails.getState())
+            .waTasksPresent(caseData.getWaTasksPresent());
 
         handleDeceasedAliases(
                 builder,
