@@ -7,7 +7,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
