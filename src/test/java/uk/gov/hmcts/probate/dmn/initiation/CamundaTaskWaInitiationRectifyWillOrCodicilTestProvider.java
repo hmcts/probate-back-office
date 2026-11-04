@@ -50,7 +50,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
         Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         Map<String,Object> examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes = Map.of(

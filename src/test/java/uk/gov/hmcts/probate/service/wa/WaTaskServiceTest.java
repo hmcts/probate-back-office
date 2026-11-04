@@ -384,7 +384,7 @@ class WaTaskServiceTest {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
 
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest, null);
 
         verifyNoInteractions(ccdClientApi);
     }
@@ -405,7 +405,7 @@ class WaTaskServiceTest {
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .thenReturn(SecurityDTO.builder().build());
 
-        waTaskService.closeReadyToIssueHandOffs(callbackRequest);
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest, null);
 
         verify(ccdClientApi).triggerEvent(
                 eq(caseId.toString()),
@@ -431,6 +431,83 @@ class WaTaskServiceTest {
                 .isEqualTo("event-token");
 
         assertThat(result.getData()).isNotNull();
+    }
+
+    @Test
+    void shouldCloseReadyToIssueHandOffsWhenHandOffTaskIsBeingCompleted() {
+        Long caseId = 123456789L;
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .boHandoffReasonList(
+                        generateHandOffReasonCollection(
+                                List.of(HandoffReasonId.DOUBLE_PROBATE,
+                                        HandoffReasonId.FOREIGN_DOMICILE))
+                ).build();
+        TaskData task = new TaskData();
+        task.setType("ExamineDoubleProbate");
+
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest, CLIENT_CONTEXT);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CLOSE_READY_TO_ISSUE_HANDOFFS),
+                any(),
+                isA(SecurityDTO.class));
+    }
+
+    @Test
+    void shouldNotCloseReadyToIssueHandOffsWhenNonHandOffTaskIsBeingCompleted() {
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .boHandoffReasonList(
+                        generateHandOffReasonCollection(
+                                List.of(HandoffReasonId.DOUBLE_PROBATE))
+                ).build();
+        TaskData task = new TaskData();
+        task.setType("ExamineDigitalCaseProbateReadyToIssue");
+
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.of(task));
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest, CLIENT_CONTEXT);
+
+        verifyNoInteractions(ccdClientApi);
+    }
+
+    @Test
+    void shouldNotCloseReadyToIssueHandOffsWhenNoTaskInClientContext() {
+        CaseData caseData = CaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .boHandoffReasonList(
+                        generateHandOffReasonCollection(
+                                List.of(HandoffReasonId.DOUBLE_PROBATE))
+                ).build();
+
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(taskUtils.getTaskData(CLIENT_CONTEXT))
+                .thenReturn(Optional.empty());
+
+        waTaskService.closeReadyToIssueHandOffs(callbackRequest, CLIENT_CONTEXT);
+
+        verifyNoInteractions(ccdClientApi);
     }
 
     private void setUpCallbackRequestForCaseType(

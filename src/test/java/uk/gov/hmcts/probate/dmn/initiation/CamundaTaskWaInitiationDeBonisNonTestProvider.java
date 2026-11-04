@@ -49,7 +49,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
         Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         Map<String,Object> examineDeBonisNonCaseMatchingIssueGrantTaskAttributes = Map.of(
