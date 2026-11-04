@@ -102,7 +102,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         verify(waTaskService)
                 .getCaseTypePredicate();
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -121,7 +121,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         verify(waTaskService)
                 .getCaseTypePredicate();
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -143,7 +143,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         verify(waTaskService)
                 .getCaseTypePredicate();
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -165,7 +165,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         verify(waTaskService)
                 .getCaseTypePredicate();
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -187,7 +187,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         verify(waTaskService)
                 .getCaseTypePredicate();
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
 
     }
 
@@ -222,7 +222,7 @@ class AmendCaseDetailsForReadyToIssueTest {
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
         verify(waTaskService)
-                .updateWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
+                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     private void setUpCaseTypeCallbackRequest(

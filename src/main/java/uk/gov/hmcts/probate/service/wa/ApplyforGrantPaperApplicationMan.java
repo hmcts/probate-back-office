@@ -3,13 +3,12 @@ package uk.gov.hmcts.probate.service.wa;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -34,10 +33,13 @@ public class ApplyforGrantPaperApplicationMan implements CreateTaskProcessor {
         String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
         Optional<TaskTypes> awaitingDocIceTask = TaskTypes.getAwaitingDocIceTask(caseType);
 
-        awaitingDocIceTask
-                .map(TaskTypes::getValue)
-                .ifPresent(taskName -> responseCaseData.getWaTasksPresent()
-                        .add(new CollectionMember<>(UUID.randomUUID().toString(), taskName)));
+        awaitingDocIceTask.map(TaskTypes::getValue)
+                .ifPresent(taskName ->
+                        waTaskService.addTaskToWaTaskPresent(
+                                callbackRequest.getCaseDetails().getId(),
+                                responseCaseData,
+                                taskName));
+
         log.info("Processing case id {} with case type {} awaitingDocIceTask {} response data {}",
                 callbackRequest.getCaseDetails().getId(),
                 caseType,

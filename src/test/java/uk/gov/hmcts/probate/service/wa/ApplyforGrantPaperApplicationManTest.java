@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service.wa;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -13,6 +13,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -20,6 +23,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
@@ -31,10 +38,20 @@ class ApplyforGrantPaperApplicationManTest {
     private CallbackRequest callbackRequest;
     @Mock
     private CaseDetails caseDetails;
-
-    @InjectMocks
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private TaskUtils taskUtils;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    private WaTaskService waTaskService;
     private ApplyforGrantPaperApplicationMan processor;
 
+    @BeforeEach
+    void setUp() {
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
+        processor = new ApplyforGrantPaperApplicationMan(waTaskService);
+    }
 
     @ParameterizedTest(name = "Case type: {0}, Expected task: {1}")
     @MethodSource("taskScenarios")
@@ -76,6 +93,9 @@ class ApplyforGrantPaperApplicationManTest {
 
             assertThatCode(() -> UUID.fromString(task.getId()))
                     .doesNotThrowAnyException();
+            verify(waTaskService).addTaskToWaTaskPresent(anyLong(),
+                    eq(responseCaseData),
+                    eq(expectedTaskName));
 
         } else {
             assertThat(responseCaseData.getWaTasksPresent())

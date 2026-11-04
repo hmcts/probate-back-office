@@ -23,6 +23,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -190,9 +191,9 @@ public class WaTaskService {
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
     }
 
-    public void updateWaTaskPresent(final CallbackRequest callbackRequest,
-                                    final ResponseCaseData responseCaseData, final
-                                    String clientContext) {
+    public void removeTaskFromWaTaskPresent(final CallbackRequest callbackRequest,
+                                            final ResponseCaseData responseCaseData,
+                                            final String clientContext) {
 
         taskUtils.getCompletableTaskType(clientContext)
                         .ifPresent(taskType -> {
@@ -203,9 +204,24 @@ public class WaTaskService {
                             responseCaseData.getWaTasksPresent()
                                     .removeIf(task -> task.getValue().equals(taskType));
                         });
+        //TODO:: REMOVE
         log.info("after removing case id {}: wa tasks present {}",
                 callbackRequest.getCaseDetails().getId(),
                 responseCaseData.getWaTasksPresent());
+    }
+
+    public void addTaskToWaTaskPresent(Long id, final ResponseCaseData responseCaseData,
+                                        String taskName) {
+        addTasksToWaTaskPresent(id, responseCaseData, List.of(taskName));
+    }
+
+    public void addTasksToWaTaskPresent(Long id, final ResponseCaseData responseCaseData,
+                                        List<String> taskNames) {
+        log.info("case id {}: adding wa tasks {}",
+                id,
+                taskNames);
+        taskNames.forEach(taskName -> responseCaseData.getWaTasksPresent()
+                .add(new CollectionMember<>(UUID.randomUUID().toString(), taskName)));
     }
 
     public void setCreateTask(final CallbackRequest callbackRequest,
