@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -50,7 +54,8 @@ import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_E
 import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
 
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@MockitoSettings(strictness = Strictness.LENIENT)
 @ContextConfiguration(classes = LifeEventCCDService.class)
 class LifeEventCCDServiceTest {
 
@@ -69,7 +74,7 @@ class LifeEventCCDServiceTest {
     CaseDetails caseDetails;
     @Mock
     SecurityDTO securityDTO;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     CaseData caseData;
     @Captor
     ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataCaptor;

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -23,7 +23,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -45,7 +45,7 @@ class TaskListControllerIT {
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
-            .roles(Arrays.asList("caseworker-probate"))
+            .roles(List.of("caseworker-probate"))
             .build());
 
     @Autowired

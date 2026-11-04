@@ -30,7 +30,7 @@ import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @ExtendWith(PactConsumerTestExt.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -80,8 +80,7 @@ public class TaskManagementApiConsumerTest {
                         "grantofrepresentation")
         );
         assertNotNull(responseEntity);
-        assertThat(responseEntity.getStatusCodeValue())
-                .isEqualTo(HttpStatus.OK.value());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     private Map<String, String> getTaskManagementServiceResponseHeaders() {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -15,7 +16,7 @@ class AttachDocumentsTransformerTest {
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
     @InjectMocks
     private AttachDocumentsTransformer attachDocumentsTransformer;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     @BeforeEach
