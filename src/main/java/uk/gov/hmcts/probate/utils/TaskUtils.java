@@ -77,6 +77,13 @@ public class TaskUtils {
     }
 
     public Optional<String> getCompletableTaskType(String clientContext) {
+        log.info("clientContext {}",
+                getWaMapper(clientContext));
+        Optional<UserTask> userTask = getWaMapper(clientContext)
+                .map(WaMapper::getClientContext)
+                .map(ClientContext::getUserTask)
+                .filter(UserTask::isCompleteTask);
+        log.info("userTask {}", userTask);
         return getWaMapper(clientContext)
              .map(WaMapper::getClientContext)
              .map(ClientContext::getUserTask)

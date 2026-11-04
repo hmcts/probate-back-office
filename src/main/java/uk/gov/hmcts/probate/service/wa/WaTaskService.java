@@ -194,7 +194,6 @@ public class WaTaskService {
     public void removeTaskFromWaTaskPresent(final CallbackRequest callbackRequest,
                                             final ResponseCaseData responseCaseData,
                                             final String clientContext) {
-
         taskUtils.getCompletableTaskType(clientContext)
                         .ifPresent(taskType -> {
                             log.info("case id {}: wa tasks present {} and task to remove {}",
