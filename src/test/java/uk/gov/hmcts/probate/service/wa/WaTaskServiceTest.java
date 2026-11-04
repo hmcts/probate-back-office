@@ -639,6 +639,9 @@ class WaTaskServiceTest {
     void shouldSetCreateTask(
             boolean taskPresent,
             String expected) {
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .waTasksPresent(new ArrayList<>())
                 .build();
