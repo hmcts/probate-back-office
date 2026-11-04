@@ -491,6 +491,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> caseEscalated(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
@@ -529,7 +530,9 @@ public class BusinessValidationController {
             notifications.add(new CollectionMember<>(null, sentNotification));
         }
 
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest,
+                caseworkerInfo,
+                clientContext);
         return ResponseEntity.ok(response);
     }
 

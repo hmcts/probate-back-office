@@ -891,9 +891,7 @@ public class CallbackResponseTransformer {
                 callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
                 false
         ).build();
-        //TODO::REMOVE
-        log.info("inside 895 CONTEXT PASSED");
-        //Setting task creation flag as mid event doesnt persist
+
         setTaskCreation(authToken, callbackRequest, responseCaseData, clientContext);
         log.info("before responding {}: wa tasks present {}",
                 callbackRequest.getCaseDetails().getId(),
@@ -912,7 +910,15 @@ public class CallbackResponseTransformer {
         }
     }
 
-    public CallbackResponse transformCase(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse transformCase(CallbackRequest callbackRequest,
+                                          Optional<UserInfo> caseworkerInfo) {
+        return transformCase(callbackRequest, caseworkerInfo, null);
+    }
+
+    //TODO::ADD TEST
+    public CallbackResponse transformCase(CallbackRequest callbackRequest,
+                                          Optional<UserInfo> caseworkerInfo,
+                                          String clientContext) {
 
         boolean transform = doTransform(callbackRequest);
 
@@ -923,9 +929,8 @@ public class CallbackResponseTransformer {
             callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
             transform
         ).build();
-        //TODO::REMOVE
-        log.info("inside 925 NULL");
-        setTaskCreation(null, callbackRequest, responseCaseData, null);
+
+        setTaskCreation(null, callbackRequest, responseCaseData, clientContext);
         return transformResponse(responseCaseData);
     }
 
@@ -954,8 +959,7 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        //TODO::REMOVE
-        log.info("inside 957 NULL");
+
         setTaskCreation(null, callbackRequest, responseCaseData, null);
 
         return transformResponse(responseCaseData);
@@ -1163,6 +1167,7 @@ public class CallbackResponseTransformer {
 
     }
 
+    //TODO::ADD TEST
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document,
                                       Optional<UserInfo> caseworkerInfo) {
 
@@ -1188,8 +1193,7 @@ public class CallbackResponseTransformer {
         }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-        //TODO::REMOVE
-        log.info("inside 1191 NULL");
+
         setTaskCreation(null, callbackRequest, responseCaseDataBuilder.build(), null);
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
