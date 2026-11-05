@@ -1303,14 +1303,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, never())
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
@@ -1363,14 +1363,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
@@ -1397,14 +1397,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, never())
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
