@@ -248,9 +248,9 @@ withPipeline("java", product, component) {
   afterSuccess('checkout') {
       echo "environment: ${env.ENV}"
       def subscription = 'nonprod'
-      if (env.ENV == 'demo') {
+      if (env.ENV in ['demo', 'aat']) {
           withSubscription(subscription) {
-              echo "Uploading dmn and bpmn diagrams"
+              echo "Uploading dmn and bpmn diagrams to ${env.ENV}"
               uploadDmnDiagrams()
               uploadBpmnDiagram()
           }
@@ -351,6 +351,15 @@ withPipeline("java", product, component) {
     ]
     env.ENV = 'prod'
     // all the AAT tasks in the master pipeline finished, so we update the env variable to promote to prod tasks
+    env.S2S_URL_BASE = "http://rpe-service-auth-provider-prod.service.core-compute-prod.internal"
+    env.CAMUNDA_BASE_URL = "http://camunda-api-prod.service.core-compute-prod.internal"
+    withSubscription('prod') {
+      withTeamSecrets(pipelineConf, 'prod') {
+          echo "Uploading dmn and bpmn diagrams to prod"
+          uploadDmnDiagrams()
+          uploadBpmnDiagram()
+      }
+    }
   }
 
   afterSuccess('highleveldatasetup') {
@@ -370,8 +379,10 @@ withPipeline("java", product, component) {
 
   onMaster() {
     env.ENV='aat'
-    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_WA_ENABLED = true
     env.PROBATE_GS_ENABLED = true
+    setCommonEnvVariables()
+    env.CAMUNDA_BASE_URL = "http://camunda-api-aat.service.core-compute-aat.internal"
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
