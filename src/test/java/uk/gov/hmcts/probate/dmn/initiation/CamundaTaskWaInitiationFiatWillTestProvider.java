@@ -38,7 +38,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
         Map<String,Object> examineFiatWillReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FIAT_WILL,
                 "name", FIAT_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineFiatWillCaseMatchingIssueGrantTaskAttributes = Map.of(

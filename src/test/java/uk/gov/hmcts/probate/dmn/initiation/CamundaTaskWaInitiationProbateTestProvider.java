@@ -36,13 +36,13 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
         Map<String, Object> examineDigitalCaseProbateTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseTypes"
+                "processCategories", "case progression,examineDigitalCaseProbate"
         );
 
         Map<String, Object> examineDigitalCaseProbateReadyToIssueTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                 "name", PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,examineDigitalCaseProbateReadyToIssue"
         );
 
 

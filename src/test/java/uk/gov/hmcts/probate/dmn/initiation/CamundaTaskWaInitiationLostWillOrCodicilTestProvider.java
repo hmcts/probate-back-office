@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.lostWillOrCodicilHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -39,6 +40,12 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> lostWillOrCodicilHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_LOST_WILL_CASE_PRINTED,
+                "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs"
+        );
+
         Map<String,Object> examineLostWillOrCodicilTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL,
                 "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
@@ -54,7 +61,7 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
         Map<String,Object> examineLostWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_LOST_WILL,
                 "name", EXAMINE_LOST_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(
@@ -376,6 +383,15 @@ public class CamundaTaskWaInitiationLostWillOrCodicilTestProvider implements Arg
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(lostWillOrCodicilHandOffReason)),
+                        List.of(lostWillOrCodicilHandOffsTaskAttributes)
                 )
         );
     }

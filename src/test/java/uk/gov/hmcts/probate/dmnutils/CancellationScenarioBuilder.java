@@ -98,15 +98,6 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "boAmendCaseDetailsForReadyToIssue",
-                                "BOReadyToIssue",
-                                "BOReadyToIssue",
-                                "examineDigitalCaseTypes",
-                                "Cancel"
-                        )
-                ),
-                Arguments.of(
-                        cancelWithProperties(
                                 "boWithdrawApplicationForCaseQA",
                                 "BOCaseQA",
                                 "BOCaseClosed",
@@ -146,10 +137,55 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "closeReadyToIssueHandOffs",
+                                "closeHandOffs",
                                 "BOReadyToIssue",
                                 "BOReadyToIssue",
-                                "readyToIssueHandOffs",
+                                "handOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeHandOffs",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "handOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseAdColligendaBona",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseAdColligendaBona",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseProbate",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseProbate",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseIntestacy",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseIntestacy",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeExamineDigitalCaseAdmonWill",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseAdmonWill",
                                 "Cancel"
                         )
                 )
