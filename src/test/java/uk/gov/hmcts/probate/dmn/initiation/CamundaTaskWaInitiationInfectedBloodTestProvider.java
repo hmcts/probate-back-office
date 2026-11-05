@@ -38,7 +38,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
         Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(

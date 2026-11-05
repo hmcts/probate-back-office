@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.wa.ClientContext;
 import uk.gov.hmcts.probate.model.wa.TaskData;
+import uk.gov.hmcts.probate.model.wa.UserTask;
 import uk.gov.hmcts.probate.model.wa.WaMapper;
 
 import java.util.Base64;
@@ -72,5 +74,23 @@ public class TaskUtils {
             }
         }
         return Optional.empty();
+    }
+
+    public Optional<String> getCompletableTaskType(String clientContext) {
+        //TODO: REMOVE
+        log.info("clientContext {}",
+                getWaMapper(clientContext));
+        Optional<UserTask> userTask = getWaMapper(clientContext)
+                .map(WaMapper::getClientContext)
+                .map(ClientContext::getUserTask)
+                .filter(UserTask::isCompleteTask);
+        //TODO: REMOVE
+        log.info("userTask {}", userTask);
+        return getWaMapper(clientContext)
+             .map(WaMapper::getClientContext)
+             .map(ClientContext::getUserTask)
+             .filter(UserTask::isCompleteTask)
+             .map(UserTask::getTaskData)
+             .map(TaskData::getType);
     }
 }

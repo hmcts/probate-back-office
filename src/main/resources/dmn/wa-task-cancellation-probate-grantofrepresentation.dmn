@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -114,29 +114,6 @@
           <text></text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1rr7tab">
-        <inputEntry id="UnaryTests_16mkb96">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1c0laio">
-          <text>"boAmendCaseDetailsForReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1hp28ee">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0llqu8n">
-          <text>"Cancel"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_02j1kgr">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_01fnyr2">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_08k2971">
-          <text>"examineDigitalCaseTypes"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1uhlsp2">
         <inputEntry id="UnaryTests_04ayyv4">
           <text>"BOCaseStoppedAwaitRedec"</text>
@@ -211,7 +188,7 @@
           <text>"BOReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gbj487">
-          <text>"closeReadyToIssueHandOffs"</text>
+          <text>"closeHandOffs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1loli00">
           <text>"BOReadyToIssue"</text>
@@ -226,7 +203,398 @@
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a3ztio">
-          <text>"readyToIssueHandOffs"</text>
+          <text>"handOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0juks9x">
+        <inputEntry id="UnaryTests_08hzy0x">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pdbt8g">
+          <text>"closeHandOffs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ezjcu0">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05px82x">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15v4k36">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13fvvl5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1q1il4z">
+          <text>"handOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ankylg">
+        <inputEntry id="UnaryTests_1tn7ts2">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k7g1c4">
+          <text>"closeExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f1qz9z">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0icnluj">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03yb08f">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dg6rcf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cnlfud">
+          <text>"examineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x2wa2w">
+        <inputEntry id="UnaryTests_1utfbba">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18pgkih">
+          <text>"closeExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yhlj5x">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0co011a">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1essug6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0clqvc0">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s3wvc6">
+          <text>"examineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0uux0z6">
+        <inputEntry id="UnaryTests_1dvtxx5">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_049telc">
+          <text>"closeExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02ava4k">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0t9snjm">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vmgwfx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pwmqfo">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nl5sgu">
+          <text>"examineDigitalCaseProbate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_032ckgb">
+        <inputEntry id="UnaryTests_0plsuc5">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14v9ysx">
+          <text>"closeExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0auauo9">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sk0e1d">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ouzswo">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nehy4w">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13s4lsj">
+          <text>"examineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0a9xi46">
+        <inputEntry id="UnaryTests_1e5y6ar">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16xn74t">
+          <text>"closeExamineDigitalCaseIntestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f4qtxn">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kld5w3">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ct8h2p">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07ditxb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ofet88">
+          <text>"examineDigitalCaseIntestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tb3lcy">
+        <inputEntry id="UnaryTests_0dhprjf">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kzyewl">
+          <text>"closeExamineDigitalCaseIntestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ll6j2t">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05556l7">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1otpzy5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15owipv">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01zfsor">
+          <text>"examineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j5fvqx">
+        <inputEntry id="UnaryTests_0zkilrd">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13lquz8">
+          <text>"closeExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1567ry0">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0du9c77">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vc7u00">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tca7mm">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sxg5rj">
+          <text>"examineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17yfxdp">
+        <inputEntry id="UnaryTests_16sfmqb">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t7b1qc">
+          <text>"closeExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wjbken">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ve3eny">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14qeu1o">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01s4510">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nb1x3a">
+          <text>"examineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1m75pmy">
+        <inputEntry id="UnaryTests_145c3fu">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vghqil">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iv1g4h">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tm75qb">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pjxeax">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nshbow">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14asqzm">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0crf0tx">
+        <inputEntry id="UnaryTests_1ol8hl5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b5hxy9">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_160cilm">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0chplkd">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0at0zay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19ekp36">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1964or4">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tk4m6s">
+        <inputEntry id="UnaryTests_1away50">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cyycn8">
+          <text>"boResolveStop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0npy474">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13vlfqn">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cxoznk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n9rubx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0167623">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ipmtiw">
+        <inputEntry id="UnaryTests_0ftzojj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_055r36j">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08m30gp">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1udrd84">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gz59ol">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s9gbe6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10xdoug">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1k3x2ky">
+        <inputEntry id="UnaryTests_1fpo7d0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ahisbn">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fcdz9w">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bt7562">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vmo1j3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s35mtu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y2mo0y">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0g0v1s3">
+        <inputEntry id="UnaryTests_1bmklig">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pspoax">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1byxtad">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wqmd6f">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0c90qsw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0u875ed">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ucj7wi">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cy3lkw">
+        <inputEntry id="UnaryTests_10l7tuf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0g6xgk3">
+          <text>"boResolveStop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pkbtlm">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hxd0r0">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kgidcz">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hpoj15">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qjzya7">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bri1io">
+        <inputEntry id="UnaryTests_1fcfcv5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15ooaqu">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qcue0a">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07a131d">
+          <text>"Reconfigure"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xuoz2b">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kr7dlm">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0k1gqi7">
+          <text></text>
         </outputEntry>
       </rule>
     </decisionTable>

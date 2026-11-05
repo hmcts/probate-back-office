@@ -46,7 +46,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
         Map<String,Object> foreignDomicileReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(

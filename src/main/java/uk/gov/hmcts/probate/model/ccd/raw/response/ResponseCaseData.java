@@ -60,6 +60,7 @@ import java.util.List;
 public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final String state;
+    private final String waCaseState;
     private final ApplicationType applicationType;
     private final String registryLocation;
 
@@ -434,4 +435,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String resolveStoppedCaseUserIdamId;
     private String resolveRedeclarationUserIdamId;
     private List<CollectionMember<HandoffReason>> waHandoffReasonList;
+    private final List<CollectionMember<String>> waTasksPresent;
 }

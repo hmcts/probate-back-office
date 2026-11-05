@@ -13,6 +13,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -43,7 +44,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
         Map<String,Object> examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineCodicilMisRecitalCasePrintedTaskAttributes = Map.of(
@@ -56,6 +57,12 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                 "taskId", EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
                 "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_CODICIL_MIS_CASE_PRINTED,
+                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(
@@ -370,6 +377,14 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason)),
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 )
         );
     }
