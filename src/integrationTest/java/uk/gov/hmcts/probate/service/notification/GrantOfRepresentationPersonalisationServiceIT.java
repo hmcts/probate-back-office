@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -17,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -83,6 +85,8 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private RegistriesProperties registriesPropertiesMock;
     @Mock
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
+    @Spy
+    private DateFormatterService dateFormatterService = new DateFormatterService();
     private CaseDetails caseDetails;
     private ReturnedCaseDetails returnedCaseDetails;
     private List<ReturnedCaseDetails> exelaCaseData = new ArrayList<>();
@@ -313,7 +317,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoDOB);
 
         assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
-        assertEquals(", Jack, Michelson, 1, java.lang.NullPointerException: temporal\n",
+        assertEquals(", Jack, Michelson, INVALID DATE, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 

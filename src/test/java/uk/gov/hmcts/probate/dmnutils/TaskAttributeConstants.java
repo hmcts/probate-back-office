@@ -351,12 +351,15 @@ public class TaskAttributeConstants {
     public static final String REVIEW_QA_CASE_AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Review QA Case - Ad Colligenda Bona";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
+    public static final String CREATE_CASE_EVENT = "createCase";
+    public static final String CREATE_CASE_PAYMENT_SUCCESS_EVENT = "createCasePaymentSuccess";
+    public static final String PAYMENT_SUCCESS_APP_EVENT = "paymentSuccessApp";
+    public static final String SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT = "solicitorPaymentSuccessCase";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
             = "boAmendCaseDetailsForAwaitingDocumentation";
     public static final String BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT
             = "boAmendCaseDetailsForReadyToIssue";
     public static final String APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT = "applyforGrantPaperApplicationMan";
-    public static final String SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT = "serviceRequestPaymentSuccess";
     public static final String ATTACH_SCANNED_DOCS_EVENT = "attachScannedDocs";
     public static final String BO_RESOLVE_STOP_EVENT = "boResolveStop";
     public static final String CHANGE_STATE_EVENT = "changeState";
@@ -366,6 +369,7 @@ public class TaskAttributeConstants {
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String BO_SELECT_FOR_QA_EVENT = "boSelectForQA";
     public static final String AUTO_SELECT_FOR_QA_CREATE_TASK_EVENT = "autoSelectForQACreateTask";
+    public static final String SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT = "serviceRequestPaymentSuccess";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
@@ -426,4 +430,12 @@ public class TaskAttributeConstants {
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
 
     public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY = "reviewSpecificAccessRequestJudiciary";
+    public static final String SPECIFIC_ACCESS_JUDICIARY = "specific-access-approver-judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS = "reviewSpecificAccessRequestLegalOps";
+    public static final String SPECIFIC_ACCESS_LEGAL_OPS = "specific-access-approver-legal-ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN = "reviewSpecificAccessRequestAdmin";
+    public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
+    public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
 }
