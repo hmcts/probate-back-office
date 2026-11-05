@@ -128,9 +128,9 @@ public class WaTaskContoller {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
             @Valid @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
-            BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);

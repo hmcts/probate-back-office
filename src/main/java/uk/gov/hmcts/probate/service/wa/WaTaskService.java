@@ -147,12 +147,12 @@ public class WaTaskService {
                 .map(Constants.NO::equals)
                 .orElse(false);
 
-        boolean handOffTaskBeingCompleted = isHandOffTaskBeingCompleted(callbackRequest, clientContext);
+        boolean shouldCloseHandOffs = noLongerHandedOff || isHandOffTaskBeingCompleted(callbackRequest, clientContext);
 
-        log.info("case id {}: closeReadyToIssueHandOffs noLongerHandedOff {}, handOffTaskBeingCompleted {}",
-                caseDetails.getId(), noLongerHandedOff, handOffTaskBeingCompleted);
+        log.info("case id {}: closeReadyToIssueHandOffs noLongerHandedOff {}, shouldCloseHandOffs {}",
+                caseDetails.getId(), noLongerHandedOff, shouldCloseHandOffs);
 
-        if (!noLongerHandedOff && !handOffTaskBeingCompleted) {
+        if (!shouldCloseHandOffs) {
             return;
         }
 
