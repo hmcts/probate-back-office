@@ -360,8 +360,8 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
-                null,
                 bindingResult,
+                null,
                 httpServletRequest);
 
         verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest, null);
@@ -376,8 +376,8 @@ public class WaTaskControllerUnitTest {
 
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
-                null,
                 bindingResult,
+                null,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
@@ -576,8 +576,8 @@ public class WaTaskControllerUnitTest {
         assertThatThrownBy(() ->
                 waTaskContoller.closeReadyToIssueHandOffs(
                         callbackRequest,
-                null,
                         bindingResult,
+                        null,
                         httpServletRequest
                 )
         ).isInstanceOf(BadRequestException.class);
