@@ -38,17 +38,35 @@ public class HandleEvidence implements CreateTaskProcessor {
                 caseType);
         switch (callbackRequest.getCaseDetails().getState()) {
             case STATE_CASE_PRINTED: {
-                waTaskService
-                        .setCreateTask(callbackRequest, responseCaseData,  TaskTypes.getAwaitingDocIceTask(caseType));
+                TaskTypes.getAwaitingDocIceTask(caseType).ifPresent(taskType -> {
+                    updateTaskCreation(callbackRequest, responseCaseData, taskType);
+                });
+
                 break;
             }
             case STATE_BO_READY_TO_ISSUE: {
-                waTaskService
-                        .setCreateTask(callbackRequest, responseCaseData, TaskTypes.getReadyToIssueIceTask(caseType));
+                TaskTypes.getReadyToIssueIceTask(caseType).ifPresent(taskType -> {
+                    updateTaskCreation(callbackRequest, responseCaseData, taskType);
+                });
+
                 break;
             }
             default:
                 responseCaseData.setCreateTask(YES);
+        }
+    }
+
+    private void updateTaskCreation(final CallbackRequest callbackRequest,
+                                    final ResponseCaseData responseCaseData,
+                                    final TaskTypes taskType) {
+        waTaskService
+                .setCreateTask(callbackRequest, responseCaseData, taskType);
+
+        if (responseCaseData.getCreateTask().equals(YES)) {
+            waTaskService.addTaskToWaTaskPresent(
+                    callbackRequest.getCaseDetails().getId(),
+                    responseCaseData,
+                    taskType.getValue());
         }
     }
 }

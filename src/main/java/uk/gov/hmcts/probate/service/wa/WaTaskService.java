@@ -225,21 +225,24 @@ public class WaTaskService {
 
     public void setCreateTask(final CallbackRequest callbackRequest,
                               final ResponseCaseData responseCaseData,
-                              final Optional<TaskTypes> taskTypeInfo) {
+                              final TaskTypes taskType) {
         //TODO:: REMOVE
-        log.info("case id {}: wa task present {}",
+        log.info("case id {}: wa task to create {}",
                 callbackRequest.getCaseDetails().getId(),
-                taskTypeInfo);
+                taskType);
         responseCaseData.setCreateTask(YES);
-        taskTypeInfo.flatMap(taskType -> responseCaseData.getWaTasksPresent().stream()
+
+        if (taskType != null) {
+            responseCaseData.getWaTasksPresent().stream()
                 .map(CollectionMember::getValue)
                 .filter(value -> value.equals(taskType.getValue()))
-                .findAny())
+                .findAny()
                 .ifPresent(taskName -> {
                     log.info("case id {}: wa task present {}",
-                            callbackRequest.getCaseDetails().getId(),
-                            taskName);
+                        callbackRequest.getCaseDetails().getId(),
+                        taskName);
                     responseCaseData.setCreateTask(NO);
                 });
+        }
     }
 }

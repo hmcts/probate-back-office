@@ -660,7 +660,7 @@ class WaTaskServiceTest {
         waTaskService.setCreateTask(
                 callbackRequest,
                 responseCaseData,
-                Optional.of(taskType)
+                taskType
         );
 
         assertThat(responseCaseData.getCreateTask())
