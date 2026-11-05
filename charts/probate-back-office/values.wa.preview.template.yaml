@@ -91,6 +91,7 @@ wa:
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: true
 
   wa-workflow-api:
     java:
