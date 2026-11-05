@@ -30,4 +30,22 @@ public class RegistryDetailsService {
 
         return caseDetails;
     }
+
+    public String getEpimmsId(String registryLocation) {
+        Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
+        if (registry != null) {
+            return registry.getEpimmsId();
+        } else {
+            return "";
+        }
+    }
+
+    public String getTaskRegion(String registryLocation) {
+        Registry registry = registriesProperties.getRegistries().get(registryLocation.toLowerCase());
+        if (registry != null) {
+            return registry.getTaskRegion();
+        } else {
+            return "";
+        }
+    }
 }
