@@ -180,7 +180,7 @@ def versions = [
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.22.4',
         jsoup                           : '1.24.1',
-        launchdarkly                    : '7.17.4',
+        launchdarkly                    : '7.17.5',
         lifeEventsClientVersion         : '1.6.1',
         lombok                          : '1.18.48',
         mapStruct                       : '1.2.0.Final',
@@ -263,7 +263,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.5'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.37.1'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.37.2'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.applicationInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: versions.applicationInsightsVersion
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '9.0'
