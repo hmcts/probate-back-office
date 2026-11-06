@@ -45,7 +45,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-
+import uk.gov.hmcts.probate.service.validation.FinalWillValidationRule;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -163,6 +163,7 @@ public class BusinessValidationController {
     private final DocumentTransformer documentTransformer;
     private final AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final FinalWillValidationRule finalWillValidationRule;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -969,14 +970,24 @@ public class BusinessValidationController {
     }
 
     @PostMapping(
-            path = "/checkCaseMatches",
+            path = "/startIssueGrant",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> checkCaseMatches(@RequestBody CallbackRequest callbackRequest,
-                                                             final HttpServletRequest httpRequest) {
+    public ResponseEntity<CallbackResponse> startIssueGrant(
+            @RequestBody CallbackRequest callbackRequest,
+            final HttpServletRequest httpRequest) {
         logRequest(httpRequest.getRequestURI(), callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer
                 .transformForIssueGrant(callbackRequest, Optional.empty()));
+    }
+
+    @PostMapping(
+            path = "/validate-final-will",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateFinalWill(@RequestBody CallbackRequest request) {
+        finalWillValidationRule.validate(request);
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request, Optional.empty(), ""));
     }
 
     @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,

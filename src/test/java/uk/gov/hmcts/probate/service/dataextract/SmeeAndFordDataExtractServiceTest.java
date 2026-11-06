@@ -67,7 +67,7 @@ class SmeeAndFordDataExtractServiceTest {
                 "1",
                 "test",
                 "other",
-                "will",
+                "will", null,
                 LocalDateTime.now(),
                 DocumentLink.builder().build(),
                 "test",
@@ -75,7 +75,7 @@ class SmeeAndFordDataExtractServiceTest {
             )
         );
         CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
-            "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+            "test", "other", null, null, LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);
