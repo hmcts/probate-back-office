@@ -46,7 +46,7 @@
       "willAccessOriginal": "Yes",
       "willExists": "No",
       "solsWillType": "NoWill",
-      "solsApplicantRelationshipToDeceased": null,
+      "solsApplicantRelationshipToDeceased": "Child",
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
       "solsMinorityInterest": null,

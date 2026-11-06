@@ -24,6 +24,7 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "caseType": "gop",
       "solsPaymentMethods": "fee account",
       "solsPBANumber": {
         "value": {

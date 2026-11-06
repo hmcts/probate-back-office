@@ -93,7 +93,6 @@
       "First name(s)",
       "Last name(s)",
       "Applicant phone number",
-      "Applicant email address",
       "Building and Street",
       "Address Line 2",
       "Address Line 3",
@@ -105,7 +104,6 @@
     "dataKeys": [
       "applicant_firstname",
       "applicant_lastname",
-      "applicant_email",
       "applicant_phone",
       "address_line1",
       "address_line2",

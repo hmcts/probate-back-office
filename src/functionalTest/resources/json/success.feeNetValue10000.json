@@ -14,6 +14,7 @@
       695000000
     ],
     "case_data": {
+      "caseType": "gop",
       "solsPaymentMethods": "fee account",
       "solsPBANumber": {
         "value": {
