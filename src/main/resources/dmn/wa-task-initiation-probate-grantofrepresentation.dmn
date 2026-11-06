@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -84,11 +84,11 @@ else false</text>
       </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
-      <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
+      <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" />
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"handleEvidence","applyforGrantPaperApplicationMan","boResolveStop","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -130,6 +130,56 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
+          <text>"case progression,examineDigitalCaseTypes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bq4xww">
+        <inputEntry id="UnaryTests_0oozdxx">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n91hn2">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gd9ipk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13njk79">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rz3i43">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ma47q7">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_111xm03">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y8eihq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tql9no">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1t8aj4b">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1duyxz2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ewgbqo">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0m1pnpj">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1an1hii">
+          <text>{
+  delayUntilOrigin: now() + duration("PT5S"),
+  delayUntilIntervalDays: 0
+}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s1tiq5">
           <text>"case progression,examineDigitalCaseTypes"</text>
         </outputEntry>
       </rule>
