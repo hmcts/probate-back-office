@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.service.validation.FinalWillValidationRule;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -231,11 +232,12 @@ class BusinessValidationUnitTest {
     private DocumentTransformer documentTransformerMock;
     @Mock
     private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
-
     @Mock
     private CaseEscalatedService caseEscalatedService;
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
+    @Mock
+    private FinalWillValidationRule finalWillValidationRule;
 
 
     private BusinessValidationController underTest;
@@ -283,7 +285,8 @@ class BusinessValidationUnitTest {
             userInfoServiceMock,
             documentTransformerMock,
             attorneyAppointedExecutorValidationRule,
-            ccdSupplementaryDataService);
+            ccdSupplementaryDataService,
+            finalWillValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1455,7 +1458,7 @@ class BusinessValidationUnitTest {
     @Test
     void shouldTransformForIssueGrant() {
         ResponseEntity<CallbackResponse> response = underTest
-                .checkCaseMatches(callbackRequestMock, httpServletRequest);
+                .startIssueGrant(callbackRequestMock, httpServletRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(callbackResponseTransformerMock).transformForIssueGrant(any(), any());
     }

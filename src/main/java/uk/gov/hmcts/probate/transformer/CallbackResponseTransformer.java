@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
@@ -163,6 +164,8 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final ReviewFinalWillSwitchDefaulter reviewFinalWillSwitchDefaulter;
+    private final EvidenceUploadService evidenceUploadService;
     private final WorkAllocationToggleService workAllocationToggleService;
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
     private final Clock clock;
@@ -2331,14 +2334,21 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
                                                    Optional<UserInfo> caseworkerInfo) {
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(caseDetails,
                         callbackRequest.getEventId(),
                         callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
                         false);
-        responseCaseDataBuilder.hasValidMatches(
-                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
-        );
+        responseCaseDataBuilder
+                .hasValidMatches(hasValidMatchesDefaulter.defaultHasValidMatches(caseData))
+                .reviewFinalWillSwitch(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
+                .scannedDocuments(evidenceUploadService.defaultScannedFinalWillIndicator(
+                    caseData.getScannedDocuments(), evidenceUploadService.countWillDocuments(caseData) == 1))
+                .boDocumentsUploaded(evidenceUploadService.defaultUploadedFinalWillIndicator(
+                    caseData.getBoDocumentsUploaded(), evidenceUploadService.countWillDocuments(caseData) == 1));
         return transformResponse(responseCaseDataBuilder.build());
     }
+
+
 }
