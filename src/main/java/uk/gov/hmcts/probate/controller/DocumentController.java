@@ -65,8 +65,10 @@ import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -178,6 +180,13 @@ public class DocumentController {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
+
+        if (!CASE_TYPE_INTESTACY.equalsIgnoreCase(caseData.getCaseType())
+                && evidenceUploadService.hasMultipleWills(caseData)) {
+            evidenceUploadService.validateExistingUploadedDocuments(callbackRequest);
+            evidenceUploadService.validateExistingScannedDocuments(callbackRequest);
+            evidenceUploadService.validateFinalWillIndicator(callbackRequest);
+        }
 
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();

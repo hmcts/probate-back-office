@@ -969,10 +969,10 @@ public class BusinessValidationController {
     }
 
     @PostMapping(
-            path = "/checkCaseMatches",
+            path = "/startIssueGrant",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> checkCaseMatches(@RequestBody CallbackRequest callbackRequest,
+    public ResponseEntity<CallbackResponse> startIssueGrant(@RequestBody CallbackRequest callbackRequest,
                                                              final HttpServletRequest httpRequest) {
         logRequest(httpRequest.getRequestURI(), callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer

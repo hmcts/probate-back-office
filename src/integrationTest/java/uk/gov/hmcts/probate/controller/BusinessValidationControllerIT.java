@@ -198,7 +198,7 @@ class BusinessValidationControllerIT {
     private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
-    private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
+    private static final String START_ISSUE_GRANT = "/case/startIssueGrant";
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationUserId";
     private static final String CASE_CLOSED_STATE = "BOCaseClosed";
     private static final String STATE_BO_SOT_GENERATED = "BOSotGenerated";
@@ -1537,7 +1537,7 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+        mockMvc.perform(post(START_ISSUE_GRANT).header(AUTH_HEADER, AUTH_TOKEN)
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -1635,7 +1635,7 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+        mockMvc.perform(post(START_ISSUE_GRANT).header(AUTH_HEADER, AUTH_TOKEN)
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

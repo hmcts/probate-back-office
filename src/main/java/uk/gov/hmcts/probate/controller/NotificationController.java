@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -232,15 +233,22 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
-            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+            @RequestBody CallbackRequest callbackRequest) throws OCRMappingException {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         scannedDocumentOrderingService
                 .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response;
+        try {
+            response = raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest,
+                    caseworkerInfo);
+        } catch (NotificationClientException e) {
+            log.error("Error sending grant received notification", e);
+            throw new OCRMappingException("Please resolve all warnings before creating the case", List.of("invalid email"));
+        }
         return ResponseEntity
-            .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest,
-                    caseworkerInfo));
+            .ok(response);
     }
 
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_VALUE)

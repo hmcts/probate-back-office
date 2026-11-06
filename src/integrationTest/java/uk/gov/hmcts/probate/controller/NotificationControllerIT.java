@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -59,6 +60,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -143,6 +145,9 @@ class NotificationControllerIT {
 
     @MockitoBean
     private GrantNotificationService grantNotificationService;
+
+    @MockitoBean
+    private RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
 
     @MockitoBean
     private FeatureToggleService featureToggleService;
@@ -662,6 +667,20 @@ class NotificationControllerIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void shouldReturnErrResponseFoRaiseGrantWithoutEmail() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+        doThrow(new NotificationClientException("error")).when(raiseGrantOfRepresentationNotificationService).handleGrantReceivedNotification(any(), any());
+
+        mockMvc.perform(post(RAISE_GRANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this solicitor. Add an email address or "
+                                + "contact them by post."));
     }
 
     @Test

@@ -1455,7 +1455,7 @@ class BusinessValidationUnitTest {
     @Test
     void shouldTransformForIssueGrant() {
         ResponseEntity<CallbackResponse> response = underTest
-                .checkCaseMatches(callbackRequestMock, httpServletRequest);
+                .startIssueGrant(callbackRequestMock, httpServletRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(callbackResponseTransformerMock).transformForIssueGrant(any(), any());
     }

@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -35,6 +36,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
@@ -76,6 +78,9 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
@@ -162,6 +167,8 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final HasMultipleWillsDefaulter hasMultipleWillsDefaulter;
+    private final EvidenceUploadService evidenceUploadService;
     private final WorkAllocationToggleService workAllocationToggleService;
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
     private final Clock clock;
@@ -2323,14 +2330,21 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
                                                    Optional<UserInfo> caseworkerInfo) {
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(caseDetails,
                         callbackRequest.getEventId(),
                         callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
                         false);
-        responseCaseDataBuilder.hasValidMatches(
-                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
-        );
+        responseCaseDataBuilder
+                .hasValidMatches(hasValidMatchesDefaulter.defaultHasValidMatches(caseData))
+                .hasMultipleWills(hasMultipleWillsDefaulter.defaultHasMultipleWills(caseData))
+                .scannedDocuments(
+                    evidenceUploadService.defaultScannedFinalWillIndicator(caseData.getScannedDocuments()))
+                .boDocumentsUploaded(
+                    evidenceUploadService.defaultUploadedFinalWillIndicator(caseData.getBoDocumentsUploaded()));
         return transformResponse(responseCaseDataBuilder.build());
     }
+
+
 }
