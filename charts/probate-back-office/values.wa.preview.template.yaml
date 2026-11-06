@@ -41,6 +41,7 @@ wa:
       devmemoryLimits: 4Gi
       environment:
         CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: false
 
   wa-case-event-handler:
     java:
@@ -91,6 +92,7 @@ wa:
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: false
 
   wa-workflow-api:
     java:
