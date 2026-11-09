@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ResolveCWEscalationTest {
+class ResolveCwEscalationTest {
     @Mock
     private CallbackRequest callbackRequest;
     @Mock
@@ -23,7 +23,7 @@ class ResolveCWEscalationTest {
     @Mock
     private WaTaskService waTaskService;
     @InjectMocks
-    private ResolveCWEscalation processor;
+    private ResolveCwEscalation processor;
 
     @Test
     void shouldInvokeWaTaskService() {

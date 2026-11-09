@@ -569,6 +569,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/resolve-case-worker-escalated", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> resolveCaseworkerEscalated(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER, required = false) String clientContext,
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
@@ -586,7 +587,7 @@ public class BusinessValidationController {
             setRedeclarationUserFromCaseworker(callbackRequest, caseworkerInfo);
         }
         CallbackResponse response = callbackResponseTransformer
-                .resolveCaseWorkerEscalationState(callbackRequest, caseworkerInfo);
+                .resolveCaseWorkerEscalationState(callbackRequest, caseworkerInfo, clientContext);
         return ResponseEntity.ok(response);
     }
 

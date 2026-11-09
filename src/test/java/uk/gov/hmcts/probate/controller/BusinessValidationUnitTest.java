@@ -1042,7 +1042,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
 
         ResponseEntity<CallbackResponse> response =
-                underTest.resolveCaseworkerEscalated(callbackRequestMock, bindingResultMock,
+                underTest.resolveCaseworkerEscalated(null, callbackRequestMock, bindingResultMock,
                         httpServletRequest);
         verify(caseEscalatedServiceMock, times(1)).setResolveCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

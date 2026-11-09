@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ResolveCWEscalation implements CreateTaskProcessor {
+public class ResolveCwEscalation implements CreateTaskProcessor {
 
     public static final String RESOLVE_CW_ESCALATION
             = "resolveCWEscalation";
