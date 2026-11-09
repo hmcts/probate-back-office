@@ -170,7 +170,21 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
+                    emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            emptyList(), true),
                     List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false,
+                            emptyList(), true),
+                    emptyList()
             ),
             Arguments.of(
                     ATTACH_SCANNED_DOCS_EVENT,

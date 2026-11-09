@@ -104,6 +104,54 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "examineDigitalCaseTypes",
                                 "Cancel"
                         )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseQA",
+                                "BOCaseClosed",
+                                "case progression",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "someInvalidEvent",
+                                "BOCaseQA",
+                                "BOCaseClosed"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseClosed",
+                                "BOCaseClosed"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForCaseQA",
+                                "BOCaseQA",
+                                "BOCaseQA"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "changeState",
+                                null,
+                                null,
+                                "case progression",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "closeReadyToIssueHandOffs",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue",
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
                 )
         );
     }

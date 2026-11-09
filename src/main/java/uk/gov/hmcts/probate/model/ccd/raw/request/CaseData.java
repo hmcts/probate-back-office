@@ -331,6 +331,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
 
     private List<CollectionMember<HandoffReason>> boHandoffReasonList;
+    private List<CollectionMember<HandoffReason>> waHandoffReasonList;
 
     private final String boStopDetails;
 
@@ -388,6 +389,7 @@ public class CaseData extends CaseDataParent {
     private String escalateToRegistrarUserIdamId;
     private String redeclarationUserIdamId;
     private String resolveStoppedCaseUserIdamId;
+    private String resolveRedeclarationUserIdamId;
     private final String paperForm;
     private String channelChoice;
     private final String languagePreferenceWelsh;

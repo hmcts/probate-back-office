@@ -69,4 +69,9 @@ public class CaseDataBuilder {
         caseData.put("resolveStoppedCaseUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setResolveRedeclarationUserIdamId(String idamId) {
+        caseData.put("resolveRedeclarationUserIdamId", idamId);
+        return this;
+    }
 }
