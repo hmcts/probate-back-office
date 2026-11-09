@@ -43,13 +43,13 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
         Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(

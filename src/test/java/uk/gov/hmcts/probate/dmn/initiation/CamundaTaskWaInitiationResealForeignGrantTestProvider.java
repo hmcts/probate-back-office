@@ -37,7 +37,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
         Map<String,Object> examineResealForeignGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_RESEAL_FOREIGN_GRANT,
                 "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineResealForeignGrantCasePrintedTaskAttributes = Map.of(
@@ -49,7 +49,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
         Map<String,Object> examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE,
                 "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineResealForeignGrantReadyToIssueHandOffsTaskAttributes = Map.of(

@@ -38,7 +38,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
         Map<String,Object> examineRectifyWillOrCodicilTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -56,7 +56,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
         Map<String,Object> examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_OR_CODICIL_CHANGE_STATE,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(

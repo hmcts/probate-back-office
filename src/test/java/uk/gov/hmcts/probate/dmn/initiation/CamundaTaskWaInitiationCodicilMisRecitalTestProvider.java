@@ -37,7 +37,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
         Map<String,Object> examineCodicilMisRecitalTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -55,7 +55,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
         Map<String,Object> examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
