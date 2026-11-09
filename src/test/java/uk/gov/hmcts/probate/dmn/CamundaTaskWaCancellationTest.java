@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -170,6 +171,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     private boolean isAwaitingDocIceCancellationTask(String event) {
         return TaskTypes.examineAwaitingDocIceTasks().stream()
                 .map(TaskTypes::getClosingEventId)
+                .filter(Objects::nonNull)
                 .map(EventId::getName)
                 .anyMatch(event::equals);
     }

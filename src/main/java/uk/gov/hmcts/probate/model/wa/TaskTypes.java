@@ -2,10 +2,12 @@ package uk.gov.hmcts.probate.model.wa;
 
 import lombok.Getter;
 import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
@@ -14,6 +16,7 @@ import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
@@ -38,18 +41,32 @@ public enum TaskTypes {
             "ExamineDigitalCaseAdmonWillReadyToIssue", ADMON_WILL.getCaseType(), CLOSE_ICE_ADMON_WILL),
     EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,
             "ExamineDigitalCaseAdColligendaBonaReadyToIssue", AD_COLLIGENDA_BONA.getCaseType(),
-            CLOSE_ICE_AD_COLLIGENDA_BONA);
+            CLOSE_ICE_AD_COLLIGENDA_BONA),
+    EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
+            "ExamineSMEReferral", null, null,
+            caseData -> !Boolean.TRUE.equals(caseData.getEvidenceHandled()));
 
     final String state;
     final String value;
     final String caseType;
     final EventId closingEventId;
+    final Predicate<ResponseCaseData> createPredicate;
 
     TaskTypes(String state, String value, String caseType, EventId eventId) {
         this.state = state;
         this.value = value;
         this.caseType = caseType;
         this.closingEventId = eventId;
+        this.createPredicate = x -> true;
+    }
+
+    TaskTypes(String state, String value, String caseType, EventId eventId,
+              Predicate<ResponseCaseData> createPredicate) {
+        this.state = state;
+        this.value = value;
+        this.caseType = caseType;
+        this.closingEventId = eventId;
+        this.createPredicate = createPredicate;
     }
 
     public static Set<TaskTypes> examineAwaitingDocIceTasks() {
@@ -75,7 +92,6 @@ public enum TaskTypes {
                 .filter(taskType -> taskType.caseType.equals(caseType))
                 .findFirst();
     }
-
 
 
     public Optional<EventId> getOptionalClosingEventId() {
