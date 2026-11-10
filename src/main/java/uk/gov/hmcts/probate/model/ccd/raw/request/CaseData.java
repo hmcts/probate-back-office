@@ -819,7 +819,7 @@ public class CaseData extends CaseDataParent {
     /**
      * Method to permit migration to clear deceased date of birth.
      *
-     * Should not be needed in normal operation.
+     * <p>Should not be needed in normal operation.</p>
      */
     public void clearDeceasedDateOfBirth(final long caseId) {
         log.info("clearing deceased date of birth for case: {}", caseId);
