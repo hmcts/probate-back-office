@@ -53,6 +53,13 @@ public class CamundaTaskWaInitiationExamineSmeReferralTestProvider implements Ar
                 Arguments.of(
                         "handleEvidence",
                         "BOCaseWorkerEscalation",
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOCaseWorkerEscalation",
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
@@ -95,6 +102,13 @@ public class CamundaTaskWaInitiationExamineSmeReferralTestProvider implements Ar
                 Arguments.of(
                         "handleEvidence",
                         "BOCaseWorkerEscalation",
+                        additionalData(false, GOP_CASE_TYPE,true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOCaseWorkerEscalation",
                         additionalData(true, GOP_CASE_TYPE,true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
@@ -137,6 +151,13 @@ public class CamundaTaskWaInitiationExamineSmeReferralTestProvider implements Ar
                 Arguments.of(
                         "handleEvidence",
                         "BOCaseWorkerEscalation",
+                        additionalData(false, ADMON_WILL_CASE_TYPE,true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOCaseWorkerEscalation",
                         additionalData(true, ADMON_WILL_CASE_TYPE,true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
@@ -175,6 +196,13 @@ public class CamundaTaskWaInitiationExamineSmeReferralTestProvider implements Ar
                         additionalData(false, INTESTACY_CASE_TYPE,true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         List.of(examineSMEReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, INTESTACY_CASE_TYPE,true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
@@ -218,6 +246,13 @@ public class CamundaTaskWaInitiationExamineSmeReferralTestProvider implements Ar
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), true),
                         List.of(examineSMEReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",

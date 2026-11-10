@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
@@ -44,7 +45,7 @@ public enum TaskTypes {
             CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
             "ExamineSMEReferral", null, null,
-            caseData -> !Boolean.TRUE.equals(caseData.getEvidenceHandled()));
+            caseData -> !YES.equals(caseData.getEvidenceHandled()));
 
     final String state;
     final String value;

@@ -31,6 +31,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 
@@ -76,9 +77,20 @@ class HandleEvidenceTest {
         when(caseDetails.getId()).thenReturn(123456789L);
         when(caseData.getCaseType()).thenReturn(caseType);
 
-        TaskTypes taskType = STATE_CASE_PRINTED.equals(state)
-                ? TaskTypes.getAwaitingDocIceTask(caseType).orElseThrow()
-                : TaskTypes.getReadyToIssueIceTask(caseType).orElseThrow();
+        TaskTypes taskType;
+        switch (state) {
+            case STATE_CASE_PRINTED:
+                taskType = TaskTypes.getAwaitingDocIceTask(caseType).orElseThrow();
+                break;
+            case STATE_BO_READY_TO_ISSUE:
+                taskType = TaskTypes.getReadyToIssueIceTask(caseType).orElseThrow();
+                break;
+            case STATE_BO_CASE_WORKER_ESCALATION:
+                taskType = TaskTypes.EXAMINE_SME_REFERRAL;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected state: " + state);
+        }
 
         doAnswer(invocation -> {
             ResponseCaseData response = invocation.getArgument(1);
@@ -130,7 +142,8 @@ class HandleEvidenceTest {
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "gop", true),
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "gop", false),
                 Arguments.of(STATE_CASE_PRINTED, "intestacy", true),
-                Arguments.of(STATE_BO_READY_TO_ISSUE, "intestacy", false)
+                Arguments.of(STATE_BO_READY_TO_ISSUE, "intestacy", false),
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, "gop", false)
         );
     }
 
