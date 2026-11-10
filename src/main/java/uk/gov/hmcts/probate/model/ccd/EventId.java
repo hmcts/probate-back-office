@@ -46,7 +46,30 @@ public enum EventId {
     CLOSE_ICE_PROBATE("closeExamineDigitalCaseProbate"),
     CLOSE_ICE_INTESTACY("closeExamineDigitalCaseIntestacy"),
     CLOSE_ICE_ADMON_WILL("closeExamineDigitalCaseAdmonWill"),
-    CLOSE_ICE_AD_COLLIGENDA_BONA("closeExamineDigitalCaseAdColligendaBona");
+    CLOSE_ICE_AD_COLLIGENDA_BONA("closeExamineDigitalCaseAdColligendaBona"),
+    CLOSE_DE_BONIS_NON("closeExamineDeBonisNon"),
+    CLOSE_DOUBLE_PROBATE("closeExamineDoubleProbate"),
+    CLOSE_INCAPACITY_RULE_35("closeExamineIncapacityRule35"),
+    CLOSE_LEADING_FOLLOWING_GRANTS("closeExamineLeadingFollowingGrants"),
+    CLOSE_RECTIFY_WILL_CODICIL("closeExamineRectifyWillCodicil"),
+    CLOSE_IBCA("closeExamineIBCA"),
+    CLOSE_SECTION_116("closeExamineSection116"),
+    CLOSE_POA("closeExaminePOA"),
+    CLOSE_RESEAL_FOREIGN_GRANT("closeExamineResealForeignGrant"),
+    CLOSE_IBIS("closeExamineIBIS"),
+    CLOSE_LITERARY_ESTATE("closeExamineLiteraryEstate"),
+    CLOSE_LOST_WILL("closeExamineLostWill"),
+    CLOSE_TRUST_CORPORATION("closeExamineTrustCorporation"),
+    CLOSE_HORIZON_SCHEME("closeExamineHorizonScheme"),
+    CLOSE_MINORITY_INTEREST("closeExamineMinorityInterest"),
+    CLOSE_WILL_CODICIL_NOTATED("closeExamineWillCodicilNotated"),
+    CLOSE_WITNESS_INTERVIEW("closeExamineWitnessInterview"),
+    CLOSE_FIAT_WILL("closeExamineFiatWill"),
+    CLOSE_FOREIGN_DOMICILE("closeExamineForeignDomicile"),
+    CLOSE_FOREIGN_WILL("closeExamineForeignWill"),
+    CLOSE_WINDRUSH_SCHEME("closeExamineWindrushScheme"),
+    CLOSE_CODICIL_MIS("closeExamineCodicilMis");
+
     @Getter
     private final String name;
 

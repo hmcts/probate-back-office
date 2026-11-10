@@ -51,14 +51,14 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineDoubleProbate"
         );
 
         Map<String,Object> examineDigitalCaseDoubleProbateCasePrintedHandOffsTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineDoubleProbateCasePrinted"
         );
 
 
