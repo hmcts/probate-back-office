@@ -9,9 +9,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 @Slf4j
 @Component
-public class ClearDeceasedDoBMigrationHandler implements GorMigrationHandler {
+public class ClearDeceasedDobMigrationHandler implements GorMigrationHandler {
     @Override
-    public CallbackRequest migrate(CallbackRequest callbackRequest, JSONObject migrationData) {
+    public CallbackRequest migrate(
+            final CallbackRequest callbackRequest,
+            final JSONObject migrationData) {
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         final long caseId = caseDetails.getId();
