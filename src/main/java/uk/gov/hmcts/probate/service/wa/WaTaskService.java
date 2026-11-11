@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.wa;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.StateConstants;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -20,12 +21,18 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
@@ -34,7 +41,9 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.getStateTasks;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -105,47 +114,103 @@ public class WaTaskService {
 
     public void closeReadyToIssueTasks(CallbackRequest callbackRequest,
                                        String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest);
-        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineReadyToIssueIceTasks());
+        triggerCloseHandOffEvent(callbackRequest, clientContext,
+                handOffReason -> "Examine" + handOffReason);
+        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineReadyToIssueTasks());
     }
+
 
     public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
                                                 String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest);
-        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineAwaitingDocIceTasks());
+        triggerCloseHandOffEvent(callbackRequest, clientContext,
+                handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED);
+        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineAwaitingDocTasks());
     }
 
     private void triggerCloseIceEvent(CallbackRequest callbackRequest,
                                       String clientContext,
                                       Set<TaskTypes> taskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
-        if (taskData.isEmpty() && getCaseTypePredicate().test(callbackRequest, clientContext)) {
+
+        if (taskData.isEmpty()) {
             Long caseId = callbackRequest.getCaseDetails().getId();
+            Consumer<String> eventTrigger = caseType ->
+                taskTypes.stream()
+                        .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
+                        .filter(taskType -> taskType.getCaseType().equals(caseType))
+                        .findFirst()
+                        .flatMap(TaskTypes::getOptionalClosingEventId)
+                        .ifPresent(eventId -> {
+                            log.info("Case id {} : triggering closing event {}",
+                                    caseId,
+                                    eventId);
+                            triggerEvent(callbackRequest.getCaseDetails(), eventId);
+                        });
 
-            String caseTypeBefore = callbackRequest.getCaseDetailsBefore().getData().getCaseType();
+            boolean caseTypeChanged =
+                    getCaseTypePredicate().test(callbackRequest, clientContext);
 
-            log.info("Case id {} : no context task and case type has changed from {}",
-                    caseId,
-                    caseTypeBefore);
+            if (caseTypeChanged) {
 
-            taskTypes.stream()
-                    .filter(taskType -> taskType.getCaseType().equals(caseTypeBefore))
-                    .findFirst()
-                    .flatMap(TaskTypes::getOptionalClosingEventId)
-                    .ifPresent(eventId -> {
-                        log.info("Case id {} : triggering closing event {}",
-                                caseId,
-                                eventId);
-                        triggerEvent(callbackRequest.getCaseDetails(), eventId);
-                    });
+                String caseTypeBefore = callbackRequest.getCaseDetailsBefore().getData().getCaseType();
+
+                log.info("Case id {} : no context task and case type has changed from {}",
+                        caseId,
+                        caseTypeBefore);
+                eventTrigger.accept(caseTypeBefore);
+            } else if (isHandOffsAdded(callbackRequest)) {
+
+                log.info("Case id {} : no context task and handoffs have been added",
+                        caseId);
+                eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType());
+            }
         }
     }
 
-    private void triggerCloseHandOffEvent(CallbackRequest callbackRequest) {
+    private void triggerCloseHandOffEvent(CallbackRequest callbackRequest,
+                                          String clientContext,
+                                          UnaryOperator<String> handOffReasonTask) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         if (isAllHandOffsRemoved(callbackRequest)) {
             triggerEvent(caseDetails, CLOSE_HANDOFFS);
+        } else if (taskUtils.getTaskData(clientContext).isEmpty()) {
+
+            Set<HandoffReason> handOffReasonBefore = getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
+            Set<HandoffReason> handOffReasonAfter = getGetHandOffReasons(callbackRequest.getCaseDetails());
+
+            Set<HandoffReason> handOffReasonsToBeRemoved = new HashSet<>(handOffReasonBefore);
+            handOffReasonsToBeRemoved.removeAll(handOffReasonAfter);
+
+            String caseState = callbackRequest.getCaseDetailsBefore().getState();
+
+            BiConsumer<String, Map<String, TaskTypes>> eventTrigger = (state, stateTasks) -> {
+                handOffReasonsToBeRemoved.stream()
+                        .map(HandoffReason::getCaseHandoffReason)
+                        .map(HandoffReasonId::getCode)
+                        .map(handOffReasonTask)
+                        .map(String::toUpperCase)
+                        .forEach(handOffReasonTaskType -> {
+                            log.info("Case id {} : handOffReasonTaskType to be removed {}",
+                                    callbackRequest.getCaseDetails().getId(),
+                                    handOffReasonTaskType);
+                            triggerEvent(callbackRequest.getCaseDetails(),
+                                    stateTasks.get(handOffReasonTaskType.toUpperCase())
+                                            .getClosingEventId());
+                        });
+
+            };
+
+            if (!handOffReasonsToBeRemoved.isEmpty()) {
+                if (STATE_CASE_PRINTED.equals(caseState)) {
+                    Map<String, TaskTypes> examineAwaitingDocTasks = getStateTasks(STATE_CASE_PRINTED);
+                    eventTrigger.accept(STATE_CASE_PRINTED, examineAwaitingDocTasks);
+                } else if (StateConstants.STATE_BO_READY_TO_ISSUE.equals(caseState)) {
+                    Map<String, TaskTypes> examineReadyToIssueTask =
+                            getStateTasks(StateConstants.STATE_BO_READY_TO_ISSUE);
+                    eventTrigger.accept(StateConstants.STATE_BO_READY_TO_ISSUE, examineReadyToIssueTask);
+                }
+            }
         }
     }
 
@@ -153,6 +218,13 @@ public class WaTaskService {
         return YES.equals(callbackRequest.getCaseDetailsBefore()
                 .getData().getCaseHandedOffToLegacySite())
                 && NO.equals(callbackRequest.getCaseDetails()
+                .getData().getCaseHandedOffToLegacySite());
+    }
+
+    public boolean isHandOffsAdded(final CallbackRequest callbackRequest) {
+        return NO.equals(callbackRequest.getCaseDetailsBefore()
+                .getData().getCaseHandedOffToLegacySite())
+                && YES.equals(callbackRequest.getCaseDetails()
                 .getData().getCaseHandedOffToLegacySite());
     }
 

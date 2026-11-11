@@ -48,7 +48,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                 = Map.of(
                 "taskId", EXAMINE_INCAPACITY_RULE_35,
                 "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineIncapacityRule35"
         );
 
         return Stream.of(

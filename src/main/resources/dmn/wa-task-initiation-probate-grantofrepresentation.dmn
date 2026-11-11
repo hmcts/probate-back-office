@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -2822,7 +2822,7 @@ else false</text>
         <inputEntry id="UnaryTests_0vjdb0u">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_14ph6bq">
+        <inputEntry id="UnaryTests_15sd411">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uavz67">
@@ -3950,7 +3950,7 @@ else false</text>
         <inputEntry id="UnaryTests_0gtl7f9">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0tcsnkw">
+        <inputEntry id="UnaryTests_1y8wyq2">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0k3xqag">
@@ -5488,7 +5488,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l4z85z">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineDeBonisNon"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1adv3g9">
@@ -5535,7 +5535,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sau706">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWindrushScheme"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_01evpws">
@@ -5582,7 +5582,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1td6jut">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineFiatWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rpv29q">
@@ -5629,7 +5629,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ko9b9h">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIBCA"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ficjl3">
@@ -5642,7 +5642,7 @@ else false</text>
         <inputEntry id="UnaryTests_119761d">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_whmrcnb">
+        <inputEntry id="UnaryTests_0gg7z3p">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1txnlte">
@@ -5676,7 +5676,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1rb5nyr">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWillCodicilNotated"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ur34t4">
@@ -5723,7 +5723,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15nya5j">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWitnessInterview"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fsys9n">
@@ -5770,7 +5770,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08hih4d">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineHorizonScheme"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_09x3jue">
@@ -5817,7 +5817,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ks2u6l">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineDoubleProbate"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1tgiz65">
@@ -5864,7 +5864,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10xt5le">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIncapacityRule35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nthk1h">
@@ -5911,7 +5911,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a1ymvg">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLeadingFollowingGrants"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_123i48d">
@@ -5958,7 +5958,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1f8dumw">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineRectifyWillCodicil"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0yj3aaj">
@@ -6005,7 +6005,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00vfop2">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineCodicilMis"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12ek0ae">
@@ -6052,7 +6052,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1let2fn">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineSection116"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04aew5q">
@@ -6099,7 +6099,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_13plilw">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examinePOA"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04rneis">
@@ -6146,7 +6146,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ibw6lc">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineResealForeignGrant"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_18yopcv">
@@ -6193,7 +6193,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0hszl6y">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIBIS"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mrziay">
@@ -6240,7 +6240,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0enxx42">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineTrustCorporation"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0juus49">
@@ -6287,7 +6287,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10xh31t">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineForeignWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ttg01v">
@@ -6334,7 +6334,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q2kqay">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineForeignDomicile"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1g2asjd">
@@ -6381,7 +6381,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0m4vox5">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineMinorityInterest"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0h4k0o6">
@@ -6428,7 +6428,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bupx4k">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLostWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0wudn5w">
@@ -6475,101 +6475,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0birh13">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0mg5plg">
-        <inputEntry id="UnaryTests_059347b">
-          <text>"boAmendCaseDetailsForReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1rehcur">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_01dpnbj">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_dm56af9">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1keq5dx">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0unziqx">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1qjam33">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_014hmx6">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1859g2b">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_08mrldz">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0uh5xyp">
-          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "Spreadsheet")</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0kuhxoh">
-          <text>"ExamineSpreadsheet"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0k65ld4">
-          <text>"Examine - Spreadsheet"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1dzg9xx">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0co3ex7">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_19i8xqv">
-        <inputEntry id="UnaryTests_19pe8mf">
-          <text>"boAmendCaseDetailsForReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0um1sl1">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1ym4b7n">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_w1jy254">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1mzgddx">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0c488ry">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ddeido">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ha5j25">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1ilxjpt">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_16u88ib">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1f53jdk">
-          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ColligendaBona")</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1j3u0cl">
-          <text>"ExamineColligendaBona"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1cele8j">
-          <text>"Examine - Ad Colligenda Bona"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1ejkqmm">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_12lis0r">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLiteraryEstate"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fiz5qg">
@@ -6616,7 +6522,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_06ave7p">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIBISCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0lv6fxc">
@@ -6663,7 +6569,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00m7npa">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLostWillCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_088n9pt">
@@ -6710,7 +6616,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00vo5vc">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineHorizonSchemeCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1xhqcid">
@@ -6757,7 +6663,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l6rym1">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIBCACasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_006sczq">
@@ -6804,7 +6710,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a45lnf">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLeadingFollowingGrantsCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_15qe864">
@@ -6817,7 +6723,7 @@ else false</text>
         <inputEntry id="UnaryTests_08n015d">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0avs50t">
+        <inputEntry id="UnaryTests_07q3qvb">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_04u0swf">
@@ -6851,7 +6757,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cpaqln">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineLiteraryEstateCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_19x8br5">
@@ -6864,7 +6770,7 @@ else false</text>
         <inputEntry id="UnaryTests_09msr65">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0d97as7">
+        <inputEntry id="UnaryTests_0al106f">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0wryli3">
@@ -6898,7 +6804,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ld0ktt">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineMinorityInterestCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1oh0264">
@@ -6911,7 +6817,7 @@ else false</text>
         <inputEntry id="UnaryTests_0xxxq5e">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_03hqhu9">
+        <inputEntry id="UnaryTests_0z8ek9x">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0zs5fzp">
@@ -6945,7 +6851,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1t7hgxf">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineCodicilMisCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ztvj7m">
@@ -6958,7 +6864,7 @@ else false</text>
         <inputEntry id="UnaryTests_0bewy7j">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1q9tqu4">
+        <inputEntry id="UnaryTests_1m8u54w">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1oqf2tp">
@@ -6992,7 +6898,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1m9dgvr">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineDeBonisNonCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1o05ns9">
@@ -7039,7 +6945,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1rh7tk1">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWillCodicilNotatedCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ktny8w">
@@ -7052,7 +6958,7 @@ else false</text>
         <inputEntry id="UnaryTests_045omod">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_09ijfih">
+        <inputEntry id="UnaryTests_02jemws">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qpgs3y">
@@ -7086,7 +6992,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ayuskz">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineRectifyWillCodicilCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1vb4ggy">
@@ -7099,7 +7005,7 @@ else false</text>
         <inputEntry id="UnaryTests_1m4nkyp">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_13ai9g3">
+        <inputEntry id="UnaryTests_163z9v4">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_14w6leh">
@@ -7133,7 +7039,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sf2x6q">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWindrushSchemeCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1wfbgr7">
@@ -7146,7 +7052,7 @@ else false</text>
         <inputEntry id="UnaryTests_0uc3q25">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0ru1nha">
+        <inputEntry id="UnaryTests_1fqe7l1">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_19lvxau">
@@ -7180,7 +7086,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ao3cn5">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineWitnessInterviewCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0tbs3r8">
@@ -7193,7 +7099,7 @@ else false</text>
         <inputEntry id="UnaryTests_0tc2fbm">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1f2rzl9">
+        <inputEntry id="UnaryTests_1phvcz8">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_06s0mu3">
@@ -7227,7 +7133,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15uk0ug">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineSection116CasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1i8ss3w">
@@ -7240,7 +7146,7 @@ else false</text>
         <inputEntry id="UnaryTests_0m44m0j">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_18jsxgr">
+        <inputEntry id="UnaryTests_1gwewqh">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1pf3lyc">
@@ -7274,7 +7180,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_14psmax">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineDoubleProbateCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1hz9zrg">
@@ -7287,7 +7193,7 @@ else false</text>
         <inputEntry id="UnaryTests_1palsna">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_15dj67s">
+        <inputEntry id="UnaryTests_0rbdyj2">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_06b4s0m">
@@ -7321,7 +7227,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hxn5jh">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examinePOACasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ezeyc7">
@@ -7334,7 +7240,7 @@ else false</text>
         <inputEntry id="UnaryTests_1xa8i5o">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1761u5q">
+        <inputEntry id="UnaryTests_1iugq0g">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1eflncd">
@@ -7368,7 +7274,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hbodnq">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineResealForeignGrantCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nalq36">
@@ -7381,7 +7287,7 @@ else false</text>
         <inputEntry id="UnaryTests_1yrrm8s">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_07y5dhs">
+        <inputEntry id="UnaryTests_075gnck">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wtzq1r">
@@ -7415,7 +7321,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0u457ji">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineFiatWillCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12wtrda">
@@ -7428,7 +7334,7 @@ else false</text>
         <inputEntry id="UnaryTests_1rjoe81">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1gz21tl">
+        <inputEntry id="UnaryTests_1hf62gs">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_08bnimx">
@@ -7462,7 +7368,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hnvdqr">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineIncapacityRule35CasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0qom2gw">
@@ -7475,7 +7381,7 @@ else false</text>
         <inputEntry id="UnaryTests_0ic7dwv">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_03g5dya">
+        <inputEntry id="UnaryTests_1nrt3f0">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_02kz1d9">
@@ -7509,7 +7415,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0c8ugkd">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineTrustCorporationCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1pp4ylm">
@@ -7522,7 +7428,7 @@ else false</text>
         <inputEntry id="UnaryTests_0pwwdr9">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0nw5qt5">
+        <inputEntry id="UnaryTests_03djvd9">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ywvzee">
@@ -7556,7 +7462,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ego594">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineForeignDomicileCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_13rcvji">
@@ -7569,7 +7475,7 @@ else false</text>
         <inputEntry id="UnaryTests_1lj2ela">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1bfx5y8">
+        <inputEntry id="UnaryTests_08zu0np">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hgsxou">
@@ -7603,101 +7509,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10sy71g">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_09dps3m">
-        <inputEntry id="UnaryTests_113dh2z">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_13oh2kp">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0uujuai">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_08p94bh">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ib1dh1">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0kjy0p9">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1p35ta5">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_19m6fbk">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_142iofz">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_043e8r0">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0a0ds7t">
-          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "Spreadsheet")</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_19pcifz">
-          <text>"ExamineSpreadsheetCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1fyskm9">
-          <text>"Examine - Spreadsheet"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0hpo7c1">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0a6ogbv">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1iexwh3">
-        <inputEntry id="UnaryTests_1fvz7it">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1xtqiqh">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0pl16k3">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_11g87q9">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_00gv68i">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1ln9khz">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1kk5ehv">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1q7zawe">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0gqvcut">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_12iwh1k">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1ecydis">
-          <text>list contains(additionalData.Data.waHandoffReasonList.value.caseHandoffReason, "ColligendaBona")</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0reld8s">
-          <text>"ExamineColligendaBonaCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1mhk925">
-          <text>"Examine - Ad Colligenda Bona"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_18lz236">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0x89yxs">
-          <text>"case progression,handOffs"</text>
+          <text>"case progression,handOffs,examineForeignWillCasePrinted"</text>
         </outputEntry>
       </rule>
     </decisionTable>
