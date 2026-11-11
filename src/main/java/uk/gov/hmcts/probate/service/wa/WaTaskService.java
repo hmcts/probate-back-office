@@ -20,7 +20,10 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,6 +46,7 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
+    final Map<Long, Set<TaskTypes>> checkedTaskTypesByCaseId = new HashMap<>();
 
     public BiPredicate<CallbackRequest, String> getCaseTypePredicate() {
         return (callbackRequest, clientContext) ->
@@ -233,16 +237,29 @@ public class WaTaskService {
         responseCaseData.setCreateTask(YES);
 
         if (taskType != null) {
-            responseCaseData.getWaTasksPresent().stream()
-                .map(CollectionMember::getValue)
-                .filter(value -> value.equals(taskType.getValue()))
-                .findAny()
-                .ifPresent(taskName -> {
-                    log.info("case id {}: wa task present {}",
+            if (isWaTaskPresent(taskType, callbackRequest.getCaseDetails().getId())) {
+                log.info("case id {}: wa task present {}",
                         callbackRequest.getCaseDetails().getId(),
-                        taskName);
-                    responseCaseData.setCreateTask(NO);
-                });
+                        taskType);
+                responseCaseData.setCreateTask(NO);
+            }
+        }
+    }
+
+    public boolean isWaTaskPresent(TaskTypes taskType, Long caseId) {
+        checkedTaskTypesByCaseId.putIfAbsent(caseId, new HashSet<>());
+        Set<TaskTypes> checkedTaskTypes = checkedTaskTypesByCaseId.get(caseId);
+
+        log.info("Checking taskType: {} for caseId: {}", taskType, caseId);
+        log.info("Current checkedTaskTypes for caseId {}: {}", caseId, checkedTaskTypes);
+
+        if (checkedTaskTypes.contains(taskType)) {
+            log.info("TaskType {} is already present in checkedTaskTypes for caseId {}.", taskType, caseId);
+            return true;
+        } else {
+            log.info("TaskType {} is not present in checkedTaskTypes for caseId {}. Adding it now.", taskType, caseId);
+            checkedTaskTypes.add(taskType);
+            return false;
         }
     }
 }

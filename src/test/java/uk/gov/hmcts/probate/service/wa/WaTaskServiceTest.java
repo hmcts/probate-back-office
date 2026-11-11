@@ -29,6 +29,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -649,9 +650,8 @@ class WaTaskServiceTest {
         TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
         if (taskPresent) {
-            responseCaseData.getWaTasksPresent().add(
-                    new CollectionMember<>("1", taskType.getValue())
-            );
+
+            waTaskService.isWaTaskPresent(taskType, 123456789L);
 
             when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
             when(caseDetails.getId()).thenReturn(123456789L);
@@ -754,4 +754,46 @@ class WaTaskServiceTest {
                         "NewTask1",
                         "NewTask2");
     }
+
+    @Test
+    void shouldReturnFalseWhenCaseIdNotInMap() {
+        Long caseId = 123L;
+        TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
+        boolean result = waTaskService.isWaTaskPresent(taskType, caseId);
+
+        assertThat(result).isFalse();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactly(taskType);
+    }
+
+    @Test
+    void shouldReturnFalseWhenTaskTypeNotInSetForCaseId() {
+        Long caseId = 123L;
+        TaskTypes existingTaskType = TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+        TaskTypes newTaskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
+        waTaskService.checkedTaskTypesByCaseId.put(caseId, new HashSet<>(Set.of(existingTaskType)));
+
+        boolean result = waTaskService.isWaTaskPresent(newTaskType, caseId);
+
+        assertThat(result).isFalse();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactlyInAnyOrder(existingTaskType, newTaskType);
+    }
+
+    @Test
+    void shouldReturnTrueWhenTaskTypeAlreadyInSetForCaseId() {
+        Long caseId = 123L;
+        TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
+
+        waTaskService.checkedTaskTypesByCaseId.put(caseId, new HashSet<>(Set.of(taskType)));
+
+        boolean result = waTaskService.isWaTaskPresent(taskType, caseId);
+
+        assertThat(result).isTrue();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactly(taskType);
+    }
+
 }
