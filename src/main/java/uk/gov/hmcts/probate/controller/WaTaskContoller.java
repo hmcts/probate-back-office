@@ -129,8 +129,6 @@ public class WaTaskContoller {
     public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
             @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
-            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
-                    required = false) String clientContext,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             logRequest(request.getRequestURI(), callbackRequest);
@@ -139,7 +137,7 @@ public class WaTaskContoller {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-            waTaskService.closeReadyToIssueHandOffs(callbackRequest, clientContext);
+            waTaskService.closeReadyToIssueHandOffs(callbackRequest);
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }

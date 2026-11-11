@@ -361,10 +361,9 @@ public class WaTaskControllerUnitTest {
         waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
                 bindingResult,
-                null,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest, null);
+        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
     }
 
     @Test
@@ -372,17 +371,16 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest, null);
+        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
 
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
                 callbackRequest,
                 bindingResult,
-                null,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest, null);
+        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
     }
 
 
@@ -577,7 +575,6 @@ public class WaTaskControllerUnitTest {
                 waTaskContoller.closeReadyToIssueHandOffs(
                         callbackRequest,
                         bindingResult,
-                        null,
                         httpServletRequest
                 )
         ).isInstanceOf(BadRequestException.class);

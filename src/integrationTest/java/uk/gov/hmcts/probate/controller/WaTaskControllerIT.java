@@ -23,9 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -150,28 +148,7 @@ public class WaTaskControllerIT {
                         .content(payload))
                 .andExpect(status().isOk());
 
-        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class), isNull());
-    }
-
-    @Test
-    void shouldPassClientContextToCloseReadyToIssueHandOffs() throws Exception {
-        String payload = testUtils.getStringFromFile("waTaskCaseType.json");
-        when(workAllocationToggleService.isProbateWAEnabled())
-                .thenReturn(true);
-
-        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
-        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
-        assertThat(encodedString).isNotEmpty();
-
-        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header(
-                                CLIENT_CONTEXT_HEADER_PARAMETER,
-                                encodedString.get())
-                        .content(payload))
-                .andExpect(status().isOk());
-
-        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class), eq(encodedString.get()));
+        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
     }
 
     @Test

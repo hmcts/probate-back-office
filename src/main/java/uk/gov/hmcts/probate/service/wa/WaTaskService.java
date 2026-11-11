@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.HashSet;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -140,58 +139,27 @@ public class WaTaskService {
                 .collect(Collectors.toSet());
     }
 
-    public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest, String clientContext) {
+    public void closeReadyToIssueHandOffs(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        boolean noLongerHandedOff = Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
-                .map(Constants.NO::equals)
-                .orElse(false);
+        Optional.ofNullable(caseDetails.getData().getCaseHandedOffToLegacySite())
+                .filter(site -> site.equals(Constants.NO))
+                .ifPresent(site -> {
+                    Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
+                            startEventResponse ->
+                                    CaseDataContent.builder()
+                                            .event(Event.builder()
+                                                    .id(startEventResponse.getEventId())
+                                                    .build())
+                                            .eventToken(startEventResponse.getToken())
+                                            .data(startEventResponse.getCaseDetails().getData())
+                                            .build();
 
-        boolean shouldCloseHandOffs = noLongerHandedOff || isHandOffTaskBeingCompleted(callbackRequest, clientContext);
-
-        log.info("case id {}: closeReadyToIssueHandOffs noLongerHandedOff {}, shouldCloseHandOffs {}",
-                caseDetails.getId(), noLongerHandedOff, shouldCloseHandOffs);
-
-        if (!shouldCloseHandOffs) {
-            return;
-        }
-
-        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
-                startEventResponse ->
-                        CaseDataContent.builder()
-                                .event(Event.builder()
-                                        .id(startEventResponse.getEventId())
-                                        .build())
-                                .eventToken(startEventResponse.getToken())
-                                .data(startEventResponse.getCaseDetails().getData())
-                                .build();
-
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CLOSE_READY_TO_ISSUE_HANDOFFS,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-    }
-
-    private boolean isHandOffTaskBeingCompleted(CallbackRequest callbackRequest, String clientContext) {
-        if (clientContext == null || clientContext.isBlank()) {
-            return false;
-        }
-        String currentTaskType = taskUtils.getTaskData(clientContext)
-                .map(TaskData::getType)
-                .orElse("");
-        if (currentTaskType.isEmpty()) {
-            return false;
-        }
-
-        Set<HandoffReason> handOffReasons = new HashSet<>(getGetHandOffReasons(callbackRequest.getCaseDetails()));
-        Optional.ofNullable(callbackRequest.getCaseDetailsBefore())
-                .map(this::getGetHandOffReasons)
-                .ifPresent(handOffReasons::addAll);
-
-        return handOffReasons.stream()
-                .map(HandoffReason::getCaseHandoffReason)
-                .map(HandoffReasonId::getCode)
-                .anyMatch(currentTaskType::contains);
+                    ccdClientApi.triggerEvent(caseDetails.getId().toString(),
+                            CLOSE_READY_TO_ISSUE_HANDOFFS,
+                            caseDataContentFunction,
+                            securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
+                });
     }
 
     public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
