@@ -68,11 +68,5 @@ public class HandleEvidence implements CreateTaskProcessor {
         waTaskService
                 .setCreateTask(callbackRequest, responseCaseData, taskType);
 
-        if (responseCaseData.getCreateTask().equals(YES) && taskType.getCreatePredicate().test(responseCaseData)) {
-            waTaskService.addTaskToWaTaskPresent(
-                    callbackRequest.getCaseDetails().getId(),
-                    responseCaseData,
-                    taskType.getValue());
-        }
     }
 }
