@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -49,7 +48,6 @@ class HandleEvidenceTest {
     @BeforeEach
     void setUp() {
         responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
                 .build();
 
         when(callbackRequest.getCaseDetails())

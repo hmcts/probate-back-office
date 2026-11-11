@@ -28,7 +28,6 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -575,7 +574,6 @@ class WaTaskServiceTest {
         when(caseDetails.getId()).thenReturn(123456789L);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
                 .build();
         TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
