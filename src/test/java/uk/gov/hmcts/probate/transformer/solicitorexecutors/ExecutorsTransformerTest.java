@@ -64,6 +64,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.GRANT_OF_PROBATE;
 
 @ExtendWith(SpringExtension.class)
 class ExecutorsTransformerTest {
@@ -344,7 +345,7 @@ class ExecutorsTransformerTest {
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES);
 
-        final CaseData cd = caseDataBuilder.build();
+        final CaseData cd = caseDataBuilder.caseType(GRANT_OF_PROBATE.getName()).build();
 
         when(caseDetailsMock.getData()).thenReturn(cd);
         ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
@@ -438,7 +439,7 @@ class ExecutorsTransformerTest {
                 .solsAdditionalExecutorList(solsAdditionalExecutorList)
                 .primaryApplicantForenames("forename");
 
-        final CaseData cd = caseDataBuilder.build();
+        final CaseData cd = caseDataBuilder.caseType(GRANT_OF_PROBATE.getName()).build();
 
         when(caseDetailsMock.getData()).thenReturn(cd);
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
@@ -499,7 +500,7 @@ class ExecutorsTransformerTest {
                 .solsSolicitorIsApplying(YES)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        final CaseData cd = caseDataBuilder.build();
+        final CaseData cd = caseDataBuilder.caseType(GRANT_OF_PROBATE.getName()).build();
 
         when(caseDetailsMock.getData()).thenReturn(cd);
         when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
@@ -531,7 +532,7 @@ class ExecutorsTransformerTest {
                 .solsSOTSurname("Bassett")
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        final CaseData cd = caseDataBuilder.build();
+        final CaseData cd = caseDataBuilder.caseType(GRANT_OF_PROBATE.getName()).build();
 
         ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
         et.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(cd);
