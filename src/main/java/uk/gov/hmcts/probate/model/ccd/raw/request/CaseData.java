@@ -3,10 +3,12 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +156,8 @@ public class CaseData extends CaseDataParent {
 
     @NotNull(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
         ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
-    private final LocalDate deceasedDateOfBirth;
+    @Setter(AccessLevel.NONE)
+    private LocalDate deceasedDateOfBirth;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
     private final String deceasedDomicileInEngWales;
@@ -811,5 +814,15 @@ public class CaseData extends CaseDataParent {
 
     public void clearSolsDeceasedAliasNamesList() {
         getSolsDeceasedAliasNamesList().clear();
+    }
+
+    /**
+     * Method to permit migration to clear deceased date of birth.
+     *
+     * <p>Should not be needed in normal operation.</p>
+     */
+    public void clearDeceasedDateOfBirth(final long caseId) {
+        log.info("clearing deceased date of birth for case: {}", caseId);
+        deceasedDateOfBirth = null;
     }
 }

@@ -28,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -937,5 +941,21 @@ class CaseDataTest {
         CaseData caseData = CaseData.builder().build();
 
         assertEquals(caseData.convertDate(LocalDate.now()), caseData.getGrantIssuedDateFormatted());
+    }
+
+    @Test
+    void shouldClearDeceasedDobWhenAsked() {
+        final LocalDate deceasedDob = LocalDate.of(2026, 11, 11);
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfBirth(deceasedDob)
+                .build();
+
+        final LocalDate before = caseData.getDeceasedDateOfBirth();
+        caseData.clearDeceasedDateOfBirth(1L);
+        final LocalDate after = caseData.getDeceasedDateOfBirth();
+
+        assertAll(
+                () -> assertThat(before, sameInstance(deceasedDob)),
+                () -> assertThat(after, nullValue()));
     }
 }
