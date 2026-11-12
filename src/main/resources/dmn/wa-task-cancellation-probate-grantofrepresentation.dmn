@@ -114,6 +114,98 @@
           <text></text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1rr7tab">
+        <inputEntry id="UnaryTests_16mkb96">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c0laio">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hp28ee">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0llqu8n">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02j1kgr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01fnyr2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08k2971">
+          <text>"examineDigitalCaseTypesCasePrinted"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10k0ro2">
+        <inputEntry id="UnaryTests_1ut6tti">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nx9wdx">
+          <text>"boAmendCaseDetailsForReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vdabyi">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bw29oh">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03f3are">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cc2jqc">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ld3wwe">
+          <text>"casePrintedHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13hwg0d">
+        <inputEntry id="UnaryTests_0v2e8gw">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ydjcqm">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ui87de">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1j6kdzt">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pdtlyr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sdsds3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_146s37v">
+          <text>"examineDigitalCaseTypesReadyToIssue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1crnkpi">
+        <inputEntry id="UnaryTests_12cef6l">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0en9sat">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fwjhqg">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wi5gwc">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a2l9ka">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pydewx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16985ys">
+          <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1uhlsp2">
         <inputEntry id="UnaryTests_04ayyv4">
           <text>"BOCaseStoppedAwaitRedec"</text>
@@ -206,29 +298,6 @@
           <text>"readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0rbctyk">
-        <inputEntry id="UnaryTests_1lehbts">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0x73xg4">
-          <text>"closeHandOffs"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1kpng7i">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0vtvbdh">
-          <text>"Cancel"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0jz2ev6">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0lkov9e">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0vukqvu">
-          <text>"casePrintedHandOffs"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0juks9x">
         <inputEntry id="UnaryTests_08hzy0x">
           <text>"CasePrinted"</text>
@@ -250,29 +319,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1q1il4z">
           <text>"casePrintedHandOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0876tsb">
-        <inputEntry id="UnaryTests_0faxb86">
-          <text>"BOReadyToIssue"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0mu2xgg">
-          <text>"closeHandOffs"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_12ujhyl">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0umuqlt">
-          <text>"Cancel"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1dudz4q">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0zmoly9">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_17ke25m">
-          <text>"readyToIssueHandOffs"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ankylg">

@@ -36,16 +36,14 @@ public class AbstractAmendCaseDetails {
                         && !result.caseHandedOffToLegacySite()
                         && waTaskService.isAllHandOffsRemoved(callbackRequest);
 
-        responseCaseData.setCreateTask(callbackRequest.isStateChanged()
-                || caseTypeChanged
+        responseCaseData.setCreateTask(caseTypeChanged
                 || result.newHandOffPresent()
                 || isInitialCaseExaminationTaskRequired
                 ? YES : NO);
 
-        log.info("case id {}: state has changed {}, caseTypeChanged {},  newHandOffPresent {}"
+        log.info("case id {}: caseTypeChanged {},  newHandOffPresent {}"
                         + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
                 callbackRequest.getCaseDetails().getId(),
-                callbackRequest.isStateChanged(),
                 caseTypeChanged,
                 result.newHandOffPresent(),
                 responseCaseData.getWaHandoffReasonList(),

@@ -55,7 +55,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(63));
+        assertThat(logic.getRules().size(), is(65));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -81,11 +81,37 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.get("event").startsWith("close")
                 && cancellationProperties.containsValue(CASE_PRINTED_STATE)) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
+        } else if (cancellationProperties.get("event")
+                .equals("boAmendCaseDetailsForReadyToIssue")) {
+            assertExamineResponse(dmnResultList, cancellationProperties);
+        } else if (cancellationProperties.get("event").equals("boAmendCaseDetailsForAwaitingDocumentation")) {
+            assertExamineResponse(dmnResultList, cancellationProperties);
         }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             validate(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
+    }
+
+    private void assertExamineResponse(List<Map<String, Object>> dmnResultList,
+                                       Map<String, String> cancellationProperties) {
+        org.assertj.core.api.Assertions.assertThat(dmnResultList).hasSize(2);
+
+        org.assertj.core.api.Assertions.assertThat(dmnResultList)
+            .anySatisfy(map ->
+                    org.assertj.core.api.Assertions.assertThat(map)
+                            .containsEntry(
+                                    "processCategories",
+                                    cancellationProperties.get("processCategories")
+                            )
+            )
+            .anySatisfy(map ->
+                    org.assertj.core.api.Assertions.assertThat(map)
+                            .containsEntry(
+                                    "action",
+                                    cancellationProperties.get("action")
+                            )
+            );
     }
 
     private void assertResponse(List<Map<String, Object>> dmnResultList,

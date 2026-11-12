@@ -475,37 +475,6 @@ class WaTaskServiceTest {
         verifyEvent(CLOSE_ICE_INTESTACY);
     }
 
-    @Test
-    void shouldCloseReadyToIssueHandOffsWhenStateHasChanged() {
-        when(caseDetailsBefore.getData())
-                .thenReturn(CaseData.builder()
-                        .caseType("gop")
-                        .caseHandedOffToLegacySite(YES)
-                        .build());
-        when(callbackRequest.getCaseDetailsBefore())
-                .thenReturn(caseDetailsBefore);
-        when(callbackRequest.isStateChanged())
-                .thenReturn(true);
-        CaseData caseData = CaseData.builder()
-                .caseType("gop")
-                .caseHandedOffToLegacySite(YES)
-                .build();
-
-        when(caseDetails.getId())
-                .thenReturn(Long.valueOf(caseId));
-        when(caseDetails.getData())
-                .thenReturn(caseData);
-        when(callbackRequest.getCaseDetails())
-                .thenReturn(caseDetails);
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
-
-        waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
-
-        verifyEvent(CLOSE_HANDOFFS);
-        verifyEvent(CLOSE_ICE_PROBATE);
-    }
-
     private void verifyEvent(EventId eventId) {
         verify(ccdClientApi).triggerEvent(
                 eq(caseId),
@@ -545,8 +514,6 @@ class WaTaskServiceTest {
                 .thenReturn(caseDetailsBefore);
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
-        when(caseDetails.getId())
-                .thenReturn(Long.valueOf(caseId));
 
         TaskData taskData = TaskData.builder()
                 .type("ExamineDoubleProbate")

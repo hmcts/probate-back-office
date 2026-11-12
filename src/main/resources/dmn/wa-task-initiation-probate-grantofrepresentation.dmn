@@ -130,7 +130,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
-          <text>"case progression,examineDigitalCaseProbate"</text>
+          <text>"case progression,examineDigitalCaseProbate,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_10tvvcr">
@@ -177,7 +177,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gmkc20">
-          <text>"case progression,examineDigitalCaseProbate"</text>
+          <text>"case progression,examineDigitalCaseProbate,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0p8qcwb">
@@ -224,7 +224,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hg6z8n">
-          <text>"case progression,examineDigitalCaseIntestacy"</text>
+          <text>"case progression,examineDigitalCaseIntestacy,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0o5itpr">
@@ -271,7 +271,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0jddfn3">
-          <text>"case progression,examineDigitalCaseIntestacy"</text>
+          <text>"case progression,examineDigitalCaseIntestacy,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1cnacr3">
@@ -647,7 +647,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bz2q9x">
-          <text>"case progression,examineDigitalCaseAdmonWill"</text>
+          <text>"case progression,examineDigitalCaseAdmonWill,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_00rrh35">
@@ -694,7 +694,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0eruvnn">
-          <text>"case progression,examineDigitalCaseAdmonWill"</text>
+          <text>"case progression,examineDigitalCaseAdmonWill,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0cn884k">
@@ -741,7 +741,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1124ndl">
-          <text>"case progression,examineDigitalCaseAdColligendaBona"</text>
+          <text>"case progression,examineDigitalCaseAdColligendaBona,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1marxds">
@@ -788,7 +788,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_072583q">
-          <text>"case progression,examineDigitalCaseAdmonWillReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseAdmonWillReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1k5wuqk">
@@ -835,7 +835,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_048ajak">
-          <text>"case progression,examineDigitalCaseProbateReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseProbateReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_083or61">
@@ -882,7 +882,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0pjdt2f">
-          <text>"case progression,examineDigitalCaseIntestacyReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseIntestacyReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nc7hia">
@@ -929,7 +929,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0u9jzwt">
-          <text>"case progression,examineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseAdColligendaBonaReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rj0v11">
@@ -1446,7 +1446,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0z3pcvw">
-          <text>"case progression,examineDigitalCaseProbate"</text>
+          <text>"case progression,examineDigitalCaseProbate,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ghmhm9">
@@ -1493,7 +1493,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1x9j26k">
-          <text>"case progression,examineDigitalCaseIntestacy"</text>
+          <text>"case progression,examineDigitalCaseIntestacy,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_09i9hgx">
@@ -1540,7 +1540,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1f20enm">
-          <text>"case progression,examineDigitalCaseAdmonWill"</text>
+          <text>"case progression,examineDigitalCaseAdmonWill,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_11g6vjl">
@@ -1587,7 +1587,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0b84lt1">
-          <text>"case progression,examineDigitalCaseAdColligendaBona"</text>
+          <text>"case progression,examineDigitalCaseAdColligendaBona,examineDigitalCaseTypesCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ifa6um">
@@ -1634,7 +1634,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1dzaes7">
-          <text>"case progression,examineDigitalCaseProbateReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseProbateReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1lvnfvk">
@@ -1681,7 +1681,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tqljrd">
-          <text>"case progression,examineDigitalCaseIntestacyReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseIntestacyReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mxex1z">
@@ -1728,7 +1728,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1eavdjl">
-          <text>"case progression,examineDigitalCaseAdmonWillReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseAdmonWillReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_08a3l4m">
@@ -1775,7 +1775,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0a528g7">
-          <text>"case progression,examineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+          <text>"case progression,examineDigitalCaseAdColligendaBonaReadyToIssue,examineDigitalCaseTypesReadyToIssue"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_14tadjt">

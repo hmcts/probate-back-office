@@ -129,27 +129,21 @@ public class WaTaskService {
                                       String clientContext,
                                       Set<TaskTypes> taskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
-        Long caseId = callbackRequest.getCaseDetails().getId();
-        Consumer<String> eventTrigger = caseType ->
-                taskTypes.stream()
-                        .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
-                        .filter(taskType -> taskType.getCaseType().equals(caseType))
-                        .findFirst()
-                        .flatMap(TaskTypes::getOptionalClosingEventId)
-                        .ifPresent(eventId -> {
-                            log.info("Case id {} : triggering closing event {}",
-                                    caseId,
-                                    eventId);
-                            triggerEvent(callbackRequest.getCaseDetails(), eventId);
-                        });
-        if (callbackRequest.isStateChanged()) {
-            log.info("Case id {} : state changed from {} to {}",
-                    caseId,
-                    callbackRequest.getCaseDetailsBefore().getState(),
-                    callbackRequest.getCaseDetails().getState());
-            eventTrigger.accept(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
-        }
+
         if (taskData.isEmpty()) {
+            Long caseId = callbackRequest.getCaseDetails().getId();
+            Consumer<String> eventTrigger = caseType ->
+                    taskTypes.stream()
+                            .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
+                            .filter(taskType -> taskType.getCaseType().equals(caseType))
+                            .findFirst()
+                            .flatMap(TaskTypes::getOptionalClosingEventId)
+                            .ifPresent(eventId -> {
+                                log.info("Case id {} : triggering closing event {}",
+                                        caseId,
+                                        eventId);
+                                triggerEvent(callbackRequest.getCaseDetails(), eventId);
+                            });
             boolean caseTypeChanged =
                     getCaseTypePredicate().test(callbackRequest, clientContext);
 
@@ -175,7 +169,7 @@ public class WaTaskService {
                                           UnaryOperator<String> handOffReasonTask) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        if (isAllHandOffsRemoved(callbackRequest) || callbackRequest.isStateChanged()) {
+        if (isAllHandOffsRemoved(callbackRequest)) {
             triggerEvent(caseDetails, CLOSE_HANDOFFS);
         } else if (taskUtils.getTaskData(clientContext).isEmpty()) {
 
@@ -184,6 +178,9 @@ public class WaTaskService {
 
             Set<HandoffReason> handOffReasonsToBeRemoved = new HashSet<>(handOffReasonBefore);
             handOffReasonsToBeRemoved.removeAll(handOffReasonAfter);
+            log.info("Case id {} : handOffReasonsToBeRemoved {}",
+                    callbackRequest.getCaseDetails().getId(),
+                    handOffReasonsToBeRemoved);
 
             String caseState = callbackRequest.getCaseDetailsBefore().getState();
 

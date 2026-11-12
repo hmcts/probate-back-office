@@ -28,7 +28,7 @@ public class CamundaTaskWaInitiationEvidenceHandledPresentTestProvider implement
         Map<String, Object> examineDigitalCaseIntestacyTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_INTESTACY,
                 "name", INTESTACY_TASK_TYPE_NAME,
-                "processCategories", "case progression,examineDigitalCaseIntestacy"
+                "processCategories", "case progression,examineDigitalCaseIntestacy,examineDigitalCaseTypesCasePrinted"
         );
 
         return Stream.of(

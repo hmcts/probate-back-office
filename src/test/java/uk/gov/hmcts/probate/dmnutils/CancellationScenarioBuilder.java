@@ -147,26 +147,8 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 Arguments.of(
                         cancelWithProperties(
                                 "closeHandOffs",
-                                "BOReadyToIssue",
-                                "CasePrinted",
-                                "readyToIssueHandOffs",
-                                "Cancel"
-                        )
-                ),
-                Arguments.of(
-                        cancelWithProperties(
-                                "closeHandOffs",
                                 "CasePrinted",
                                 "CasePrinted",
-                                "casePrintedHandOffs",
-                                "Cancel"
-                        )
-                ),
-                Arguments.of(
-                        cancelWithProperties(
-                                "closeHandOffs",
-                                "CasePrinted",
-                                "BOReadyToIssue",
                                 "casePrintedHandOffs",
                                 "Cancel"
                         )
@@ -528,6 +510,42 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "BOReadyToIssue",
                                 "BOReadyToIssue",
                                 "examineWitnessInterview",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boAmendCaseDetailsForReadyToIssue",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue",
+                                "examineDigitalCaseTypesCasePrinted",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boAmendCaseDetailsForReadyToIssue",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue",
+                                "casePrintedHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boAmendCaseDetailsForAwaitingDocumentation",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "examineDigitalCaseTypesReadyToIssue",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boAmendCaseDetailsForAwaitingDocumentation",
+                                "CasePrinted",
+                                "CasePrinted",
+                                "readyToIssueHandOffs",
                                 "Cancel"
                         )
                 )
