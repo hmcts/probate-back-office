@@ -568,7 +568,7 @@ public class WaTaskControllerUnitTest {
     void shouldByPassCancelCreateChangeStateEventWhenWADisabled() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
-        waTaskContoller.createChangeStateEvent(callbackRequest, bindingResult, httpServletRequest);
+        waTaskContoller.cancelCreateChangeStateEvent(callbackRequest, bindingResult, httpServletRequest);
 
         verify(waTaskService, never()).cancelCreateChangeStateEvent(any());
     }
@@ -580,7 +580,7 @@ public class WaTaskControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         doNothing().when(waTaskService).cancelCreateChangeStateEvent(callbackRequest);
 
-        ResponseEntity<CallbackResponse> response = waTaskContoller.createChangeStateEvent(
+        ResponseEntity<CallbackResponse> response = waTaskContoller.cancelCreateChangeStateEvent(
                 callbackRequest, bindingResult, httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -595,7 +595,7 @@ public class WaTaskControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
 
         assertThatThrownBy(() ->
-                waTaskContoller.createChangeStateEvent(callbackRequest, bindingResult, httpServletRequest))
+                waTaskContoller.cancelCreateChangeStateEvent(callbackRequest, bindingResult, httpServletRequest))
                 .isInstanceOf(BadRequestException.class);
 
         verify(waTaskService, never()).cancelCreateChangeStateEvent(any());

@@ -122,7 +122,7 @@ public class BusinessValidationController {
 
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
-    public static final String CHANGE_STATE_EVENT = "changeState";
+    public static final String CHANGE_STATE_EVENT = "createChangeState";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;

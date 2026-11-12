@@ -171,13 +171,11 @@ public class WaTaskContoller {
     @PostMapping(path = "/trigger/cancelCreateChangeStateEvent",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse>  createChangeStateEvent(
+    public ResponseEntity<CallbackResponse>  cancelCreateChangeStateEvent(
             @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
-            log.info("Triggering cancel create change state event for case id {}",
-                    callbackRequest.getCaseDetails().getId().toString());
             logRequest(request.getRequestURI(), callbackRequest);
 
             if (bindingResult.hasErrors()) {
@@ -185,7 +183,7 @@ public class WaTaskContoller {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
             waTaskService.cancelCreateChangeStateEvent(callbackRequest);
-            log.info("Cancel create change state event triggered for case id {}",
+            log.info("cancelCreateChangeStateEvent completed for case id {}",
                     callbackRequest.getCaseDetails().getId().toString());
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());

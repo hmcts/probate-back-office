@@ -232,28 +232,28 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason),  false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),

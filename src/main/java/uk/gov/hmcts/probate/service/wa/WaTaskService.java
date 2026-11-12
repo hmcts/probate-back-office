@@ -176,22 +176,18 @@ public class WaTaskService {
                                 .eventToken(startEventResponse.getToken())
                                 .data(startEventResponse.getCaseDetails().getData())
                                 .build();
-        log.info("Canceling create change state event for case id {} completed",
-                callbackRequest.getCaseDetails().getId());
         ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                 CANCEL_CHANGE_STATE,
                 caseDataContentFunction,
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-        log.info("Cancelled create change state event for case id {} completed",
+        log.info("Terminated existing task for case id {}",
                 callbackRequest.getCaseDetails().getId());
 
-        log.info("Creating create change state event for case id {}",
-                callbackRequest.getCaseDetails().getId());
         ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                 CREATE_CHANGE_STATE,
                 caseDataContentFunction,
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-        log.info("Created create change state event for case id {} completed",
+        log.info("Created new task for case id {}",
                 callbackRequest.getCaseDetails().getId());
     }
 

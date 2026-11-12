@@ -19,7 +19,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_FROM_BULK_SCAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
@@ -259,13 +258,6 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
             ),
             Arguments.of(
                     CHANGE_STATE_EVENT,
-                    CASE_PRINTED_STATE,
-                    additionalData(false, "gop", false,
-                            emptyList(), false),
-                    emptyList()
-            ),
-            Arguments.of(
-                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
