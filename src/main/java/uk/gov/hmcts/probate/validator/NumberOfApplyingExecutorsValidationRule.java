@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -37,8 +38,14 @@ public class NumberOfApplyingExecutorsValidationRule {
         int applyingExecutorsCount = execsApplying.size();
 
         // make sure it counts primary applicant as executor and not only the executors applying
-        // will only count if name is filled
-        if (!caseData.getPrimaryApplicantFullName().isEmpty()) {
+        // will only count if both name fields are filled
+        final boolean hasPrimaryApplicantName = StringUtils.isNotBlank(caseData.getPrimaryApplicantForenames())
+                && StringUtils.isNotBlank(caseData.getPrimaryApplicantSurname());
+        // this seems roundabout - we care specifically that the value in the case data for this field is distinct
+        // from No (i.e. must be unset OR Yes) so we don't unintentionally pass this check if it's not explicitly set
+        final boolean notPrimaryApplicantNotApplying = ! caseData.isPrimaryApplicantNotApplying();
+
+        if (hasPrimaryApplicantName && notPrimaryApplicantNotApplying) {
             applyingExecutorsCount++;
         }
 
