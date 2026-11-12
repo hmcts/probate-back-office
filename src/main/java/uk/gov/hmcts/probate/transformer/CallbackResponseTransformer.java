@@ -241,13 +241,6 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState,
                                                                 Optional<UserInfo> caseworkerInfo) {
-        return transformWithConditionalStateChange(callbackRequest, newState, caseworkerInfo, null);
-    }
-
-    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
-                                                                Optional<String> newState,
-                                                                Optional<UserInfo> caseworkerInfo,
-                                                                String clientContext) {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
@@ -259,11 +252,9 @@ public class CallbackResponseTransformer {
                         callbackRequest.getEventId(),
                         newState.isPresent() ? caseworkerInfo : Optional.empty(),
                         false)
-                        // set here again to make life easier mocking
-                        .state(newState.orElse(null))
-                        .build();
-
-        setTaskCreation(null, callbackRequest, responseCaseData, clientContext);
+                // set here again to make life easier mocking
+                .state(newState.orElse(null))
+                .build();
 
         return transformResponse(responseCaseData);
     }
@@ -670,11 +661,10 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest,
-                                                             Optional<UserInfo> caseworkerInfo,
-                                                             String clientContext) {
+                                                             Optional<UserInfo> caseworkerInfo) {
         return transformWithConditionalStateChange(callbackRequest,
                 ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()),
-                caseworkerInfo, clientContext);
+                caseworkerInfo);
     }
 
 

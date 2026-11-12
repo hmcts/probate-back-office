@@ -2813,7 +2813,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest
-                .resolveCaseWorkerEscalationState(callbackRequestMock, CASEWORKER_USERINFO, null);
+                .resolveCaseWorkerEscalationState(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
