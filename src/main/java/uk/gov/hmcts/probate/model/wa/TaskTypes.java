@@ -2,15 +2,12 @@ package uk.gov.hmcts.probate.model.wa;
 
 import lombok.Getter;
 import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
@@ -44,30 +41,18 @@ public enum TaskTypes {
             "ExamineDigitalCaseAdColligendaBonaReadyToIssue", AD_COLLIGENDA_BONA.getCaseType(),
             CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
-            "ExamineSMEReferral", null, null,
-            caseData -> !YES.equals(caseData.getEvidenceHandled()));
+            "ExamineSMEReferral", null, null);
 
     final String state;
     final String value;
     final String caseType;
     final EventId closingEventId;
-    final Predicate<ResponseCaseData> createPredicate;
 
     TaskTypes(String state, String value, String caseType, EventId eventId) {
         this.state = state;
         this.value = value;
         this.caseType = caseType;
         this.closingEventId = eventId;
-        this.createPredicate = x -> true;
-    }
-
-    TaskTypes(String state, String value, String caseType, EventId eventId,
-              Predicate<ResponseCaseData> createPredicate) {
-        this.state = state;
-        this.value = value;
-        this.caseType = caseType;
-        this.closingEventId = eventId;
-        this.createPredicate = createPredicate;
     }
 
     public static Set<TaskTypes> examineAwaitingDocIceTasks() {
