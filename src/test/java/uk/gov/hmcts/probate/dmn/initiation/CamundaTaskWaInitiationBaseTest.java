@@ -159,10 +159,10 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(11));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(137));
+        assertThat(logic.getRules().size(), is(158));
     }
 
-    @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
+    @ParameterizedTest(name = "event id: {0} post event state: {1} additionalData: {2} expectation: {3}")
     @ArgumentsSource(CamundaTaskWaInitiationProbateTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationAdmonTestProvider.class)
     @ArgumentsSource(CamundaTaskWaInitiationDeBonisNonTestProvider.class)
@@ -216,6 +216,8 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
                                                                             List<Map<String, Object>> expectation) {
+        System.out.println("additionalData " + additionalData);
+        System.out.println("expectation " + expectation);
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);

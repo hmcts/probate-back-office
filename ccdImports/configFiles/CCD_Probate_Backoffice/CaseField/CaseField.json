@@ -233,6 +233,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "registryLocations", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "applicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "state", "Label": "State Field", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "waCaseState", "Label": "State Field", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedMarriedAfterWillOrCodicilDate", "Label": "Deceased Married After Will Or Codicil Date", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boCaseStopReasonList", "Label": "Case stop reason", "HintText": "Reason for stopping the case", "FieldType": "Collection", "FieldTypeParameter": "boCaseStopReason", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boEmailDocsReceivedNotificationRequested", "Label": "Do you wish to send an email notification for documents received?", "HintText": "Documents received email notification", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
@@ -559,5 +560,6 @@
   {"LiveFrom": "22/09/2026", "CaseTypeID": "GrantOfRepresentation", "ID": "escalateToRegistrarUserIdamId", "Label": "Escalate to registrar User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "redeclarationUserIdamId", "Label": "Select for Redeclaration User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "24/09/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveStoppedCaseUserIdamId", "Label": "Resolve Stopped Case User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveRedeclarationUserIdamId", "Label": "Select for Resolve Redeclaration User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveRedeclarationUserIdamId", "Label": "Select for Resolve Redeclaration User IDAM Id", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/11/2026", "CaseTypeID": "GrantOfRepresentation", "ID": "waTasksPresent", "Label": "WA tasks present", "FieldType": "Collection", "FieldTypeParameter": "Text", "SecurityClassification": "Public"}
 ]
