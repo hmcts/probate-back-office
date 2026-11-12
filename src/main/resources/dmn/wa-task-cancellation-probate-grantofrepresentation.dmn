@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -227,6 +227,52 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1a3ztio">
           <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1joypwq">
+        <inputEntry id="UnaryTests_05odygv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kxn9dj">
+          <text>"boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_118stly">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ugsn2e">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gfvpwt">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03g4eag">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_057y2gn">
+          <text>"readyToIssueHandOffs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0msq41f">
+        <inputEntry id="UnaryTests_1jn49c9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mgopvi">
+          <text>"boStopCaseForCasePrinted","boSelectForQA","boEscalateToRegistrar","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bqwlnv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xbim0n">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y42pwr">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_159lnqp">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03bm8tr">
+          <text>"casePrintedHandOffs"</text>
         </outputEntry>
       </rule>
     </decisionTable>

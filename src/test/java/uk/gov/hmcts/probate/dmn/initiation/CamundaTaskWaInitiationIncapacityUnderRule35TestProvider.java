@@ -34,14 +34,14 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                 = Map.of(
                 "taskId", EXAMINE_INCAPACITY_RULE_35,
                 "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35CaseMatchingIssueGrantTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CHANGE_STATE,
                 "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes
