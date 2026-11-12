@@ -626,7 +626,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
         Map<String, Object> basePermissions = Map.of(
                 "name", name,
-                "value", "Read,Own,UnclaimAssign,Claim,Unclaim,UnassignClaim,CompleteOwn,Cancel",
+                "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                 "roleCategory", roleCategory,
                 "autoAssignable", false
         );
