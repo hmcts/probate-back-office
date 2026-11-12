@@ -94,6 +94,15 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_LO;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.STOPPED_APPLICATIONS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_JUDICIAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ACCESS_REQUESTS_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_SPECIFIC_ACCESS;
 
 public class ConfigurationExpectationBuilder {
 
@@ -204,6 +213,15 @@ public class ConfigurationExpectationBuilder {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_BO_REDECLARATION_COMPLETE_ESCALATE_TO_REGISTER, true)
                     .expectedValue(WORK_TYPE, STOPPED_APPLICATIONS, true);
             builder.expectedValue(ASSIGNEE, DEFAULT_ASSIGNEE, true);
+        } else if (conditions.containsValue(REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC)
+                || conditions.containsValue(REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN)
+                || conditions.containsValue(REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY)
+                || conditions.containsValue(REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS)) {
+            builder.expectedValue(WORK_TYPE, ACCESS_REQUESTS_WORK_TYPE);
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_SPECIFIC_ACCESS);
+            builder.expectedValue(ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID,
+                    ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE);
+            builder.expectedValue(ROLE_CATEGORY, setRoleCategory(conditions.get("taskType")));
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
@@ -235,6 +253,27 @@ public class ConfigurationExpectationBuilder {
                 "canReconfigure", canReconfigure
         ));
         return this;
+    }
+
+    public ConfigurationExpectationBuilder expectedValue(String name, Object value) {
+        expectations.put(name, Map.of(
+                "name", name,
+                "value", value
+        ));
+        return this;
+    }
+
+    private static String setRoleCategory(String name) {
+        if (REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY.equalsIgnoreCase(name)) {
+            return ROLE_CATEGORY_JUDICIAL;
+        } else if (REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS.equalsIgnoreCase(name)) {
+            return ROLE_CATEGORY_LO;
+        } else if (REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN.equalsIgnoreCase(name)) {
+            return ROLE_CATEGORY_ADMIN;
+        } else if (REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC.equalsIgnoreCase(name)) {
+            return ROLE_CATEGORY_CTSC;
+        }
+        return null;
     }
 }
 
