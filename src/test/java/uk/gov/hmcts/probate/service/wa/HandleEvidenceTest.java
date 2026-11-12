@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,6 +83,9 @@ class HandleEvidenceTest {
             case STATE_BO_CASE_WORKER_ESCALATION:
                 taskType = TaskTypes.EXAMINE_SME_REFERRAL;
                 break;
+            case STATE_BO_REDEC_NOTIFICATION_SENT:
+                taskType = TaskTypes.RESOLVE_REDECLARATION;
+                break;
             default:
                 throw new IllegalStateException("Unexpected state: " + state);
         }
@@ -124,7 +128,8 @@ class HandleEvidenceTest {
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "gop", false),
                 Arguments.of(STATE_CASE_PRINTED, "intestacy", true),
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "intestacy", false),
-                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, "gop", false)
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, "gop", false),
+                Arguments.of(STATE_BO_REDEC_NOTIFICATION_SENT, "gop", false)
         );
     }
 

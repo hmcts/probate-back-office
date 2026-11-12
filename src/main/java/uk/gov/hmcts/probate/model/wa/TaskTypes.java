@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
@@ -44,7 +45,9 @@ public enum TaskTypes {
     EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
             "ExamineSMEReferral", null, null),
     RESOLVE_STOPPED_CASE(STATE_BO_CASE_STOPPED,
-            "ResolveStoppedCase", null, null);
+            "ResolveStoppedCase", null, null),
+    RESOLVE_REDECLARATION(STATE_BO_REDEC_NOTIFICATION_SENT,
+            "ResolveRedeclaration", null, null);
 
     final String state;
     final String value;

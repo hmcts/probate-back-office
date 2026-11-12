@@ -13,6 +13,7 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 @Component
 @RequiredArgsConstructor
@@ -50,6 +51,10 @@ public class AttachScannedDocs implements CreateTaskProcessor {
             switch (callbackRequest.getCaseDetails().getState()) {
                 case STATE_BO_CASE_STOPPED: {
                     updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
+                    break;
+                }
+                case STATE_BO_REDEC_NOTIFICATION_SENT: {
+                    updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
                     break;
                 }
                 default:

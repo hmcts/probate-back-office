@@ -23,6 +23,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 @ExtendWith(MockitoExtension.class)
 class AttachScannedDocsTest {
@@ -80,6 +81,19 @@ class AttachScannedDocsTest {
     }
 
     @Test
+    void shouldNotSetCreateTaskToYesWhenUserHasSystemUpdateRoleBORedecNotificationSent() {
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
+                UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn(STATE_BO_REDEC_NOTIFICATION_SENT);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
+
+        verify(waTaskService).setCreateTask(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
+    }
+
+    @Test
     void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRoleOtherState() {
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
@@ -104,6 +118,19 @@ class AttachScannedDocsTest {
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         verify(waTaskService).setCreateTask(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRoleBORedecNotificationSent() {
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
+                UserInfo.builder().roles(List.of("idam-service-account")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn(STATE_BO_REDEC_NOTIFICATION_SENT);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
+
+        verify(waTaskService).setCreateTask(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
     }
 
     @Test

@@ -3848,7 +3848,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_03cfali">
         <inputEntry id="UnaryTests_0hnhp6k">
-          <text>"handleEvidence", "changeState"</text>
+          <text>"changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ob66vl">
           <text>"BORedecNotificationSent"</text>
@@ -3895,7 +3895,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_096p6c6">
         <inputEntry id="UnaryTests_09ra5od">
-          <text>"attachScannedDocs"</text>
+          <text>"handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_19zbpww">
           <text>"BORedecNotificationSent"</text>
