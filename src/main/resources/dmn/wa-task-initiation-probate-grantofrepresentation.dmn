@@ -5441,7 +5441,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l4z85z">
-          <text>"case progression,handOffs,examineDeBonisNon"</text>
+          <text>"case progression,readyToIssueHandOffs,examineDeBonisNon"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1adv3g9">
@@ -5488,7 +5488,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sau706">
-          <text>"case progression,handOffs,examineWindrushScheme"</text>
+          <text>"case progression,readyToIssueHandOffs,examineWindrushScheme"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_01evpws">
@@ -5535,7 +5535,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1td6jut">
-          <text>"case progression,handOffs,examineFiatWill"</text>
+          <text>"case progression,readyToIssueHandOffs,examineFiatWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0rpv29q">
@@ -5582,7 +5582,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ko9b9h">
-          <text>"case progression,handOffs,examineIBCA"</text>
+          <text>"case progression,readyToIssueHandOffs,examineIBCA"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ficjl3">
@@ -5629,7 +5629,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1rb5nyr">
-          <text>"case progression,handOffs,examineWillCodicilNotated"</text>
+          <text>"case progression,readyToIssueHandOffs,examineWillCodicilNotated"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ur34t4">
@@ -5676,7 +5676,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15nya5j">
-          <text>"case progression,handOffs,examineWitnessInterview"</text>
+          <text>"case progression,readyToIssueHandOffs,examineWitnessInterview"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fsys9n">
@@ -5723,7 +5723,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08hih4d">
-          <text>"case progression,handOffs,examineHorizonScheme"</text>
+          <text>"case progression,readyToIssueHandOffs,examineHorizonScheme"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_09x3jue">
@@ -5770,7 +5770,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ks2u6l">
-          <text>"case progression,handOffs,examineDoubleProbate"</text>
+          <text>"case progression,readyToIssueHandOffs,examineDoubleProbate"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1tgiz65">
@@ -5817,7 +5817,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10xt5le">
-          <text>"case progression,handOffs,examineIncapacityRule35"</text>
+          <text>"case progression,readyToIssueHandOffs,examineIncapacityRule35"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nthk1h">
@@ -5864,7 +5864,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a1ymvg">
-          <text>"case progression,handOffs,examineLeadingFollowingGrants"</text>
+          <text>"case progression,readyToIssueHandOffs,examineLeadingFollowingGrants"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_123i48d">
@@ -5911,7 +5911,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1f8dumw">
-          <text>"case progression,handOffs,examineRectifyWillCodicil"</text>
+          <text>"case progression,readyToIssueHandOffs,examineRectifyWillCodicil"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0yj3aaj">
@@ -5958,7 +5958,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00vfop2">
-          <text>"case progression,handOffs,examineCodicilMis"</text>
+          <text>"case progression,readyToIssueHandOffs,examineCodicilMis"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12ek0ae">
@@ -6005,7 +6005,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1let2fn">
-          <text>"case progression,handOffs,examineSection116"</text>
+          <text>"case progression,readyToIssueHandOffs,examineSection116"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04aew5q">
@@ -6052,7 +6052,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_13plilw">
-          <text>"case progression,handOffs,examinePOA"</text>
+          <text>"case progression,readyToIssueHandOffs,examinePOA"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04rneis">
@@ -6099,7 +6099,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ibw6lc">
-          <text>"case progression,handOffs,examineResealForeignGrant"</text>
+          <text>"case progression,readyToIssueHandOffs,examineResealForeignGrant"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_18yopcv">
@@ -6146,7 +6146,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0hszl6y">
-          <text>"case progression,handOffs,examineIBIS"</text>
+          <text>"case progression,readyToIssueHandOffs,examineIBIS"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mrziay">
@@ -6193,7 +6193,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0enxx42">
-          <text>"case progression,handOffs,examineTrustCorporation"</text>
+          <text>"case progression,readyToIssueHandOffs,examineTrustCorporation"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0juus49">
@@ -6240,7 +6240,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10xh31t">
-          <text>"case progression,handOffs,examineForeignWill"</text>
+          <text>"case progression,readyToIssueHandOffs,examineForeignWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ttg01v">
@@ -6287,7 +6287,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0q2kqay">
-          <text>"case progression,handOffs,examineForeignDomicile"</text>
+          <text>"case progression,readyToIssueHandOffs,examineForeignDomicile"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1g2asjd">
@@ -6334,7 +6334,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0m4vox5">
-          <text>"case progression,handOffs,examineMinorityInterest"</text>
+          <text>"case progression,readyToIssueHandOffs,examineMinorityInterest"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0h4k0o6">
@@ -6381,7 +6381,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bupx4k">
-          <text>"case progression,handOffs,examineLostWill"</text>
+          <text>"case progression,readyToIssueHandOffs,examineLostWill"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0wudn5w">
@@ -6428,7 +6428,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0birh13">
-          <text>"case progression,handOffs,examineLiteraryEstate"</text>
+          <text>"case progression,readyToIssueHandOffs,examineLiteraryEstate"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fiz5qg">
@@ -6475,7 +6475,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_06ave7p">
-          <text>"case progression,handOffs,examineIBISCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineIBISCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0lv6fxc">
@@ -6522,7 +6522,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00m7npa">
-          <text>"case progression,handOffs,examineLostWillCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineLostWillCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_088n9pt">
@@ -6569,7 +6569,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_00vo5vc">
-          <text>"case progression,handOffs,examineHorizonSchemeCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineHorizonSchemeCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1xhqcid">
@@ -6616,7 +6616,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1l6rym1">
-          <text>"case progression,handOffs,examineIBCACasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineIBCACasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_006sczq">
@@ -6663,7 +6663,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a45lnf">
-          <text>"case progression,handOffs,examineLeadingFollowingGrantsCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineLeadingFollowingGrantsCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_15qe864">
@@ -6710,7 +6710,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cpaqln">
-          <text>"case progression,handOffs,examineLiteraryEstateCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineLiteraryEstateCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_19x8br5">
@@ -6757,7 +6757,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ld0ktt">
-          <text>"case progression,handOffs,examineMinorityInterestCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineMinorityInterestCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1oh0264">
@@ -6804,7 +6804,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1t7hgxf">
-          <text>"case progression,handOffs,examineCodicilMisCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineCodicilMisCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ztvj7m">
@@ -6851,7 +6851,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1m9dgvr">
-          <text>"case progression,handOffs,examineDeBonisNonCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineDeBonisNonCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1o05ns9">
@@ -6898,7 +6898,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1rh7tk1">
-          <text>"case progression,handOffs,examineWillCodicilNotatedCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineWillCodicilNotatedCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ktny8w">
@@ -6945,7 +6945,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ayuskz">
-          <text>"case progression,handOffs,examineRectifyWillCodicilCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineRectifyWillCodicilCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1vb4ggy">
@@ -6992,7 +6992,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sf2x6q">
-          <text>"case progression,handOffs,examineWindrushSchemeCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineWindrushSchemeCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1wfbgr7">
@@ -7039,7 +7039,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1ao3cn5">
-          <text>"case progression,handOffs,examineWitnessInterviewCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineWitnessInterviewCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0tbs3r8">
@@ -7086,7 +7086,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15uk0ug">
-          <text>"case progression,handOffs,examineSection116CasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineSection116CasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1i8ss3w">
@@ -7133,7 +7133,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_14psmax">
-          <text>"case progression,handOffs,examineDoubleProbateCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineDoubleProbateCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1hz9zrg">
@@ -7180,7 +7180,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hxn5jh">
-          <text>"case progression,handOffs,examinePOACasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examinePOACasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ezeyc7">
@@ -7227,7 +7227,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hbodnq">
-          <text>"case progression,handOffs,examineResealForeignGrantCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineResealForeignGrantCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nalq36">
@@ -7274,7 +7274,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0u457ji">
-          <text>"case progression,handOffs,examineFiatWillCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineFiatWillCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_12wtrda">
@@ -7321,7 +7321,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hnvdqr">
-          <text>"case progression,handOffs,examineIncapacityRule35CasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineIncapacityRule35CasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0qom2gw">
@@ -7368,7 +7368,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0c8ugkd">
-          <text>"case progression,handOffs,examineTrustCorporationCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineTrustCorporationCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1pp4ylm">
@@ -7415,7 +7415,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0ego594">
-          <text>"case progression,handOffs,examineForeignDomicileCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineForeignDomicileCasePrinted"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_13rcvji">
@@ -7462,7 +7462,7 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10sy71g">
-          <text>"case progression,handOffs,examineForeignWillCasePrinted"</text>
+          <text>"case progression,casePrintedHandOffs,examineForeignWillCasePrinted"</text>
         </outputEntry>
       </rule>
     </decisionTable>

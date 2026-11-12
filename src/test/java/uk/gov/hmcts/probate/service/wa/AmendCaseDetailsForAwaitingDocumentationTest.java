@@ -94,6 +94,25 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
     }
 
     @Test
+    void shouldSetCreateTaskToYesWhenStateHasChanged() {
+        setUpCaseTypeCallbackRequest(
+                CaseType.CAVEAT.name(),
+                CaseType.CAVEAT.name()
+        );
+        when(callbackRequest.isStateChanged())
+                .thenReturn(true);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+        verify(waTaskService)
+                .getCaseTypePredicate();
+    }
+
+    @Test
     void shouldSetCreateTaskToNoWhenHandOffReasonsAreSame() {
         setUpHandOffReasonsCallbackRequest(
                 HandoffReasonId.AD_COLLIGENDA_BONA,

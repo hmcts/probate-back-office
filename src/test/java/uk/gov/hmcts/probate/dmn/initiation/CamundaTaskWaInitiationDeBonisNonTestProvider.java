@@ -38,7 +38,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
         Map<String,Object> examineDeBonisNonReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs,examineDeBonisNon"
+                "processCategories", "case progression,readyToIssueHandOffs,examineDeBonisNon"
         );
 
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
@@ -62,7 +62,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
         Map<String,Object> examineDeBonisNonCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs,examineDeBonisNonCasePrinted"
+                "processCategories", "case progression,casePrintedHandOffs,examineDeBonisNonCasePrinted"
         );
 
         return Stream.of(

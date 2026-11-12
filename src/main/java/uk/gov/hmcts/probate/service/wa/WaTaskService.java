@@ -129,10 +129,8 @@ public class WaTaskService {
                                       String clientContext,
                                       Set<TaskTypes> taskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
-
-        if (taskData.isEmpty()) {
-            Long caseId = callbackRequest.getCaseDetails().getId();
-            Consumer<String> eventTrigger = caseType ->
+        Long caseId = callbackRequest.getCaseDetails().getId();
+        Consumer<String> eventTrigger = caseType ->
                 taskTypes.stream()
                         .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
                         .filter(taskType -> taskType.getCaseType().equals(caseType))
@@ -144,7 +142,14 @@ public class WaTaskService {
                                     eventId);
                             triggerEvent(callbackRequest.getCaseDetails(), eventId);
                         });
-
+        if (callbackRequest.isStateChanged()) {
+            log.info("Case id {} : state changed from {} to {}",
+                    caseId,
+                    callbackRequest.getCaseDetailsBefore().getState(),
+                    callbackRequest.getCaseDetails().getState());
+            eventTrigger.accept(callbackRequest.getCaseDetailsBefore().getData().getCaseType());
+        }
+        if (taskData.isEmpty()) {
             boolean caseTypeChanged =
                     getCaseTypePredicate().test(callbackRequest, clientContext);
 
@@ -170,7 +175,7 @@ public class WaTaskService {
                                           UnaryOperator<String> handOffReasonTask) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        if (isAllHandOffsRemoved(callbackRequest)) {
+        if (isAllHandOffsRemoved(callbackRequest) || callbackRequest.isStateChanged()) {
             triggerEvent(caseDetails, CLOSE_HANDOFFS);
         } else if (taskUtils.getTaskData(clientContext).isEmpty()) {
 

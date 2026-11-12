@@ -5,9 +5,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
 @Slf4j
 @Component
 public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseDetails implements CreateTaskProcessor {
@@ -15,11 +12,8 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION
             = "boAmendCaseDetailsForAwaitingDocumentation";
 
-    private final WaTaskService waTaskService;
-
     public AmendCaseDetailsForAwaitingDocumentation(WaTaskService waTaskService) {
         super(waTaskService);
-        this.waTaskService = waTaskService;
     }
 
     @Override
@@ -28,27 +22,9 @@ public class AmendCaseDetailsForAwaitingDocumentation extends AbstractAmendCaseD
     }
 
     @Override
-    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
-
-        Result result = getResult(callbackRequest,
-                responseCaseData);
-
-        boolean isInitialCaseExaminationTaskRequired =
-                !caseTypeChanged
-                        && !result.caseHandedOffToLegacySite()
-                        && waTaskService.isAllHandOffsRemoved(callbackRequest);
-
-        responseCaseData.setCreateTask(caseTypeChanged || result.newHandOffPresent()
-                || isInitialCaseExaminationTaskRequired
-                ? YES : NO);
-
-        log.info("case id {}: caseTypeChanged {},  newHandOffPresent {}"
-                        + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
-                callbackRequest.getCaseDetails().getId(),
-                caseTypeChanged,
-                result.newHandOffPresent(),
-                responseCaseData.getWaHandoffReasonList(),
-                isInitialCaseExaminationTaskRequired);
+    public void process(final String authToken,
+                        final CallbackRequest callbackRequest,
+                        final ResponseCaseData responseCaseData) {
+        super.process(authToken, callbackRequest, responseCaseData);
     }
 }

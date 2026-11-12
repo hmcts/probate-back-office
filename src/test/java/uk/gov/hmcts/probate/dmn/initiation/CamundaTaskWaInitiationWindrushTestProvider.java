@@ -41,7 +41,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
         Map<String,Object> examineWindrushSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs,examineWindrushScheme"
+                "processCategories", "case progression,readyToIssueHandOffs,examineWindrushScheme"
         );
 
         Map<String,Object> examineWindrushSchemeCasePrintedTaskAttributes = Map.of(
@@ -59,7 +59,7 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
         Map<String,Object> examineWindrushSchemeCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs,examineWindrushSchemeCasePrinted"
+                "processCategories", "case progression,casePrintedHandOffs,examineWindrushSchemeCasePrinted"
         );
 
         return Stream.of(

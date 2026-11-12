@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -20,6 +21,35 @@ public class AbstractAmendCaseDetails {
     private final WaTaskService waTaskService;
 
     protected record Result(boolean caseHandedOffToLegacySite, boolean newHandOffPresent) {
+    }
+
+    protected void process(final String authToken,
+                        final CallbackRequest callbackRequest,
+                        final ResponseCaseData responseCaseData) {
+        boolean caseTypeChanged = waTaskService.getCaseTypePredicate().test(callbackRequest, null);
+
+        Result result = getResult(callbackRequest,
+                responseCaseData);
+
+        boolean isInitialCaseExaminationTaskRequired =
+                !caseTypeChanged
+                        && !result.caseHandedOffToLegacySite()
+                        && waTaskService.isAllHandOffsRemoved(callbackRequest);
+
+        responseCaseData.setCreateTask(callbackRequest.isStateChanged()
+                || caseTypeChanged
+                || result.newHandOffPresent()
+                || isInitialCaseExaminationTaskRequired
+                ? YES : NO);
+
+        log.info("case id {}: state has changed {}, caseTypeChanged {},  newHandOffPresent {}"
+                        + " new handoffs {}, isInitialCaseExaminationTaskRequired {}",
+                callbackRequest.getCaseDetails().getId(),
+                callbackRequest.isStateChanged(),
+                caseTypeChanged,
+                result.newHandOffPresent(),
+                responseCaseData.getWaHandoffReasonList(),
+                isInitialCaseExaminationTaskRequired);
     }
 
     protected Result getResult(CallbackRequest callbackRequest,
@@ -44,7 +74,9 @@ public class AbstractAmendCaseDetails {
 
         Set<HandoffReason> handOffReasons = new HashSet<>(handOffReasonAfter);
 
-        handOffReasons.removeAll(handOffReasonBefore);
+        if (!callbackRequest.isStateChanged()) {
+            handOffReasons.removeAll(handOffReasonBefore);
+        }
 
         List<CollectionMember<HandoffReason>> newHandOffReasons = handOffReasons.stream()
                 .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason)
