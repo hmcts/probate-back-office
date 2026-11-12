@@ -59,6 +59,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -613,6 +614,8 @@ class CallbackResponseTransformerTest {
     private CreateTaskProcessorFactory createTaskProcessorFactory;
     @Mock
     private AmendCaseDetailsForAwaitingDocumentation amendCaseDetailsForAwaitingDocumentation;
+    @Mock
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private Clock clock;
@@ -2397,7 +2400,8 @@ class CallbackResponseTransformerTest {
             .paperPaymentMethod("debitOrCredit")
             .paymentReferenceNumberPaperform(IHT_REFERENCE)
             .paperForm(YES)
-            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
+            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE)
+            .registryLocation(REGISTRY_LOCATION);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());

@@ -43,6 +43,8 @@ class RegistryDetailsServiceTest {
         registry.setAddressLine4("addressLine4");
         registry.setPostcode("postcode");
         registry.setTown("town");
+        registry.setEpimmsId("123456");
+        registry.setTaskRegion("12");
 
         registryMap = new HashMap<>();
         registryMap.put(REGISTRY_LOCATION, registry);
@@ -72,5 +74,33 @@ class RegistryDetailsServiceTest {
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTown(), is(registry.getTown()));
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getCtscTelephone(),
             is(registryMap.get(CTSC).getPhone()));
+    }
+
+    @Test
+    void shouldReturnEpimmsIdForRegistryLocation() {
+        String actualEpimmsId = registryDetailsService.getEpimmsId(REGISTRY_LOCATION);
+
+        assertThat(actualEpimmsId, is(registry.getEpimmsId()));
+    }
+
+    @Test
+    void shouldReturnEmptyStringEpimmsIdForUnknownRegistryLocation() {
+        String actualEpimmsId = registryDetailsService.getEpimmsId("otherLocation");
+
+        assertThat(actualEpimmsId, is(""));
+    }
+
+    @Test
+    void shouldReturnTaskRegionForRegistryLocation() {
+        String actualRegion = registryDetailsService.getTaskRegion(REGISTRY_LOCATION);
+
+        assertThat(actualRegion, is(registry.getTaskRegion()));
+    }
+
+    @Test
+    void shouldReturnEmptyStringTaskRegionForUnknownRegistryLocation() {
+        String actualRegion = registryDetailsService.getTaskRegion("otherLocation");
+
+        assertThat(actualRegion, is(""));
     }
 }
