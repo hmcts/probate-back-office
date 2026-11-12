@@ -362,7 +362,9 @@ public class TaskAttributeConstants {
     public static final String APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT = "applyforGrantPaperApplicationMan";
     public static final String ATTACH_SCANNED_DOCS_EVENT = "attachScannedDocs";
     public static final String BO_RESOLVE_STOP_EVENT = "boResolveStop";
-    public static final String CHANGE_STATE_EVENT = "changeState";
+    public static final String CHANGE_STATE_EVENT = "createChangeState";
+    public static final String CANCEL_CHANGE_STATE_EVENT = "cancelChangeState";
+    public static final String CREATE_CHANGE_STATE_EVENT = "createChangeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";

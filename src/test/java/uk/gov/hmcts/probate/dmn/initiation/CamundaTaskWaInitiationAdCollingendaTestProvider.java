@@ -131,21 +131,21 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false,
                                 Collections.emptyList(), false),
                         List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         "CasePrinted",
                         additionalData(true, "adColligendaBona",false,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),

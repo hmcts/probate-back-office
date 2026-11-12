@@ -224,28 +224,28 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList(), false
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),

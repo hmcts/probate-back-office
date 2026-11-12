@@ -233,28 +233,28 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        "createChangeState",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),

@@ -270,28 +270,28 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     List.of(examineDigitalCaseIntestacyTaskAttributes)
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "CasePrinted",
                     additionalData(true, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "CasePrinted",
                     additionalData(false, "other", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
@@ -530,28 +530,28 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "BOReadyToIssue",
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "BOReadyToIssue",
                     additionalData(true, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "BOReadyToIssue",
                     additionalData(false, "other", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    "createChangeState",
                     "BOReadyToIssue",
                     additionalData(false, "intestacy", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),

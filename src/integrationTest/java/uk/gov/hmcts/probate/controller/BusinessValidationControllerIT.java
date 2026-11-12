@@ -202,7 +202,7 @@ class BusinessValidationControllerIT {
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationUserId";
     private static final String CASE_CLOSED_STATE = "BOCaseClosed";
     private static final String STATE_BO_SOT_GENERATED = "BOSotGenerated";
-    public static final String CHANGE_STATE = "changeState";
+    public static final String CHANGE_STATE = "createChangeState";
     public static final String BO_CASE_STOPPED = "BOCaseStopped";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -1706,7 +1706,7 @@ class BusinessValidationControllerIT {
 
         ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
 
-        payload.put("event_id", "changeState");
+        payload.put("event_id", "createChangeState");
         ((ObjectNode) payload.get("case_details").get("case_data"))
                 .put("transferToState","BOCaseStoppedAwaitRedec");
 
@@ -1786,7 +1786,7 @@ class BusinessValidationControllerIT {
 
         ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
 
-        payload.put("event_id", "changeState");
+        payload.put("event_id", "createChangeState");
         ((ObjectNode) payload.get("case_details").get("case_data"))
                 .put("transferToState","BORedecNotificationSent");
 
@@ -1826,7 +1826,7 @@ class BusinessValidationControllerIT {
 
         ObjectNode payload = (ObjectNode) OBJECT_MAPPER.readTree(solicitorPayload);
 
-        payload.put("event_id", "changeState");
+        payload.put("event_id", "createChangeState");
         ((ObjectNode) payload.get("case_details").get("case_data"))
                 .put("transferToState", "BORegistrarEscalation");
 

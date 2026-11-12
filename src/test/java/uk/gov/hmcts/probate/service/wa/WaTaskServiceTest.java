@@ -56,7 +56,9 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESC
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -454,6 +456,29 @@ class WaTaskServiceTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
+    }
+
+    @Test
+    void shouldCancelAndCreateChangeStateEvent() {
+        Long caseId = 123456789L;
+        when(caseDetails.getId()).thenReturn(caseId);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.cancelCreateChangeStateEvent(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CANCEL_CHANGE_STATE),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class));
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CREATE_CHANGE_STATE),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class));
     }
 
     @Test

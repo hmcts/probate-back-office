@@ -27,7 +27,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CANCEL_CHANGE_STATE_EVENT;
 
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
@@ -79,8 +79,12 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.containsValue(BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT)
                 || cancellationProperties.containsValue(CLOSE_READY_TO_ISSUE_HANDOFFS)) {
             assertResponse(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
-            testChangeStateEvent(dmnResultList, cancellationProperties);
+        } else if (cancellationProperties.containsValue(CANCEL_CHANGE_STATE_EVENT)) {
+            Assertions.assertEquals(1, dmnResultList.size());
+            Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
+                    cancellationProperties.get("processCategories"));
+            Assertions.assertEquals(dmnResultList.getFirst().get("action"),
+                    cancellationProperties.get("action"));
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
@@ -141,12 +145,4 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         }
     }
 
-    private void testChangeStateEvent(List<Map<String, Object>> dmnResultList,
-                                                Map<String, String> cancellationProperties) {
-        Assertions.assertEquals(1, dmnResultList.size());
-        Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
-                cancellationProperties.get("processCategories"));
-        Assertions.assertEquals(dmnResultList.getFirst().get("action"),
-                cancellationProperties.get("action"));
-    }
 }
