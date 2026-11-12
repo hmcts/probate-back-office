@@ -133,7 +133,7 @@ class HandleEvidenceTest {
 
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getState()).thenReturn("BOCaseStopped");
+        when(caseDetails.getState()).thenReturn("OtherState");
         when(caseDetails.getId()).thenReturn(123456789L);
         when(caseData.getCaseType()).thenReturn("gop");
 

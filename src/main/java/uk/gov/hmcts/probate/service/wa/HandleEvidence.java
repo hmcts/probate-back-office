@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
@@ -54,6 +55,11 @@ public class HandleEvidence implements CreateTaskProcessor {
             }
             case STATE_BO_CASE_WORKER_ESCALATION: {
                 updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.EXAMINE_SME_REFERRAL);
+
+                break;
+            }
+            case STATE_BO_CASE_STOPPED: {
+                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
 
                 break;
             }

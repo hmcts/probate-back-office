@@ -3566,7 +3566,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0765g2w">
         <inputEntry id="UnaryTests_0ydtqnf">
-          <text>"handleEvidence","citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
+          <text>"citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cu0lxp">
           <text>"BOCaseStopped"</text>
@@ -3613,7 +3613,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_15opzac">
         <inputEntry id="UnaryTests_0ygur8g">
-          <text>"attachScannedDocs"</text>
+          <text>"handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1k4hfo8">
           <text>"BOCaseStopped"</text>

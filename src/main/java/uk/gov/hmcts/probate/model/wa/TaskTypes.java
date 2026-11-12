@@ -12,6 +12,7 @@ import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
@@ -41,7 +42,9 @@ public enum TaskTypes {
             "ExamineDigitalCaseAdColligendaBonaReadyToIssue", AD_COLLIGENDA_BONA.getCaseType(),
             CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
-            "ExamineSMEReferral", null, null);
+            "ExamineSMEReferral", null, null),
+    RESOLVE_STOPPED_CASE(STATE_BO_CASE_STOPPED,
+            "ResolveStoppedCase", null, null);
 
     final String state;
     final String value;

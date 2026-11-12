@@ -7,7 +7,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
@@ -15,7 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 
 @ExtendWith(MockitoExtension.class)
 class AttachScannedDocsTest {
@@ -25,6 +32,15 @@ class AttachScannedDocsTest {
 
     @Mock
     private CallbackRequest callbackRequest;
+
+    @Mock
+    private WaTaskService waTaskService;
+
+    @Mock
+    private CaseDetails caseDetails;
+
+    @Mock
+    private CaseData caseData;
 
     @InjectMocks
     private AttachScannedDocs processor;
@@ -37,25 +53,57 @@ class AttachScannedDocsTest {
     }
 
     @Test
-    void shouldSetCreateTaskToYesWhenUserHasSystemUpdateRole() {
+    void shouldSetCreateTaskToYesWhenUserHasSystemUpdateRoleOtherState() {
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn("OtherState");
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.YES);
+        verify(waTaskService, never()).setCreateTask(any(), any(), any());
     }
 
     @Test
-    void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRole() {
+    void shouldNotSetCreateTaskToYesWhenUserHasSystemUpdateRoleCaseStopped() {
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
+                UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn(STATE_BO_CASE_STOPPED);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
+
+        verify(waTaskService).setCreateTask(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRoleOtherState() {
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn("OtherState");
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
         processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
 
         assertThat(responseCaseData.getCreateTask()).isEqualTo(Constants.YES);
+        verify(waTaskService, never()).setCreateTask(any(), any(), any());
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenUserHasIdamServiceAccountRoleCaseStopped() {
+        when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
+                UserInfo.builder().roles(List.of("idam-service-account")).build()));
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getState()).thenReturn(STATE_BO_CASE_STOPPED);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        processor.process(AUTH_TOKEN, callbackRequest, responseCaseData, null);
+
+        verify(waTaskService).setCreateTask(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
     }
 
     @Test
