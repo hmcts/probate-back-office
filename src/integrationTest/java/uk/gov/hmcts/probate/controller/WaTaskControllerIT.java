@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -198,12 +198,13 @@ public class WaTaskControllerIT {
             // Mock the CallbackRequest and its nested objects
             CallbackRequest mockCallbackRequest = mock(CallbackRequest.class);
             CaseDetails mockCaseDetails = mock(CaseDetails.class);
-            CaseData mockCaseData = mock(CaseData.class);
+            CaseData mockCaseData = CaseData.builder()
+                    .evidenceHandled(NO)
+                    .build();
 
             // Set up the mock behavior
             when(mockCallbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
             when(mockCaseDetails.getData()).thenReturn(mockCaseData);
-            when(mockCaseData.getEvidenceHandled()).thenReturn(NO);
 
             // Test the predicate
             return predicate.test(mockCallbackRequest, CLIENT_CONTEXT_HEADER_PARAMETER);

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
@@ -66,7 +67,7 @@ class DefaultTaskListRendererTest {
     private TaskStateRenderer taskStateRendererMock;
     @Mock
     private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData mockCaseData;
     @Mock
     DocumentLink mockDocumentLink;

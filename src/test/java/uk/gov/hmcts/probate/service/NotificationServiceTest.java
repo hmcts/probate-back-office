@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -85,6 +86,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -265,7 +267,7 @@ class NotificationServiceTest {
 
     @Test
     void shouldUpdatePersonalisationForSolicitor() throws NotificationClientException {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getRegistryLocation()).thenReturn("oxford");
@@ -427,7 +429,7 @@ class NotificationServiceTest {
 
     @Test
     void shouldUpdatePersonalisationWithSolicitorName() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -444,7 +446,7 @@ class NotificationServiceTest {
 
     @Test
     void shouldUpdatePersonalisationWithSolicitorForenamesAndSurname() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -462,7 +464,7 @@ class NotificationServiceTest {
 
     @Test
     void shouldNotUpdatePersonalisationWhenApplicationTypeIsNotSolicitor() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(PERSONAL);
@@ -540,7 +542,7 @@ class NotificationServiceTest {
     @Test
     void sendStopResponseReceivedEmailSuccessfully() throws NotificationClientException {
         CaseDetails caseDetails = mock(CaseDetails.class);
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -573,7 +575,7 @@ class NotificationServiceTest {
     @Test
     void sendStopResponseReceivedEmailThrowsExceptionWhenCaseDataIsNull() {
         CaseDetails caseDetails = mock(CaseDetails.class);
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -591,7 +593,7 @@ class NotificationServiceTest {
     @Test
     void sendStopResponseReceivedEmailThrowsExceptionWhenEmailIsNull() throws NotificationClientException {
         CaseDetails caseDetails = mock(CaseDetails.class);
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getApplicationType()).thenReturn(PERSONAL);
@@ -616,7 +618,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeGop() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -631,7 +633,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeGopWelsh() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
@@ -647,7 +649,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacy() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("intestacy");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -662,7 +664,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacyWelsh() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("intestacy");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
@@ -678,7 +680,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWill() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("admonWill");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -693,7 +695,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWillWelsh() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("admonWill");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
@@ -709,7 +711,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBona() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("adColligendaBona");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -724,7 +726,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBonaWelsh() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("adColligendaBona");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
@@ -740,7 +742,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ForGrantReissuedCaseTypeAdColligendaBonaWelsh() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("adColligendaBona");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
@@ -756,7 +758,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ThrowsException_ForEmptyCaseType() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -770,7 +772,7 @@ class NotificationServiceTest {
 
     @Test
     void updatePersonalisationText_ThrowsException_ForUnknownCaseType() {
-        CaseData caseData = mock(CaseData.class);
+        CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         when(caseData.getCaseType()).thenReturn("foo");
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
@@ -794,7 +796,7 @@ class NotificationServiceTest {
         final String issueDateFrm = "issueDateFrm";
         final String issueDateCy = "issueDateCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -861,7 +863,7 @@ class NotificationServiceTest {
         final String decdDodFrm = "decdDodFrm";
         final String decdDodCy = "decdDodCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -925,7 +927,7 @@ class NotificationServiceTest {
         final String issueDateFrm = "issueDateFrm";
         final String issueDateCy = "issueDateCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -992,7 +994,7 @@ class NotificationServiceTest {
         final String decdDodFrm = "decdDodFrm";
         final String decdDodCy = "decdDodCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -1054,7 +1056,7 @@ class NotificationServiceTest {
         final String decdDodFrm = "decdDodFrm";
         final String decdDodCy = "decdDodCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -1114,7 +1116,7 @@ class NotificationServiceTest {
         final String decdDodCy = "decdDodCy";
         final String issueDate = "2025-13-05";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         when(caseDetails.getData()).thenReturn(caseData);
@@ -1156,7 +1158,7 @@ class NotificationServiceTest {
         final String decdDodFrm = "decdDodFrm";
         final String decdDodCy = "decdDodCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
@@ -1221,7 +1223,7 @@ class NotificationServiceTest {
         final String issueDateFrm = "issueDateFrm";
         final String issueDateCy = "issueDateCy";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -1283,7 +1285,7 @@ class NotificationServiceTest {
         final String cwName = "cwName";
         final String tmplId = "tmplId";
         final String decName = "decName";
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
@@ -1334,7 +1336,7 @@ class NotificationServiceTest {
     void shouldNotSendRegistrarEscalatedFailedIfNoCaseworker() {
         final String decName = "decName";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final Optional<UserInfo> caseworkerInfo = Optional.empty();
@@ -1360,7 +1362,7 @@ class NotificationServiceTest {
         final String tmplId = "tmplId";
         final String decName = "decName";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
@@ -1412,7 +1414,7 @@ class NotificationServiceTest {
         final String tmplId = "tmplId";
         final String decName = "decName";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         final SendEmailResponse sendEmailResponse = mock(SendEmailResponse.class);
@@ -1467,7 +1469,7 @@ class NotificationServiceTest {
         final String cwEmail = "caseworker@example.com";
         final String cwName = "Caseworker Name";
         final String decName = "Deceased Name";
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
         final UserInfo userInfoMock = mock(UserInfo.class);
         final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
@@ -1575,7 +1577,7 @@ class NotificationServiceTest {
             throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = null;
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         when(caseDetails.getData()).thenReturn(caseData);
@@ -1597,7 +1599,7 @@ class NotificationServiceTest {
             throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = " ";
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         when(caseDetails.getData()).thenReturn(caseData);
@@ -1619,7 +1621,7 @@ class NotificationServiceTest {
         final String applEmail = null;
 
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         when(caseDetails.getData()).thenReturn(caseData);
@@ -1641,7 +1643,7 @@ class NotificationServiceTest {
         final String applEmail = " ";
 
 
-        final CaseData caseData = mock(CaseData.class);
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
         when(caseDetails.getData()).thenReturn(caseData);

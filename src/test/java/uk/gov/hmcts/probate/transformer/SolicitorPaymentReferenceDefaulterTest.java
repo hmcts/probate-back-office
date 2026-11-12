@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
@@ -17,7 +18,7 @@ class SolicitorPaymentReferenceDefaulterTest {
     @InjectMocks
     private SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private CaveatData caveatDataMock;

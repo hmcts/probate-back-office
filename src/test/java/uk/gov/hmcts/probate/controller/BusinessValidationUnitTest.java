@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
@@ -102,6 +103,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doReturn;
 
 
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
@@ -139,7 +141,7 @@ class BusinessValidationUnitTest {
     private HttpServletRequest httpServletRequest;
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private Document documentMock;
@@ -1487,7 +1489,7 @@ class BusinessValidationUnitTest {
     void testSolsCreationReportsErrorsSepDate() {
         final CallbackRequest callbackRequest = mock();
         final CaseDetails caseDetails = mock();
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final HttpServletRequest httpServletRequest = mock();
 
         when(callbackRequest.getCaseDetails())
@@ -1522,7 +1524,7 @@ class BusinessValidationUnitTest {
     void testSolsCreationReportsErrorsSepOutsideEngWales() {
         final CallbackRequest callbackRequest = mock();
         final CaseDetails caseDetails = mock();
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final HttpServletRequest httpServletRequest = mock();
 
         when(callbackRequest.getCaseDetails())
@@ -1558,7 +1560,7 @@ class BusinessValidationUnitTest {
     void testSolsCreationReportsErrorsBoth() {
         final CallbackRequest callbackRequest = mock();
         final CaseDetails caseDetails = mock();
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final HttpServletRequest httpServletRequest = mock();
 
         when(callbackRequest.getCaseDetails())
@@ -1598,7 +1600,7 @@ class BusinessValidationUnitTest {
     void testSolsCreationReportsNoErrors() {
         final CallbackRequest callbackRequest = mock();
         final CaseDetails caseDetails = mock();
-        final CaseData caseData = mock();
+        final CaseData caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
         final HttpServletRequest httpServletRequest = mock();
 
         final CallbackResponse callbackResponse = mock();

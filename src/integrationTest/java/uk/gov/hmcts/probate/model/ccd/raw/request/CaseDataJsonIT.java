@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.Jackson2Tester;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -27,7 +27,7 @@ class CaseDataJsonIT {
     private String jsonContent;
 
     @Autowired
-    private JacksonTester<CaseData> jacksonTester;
+    private Jackson2Tester<CaseData> jacksonTester;
 
     private TestUtils testUtils = new TestUtils();
 

@@ -158,7 +158,10 @@ ccd.data.store.api:
   host: http://localhost:4452
 
 spring:
-  jackson:
+  http:
+    converters:
+      preferred-json-mapper: jackson2
+  jackson2:
     serialization:
       wrap_root_value: false
       write-dates-as-timestamps: false
@@ -180,8 +183,6 @@ spring:
 
 
 spring.document.retriever.service.api.baseurl: localhost:5006
-
-spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value

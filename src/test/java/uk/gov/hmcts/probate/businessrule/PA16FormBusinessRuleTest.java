@@ -1,68 +1,72 @@
 package uk.gov.hmcts.probate.businessrule;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
+
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@ExtendWith(MockitoExtension.class)
 class PA16FormBusinessRuleTest {
 
     @InjectMocks
     private PA16FormBusinessRule underTest;
 
-    @Mock
     private CaseData mockCaseData;
-
-    @BeforeEach
-    public void setup() {
-        openMocks(this);
-    }
 
     @Test
     void shouldBeApplicableForChildAdoptedNoApplicantSiblingsRenouncing() {
-        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
-        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
-        when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+        mockCaseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased("ChildAdopted")
+            .solsApplicantSiblings(NO)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldBeApplicableForChildNoApplicantSiblingsYesRenouncing() {
-        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
-        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
-        when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+        mockCaseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased("Child")
+            .solsApplicantSiblings(NO)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNOTBeApplicableForNotChildAdoptedNoApplicantSiblingsNoRenouncing() {
-        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
-        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
-        when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+        mockCaseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased("SpouseOrCivil")
+            .solsApplicantSiblings(NO)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNOTBeApplicableForChildAdoptedYesApplicantSiblingsYesRenouncing() {
-        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
-        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
-        when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+        mockCaseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased("ChildAdopted")
+            .solsApplicantSiblings(YES)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNOTBeApplicableForChildAdoptedNoApplicantSiblingsNoRenouncing() {
-        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
-        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
-        when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(NO);
+        mockCaseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased("ChildAdopted")
+            .solsApplicantSiblings(NO)
+            .solsSpouseOrCivilRenouncing(NO)
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
