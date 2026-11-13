@@ -4,7 +4,7 @@ dotenv.config({ path: "./src/test/PlaywrightTest/.env" });
 
 export const testConfig = {
   TestBackOfficeUrl:
-    process.env.TEST_E2E_URL || "https://manage-case.aat.platform.hmcts.net",
+    process.env.TEST_E2E_URL || "https://xui-probate-back-office-pr-3630.preview.platform.hmcts.net",
   TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
   TestRetryFeatures: 2, // process.env.RETRY_FEATURES || 2,
   TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
@@ -14,16 +14,16 @@ export const testConfig = {
   WaitForTextTimeout:
     Number(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT) || 20000,
   TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === "true",
-  TestEnvCwUser: process.env.CW_USER_EMAIL,
-  TestEnvCwPassword: process.env.CW_USER_PASSWORD,
-  TestEnvSuperCwUser: process.env.CW_SUPERUSER_EMAIL,
-  TestEnvSuperCwPassword: process.env.CW_SUPERUSER_PASSWORD,
-  TestEnvProfUser: process.env.SOL_USER_EMAIL,
-  TestEnvProfPassword: process.env.SOL_USER_PASSWORD,
-  TestEnvProfUserSAC: process.env.PROF_USER_SAC,
-  TestEnvProfPasswordSAC: process.env.PROF_USER_PASSWORD_SAC,
-  TestEnvProfUserNoc: process.env.PROF_USER_NOC,
-  TestEnvProfPasswordNoc: process.env.PROF_USER_PASSWORD_NOC,
+  TestEnvCwUser: 'probatecaseworker@gmail.com',
+  TestEnvCwPassword: 'Monday01',
+  TestEnvSuperCwUser: 'probatecaseworker@gmail.com',
+  TestEnvSuperCwPassword: 'Monday01',
+  TestEnvProfUser: 'probate.pp1.org2@gmail.com',
+  TestEnvProfPassword: 'Probate123',
+  TestEnvProfUserSAC: 'probate.pp2.org2@gmail.com',
+  TestEnvProfPasswordSAC: 'Probate123',
+  TestEnvProfUserNoc: 'probate.pp1.org2@gmail.com',
+  TestEnvProfPasswordNoc: 'Probate123',
   TestEnvWaCtscAdminUser: process.env.WA_CTSC_ADMIN_USER_EMAIL,
   TestEnvWaCtscAdminPassword: process.env.WA_CTSC_ADMIN_USER_PASSWORD,
   TestEnvCcdGatewayIdamClientSecret: process.env.CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET,
@@ -38,7 +38,7 @@ export const testConfig = {
   ManualDelayLong: 75000,
   // if auto delay enabled, is running in pipeline, not locally from individual test path run via package.json script
   SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2000 : 0,
-  SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2000 : 0,
+  SignInDelayDefault: 10000,
   RejectCookies: false,
   RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2000 : 0,
   CaseDetailsDelayDefault:
