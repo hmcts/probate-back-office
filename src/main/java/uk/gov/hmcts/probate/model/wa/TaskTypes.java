@@ -181,7 +181,7 @@ public enum TaskTypes {
 
     public static Map<String, TaskTypes> getStateTasks(String state) {
         return Arrays.stream(values())
-                .filter(taskType -> taskType.state.equals(state))
+                .filter(taskType -> taskType.state.equals(state) && taskType.closingEventId != null)
                 .collect(toMap(taskType ->
                         taskType.getValue().toUpperCase(),
                         taskType -> taskType));
@@ -195,13 +195,13 @@ public enum TaskTypes {
 
     public static Optional<TaskTypes> getAwaitingDocIceTask(String caseType) {
         return examineAwaitingDocTasks().stream()
-                .filter(taskType -> taskType.caseType.equals(caseType))
+                .filter(taskType -> taskType.caseType != null && taskType.caseType.equals(caseType))
                 .findFirst();
     }
 
     public static Optional<TaskTypes> getReadyToIssueIceTask(String caseType) {
         return examineReadyToIssueTasks().stream()
-                .filter(taskType -> taskType.caseType.equals(caseType))
+                .filter(taskType -> taskType.caseType != null && taskType.caseType.equals(caseType))
                 .findFirst();
     }
 

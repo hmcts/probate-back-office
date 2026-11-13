@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
