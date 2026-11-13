@@ -45,7 +45,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
         Map<String, Object> examineTrustCorporationCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineTrustCorporationCasePrinted"
         );
 
         Map<String, Object> examineTrustCorporationTaskAttributes = Map.of(
@@ -63,7 +63,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
         Map<String, Object> examineTrustCorporationReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineTrustCorporation"
         );
 
         return Stream.of(

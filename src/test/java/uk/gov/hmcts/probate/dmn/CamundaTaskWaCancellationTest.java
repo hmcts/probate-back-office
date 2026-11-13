@@ -13,8 +13,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
-import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +32,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CLOSE_HANDOFFS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -119,7 +116,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(25));
+        assertThat(logic.getRules().size(), is(69));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -139,12 +136,11 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_REDECLARATION_SOT_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.containsValue(CLOSE_HANDOFFS)
+        } else if (cancellationProperties.get("event").startsWith("close")
                 && cancellationProperties.containsValue(READY_TO_ISSUE_STATE)) {
             assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
-        } else if ((cancellationProperties.containsValue(CLOSE_HANDOFFS)
-                && cancellationProperties.containsValue(CASE_PRINTED_STATE))
-                || isAwaitingDocIceCancellationTask(cancellationProperties.get("event"))) {
+        } else if (cancellationProperties.get("event").startsWith("close")
+                && cancellationProperties.containsValue(CASE_PRINTED_STATE)) {
             assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
         }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             validate(dmnResultList, cancellationProperties);
@@ -166,14 +162,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("state", state);
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         Assertions.assertEquals(expectation, dmnDecisionTableResult.getResultList());
-    }
-
-    private boolean isAwaitingDocIceCancellationTask(String event) {
-        return TaskTypes.examineAwaitingDocIceTasks().stream()
-                .map(TaskTypes::getClosingEventId)
-                .filter(Objects::nonNull)
-                .map(EventId::getName)
-                .anyMatch(event::equals);
     }
 
     private void assertResponse(List<Map<String, Object>> dmnResultList,
