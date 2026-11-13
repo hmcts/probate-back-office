@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -114,7 +113,10 @@ public class WaTaskService {
                                        String clientContext) {
         triggerCloseHandOffEvent(callbackRequest, clientContext,
                 handOffReason -> "Examine" + handOffReason);
-        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineReadyToIssueTasks());
+        triggerCloseIceEvent(callbackRequest,
+                clientContext,
+                TaskTypes.examineReadyToIssueTasks(),
+                TaskTypes.examineAwaitingDocTasks());
     }
 
 
@@ -122,20 +124,25 @@ public class WaTaskService {
                                                 String clientContext) {
         triggerCloseHandOffEvent(callbackRequest, clientContext,
                 handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED);
-        triggerCloseIceEvent(callbackRequest, clientContext, TaskTypes.examineAwaitingDocTasks());
+        triggerCloseIceEvent(callbackRequest,
+                clientContext,
+                TaskTypes.examineAwaitingDocTasks(),
+                TaskTypes.examineReadyToIssueTasks());
     }
 
     private void triggerCloseIceEvent(CallbackRequest callbackRequest,
                                       String clientContext,
-                                      Set<TaskTypes> taskTypes) {
+                                      Set<TaskTypes> currentTaskTypes,
+                                      Set<TaskTypes> beforeTaskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
-
-        if (taskData.isEmpty()) {
-            Long caseId = callbackRequest.getCaseDetails().getId();
-            Consumer<String> eventTrigger = caseType ->
+        Long caseId = callbackRequest.getCaseDetails().getId();
+        BiConsumer<String, Set<TaskTypes>> eventTrigger = (caseType, taskTypes) ->
                 taskTypes.stream()
                         .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
                         .filter(taskType -> taskType.getCaseType().equals(caseType))
+                        .peek(taskType -> log.info("Case id {} : closing task {}",
+                                caseId,
+                                taskType.getValue()))
                         .findFirst()
                         .flatMap(TaskTypes::getOptionalClosingEventId)
                         .ifPresent(eventId -> {
@@ -145,6 +152,13 @@ public class WaTaskService {
                             triggerEvent(callbackRequest.getCaseDetails(), eventId);
                         });
 
+
+        if (isHandOffsAdded(callbackRequest)) {
+            eventTrigger.accept(callbackRequest.getCaseDetailsBefore().getData().getCaseType(), beforeTaskTypes);
+            eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType(), currentTaskTypes);
+        }
+
+        if (taskData.isEmpty()) {
             boolean caseTypeChanged =
                     getCaseTypePredicate().test(callbackRequest, clientContext);
 
@@ -152,15 +166,10 @@ public class WaTaskService {
 
                 String caseTypeBefore = callbackRequest.getCaseDetailsBefore().getData().getCaseType();
 
-                log.info("Case id {} : no context task and case type has changed from {}",
+                log.info("Case id {} : no context task and remove case type as it has changed {}",
                         caseId,
                         caseTypeBefore);
-                eventTrigger.accept(caseTypeBefore);
-            } else if (isHandOffsAdded(callbackRequest)) {
-
-                log.info("Case id {} : no context task and handoffs have been added",
-                        caseId);
-                eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType());
+                eventTrigger.accept(caseTypeBefore, currentTaskTypes);
             }
         }
     }
