@@ -52,10 +52,5 @@ public class AmendCaseDetailsForReadyToIssue extends AbstractAmendCaseDetails im
                 result.newHandOffPresent(),
                 responseCaseData.getWaHandoffReasonList(),
                 isInitialCaseExaminationTaskRequired);
-
-        waTaskService.removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, clientContext);
-        if (responseCaseData.getCreateTask().equals(YES)) {
-            log.info("New task to be added to waTasksPresent");
-        }
     }
 }

@@ -8,7 +8,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 
 @Slf4j
@@ -51,6 +54,21 @@ public class HandleEvidence implements CreateTaskProcessor {
 
                 break;
             }
+            case STATE_BO_CASE_WORKER_ESCALATION: {
+                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.EXAMINE_SME_REFERRAL);
+
+                break;
+            }
+            case STATE_BO_CASE_STOPPED: {
+                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
+
+                break;
+            }
+            case STATE_BO_REDEC_NOTIFICATION_SENT: {
+                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
+
+                break;
+            }
             default:
                 responseCaseData.setCreateTask(YES);
         }
@@ -62,11 +80,5 @@ public class HandleEvidence implements CreateTaskProcessor {
         waTaskService
                 .setCreateTask(callbackRequest, responseCaseData, taskType);
 
-        if (responseCaseData.getCreateTask().equals(YES)) {
-            waTaskService.addTaskToWaTaskPresent(
-                    callbackRequest.getCaseDetails().getId(),
-                    responseCaseData,
-                    taskType.getValue());
-        }
     }
 }

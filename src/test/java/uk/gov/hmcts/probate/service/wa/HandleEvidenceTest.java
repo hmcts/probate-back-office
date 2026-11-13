@@ -15,23 +15,20 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,7 +49,6 @@ class HandleEvidenceTest {
     @BeforeEach
     void setUp() {
         responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
                 .build();
 
         when(callbackRequest.getCaseDetails())
@@ -76,9 +72,23 @@ class HandleEvidenceTest {
         when(caseDetails.getId()).thenReturn(123456789L);
         when(caseData.getCaseType()).thenReturn(caseType);
 
-        TaskTypes taskType = STATE_CASE_PRINTED.equals(state)
-                ? TaskTypes.getAwaitingDocIceTask(caseType).orElseThrow()
-                : TaskTypes.getReadyToIssueIceTask(caseType).orElseThrow();
+        TaskTypes taskType;
+        switch (state) {
+            case STATE_CASE_PRINTED:
+                taskType = TaskTypes.getAwaitingDocIceTask(caseType).orElseThrow();
+                break;
+            case STATE_BO_READY_TO_ISSUE:
+                taskType = TaskTypes.getReadyToIssueIceTask(caseType).orElseThrow();
+                break;
+            case STATE_BO_CASE_WORKER_ESCALATION:
+                taskType = TaskTypes.EXAMINE_SME_REFERRAL;
+                break;
+            case STATE_BO_REDEC_NOTIFICATION_SENT:
+                taskType = TaskTypes.RESOLVE_REDECLARATION;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected state: " + state);
+        }
 
         doAnswer(invocation -> {
             ResponseCaseData response = invocation.getArgument(1);
@@ -108,19 +118,6 @@ class HandleEvidenceTest {
                 taskType
         );
 
-        if (shouldCreateTask) {
-            verify(waTaskService).addTaskToWaTaskPresent(
-                    123456789L,
-                    responseCaseData,
-                    taskType.getValue()
-            );
-        } else {
-            verify(waTaskService, never())
-                    .addTaskToWaTaskPresent(
-                            anyLong(),
-                            any(),
-                            anyString());
-        }
     }
 
     private static Stream<Arguments> taskScenarios() {
@@ -130,7 +127,9 @@ class HandleEvidenceTest {
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "gop", true),
                 Arguments.of(STATE_BO_READY_TO_ISSUE, "gop", false),
                 Arguments.of(STATE_CASE_PRINTED, "intestacy", true),
-                Arguments.of(STATE_BO_READY_TO_ISSUE, "intestacy", false)
+                Arguments.of(STATE_BO_READY_TO_ISSUE, "intestacy", false),
+                Arguments.of(STATE_BO_CASE_WORKER_ESCALATION, "gop", false),
+                Arguments.of(STATE_BO_REDEC_NOTIFICATION_SENT, "gop", false)
         );
     }
 
@@ -139,7 +138,7 @@ class HandleEvidenceTest {
 
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getState()).thenReturn("BOCaseStopped");
+        when(caseDetails.getState()).thenReturn("OtherState");
         when(caseDetails.getId()).thenReturn(123456789L);
         when(caseData.getCaseType()).thenReturn("gop");
 

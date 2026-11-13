@@ -137,8 +137,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
-        verify(waTaskService)
-                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -159,8 +157,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         verify(waTaskService)
                 .getCaseTypePredicate();
-        verify(waTaskService)
-                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     @Test
@@ -193,8 +189,6 @@ class AmendCaseDetailsForAwaitingDocumentationTest {
 
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
-        verify(waTaskService)
-                .removeTaskFromWaTaskPresent(callbackRequest, responseCaseData, ENCODED_CLIENT_CONTEXT);
     }
 
     private void setUpCaseTypeCallbackRequest(

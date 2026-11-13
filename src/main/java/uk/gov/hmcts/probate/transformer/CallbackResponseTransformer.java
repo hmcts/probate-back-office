@@ -893,9 +893,6 @@ public class CallbackResponseTransformer {
         ).build();
 
         setTaskCreation(authToken, callbackRequest, responseCaseData, clientContext);
-        log.info("before responding {}: wa tasks present {}",
-                callbackRequest.getCaseDetails().getId(),
-                responseCaseData.getWaTasksPresent());
 
         return transformResponse(responseCaseData);
     }
@@ -1520,8 +1517,7 @@ public class CallbackResponseTransformer {
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
             .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
-            .waCaseState(caseDetails.getState())
-            .waTasksPresent(caseData.getWaTasksPresent());
+            .waCaseState(caseDetails.getState());
 
         handleDeceasedAliases(
                 builder,

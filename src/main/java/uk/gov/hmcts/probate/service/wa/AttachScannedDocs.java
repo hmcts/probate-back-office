@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class AttachScannedDocs implements CreateTaskProcessor {
     private static final String IDAM_SERVICE_ACCOUNT = "idam-service-account";
     public static final String ATTACH_SCANNED_DOCS = "attachScannedDocs";
     private final UserInfoService caseworkerInfo;
+    private final WaTaskService waTaskService;
 
     @Override
     public String getEventId() {
@@ -42,6 +46,30 @@ public class AttachScannedDocs implements CreateTaskProcessor {
                 })
                 .orElse(NO);
         log.info("Processing attach scanned docs set createTask : {} ", createTask);
-        responseCaseData.setCreateTask(createTask);
+
+        if (createTask.equals(YES)) {
+            switch (callbackRequest.getCaseDetails().getState()) {
+                case STATE_BO_CASE_STOPPED: {
+                    updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
+                    break;
+                }
+                case STATE_BO_REDEC_NOTIFICATION_SENT: {
+                    updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
+                    break;
+                }
+                default:
+                    responseCaseData.setCreateTask(YES);
+            }
+        } else {
+            responseCaseData.setCreateTask(NO);
+        }
+    }
+
+    private void updateTaskCreation(final CallbackRequest callbackRequest,
+                                    final ResponseCaseData responseCaseData,
+                                    final TaskTypes taskType) {
+        waTaskService
+                .setCreateTask(callbackRequest, responseCaseData, taskType);
+
     }
 }

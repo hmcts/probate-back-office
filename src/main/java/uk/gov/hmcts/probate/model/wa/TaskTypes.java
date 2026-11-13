@@ -14,7 +14,9 @@ import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DE_BONIS_NON;
@@ -25,6 +27,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_IBCA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_IBIS;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
@@ -150,7 +153,13 @@ public enum TaskTypes {
     EXAMINE_CODICIL_MIS(STATE_BO_READY_TO_ISSUE,"ExamineCodicilMis",
             null, CLOSE_CODICIL_MIS),
     EXAMINE_CODICIL_MIS_CASE_PRINTED(STATE_CASE_PRINTED,"ExamineCodicilMisCasePrinted",
-            null, CLOSE_CODICIL_MIS);
+            null, CLOSE_CODICIL_MIS),
+    EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
+            "ExamineSMEReferral", null, null),
+    RESOLVE_STOPPED_CASE(STATE_BO_CASE_STOPPED,
+            "ResolveStoppedCase", null, null),
+    RESOLVE_REDECLARATION(STATE_BO_REDEC_NOTIFICATION_SENT,
+            "ResolveRedeclaration", null, null);
 
     final String state;
     final String value;
@@ -172,7 +181,7 @@ public enum TaskTypes {
 
     public static Map<String, TaskTypes> getStateTasks(String state) {
         return Arrays.stream(values())
-                .filter(taskType -> taskType.state.equals(state))
+                .filter(taskType -> taskType.state.equals(state) && taskType.closingEventId != null)
                 .collect(toMap(taskType ->
                         taskType.getValue().toUpperCase(),
                         taskType -> taskType));
@@ -186,13 +195,13 @@ public enum TaskTypes {
 
     public static Optional<TaskTypes> getAwaitingDocIceTask(String caseType) {
         return examineAwaitingDocTasks().stream()
-                .filter(taskType -> taskType.caseType.equals(caseType))
+                .filter(taskType -> caseType.equals(taskType.caseType))
                 .findFirst();
     }
 
     public static Optional<TaskTypes> getReadyToIssueIceTask(String caseType) {
         return examineReadyToIssueTasks().stream()
-                .filter(taskType -> taskType.caseType.equals(caseType))
+                .filter(taskType -> caseType.equals(taskType.caseType))
                 .findFirst();
     }
 

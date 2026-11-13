@@ -29,7 +29,7 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,7 +40,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -569,75 +568,6 @@ class WaTaskServiceTest {
                 ).toList();
     }
 
-    @Test
-    void shouldRemoveTaskWhenCompletableTaskIsPresent() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        responseCaseData.getWaTasksPresent().addAll(List.of(
-                new CollectionMember<>("1", "ExamineDoubleProbate"),
-                new CollectionMember<>("2", "ExamineDigitalCaseProbate")
-        ));
-
-        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
-                .thenReturn(Optional.of("ExamineDoubleProbate"));
-
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getId()).thenReturn(123456789L);
-
-        waTaskService.removeTaskFromWaTaskPresent(
-                callbackRequest, responseCaseData, CLIENT_CONTEXT);
-
-        assertThat(responseCaseData.getWaTasksPresent())
-                .extracting(CollectionMember::getValue)
-                .containsExactly("ExamineDigitalCaseProbate");
-    }
-
-    @Test
-    void shouldNotRemoveTaskWhenCompletableTaskDoesNotMatch() {
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getId()).thenReturn(123456789L);
-
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        responseCaseData.getWaTasksPresent().add(
-                new CollectionMember<>("1", "ExamineDigitalCaseProbate")
-        );
-
-        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
-                .thenReturn(Optional.of("ExamineDoubleProbate"));
-
-        waTaskService.removeTaskFromWaTaskPresent(
-                callbackRequest, responseCaseData, CLIENT_CONTEXT);
-
-        assertThat(responseCaseData.getWaTasksPresent())
-                .extracting(CollectionMember::getValue)
-                .containsExactly("ExamineDigitalCaseProbate");
-    }
-
-    @Test
-    void shouldNotRemoveTaskWhenClientContextHasNoCompletableTask() {
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(caseDetails.getId()).thenReturn(123456789L);
-
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        responseCaseData.getWaTasksPresent().add(
-                new CollectionMember<>("1", "ExamineDoubleProbate")
-        );
-
-        when(taskUtils.getCompletableTaskType(CLIENT_CONTEXT))
-                .thenReturn(Optional.empty());
-
-        waTaskService.removeTaskFromWaTaskPresent(
-                callbackRequest, responseCaseData, CLIENT_CONTEXT);
-
-        assertThat(responseCaseData.getWaTasksPresent())
-                .hasSize(1);
-    }
-
     @ParameterizedTest(name = "Task present: {0}, expected: {1}")
     @MethodSource("createTaskScenarios")
     void shouldSetCreateTask(
@@ -647,14 +577,12 @@ class WaTaskServiceTest {
         when(caseDetails.getId()).thenReturn(123456789L);
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
                 .build();
         TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
         if (taskPresent) {
-            responseCaseData.getWaTasksPresent().add(
-                    new CollectionMember<>("1", taskType.getValue())
-            );
+
+            waTaskService.isWaTaskPresent(taskType, 123456789L);
 
             when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
             when(caseDetails.getId()).thenReturn(123456789L);
@@ -678,85 +606,46 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldAddSingleTaskToWaTaskPresent() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        String taskName = "ExamineDigitalCaseProbate";
+    void shouldReturnFalseWhenCaseIdNotInMap() {
+        Long caseId = 123L;
+        TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
-        waTaskService.addTaskToWaTaskPresent(
-                123456789L, responseCaseData, taskName);
+        boolean result = waTaskService.isWaTaskPresent(taskType, caseId);
 
-        assertThat(responseCaseData.getWaTasksPresent())
-                .hasSize(1)
-                .extracting(CollectionMember::getValue)
-                .containsExactly(taskName);
-
-        assertThatCode(() -> UUID.fromString(
-                responseCaseData.getWaTasksPresent().get(0).getId()))
-                .doesNotThrowAnyException();
+        assertThat(result).isFalse();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactly(taskType);
     }
 
     @Test
-    void shouldAddMultipleTasksToWaTaskPresent() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        List<String> taskNames = List.of(
-                "ExamineDigitalCaseProbate",
-                "ExamineDoubleProbate"
-        );
+    void shouldReturnFalseWhenTaskTypeNotInSetForCaseId() {
+        Long caseId = 123L;
+        TaskTypes existingTaskType = TaskTypes.EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA;
+        TaskTypes newTaskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
-        waTaskService.addTasksToWaTaskPresent(
-                123456789L, responseCaseData, taskNames);
+        waTaskService.checkedTaskTypesByCaseId.put(caseId, new HashSet<>(Set.of(existingTaskType)));
 
-        assertThat(responseCaseData.getWaTasksPresent())
-                .hasSize(2)
-                .extracting(CollectionMember::getValue)
-                .containsExactlyElementsOf(taskNames);
+        boolean result = waTaskService.isWaTaskPresent(newTaskType, caseId);
 
-        assertThat(responseCaseData.getWaTasksPresent())
-                .extracting(CollectionMember::getId)
-                .doesNotHaveDuplicates()
-                .allSatisfy(id ->
-                        assertThatCode(() -> UUID.fromString(id))
-                                .doesNotThrowAnyException());
+        assertThat(result).isFalse();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactlyInAnyOrder(existingTaskType, newTaskType);
     }
 
     @Test
-    void shouldNotAddTasksWhenTaskNamesIsEmpty() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        waTaskService.addTasksToWaTaskPresent(
-                123456789L, responseCaseData, List.of());
+    void shouldReturnTrueWhenTaskTypeAlreadyInSetForCaseId() {
+        Long caseId = 123L;
+        TaskTypes taskType = TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 
-        assertThat(responseCaseData.getWaTasksPresent())
-                .isEmpty();
+        waTaskService.checkedTaskTypesByCaseId.put(caseId, new HashSet<>(Set.of(taskType)));
+
+        boolean result = waTaskService.isWaTaskPresent(taskType, caseId);
+
+        assertThat(result).isTrue();
+        assertThat(waTaskService.checkedTaskTypesByCaseId.get(caseId))
+                .containsExactly(taskType);
     }
 
-    @Test
-    void shouldPreserveExistingTasksWhenAddingNewTasks() {
-        ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .waTasksPresent(new ArrayList<>())
-                .build();
-        responseCaseData.getWaTasksPresent().add(
-                new CollectionMember<>("existing-id", "ExistingTask")
-        );
-
-        waTaskService.addTasksToWaTaskPresent(
-                123456789L,
-                responseCaseData,
-                List.of("NewTask1", "NewTask2")
-        );
-
-        assertThat(responseCaseData.getWaTasksPresent())
-                .extracting(CollectionMember::getValue)
-                .containsExactly(
-                        "ExistingTask",
-                        "NewTask1",
-                        "NewTask2");
-    }
 
     @ParameterizedTest(name = "State: {0}")
     @ValueSource(strings = {
