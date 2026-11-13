@@ -114,7 +114,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(77));
+        assertThat(logic.getRules().size(), is(121));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -160,6 +160,12 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     private void assertResponse(List<Map<String, Object>> dmnResultList,
                                 Map<String, String> cancellationProperties) {
+        if (cancellationProperties.get("event").equals("closeHandOffs")) {
+            org.assertj.core.api.Assertions.assertThat(dmnResultList).hasSize(1);
+        } else {
+            org.assertj.core.api.Assertions.assertThat(dmnResultList).hasSize(2);
+        }
+
         org.assertj.core.api.Assertions.assertThat(dmnResultList)
             .anySatisfy(map ->
                 org.assertj.core.api.Assertions.assertThat(map)

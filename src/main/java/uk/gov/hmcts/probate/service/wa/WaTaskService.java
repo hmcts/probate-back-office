@@ -174,8 +174,7 @@ public class WaTaskService {
 
         if (isAllHandOffsRemoved(callbackRequest)) {
             triggerEvent(caseDetails, CLOSE_HANDOFFS);
-        } else if (taskUtils.getTaskData(clientContext).isEmpty()) {
-
+        } else {
             Set<HandoffReason> handOffReasonBefore = getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
             Set<HandoffReason> handOffReasonAfter = getGetHandOffReasons(callbackRequest.getCaseDetails());
 
