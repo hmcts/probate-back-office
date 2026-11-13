@@ -167,9 +167,6 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                                 "processCategories",
                                 cancellationProperties.get("processCategories")
                         )
-            )
-            .anySatisfy(map ->
-                org.assertj.core.api.Assertions.assertThat(map)
                         .containsEntry(
                                 "action",
                                 cancellationProperties.get("action")
