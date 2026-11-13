@@ -195,13 +195,13 @@ public enum TaskTypes {
 
     public static Optional<TaskTypes> getAwaitingDocIceTask(String caseType) {
         return examineAwaitingDocTasks().stream()
-                .filter(taskType -> taskType.caseType != null && taskType.caseType.equals(caseType))
+                .filter(taskType -> caseType.equals(taskType.caseType))
                 .findFirst();
     }
 
     public static Optional<TaskTypes> getReadyToIssueIceTask(String caseType) {
         return examineReadyToIssueTasks().stream()
-                .filter(taskType -> taskType.caseType != null && taskType.caseType.equals(caseType))
+                .filter(taskType -> caseType.equals(taskType.caseType))
                 .findFirst();
     }
 
