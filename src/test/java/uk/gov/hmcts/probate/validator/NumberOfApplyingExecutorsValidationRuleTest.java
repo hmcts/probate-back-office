@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
@@ -61,6 +62,7 @@ class NumberOfApplyingExecutorsValidationRuleTest {
             .titleAndClearingType("TCTPartSuccPowerRes")
             .primaryApplicantForenames("Probate")
             .primaryApplicantSurname("Practitioner")
+                .solsSOTName("solsSOTName")
             .anyOtherApplyingPartners("Yes")
             .registryLocation("Bristol")
             .build();
@@ -104,7 +106,7 @@ class NumberOfApplyingExecutorsValidationRuleTest {
     }
 
     @Test
-    void shouldErrorWhenPrimaryApplicantApplyingAndFourAdditionalExecutorsApplying() {
+    void shouldErrorWhenPrimaryApplicantApplyingYesAndFourAdditionalExecutorsApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(EXEC);
         execsApplying.add(EXEC);
@@ -125,5 +127,49 @@ class NumberOfApplyingExecutorsValidationRuleTest {
 
         assertThat(bve.getMessage(),
             containsString("The total number executors applying cannot exceed 4 for case id 0"));
+    }
+
+    @Test
+    void shouldErrorWhenPrimaryApplicantApplyingUnsetAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantForenames("Primary");
+        caseDataMock.setPrimaryApplicantSurname("Applicant");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+                caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class,
+                () -> underTest.validate(caseDetailsMock));
+
+        assertThat(bve.getMessage(),
+                containsString("The total number executors applying cannot exceed 4 for case id 0"));
+    }
+
+    @Test
+    void shouldNotErrorWhenPrimaryApplicantApplyingNoAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantIsApplying("No");
+        caseDataMock.setPrimaryApplicantForenames("Primary");
+        caseDataMock.setPrimaryApplicantSurname("Applicant");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+                caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        assertDoesNotThrow(
+                () -> underTest.validate(caseDetailsMock));
     }
 }
