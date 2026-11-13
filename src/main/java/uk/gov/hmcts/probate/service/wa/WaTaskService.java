@@ -112,7 +112,7 @@ public class WaTaskService {
 
     public void closeReadyToIssueTasks(CallbackRequest callbackRequest,
                                        String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest, clientContext,
+        triggerCloseHandOffEvent(callbackRequest,
                 handOffReason -> "Examine" + handOffReason);
         triggerCloseIceEvent(callbackRequest,
                 clientContext,
@@ -122,7 +122,7 @@ public class WaTaskService {
 
     public void closeAwaitingDocumentationTasks(CallbackRequest callbackRequest,
                                                 String clientContext) {
-        triggerCloseHandOffEvent(callbackRequest, clientContext,
+        triggerCloseHandOffEvent(callbackRequest,
                 handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED);
         triggerCloseIceEvent(callbackRequest,
                 clientContext,
@@ -168,7 +168,6 @@ public class WaTaskService {
     }
 
     private void triggerCloseHandOffEvent(CallbackRequest callbackRequest,
-                                          String clientContext,
                                           UnaryOperator<String> handOffReasonTask) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
