@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -115,7 +114,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(69));
+        assertThat(logic.getRules().size(), is(77));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -135,12 +134,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_REDECLARATION_SOT_EVENT_ID)
                 || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_QA_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.get("event").startsWith("close")
-                && cancellationProperties.containsValue(READY_TO_ISSUE_STATE)) {
-            assertResponse(dmnResultList, cancellationProperties, READY_TO_ISSUE_STATE::equals);
-        } else if (cancellationProperties.get("event").startsWith("close")
-                && cancellationProperties.containsValue(CASE_PRINTED_STATE)) {
-            assertResponse(dmnResultList, cancellationProperties, CASE_PRINTED_STATE::equals);
+        } else if (cancellationProperties.get("event").startsWith("close")) {
+            assertResponse(dmnResultList, cancellationProperties);
         }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
             validate(dmnResultList, cancellationProperties);
         } else {
@@ -164,17 +159,22 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     private void assertResponse(List<Map<String, Object>> dmnResultList,
-                                Map<String, String> cancellationProperties,
-                                Predicate<String> stateFilter) {
-        long occurrence = cancellationProperties.values().stream()
-                .filter(stateFilter)
-                .count();
-
-        if (occurrence == 2) {
-            validate(dmnResultList, cancellationProperties);
-        } else {
-            Assertions.assertEquals(0, dmnResultList.size());
-        }
+                                Map<String, String> cancellationProperties) {
+        org.assertj.core.api.Assertions.assertThat(dmnResultList)
+            .anySatisfy(map ->
+                org.assertj.core.api.Assertions.assertThat(map)
+                        .containsEntry(
+                                "processCategories",
+                                cancellationProperties.get("processCategories")
+                        )
+            )
+            .anySatisfy(map ->
+                org.assertj.core.api.Assertions.assertThat(map)
+                        .containsEntry(
+                                "action",
+                                cancellationProperties.get("action")
+                        )
+            );
     }
 
 

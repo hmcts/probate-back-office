@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -115,8 +116,7 @@ public class WaTaskService {
                 handOffReason -> "Examine" + handOffReason);
         triggerCloseIceEvent(callbackRequest,
                 clientContext,
-                TaskTypes.examineReadyToIssueTasks(),
-                TaskTypes.examineAwaitingDocTasks());
+                TaskTypes.examineReadyToIssueTasks());
     }
 
 
@@ -126,23 +126,18 @@ public class WaTaskService {
                 handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED);
         triggerCloseIceEvent(callbackRequest,
                 clientContext,
-                TaskTypes.examineAwaitingDocTasks(),
-                TaskTypes.examineReadyToIssueTasks());
+                TaskTypes.examineAwaitingDocTasks());
     }
 
     private void triggerCloseIceEvent(CallbackRequest callbackRequest,
                                       String clientContext,
-                                      Set<TaskTypes> currentTaskTypes,
-                                      Set<TaskTypes> beforeTaskTypes) {
+                                      Set<TaskTypes> taskTypes) {
         Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         Long caseId = callbackRequest.getCaseDetails().getId();
-        BiConsumer<String, Set<TaskTypes>> eventTrigger = (caseType, taskTypes) ->
+        Consumer<String> eventTrigger = caseType ->
                 taskTypes.stream()
                         .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
                         .filter(taskType -> taskType.getCaseType().equals(caseType))
-                        .peek(taskType -> log.info("Case id {} : closing task {}",
-                                caseId,
-                                taskType.getValue()))
                         .findFirst()
                         .flatMap(TaskTypes::getOptionalClosingEventId)
                         .ifPresent(eventId -> {
@@ -152,10 +147,8 @@ public class WaTaskService {
                             triggerEvent(callbackRequest.getCaseDetails(), eventId);
                         });
 
-
         if (isHandOffsAdded(callbackRequest)) {
-            eventTrigger.accept(callbackRequest.getCaseDetailsBefore().getData().getCaseType(), beforeTaskTypes);
-            eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType(), currentTaskTypes);
+            eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType());
         }
 
         if (taskData.isEmpty()) {
@@ -169,7 +162,7 @@ public class WaTaskService {
                 log.info("Case id {} : no context task and remove case type as it has changed {}",
                         caseId,
                         caseTypeBefore);
-                eventTrigger.accept(caseTypeBefore, currentTaskTypes);
+                eventTrigger.accept(caseTypeBefore);
             }
         }
     }

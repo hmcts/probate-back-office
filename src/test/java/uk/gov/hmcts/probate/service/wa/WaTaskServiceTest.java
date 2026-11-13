@@ -41,7 +41,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -304,7 +303,7 @@ class WaTaskServiceTest {
 
         waTaskService.closeReadyToIssueTasks(callbackRequest, CLIENT_CONTEXT);
 
-        verifyEventInvokedTwice(CLOSE_ICE_PROBATE);
+        verifyEvent(CLOSE_ICE_PROBATE);
     }
 
 
@@ -474,34 +473,6 @@ class WaTaskServiceTest {
 
         waTaskService.closeAwaitingDocumentationTasks(callbackRequest, CLIENT_CONTEXT);
         verifyEvent(CLOSE_ICE_INTESTACY);
-    }
-
-    private void verifyEventInvokedTwice(EventId eventId) {
-        verify(ccdClientApi, times(2)).triggerEvent(
-                eq(caseId),
-                eq(eventId),
-                functionCaptor.capture(),
-                isA(SecurityDTO.class)
-        );
-
-        StartEventResponse startEventResponse = StartEventResponse.builder()
-                .eventId(eventId.getName())
-                .token("event-token")
-                .caseDetails(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
-                        .data(Map.of())
-                        .build())
-                .build();
-        functionCaptor.getAllValues().forEach(function -> {
-            CaseDataContent result = function.apply(startEventResponse);
-
-            assertThat(result.getEvent().getId())
-                    .isEqualTo(eventId.getName());
-
-            assertThat(result.getEventToken())
-                    .isEqualTo("event-token");
-
-            assertThat(result.getData()).isNotNull();
-        });
     }
 
     private void verifyEvent(EventId eventId) {
@@ -751,7 +722,7 @@ class WaTaskServiceTest {
                 any(),
                 isA(SecurityDTO.class)
         );
-        verifyEventInvokedTwice(CLOSE_ICE_PROBATE);
+        verifyEvent(CLOSE_ICE_PROBATE);
     }
 
     private static Stream<Arguments> iceTaskScenarios() {
