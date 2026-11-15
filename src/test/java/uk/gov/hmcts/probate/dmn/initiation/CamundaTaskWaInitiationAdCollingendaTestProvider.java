@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -47,7 +47,7 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
 
         return Stream.of(
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
                                 false, emptyList(), false),
@@ -131,21 +131,21 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "createChangeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false,
                                 Collections.emptyList(), false),
                         List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
                 ),
                 Arguments.of(
-                        "createChangeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         "CasePrinted",
                         additionalData(true, "adColligendaBona",false,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "createChangeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
@@ -181,21 +181,21 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
                                 false, Collections.emptyList(), false),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(true, "adColligendaBona",false,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",false,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
