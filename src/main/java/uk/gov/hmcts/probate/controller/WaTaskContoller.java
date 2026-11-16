@@ -45,9 +45,9 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateCaseTypeClientContext(
-            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         return getCallbackResponseResponseEntity(callbackRequest,
@@ -61,9 +61,9 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateHandOffClientContext(
-            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         return getCallbackResponseResponseEntity(callbackRequest,
@@ -77,9 +77,9 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateClientContextEvidenceHandled(
-            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         return getCallbackResponseResponseEntity(callbackRequest,
@@ -127,9 +127,9 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse>  closeReadyToIssueTasks(
-            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
@@ -149,8 +149,6 @@ public class WaTaskContoller {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> selectForQASetupWATask(
             @Valid @RequestBody CallbackRequest callbackRequest,
-            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
-                    required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
@@ -175,9 +173,9 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> closeAwaitingDocumentationTasks(
-            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
         if (workAllocationToggleService.isProbateWAEnabled()) {

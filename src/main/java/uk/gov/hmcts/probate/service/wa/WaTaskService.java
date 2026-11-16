@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -182,19 +181,22 @@ public class WaTaskService {
 
             String caseState = callbackRequest.getCaseDetailsBefore().getState();
 
-            BiConsumer<String, Map<String, TaskTypes>> eventTrigger = (state, stateTasks) -> {
+            Consumer<Map<String, TaskTypes>> eventTrigger = stateTasks -> {
                 handOffReasonsToBeRemoved.stream()
                         .map(HandoffReason::getCaseHandoffReason)
                         .map(HandoffReasonId::getCode)
+                        .map(String::toUpperCase)
                         .map(handOffReasonTask)
                         .map(String::toUpperCase)
+                        .map(taskName ->  Optional.ofNullable(stateTasks.get(taskName))
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                        "No TaskTypes enum configured for: " + taskName)))
                         .forEach(handOffReasonTaskType -> {
                             log.info("Case id {} : handOffReasonTaskType to be removed {}",
                                     callbackRequest.getCaseDetails().getId(),
                                     handOffReasonTaskType);
                             triggerEvent(callbackRequest.getCaseDetails(),
-                                    stateTasks.get(handOffReasonTaskType.toUpperCase())
-                                            .getClosingEventId());
+                                    handOffReasonTaskType.getClosingEventId());
                         });
 
             };
@@ -202,11 +204,11 @@ public class WaTaskService {
             if (!handOffReasonsToBeRemoved.isEmpty()) {
                 if (STATE_CASE_PRINTED.equals(caseState)) {
                     Map<String, TaskTypes> examineAwaitingDocTasks = getStateTasks(STATE_CASE_PRINTED);
-                    eventTrigger.accept(STATE_CASE_PRINTED, examineAwaitingDocTasks);
+                    eventTrigger.accept(examineAwaitingDocTasks);
                 } else if (StateConstants.STATE_BO_READY_TO_ISSUE.equals(caseState)) {
                     Map<String, TaskTypes> examineReadyToIssueTask =
                             getStateTasks(StateConstants.STATE_BO_READY_TO_ISSUE);
-                    eventTrigger.accept(StateConstants.STATE_BO_READY_TO_ISSUE, examineReadyToIssueTask);
+                    eventTrigger.accept(examineReadyToIssueTask);
                 }
             }
         }

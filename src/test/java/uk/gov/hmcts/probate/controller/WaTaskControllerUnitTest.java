@@ -123,8 +123,8 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -165,8 +165,8 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -219,8 +219,8 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -268,8 +268,8 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -316,8 +316,8 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -345,8 +345,8 @@ public class WaTaskControllerUnitTest {
     void shouldByPassWaCompletionFlag() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -357,8 +357,8 @@ public class WaTaskControllerUnitTest {
     void shouldByPassCloseReadyToIssueHandOffs() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueTasks(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -373,8 +373,8 @@ public class WaTaskControllerUnitTest {
         doNothing().when(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
 
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueTasks(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
@@ -387,8 +387,8 @@ public class WaTaskControllerUnitTest {
     void shouldByPassCloseAwaitingDocumentationHandOffs() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeAwaitingDocumentationTasks(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -404,8 +404,8 @@ public class WaTaskControllerUnitTest {
 
         String clientConext = "clientConext";
         ResponseEntity<CallbackResponse> callbackResponseResponseEntity
-                = waTaskContoller.closeAwaitingDocumentationTasks(callbackRequest,
-                clientConext,
+                = waTaskContoller.closeAwaitingDocumentationTasks(clientConext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
@@ -424,8 +424,8 @@ public class WaTaskControllerUnitTest {
 
         assertThatThrownBy(() ->
                 waTaskContoller.updateCaseTypeClientContext(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 )
@@ -450,8 +450,8 @@ public class WaTaskControllerUnitTest {
 
         ResponseEntity<CallbackResponse> response =
                 waTaskContoller.updateCaseTypeClientContext(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 );
@@ -493,8 +493,8 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of("encodedClientContext"));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -531,8 +531,8 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of("encodedClientContext"));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -558,8 +558,8 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -575,8 +575,8 @@ public class WaTaskControllerUnitTest {
 
         assertThatThrownBy(() ->
                 waTaskContoller.updateClientContextEvidenceHandled(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 )
@@ -604,8 +604,8 @@ public class WaTaskControllerUnitTest {
 
         assertThatThrownBy(() ->
                 waTaskContoller.closeReadyToIssueTasks(
-                        callbackRequest,
                         clientContext,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 )
@@ -622,7 +622,7 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseData.getCaseType()).thenReturn("gop");
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(callbackRequest, bindingResult, httpServletRequest);
 
         verify(waTaskService).createAndSubmitTaskForSystemUser(
                 callbackRequest,
@@ -634,7 +634,7 @@ public class WaTaskControllerUnitTest {
     void shouldBypassTaskCreationWhenWAIsDisabled() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(callbackRequest, bindingResult, httpServletRequest);
 
         verifyNoInteractions(coreCaseDataApi);
     }
@@ -647,7 +647,7 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
 
         assertThatThrownBy(() -> waTaskContoller.selectForQASetupWATask(
-                callbackRequest, clientContext, bindingResult, httpServletRequest))
+                callbackRequest, bindingResult, httpServletRequest))
                 .isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(coreCaseDataApi);
