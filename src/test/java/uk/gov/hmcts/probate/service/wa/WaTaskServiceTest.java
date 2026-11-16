@@ -48,11 +48,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import org.springframework.test.util.ReflectionTestUtils;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
@@ -460,35 +458,6 @@ class WaTaskServiceTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
-    }
-
-    @Test
-    void shouldCancelTaskAndNotFireCreateWhenSimulateFlagIsEnabled() {
-        Long caseId = 123456789L;
-        when(caseDetails.getId()).thenReturn(caseId);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
-                .thenReturn(SecurityDTO.builder().build());
-
-        ReflectionTestUtils.setField(waTaskService, "simulateCreateChangeStateFailure", true);
-
-        assertThatThrownBy(() -> waTaskService.cancelCreateChangeStateEvent(callbackRequest))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Simulated CREATE_CHANGE_STATE failure");
-
-        verify(ccdClientApi).triggerEvent(
-                eq(caseId.toString()),
-                eq(CANCEL_CHANGE_STATE),
-                any(),
-                isA(SecurityDTO.class));
-
-        verify(ccdClientApi, never()).triggerEvent(
-                eq(caseId.toString()),
-                eq(CREATE_CHANGE_STATE),
-                any(),
-                isA(SecurityDTO.class));
-
-        ReflectionTestUtils.setField(waTaskService, "simulateCreateChangeStateFailure", false);
     }
 
     @Test

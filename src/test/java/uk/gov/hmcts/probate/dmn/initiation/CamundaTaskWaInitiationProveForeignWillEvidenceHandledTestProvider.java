@@ -29,7 +29,7 @@ public class CamundaTaskWaInitiationProveForeignWillEvidenceHandledTestProvider 
         Map<String, Object> examineProveForeignWillCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                 "name", EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         return Stream.of(

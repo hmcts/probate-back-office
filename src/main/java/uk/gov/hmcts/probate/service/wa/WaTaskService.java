@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.wa;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.Constants;
@@ -51,9 +50,6 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
-
-    @Value("${wa.simulate.create-change-state-failure:false}")
-    private boolean simulateCreateChangeStateFailure;
 
     public boolean isTaskPresent(String authToken,
                                  String caseId,
@@ -186,13 +182,6 @@ public class WaTaskService {
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
         log.info("Terminated existing task for case id {}",
                 callbackRequest.getCaseDetails().getId());
-
-        log.info("simulateCreateChangeStateFailure : {} ", simulateCreateChangeStateFailure);
-        if (simulateCreateChangeStateFailure) {
-            log.warn("Simulating CREATE_CHANGE_STATE failure for case id {} — task cancelled with no replacement",
-                    caseDetails.getId());
-            throw new RuntimeException("Simulated CREATE_CHANGE_STATE failure");
-        }
 
         ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                 CREATE_CHANGE_STATE,
