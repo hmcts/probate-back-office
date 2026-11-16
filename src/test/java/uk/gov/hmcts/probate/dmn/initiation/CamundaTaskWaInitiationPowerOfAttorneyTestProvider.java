@@ -36,19 +36,19 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
         Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
                 "taskId", EXAMINE_POA,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examinePowerOfAttorneyCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_POA_CASE_PRINTED,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         Map<String,Object> examinePowerOfAttorneyCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_POWER_OF_ATTORNEY_CHANGE_STATE,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes = Map.of(
