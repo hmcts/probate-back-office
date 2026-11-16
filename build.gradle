@@ -175,10 +175,10 @@ def versions = [
         commonsValidator                : '1.11.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '9.5.6',
-        feignVersion                    : '13.17',
+        feignVersion                    : '13.18',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
-        jacksonVersion                  : '2.22.4',
+        jacksonVersion                  : '2.23.0',
         jsoup                           : '1.24.1',
         launchdarkly                    : '7.17.5',
         lifeEventsClientVersion         : '1.6.1',
@@ -271,7 +271,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonVersion
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.22'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.23'
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonVersion
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDocOpenUi
@@ -291,7 +291,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.5'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.30.1'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.30.2'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.32.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
@@ -361,7 +361,7 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.22'
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.23'
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonVersion
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
