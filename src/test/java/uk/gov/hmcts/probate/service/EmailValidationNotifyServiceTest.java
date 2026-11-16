@@ -35,26 +35,26 @@ class EmailValidationNotifyServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            " ",
-            "plainaddress",
-            "@example.com",
-            "email@example",
-            "email@example.c",
-            "email@example..com",
-            "email@-example.com",
-            "email@example-.com",
-            "email@exam_ple.com",
-            "email@123.123.123.123",
-            "email@example@example.com",
-            "email.example.com",
-            "email.@example.com",
-            "email..email@example.com",
-            ".email@example.com",
-            "email@example.com (Joe Smith)",
-            "Joe Smith <email@example.com>",
-            "#@%^%#$@#$@#.com",
-            "あいうえお@example.com"
+        "",
+        " ",
+        "plainaddress",
+        "@example.com",
+        "email@example",
+        "email@example.c",
+        "email@example..com",
+        "email@-example.com",
+        "email@example-.com",
+        "email@exam_ple.com",
+        "email@123.123.123.123",
+        "email@example@example.com",
+        "email.example.com",
+        "email.@example.com",
+        "email..email@example.com",
+        ".email@example.com",
+        "email@example.com (Joe Smith)",
+        "Joe Smith <email@example.com>",
+        "#@%^%#$@#$@#.com",
+        "あいうえお@example.com"
     })
     void shouldReturnInvalidEmailAddress(String email) {
         assertFalse(emailValidationNotifyService.validateEmailAddress(email));
@@ -62,18 +62,18 @@ class EmailValidationNotifyServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "email@example.com",
-            "email@subdomain.example.com",
-            "email@example-one.com",
-            "email@example.name",
-            "email@example.museum",
-            "email@example.co",
-            "email@example.co.jp",
-            "firstname.lastname@example.com",
-            "firstname+lastname@example.com",
-            "firstname-lastname@example.com",
-            "1234567890@example.com",
-            "_______@example.com",
+        "email@example.com",
+        "email@subdomain.example.com",
+        "email@example-one.com",
+        "email@example.name",
+        "email@example.museum",
+        "email@example.co",
+        "email@example.co.jp",
+        "firstname.lastname@example.com",
+        "firstname+lastname@example.com",
+        "firstname-lastname@example.com",
+        "1234567890@example.com",
+        "_______@example.com",
     })
     void shouldReturnValidEmailAddress(String email) {
         assertTrue(emailValidationNotifyService.validateEmailAddress(email));
