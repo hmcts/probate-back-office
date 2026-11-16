@@ -843,3 +843,7 @@ upload_doc:
 
 supplementary-data:
   hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}
+
+wa:
+  simulate:
+    create-change-state-failure: true

@@ -46,6 +46,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -456,6 +459,41 @@ class WaTaskServiceTest {
                                 UUID.randomUUID().toString(),
                                 HandoffReason.builder().caseHandoffReason(handoffReason).build())
                 ).toList();
+    }
+
+    @Test
+    void shouldCancelTaskButNotCreateWhenCreateEventThrows() {
+        Long caseId = 123456789L;
+        when(caseDetails.getId()).thenReturn(caseId);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        doNothing()
+                .doThrow(new RuntimeException("CREATE_CHANGE_STATE event failed"))
+                .when(ccdClientApi).triggerEvent(
+                        eq(caseId.toString()),
+                        any(),
+                        any(),
+                        isA(SecurityDTO.class));
+
+        assertThatThrownBy(() -> waTaskService.cancelCreateChangeStateEvent(callbackRequest))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("CREATE_CHANGE_STATE event failed");
+
+        // cancel fired successfully
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CANCEL_CHANGE_STATE),
+                any(),
+                isA(SecurityDTO.class));
+
+        // create was attempted but threw — task is now cancelled with no replacement
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CREATE_CHANGE_STATE),
+                any(),
+                isA(SecurityDTO.class));
     }
 
     @Test
