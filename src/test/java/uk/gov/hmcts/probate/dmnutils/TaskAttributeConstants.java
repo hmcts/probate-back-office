@@ -438,4 +438,12 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME =
+            "Review Specific Access Request - Judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME =
+            "Review Specific Access Request - Legal Ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME =
+            "Review Specific Access Request - Admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME =
+            "Review Specific Access Request - CTSC";
 }
