@@ -52,7 +52,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
     public boolean validateEmailAddress(String emailAddress) {
         String formattedEmail = formatEmailAddress(emailAddress);
 
-        if (formattedEmail == null || !isEmailValid(formattedEmail)) {
+        if ("NULL".equals(formattedEmail) || !isEmailValid(formattedEmail)) {
             log.info("Notification not send to due invalid email address: {}", getHashedEmail(emailAddress));
             return false;
         }
