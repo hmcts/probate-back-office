@@ -123,10 +123,10 @@ public class WaTaskContoller {
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
-    @PostMapping(path = "/trigger/closeReadyToIssueHandOffs",
+    @PostMapping(path = "/trigger/closeReadyToIssueTasks",
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse>  closeReadyToIssueHandOffs(
+    public ResponseEntity<CallbackResponse>  closeReadyToIssueTasks(
             @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,

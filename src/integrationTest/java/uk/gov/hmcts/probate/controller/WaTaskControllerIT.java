@@ -144,7 +144,7 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
+        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueTasks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(
                                 CLIENT_CONTEXT_HEADER_PARAMETER,

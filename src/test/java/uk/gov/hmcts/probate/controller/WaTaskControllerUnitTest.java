@@ -356,7 +356,7 @@ public class WaTaskControllerUnitTest {
     @Test
     void shouldByPassCloseReadyToIssueHandOffs() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
-        waTaskContoller.closeReadyToIssueHandOffs(
+        waTaskContoller.closeReadyToIssueTasks(
                 callbackRequest,
                 clientContext,
                 bindingResult,
@@ -372,7 +372,7 @@ public class WaTaskControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         doNothing().when(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
 
-        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueTasks(
                 callbackRequest,
                 clientContext,
                 bindingResult,
@@ -603,7 +603,7 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         assertThatThrownBy(() ->
-                waTaskContoller.closeReadyToIssueHandOffs(
+                waTaskContoller.closeReadyToIssueTasks(
                         callbackRequest,
                         clientContext,
                         bindingResult,
