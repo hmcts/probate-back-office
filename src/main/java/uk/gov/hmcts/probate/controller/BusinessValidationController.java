@@ -122,7 +122,7 @@ public class BusinessValidationController {
 
     public static final String BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT = "boRedeclarationSoTForCaseStopped";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
-    public static final String CREATE_CHANGE_STATE_EVENT = "createChangeState";
+    public static final String CHANGE_STATE_EVENT = "changeState";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -614,7 +614,7 @@ public class BusinessValidationController {
                 caseDataTransformer.setResolveStoppedCaseUserIdamId(callbackRequest.getCaseDetails(), idamUserId);
             });
         }
-        if (CREATE_CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
+        if (CHANGE_STATE_EVENT.equalsIgnoreCase(callbackRequest.getEventId())
                 && BO_REGISTRAR_ESCALATION_NAME.equalsIgnoreCase(callbackRequest.getCaseDetails()
                 .getData().getTransferToState())) {
             setEscalateToRegistrarUserFromCaseworker(callbackRequest, caseworkerInfo);
