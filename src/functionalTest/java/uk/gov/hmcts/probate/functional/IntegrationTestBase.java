@@ -161,12 +161,6 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
-    protected final ResponseBody validatePostSuccessForCaseStopped(String payload, String path)
-            throws InterruptedException {
-        Thread.sleep(ES_DELAY);
-        return validatePostSuccessForPayload(payload, path);
-    }
-
 
     protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path,
                                                                         String originalAttr,

@@ -776,7 +776,7 @@ class CaveatCallbackResponseTransformerTest {
         caveatDataBuilder.registryLocation("ctsc");
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest
-                .transformResponseWithOrgPolicy(caveatCallbackRequestMock);
+                .caveatRaisedWithoutEmail(caveatCallbackRequestMock);
 
         assertEquals(buildEmptyOrgPolicy(),
                 caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
@@ -789,7 +789,7 @@ class CaveatCallbackResponseTransformerTest {
         caveatDataBuilder.registryLocation("ctsc");
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest
-                .transformResponseWithOrgPolicy(caveatCallbackRequestMock);
+                .caveatRaisedWithoutEmail(caveatCallbackRequestMock);
 
         assertNull(caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
     }

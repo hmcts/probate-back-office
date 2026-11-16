@@ -54,14 +54,7 @@ public class CaveatNotificationService {
         CaveatCallbackResponse caveatCallbackResponse;
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
-            if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
-            } else {
-                // Bulk scan may not include caveator email for solicitor.
-                setCaveatExpiryDate(caveatDetails);
-                caveatCallbackResponse =
-                    caveatCallbackResponseTransformer.transformResponseWithOrgPolicy(caveatCallbackRequest);
-            }
+            caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
         } else {
             caveatCallbackResponse = citizenCaveatRaise(caveatCallbackRequest);
         }
@@ -78,8 +71,8 @@ public class CaveatNotificationService {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-        setCaveatExpiryDate(caveatDetails.getData());
 
+        setCaveatExpiryDate(caveatDetails.getData());
         if (caveatDetails.getData().isCaveatEmailNotificationRequested()) {
             caveatCallbackResponse =
                 eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
@@ -118,7 +111,12 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+
         setCaveatExpiryDate(caveatDetails.getData());
+        if (StringUtils.isBlank(caveatDetails.getData().getCaveatorEmailAddress())) {
+            // Bulk scan may not include caveator email for solicitor.
+            return caveatCallbackResponseTransformer.caveatRaisedWithoutEmail(caveatCallbackRequest);
+        }
 
         Document document = null;
         try {
