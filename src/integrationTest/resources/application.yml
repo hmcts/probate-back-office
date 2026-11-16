@@ -353,7 +353,7 @@ registry:
       addressline2: 33 Bull Street
       town: Birmingham
       postcode: B4 6DU
-      epimmsId: 231596
+      epimmsId: 815833
       taskRegion: 12
     manchester:
       name: Manchester Probate Registry
@@ -365,7 +365,7 @@ registry:
       addressline4: PO Box 4240
       town: Manchester
       postcode: M60 1WJ
-      epimmsId: 701411
+      epimmsId: 815833
       taskRegion: 12
     leeds:
       name: Leeds Probate Registry
@@ -405,7 +405,7 @@ registry:
       addressline3: 42-49 High Holborn
       town: London
       postcode: WC1V 6NP
-      epimmsId: 356855
+      epimmsId: 815833
       taskRegion: 12
     cardiff:
       name: Probate Registry of Wales
@@ -460,7 +460,7 @@ registry:
       addressline2: Redcliff Street
       town: Bristol
       postcode: BS1 6GR
-      epimmsId: 819890
+      epimmsId: 815833
       taskRegion: 12
 
 auth.idam.client.baseUrl: http://localhost:5000
