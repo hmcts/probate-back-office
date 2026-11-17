@@ -115,7 +115,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(123));
+        assertThat(logic.getRules().size(), is(122));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -138,7 +138,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         } else if (cancellationProperties.get("event").startsWith("close")) {
             assertResponse(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
-            testChangeStateEvent(dmnResultList, cancellationProperties);
+            validate(dmnResultList, cancellationProperties);
         } else if (HAND_OFF_COMPLETION_EVENTS.contains(cancellationProperties.get("event"))) {
             testHandOffCompletionEvent(dmnResultList, cancellationProperties);
         } else {
@@ -234,15 +234,11 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             "moveToCWEscalation",
             "boIssueGrantForCaseMatching");
 
-    private static final Set<String> SHARED_HAND_OFF_COMPLETION_EVENTS = Set.of(
-            "boEscalateToRegistrar",
-            "moveToCWEscalation",
-            "boIssueGrantForCaseMatching");
 
     private void testHandOffCompletionEvent(List<Map<String, Object>> dmnResultList,
                                             Map<String, String> cancellationProperties) {
         String event = cancellationProperties.get("event");
-        int expectedRows = SHARED_HAND_OFF_COMPLETION_EVENTS.contains(event) ? 2 : 1;
+        int expectedRows = 1;
         Assertions.assertEquals(expectedRows, dmnResultList.size());
 
         boolean matched = dmnResultList.stream().anyMatch(row ->

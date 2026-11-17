@@ -2805,6 +2805,29 @@
           <text></text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1joypwq">
+        <inputEntry id="UnaryTests_05odygv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kxn9dj">
+          <text>"boStopCaseForCaseMatchingForExamining","boStopCaseForCasePrinted","boSelectForQA","boEscalateToRegistrar","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_118stly">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ugsn2e">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gfvpwt">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03g4eag">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_057y2gn">
+          <text>"handOffs"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

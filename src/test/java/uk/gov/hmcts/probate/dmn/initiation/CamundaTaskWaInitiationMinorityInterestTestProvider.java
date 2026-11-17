@@ -36,7 +36,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
         Map<String,Object> examineMinorityInterestCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,casePrintedHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineMinorityInterestCasePrintedHandOffsTaskAttributes = Map.of(
@@ -48,13 +48,13 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
         Map<String,Object> examineMinorityInterestTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineMinorityInterestCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST_CHANGE_STATE,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineMinorityInterestReadyToIssueHandOffsTaskAttributes = Map.of(

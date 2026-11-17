@@ -37,7 +37,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> horizonSchemeTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_HORIZON_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,casePrintedHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> horizonSchemeHandOffsTaskAttributes = Map.of(
@@ -55,7 +55,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
         Map<String,Object> examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_HORIZON_SCHEME_CHANGE_STATE,
                 "name", "Examine - Horizon Scheme",
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         return Stream.of(
@@ -209,7 +209,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
-                        List.of(examineHorizonSchemeTaskAttributes)
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
@@ -237,7 +237,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
-                        List.of(examineHorizonSchemeTaskAttributes)
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
@@ -265,7 +265,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
-                        List.of(examineHorizonSchemeTaskAttributes)
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
@@ -293,7 +293,7 @@ public class CamundaTaskWaInitiationHorizonSchemePrintedTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(horizonSchemeCasePrintedHandOffReason),  false),
-                        List.of(examineHorizonSchemeTaskAttributes)
+                        List.of(examineHorizonSchemeCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",

@@ -33,7 +33,7 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
         Map<String,Object> proveForeignWillTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_WILL_CASE_PRINTED,
                 "name", EXAMINE_FOREIGN_WILL_CASE_PRINTED_TASK_TYPE_NAME,
-                "processCategories", "case progression,casePrintedHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> proveForeignWillHandOffsTaskAttributes = Map.of(
