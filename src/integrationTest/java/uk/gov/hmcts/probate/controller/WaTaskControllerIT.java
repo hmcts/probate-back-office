@@ -180,13 +180,7 @@ public class WaTaskControllerIT {
     void shouldReturnBadRequestForInvalidPayload() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())
@@ -263,13 +257,7 @@ public class WaTaskControllerIT {
     void shouldReturnBadRequestForInvalidPayloadEvidenceHandled() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())

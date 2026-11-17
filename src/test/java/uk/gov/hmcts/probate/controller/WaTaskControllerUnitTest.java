@@ -622,7 +622,7 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseData.getCaseType()).thenReturn("gop");
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(null, callbackRequest, bindingResult, httpServletRequest);
 
         verify(waTaskService).createAndSubmitTaskForSystemUser(
                 callbackRequest,
@@ -634,7 +634,7 @@ public class WaTaskControllerUnitTest {
     void shouldBypassTaskCreationWhenWAIsDisabled() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(null, callbackRequest, bindingResult, httpServletRequest);
 
         verifyNoInteractions(coreCaseDataApi);
     }
@@ -647,6 +647,7 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
 
         assertThatThrownBy(() -> waTaskContoller.selectForQASetupWATask(
+                null,
                 callbackRequest, bindingResult, httpServletRequest))
                 .isInstanceOf(BadRequestException.class);
 

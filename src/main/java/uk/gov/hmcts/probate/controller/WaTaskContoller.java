@@ -148,6 +148,8 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> selectForQASetupWATask(
+            @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
+                    required = false) String clientContext,
             @Valid @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {

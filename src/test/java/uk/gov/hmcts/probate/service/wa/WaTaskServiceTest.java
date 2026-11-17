@@ -64,6 +64,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_PROBATE;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_LEADING_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_FIAT_WILL_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
@@ -74,6 +75,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FIAT_WILL;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FOREIGN_DOMICILE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.HORIZON_SCHEME;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INFECTED_BLOOD_INTERIM;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.LEADING_FOLLOWING_GRANTS;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -595,6 +597,8 @@ class WaTaskServiceTest {
                         .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(List.of(
                                 new CollectionMember<>(null,
+                                        HandoffReason.builder().caseHandoffReason(LEADING_FOLLOWING_GRANTS).build()),
+                                new CollectionMember<>(null,
                                         HandoffReason.builder().caseHandoffReason(FIAT_WILL).build()),
                                 new CollectionMember<>(null,
                                         HandoffReason.builder().caseHandoffReason(DE_BONIS_NON).build())
@@ -630,6 +634,7 @@ class WaTaskServiceTest {
             waTaskService.closeReadyToIssueTasks(
                     callbackRequest, null);
         }
+        verifyEvent(CLOSE_LEADING_FOLLOWING_GRANTS);
         verifyEvent(CLOSE_FIAT_WILL);
         verifyEvent(CLOSE_DE_BONIS_NON);
     }
