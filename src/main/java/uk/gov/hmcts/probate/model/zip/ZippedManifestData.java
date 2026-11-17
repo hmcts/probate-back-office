@@ -16,6 +16,11 @@ public class ZippedManifestData {
     private final String caseType;
     private String errorDescription;
     private final String comment;
+    private final String finalIndicator;
+
+    public String getFinalIndicator() {
+        return "Yes".equalsIgnoreCase(finalIndicator) ? "Yes" : "No";
+    }
 
     private static final Pattern NON_ALPHANUMERIC = Pattern.compile("[^a-z0-9]++");
     private static final Pattern LEADING_TRAILING_UNDERSCORE = Pattern.compile("(^_++)|(_++$)");

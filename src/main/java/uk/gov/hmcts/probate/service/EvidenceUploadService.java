@@ -189,7 +189,7 @@ public class EvidenceUploadService {
     public List<CollectionMember<ScannedDocument>> defaultScannedFinalWillIndicator(
             List<CollectionMember<ScannedDocument>> documents, boolean singleWill) {
         if (documents == null) {
-            return null;
+            return Collections.emptyList();
         }
         return documents.stream()
                 .map(member -> updateScannedFinalWill(member, singleWill))
@@ -213,7 +213,7 @@ public class EvidenceUploadService {
     public List<CollectionMember<UploadDocument>> defaultUploadedFinalWillIndicator(
             List<CollectionMember<UploadDocument>> documents, boolean singleWill) {
         if (documents == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return documents.stream()
