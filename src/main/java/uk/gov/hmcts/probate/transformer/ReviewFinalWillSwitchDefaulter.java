@@ -15,8 +15,9 @@ public class ReviewFinalWillSwitchDefaulter {
     private final EvidenceUploadService evidenceUploadService;
 
     public String defaultReviewFinalWillSwitch(CaseData caseData) {
-        return CASE_TYPE_INTESTACY.equalsIgnoreCase(caseData.getCaseType())
-            ? NO
-            : (evidenceUploadService.showReviewFinalWillPage(caseData) ? YES : NO);
+        if (CASE_TYPE_INTESTACY.equalsIgnoreCase(caseData.getCaseType())) {
+            return NO;
+        }
+        return evidenceUploadService.showReviewFinalWillPage(caseData) ? YES : NO;
     }
 }

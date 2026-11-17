@@ -32,6 +32,8 @@ public class SmeeAndFordDataExtractService {
     private final FeatureToggleService featureToggleService;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
+    @Value("${feature.blobstorage.smeeandford.includeFinalIndicator}")
+    public boolean featureSmeeAndFordIncludeFinalIndicator;
 
     public void performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
@@ -64,7 +66,9 @@ public class SmeeAndFordDataExtractService {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
                     zipFileService.generateAndUploadZipFile(
                             cases, tempFile, fromDate, smeeAndFordDataExtractStrategy,
-                            SmeeAndFordCommentMode.INCLUDE_COMMENT);
+                            featureSmeeAndFordIncludeFinalIndicator
+                                ? SmeeAndFordCommentMode.INCLUDE_COMMENT_AND_FINAL_INDICATOR
+                                : SmeeAndFordCommentMode.INCLUDE_COMMENT);
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }

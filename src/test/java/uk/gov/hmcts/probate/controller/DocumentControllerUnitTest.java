@@ -650,9 +650,9 @@ class DocumentControllerUnitTest {
                 .build();
 
         when(documentGeneratorService.generateGrantReissue(
-                eq(callbackRequest),
-                eq(DocumentStatus.FINAL),
-                eq(Optional.of(DocumentIssueType.REISSUE))))
+                callbackRequest,
+                DocumentStatus.FINAL,
+                Optional.of(DocumentIssueType.REISSUE)))
                 .thenReturn(grantDocument);
 
         when(documentGeneratorService.generateCoversheet(callbackRequest))
