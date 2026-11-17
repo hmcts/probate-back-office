@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -103,6 +104,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_QA_CAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -670,6 +675,34 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", RESOLVE_REDECLARATION,
                                         "state", BO_REDEC_NOTIFICATION_SENT_STATE)).build()
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC)).build()
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY)).build()
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN)).build()
+                ),
+                Arguments.of(
+                        REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS)).build()
                 )
         );
     }
@@ -703,7 +736,50 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
+        List<Map<String, Object>> resolvedExpectation = resolveExpectedValues(expectation, inputVariables);
 
-        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
+        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), resolvedExpectation);
+    }
+
+    private static List<Map<String, Object>> resolveExpectedValues(
+            List<Map<String, Object>> expectations,
+            VariableMap inputVariables) {
+
+        return expectations.stream()
+                .map(expectation -> {
+                    Map<String, Object> resolved = new HashMap<>(expectation);
+
+                    Object value = resolved.get("value");
+                    if (value instanceof String stringValue) {
+                        resolved.put("value", replaceVariables(stringValue, inputVariables));
+                    }
+
+                    return resolved;
+                })
+                .toList();
+    }
+
+    private static String replaceVariables(String template, VariableMap variables) {
+        String result = template;
+
+        for (String key : variables.keySet()) {
+            Object value = variables.get(key);
+
+            if (value instanceof String
+                    || value instanceof Number
+                    || value instanceof Boolean) {
+                result = result.replace("${" + key + "}", String.valueOf(value));
+            }
+
+            if (value instanceof Map<?, ?> nestedMap) {
+                for (Map.Entry<?, ?> entry : nestedMap.entrySet()) {
+                    result = result.replace(
+                            "${" + entry.getKey() + "}",
+                            String.valueOf(entry.getValue()));
+                }
+            }
+        }
+
+        return result;
     }
 }
