@@ -438,4 +438,7 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
+
+    public static final String DEATH_RECORD_VERIFIED_EVENT = "deathRecordVerified";
+    public static final String DEATH_RECORD_VERIFICATION_FAILED_EVENT = "deathRecordVerificationFailed";
 }
