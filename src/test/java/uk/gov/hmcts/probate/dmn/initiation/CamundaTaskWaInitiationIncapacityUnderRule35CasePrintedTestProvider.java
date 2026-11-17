@@ -30,7 +30,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
         Map<String,Object> incapacityUnderRule35TaskAttributes = Map.of(
                 "taskId", EXAMINE_INCAPACITY_RULE_35_CASE_PRINTED,
                 "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         return Stream.of(
