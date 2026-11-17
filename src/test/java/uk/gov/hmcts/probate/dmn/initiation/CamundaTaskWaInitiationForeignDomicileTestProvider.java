@@ -33,7 +33,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
         Map<String,Object> examineForeignDomicileCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         return Stream.of(
