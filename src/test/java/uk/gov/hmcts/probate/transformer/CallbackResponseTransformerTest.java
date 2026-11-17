@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
@@ -5999,53 +6000,25 @@ class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getReviewFinalWillSwitch());
     }
 
-
-    @Test
-    void shouldSkipFinalWillReviewWhenThereAreNoWills() {
+    @ParameterizedTest
+    @CsvSource({
+            "0, No",
+            "1, No",
+            "2, Yes"
+    })
+    void shouldSetFinalWillReviewBasedOnWillCount(long willCount, String expectedReviewSwitch) {
         CaseData caseData = caseDataBuilder.build();
 
         when(caseDetailsMock.getData()).thenReturn(caseData);
         when(evidenceUploadService.countWillDocuments(caseData))
-                .thenReturn(0L);
+                .thenReturn(willCount);
         when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
-                .thenReturn(NO);
+                .thenReturn(expectedReviewSwitch);
 
         CallbackResponse response =
                 underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
 
-        assertEquals(NO, response.getData().getReviewFinalWillSwitch());
-    }
-
-    @Test
-    void shouldSkipFinalWillReviewWhenThereIsOneWill() {
-        CaseData caseData = caseDataBuilder.build();
-
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(evidenceUploadService.countWillDocuments(caseData))
-                .thenReturn(1L);
-        when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
-                .thenReturn(NO);
-
-        CallbackResponse response =
-                underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
-
-        assertEquals(NO, response.getData().getReviewFinalWillSwitch());
-    }
-
-    @Test
-    void shouldDisplayFinalWillReviewWhenThereAreMultipleWills() {
-        CaseData caseData = caseDataBuilder.build();
-
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(evidenceUploadService.countWillDocuments(caseData))
-                .thenReturn(2L);
-        when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
-                .thenReturn(YES);
-
-        CallbackResponse response =
-                underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
-
-        assertEquals(YES, response.getData().getReviewFinalWillSwitch());
+        assertEquals(expectedReviewSwitch, response.getData().getReviewFinalWillSwitch());
     }
 
     @Test

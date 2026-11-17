@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,7 +21,7 @@ class ReviewFinalWillSwitchDefaulterTest {
 
     @BeforeEach
     void setUp() {
-        evidenceUploadService = Mockito.mock(EvidenceUploadService.class);
+        evidenceUploadService = mock(EvidenceUploadService.class);
         defaulter = new ReviewFinalWillSwitchDefaulter(evidenceUploadService);
     }
 

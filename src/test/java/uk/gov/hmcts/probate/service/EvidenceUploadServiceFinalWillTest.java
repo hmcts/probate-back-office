@@ -1,6 +1,9 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,7 +17,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -199,6 +205,91 @@ class EvidenceUploadServiceFinalWillTest {
                 scanned("1", "will", null, "Yes"))).build();
         CallbackRequest callbackRequest = request(before, after);
         assertDoesNotThrow(() -> service.validateIssueGrantDocuments(callbackRequest));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidUploadedChanges")
+    void rejectsInvalidUploadedDocumentMembership(
+            List<CollectionMember<UploadDocument>> before,
+            List<CollectionMember<UploadDocument>> after) {
+        CallbackRequest callbackRequest = request(caseWithUploaded(before), caseWithUploaded(after));
+        assertThrows(BusinessValidationException.class,
+                () -> service.validateIssueGrantDocuments(callbackRequest));
+    }
+
+    private static Stream<Arguments> invalidUploadedChanges() {
+        return Stream.of(
+                Arguments.of(Arrays.asList((CollectionMember<UploadDocument>) null),
+                        List.of(uploadedWithUrl("1", "url-1"))),
+                Arguments.of(List.of(uploadedWithUrl(null, "url-1")),
+                        List.of(uploadedWithUrl("1", "url-1"))),
+                Arguments.of(List.of(uploadedWithUrl("1", null)),
+                        List.of(uploadedWithUrl("1", null))),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1"),
+                                uploadedWithUrl("1", "url-2")),
+                        List.of(uploadedWithUrl("1", "url-1"),
+                                uploadedWithUrl("1", "url-2"))),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1")),
+                        List.of(uploadedWithUrl("1", "url-2"))),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1")),
+                        Arrays.asList((CollectionMember<UploadDocument>) null)),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1")),
+                        List.of(uploadedWithUrl(null, "url-1"))),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1")),
+                        List.of(uploadedWithUrl("1", null))),
+                Arguments.of(List.of(uploadedWithUrl("1", "url-1"),
+                                uploadedWithUrl("2", "url-2")),
+                        List.of(uploadedWithUrl("1", "url-1"),
+                                uploadedWithUrl("1", "url-1")))
+        );
+    }
+
+    private static CollectionMember<UploadDocument> uploadedWithUrl(String id, String url) {
+        return new CollectionMember<>(id, UploadDocument.builder()
+                .documentType(DocumentType.WILL)
+                .documentLink(url == null ? null : DocumentLink.builder().documentUrl(url).build())
+                .build());
+    }
+
+    @Test
+    void allowsUploadedDocumentReorderingAndFinalIndicatorChange() {
+        CallbackRequest callbackRequest = request(
+                caseWithUploaded(List.of(uploadedWithUrl("1", "url-1"),
+                        uploadedWithUrl("2", "url-2"))),
+                caseWithUploaded(List.of(uploadedWithUrl("2", "url-2"),
+                        uploadedWithUrl("1", "url-1"))));
+        assertDoesNotThrow(() -> service.validateIssueGrantDocuments(callbackRequest));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidCallbackRequests")
+    void rejectsMissingCallbackDetails(CallbackRequest callbackRequest) {
+        assertThrows(BusinessValidationException.class,
+                () -> service.validateIssueGrantDocuments(callbackRequest));
+    }
+
+    private static Stream<Arguments> invalidCallbackRequests() {
+        CaseData data = CaseData.builder().build();
+        return Stream.of(
+                Arguments.of((Object) null),
+                Arguments.of(callback(null, details(data))),
+                Arguments.of(callback(details(data), null)),
+                Arguments.of(callback(details(null), details(data))),
+                Arguments.of(callback(details(data), details(null)))
+        );
+    }
+
+    private static CallbackRequest callback(CaseDetails before, CaseDetails after) {
+        CallbackRequest request = mock(CallbackRequest.class);
+        lenient().when(request.getCaseDetailsBefore()).thenReturn(before);
+        lenient().when(request.getCaseDetails()).thenReturn(after);
+        return request;
+    }
+
+    private static CaseDetails details(CaseData data) {
+        CaseDetails details = mock(CaseDetails.class);
+        lenient().when(details.getData()).thenReturn(data);
+        return details;
     }
 
     private CollectionMember<ScannedDocument> scanned(String id, String type, String subtype, String finalWill) {
