@@ -62,7 +62,6 @@ class NumberOfApplyingExecutorsValidationRuleTest {
             .titleAndClearingType("TCTPartSuccPowerRes")
             .primaryApplicantForenames("Probate")
             .primaryApplicantSurname("Practitioner")
-                .solsSOTName("solsSOTName")
             .anyOtherApplyingPartners("Yes")
             .registryLocation("Bristol")
             .build();
@@ -171,5 +170,53 @@ class NumberOfApplyingExecutorsValidationRuleTest {
 
         assertDoesNotThrow(
                 () -> underTest.validate(caseDetailsMock));
+    }
+
+    @Test
+    void shouldErrorWhenOnlyForenamePrimaryApplicantApplyingYesAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantIsApplying("Yes");
+        caseDataMock.setPrimaryApplicantForenames("Primary");
+        caseDataMock.setPrimaryApplicantSurname(null);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+                caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class,
+                () -> underTest.validate(caseDetailsMock));
+
+        assertThat(bve.getMessage(),
+                containsString("The total number executors applying cannot exceed 4 for case id 0"));
+    }
+
+    @Test
+    void shouldErrorWhenOnlySurnamePrimaryApplicantApplyingYesAndFourAdditionalExecutorsApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+
+        caseDataMock.setPrimaryApplicantIsApplying("Yes");
+        caseDataMock.setPrimaryApplicantForenames(null);
+        caseDataMock.setPrimaryApplicantSurname("Applicant");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+                caseDetailsMock.getData())).thenReturn(execsApplying);
+
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class,
+                () -> underTest.validate(caseDetailsMock));
+
+        assertThat(bve.getMessage(),
+                containsString("The total number executors applying cannot exceed 4 for case id 0"));
     }
 }
