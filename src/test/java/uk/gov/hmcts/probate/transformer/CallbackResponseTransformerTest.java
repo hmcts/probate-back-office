@@ -6002,9 +6002,9 @@ class CallbackResponseTransformerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0, No",
-            "1, No",
-            "2, Yes"
+        "0, No",
+        "1, No",
+        "2, Yes"
     })
     void shouldSetFinalWillReviewBasedOnWillCount(long willCount, String expectedReviewSwitch) {
         CaseData caseData = caseDataBuilder.build();
