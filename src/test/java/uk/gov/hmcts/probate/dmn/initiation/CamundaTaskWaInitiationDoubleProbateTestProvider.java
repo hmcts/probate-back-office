@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.doubleProbateHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
@@ -36,21 +37,28 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDigitalCaseDoubleProbateCasePrintedTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,casePrintedHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs,examineDoubleProbate"
+        );
+
+        Map<String,Object> examineDigitalCaseDoubleProbateCasePrintedHandOffsTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
+                "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs,examineDoubleProbateCasePrinted"
         );
 
 
@@ -58,7 +66,7 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE_CHANGE_STATE,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
         return Stream.of(
                 Arguments.of(
@@ -363,6 +371,14 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason)),
+                        List.of(examineDigitalCaseDoubleProbateCasePrintedHandOffsTaskAttributes)
                 )
         );
     }

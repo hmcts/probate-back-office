@@ -74,4 +74,9 @@ public class CaseDataBuilder {
         caseData.put("resolveRedeclarationUserIdamId", idamId);
         return this;
     }
+
+    public CaseDataBuilder setWaCaseState(String state) {
+        caseData.put("waCaseState", state);
+        return this;
+    }
 }

@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.deBonisNonHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -37,25 +38,31 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
         Map<String,Object> examineDeBonisNonReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs,examineDeBonisNon"
         );
 
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,casePrintedHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDeBonisNonCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CHANGE_STATE,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
+        );
+
+        Map<String,Object> examineDeBonisNonCasePrintedHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
+                "name", DE_BONIS_NON_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs,examineDeBonisNonCasePrinted"
         );
 
         return Stream.of(
@@ -370,6 +377,14 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                        CASE_PRINTED_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 )
         );
     }
