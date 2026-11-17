@@ -34,7 +34,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
         Map<String,Object> examineProveForeignWillTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_WILL,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineProveForeignWillReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -46,7 +46,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
         Map<String,Object> examineProveForeignWillCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_PROVE_FOREIGN_WILL_CHANGE_STATE,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
 

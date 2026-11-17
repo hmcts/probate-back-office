@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -114,7 +115,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(121));
+        assertThat(logic.getRules().size(), is(123));
     }
 
     @ParameterizedTest(name = "[{index}] map data: {0}")
@@ -136,8 +137,10 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.get("event").startsWith("close")) {
             assertResponse(dmnResultList, cancellationProperties);
-        }  else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
-            validate(dmnResultList, cancellationProperties);
+        } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
+            testChangeStateEvent(dmnResultList, cancellationProperties);
+        } else if (HAND_OFF_COMPLETION_EVENTS.contains(cancellationProperties.get("event"))) {
+            testHandOffCompletionEvent(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
@@ -221,5 +224,31 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 cancellationProperties.get("processCategories"));
         Assertions.assertEquals(dmnResultList.getFirst().get("action"),
                 cancellationProperties.get("action"));
+    }
+
+    private static final Set<String> HAND_OFF_COMPLETION_EVENTS = Set.of(
+            "boStopCaseForCaseMatchingForExamining",
+            "boStopCaseForCasePrinted",
+            "boSelectForQA",
+            "boEscalateToRegistrar",
+            "moveToCWEscalation",
+            "boIssueGrantForCaseMatching");
+
+    private static final Set<String> SHARED_HAND_OFF_COMPLETION_EVENTS = Set.of(
+            "boEscalateToRegistrar",
+            "moveToCWEscalation",
+            "boIssueGrantForCaseMatching");
+
+    private void testHandOffCompletionEvent(List<Map<String, Object>> dmnResultList,
+                                            Map<String, String> cancellationProperties) {
+        String event = cancellationProperties.get("event");
+        int expectedRows = SHARED_HAND_OFF_COMPLETION_EVENTS.contains(event) ? 2 : 1;
+        Assertions.assertEquals(expectedRows, dmnResultList.size());
+
+        boolean matched = dmnResultList.stream().anyMatch(row ->
+                cancellationProperties.get("processCategories").equals(row.get("processCategories"))
+                        && cancellationProperties.get("action").equals(row.get("action")));
+        Assertions.assertTrue(matched,
+                "No Cancel row for " + cancellationProperties.get("processCategories") + " on " + event);
     }
 }
