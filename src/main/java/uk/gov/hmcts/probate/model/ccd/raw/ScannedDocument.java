@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class ScannedDocument {
 
     private final String subtype;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private final String finalWill;
 
     private final LocalDateTime scannedDate;
