@@ -17,8 +17,10 @@ public class EmailValidationNotifyService extends EmailValidationService {
     /**
      * This class ports gov.uk/notify email validation
      * https://github.com/alphagov/notifications-utils/blob/main/notifications_utils/recipient_validation/email_address.py
-     * Currently, we have no API to call to check if Notify would accept an email or not until notifications are being sent. Not an ideal solution, however until a validation API is provided we'll need to copy functionality here.
-     * This is created separately to EmailValidationService to maintain backwards compatibility with previously submitted email addresses.
+     * Currently, we have no API to call to check if Notify would accept an email or not until notifications are being
+     * sent. Not an ideal solution, however until a validation API is provided we'll need to copy functionality here.
+     * This is created separately to EmailValidationService to maintain backwards compatibility with previously
+     * submitted email addresses.
      */
 
     private static final int MAX_EMAIL_LENGTH = 320;
