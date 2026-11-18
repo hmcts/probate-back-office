@@ -21,8 +21,8 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +42,15 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_SME_REFERRAL;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_REDECLARATION;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_STOPPED_CASE;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.getAwaitingDocIceTask;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.getReadyToIssueIceTask;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.getStateTasks;
 
 @Slf4j
@@ -56,6 +62,38 @@ public class WaTaskService {
     private final CcdClientApi ccdClientApi;
     UnaryOperator<String> readyToIssueTask = handOffReason -> "Examine" + handOffReason;
     UnaryOperator<String> casePrintedTask = handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED;
+
+    private final Map<String, BiConsumer<CallbackRequest, ResponseCaseData>> createTaskIfRequired =
+            Map.of(
+                    STATE_CASE_PRINTED,
+                    (callbackRequest,  responseCaseData) ->
+                            createExamineTasks(callbackRequest,
+                                    responseCaseData,
+                                    getAwaitingDocIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
+                                    casePrintedTask),
+                    STATE_BO_READY_TO_ISSUE,
+                    (callbackRequest, responseCaseData) ->
+                            createExamineTasks(callbackRequest,
+                                    responseCaseData,
+                                    getReadyToIssueIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
+                                    readyToIssueTask),
+                    STATE_BO_CASE_WORKER_ESCALATION,
+                    (callbackRequest, responseCaseData) ->
+                            setCreateTask(callbackRequest,
+                                    responseCaseData,
+                                    EXAMINE_SME_REFERRAL),
+                    STATE_BO_CASE_STOPPED, 
+                    (callbackRequest, responseCaseData) ->
+                            setCreateTask(callbackRequest,
+                                    responseCaseData,
+                                    RESOLVE_STOPPED_CASE),
+                    STATE_BO_REDEC_NOTIFICATION_SENT,
+                    (callbackRequest, responseCaseData) ->
+                            setCreateTask(callbackRequest,
+                                    responseCaseData,
+                                    RESOLVE_REDECLARATION)
+
+            );
 
     final Map<Long, Set<TaskTypes>> checkedTaskTypesByCaseId = new HashMap<>();
 
@@ -343,5 +381,18 @@ public class WaTaskService {
         } else {
             setCreateHandOffTask(callbackRequest, responseCaseData, taskNameFormatter);
         }
+    }
+
+    public void createTaskIfRequired(String event,
+                                     CallbackRequest callbackRequest,
+                                     ResponseCaseData responseCaseData) {
+        responseCaseData.setCreateTask(YES);
+        String state = callbackRequest.getCaseDetails().getState();
+        Optional.ofNullable(createTaskIfRequired.get(state))
+            .ifPresentOrElse(
+                action -> action.accept(callbackRequest, responseCaseData),
+                () -> log.info("For case id {} : event {} no task creation configured for state: {}",
+                        callbackRequest.getCaseDetails().getId(), event, state)
+            );
     }
 }
