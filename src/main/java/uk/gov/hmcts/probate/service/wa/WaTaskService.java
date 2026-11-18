@@ -237,13 +237,14 @@ public class WaTaskService {
                         .map(String::toUpperCase)
                         .map(taskName ->  Optional.ofNullable(stateTasks.get(taskName))
                                 .orElseThrow(() -> new IllegalArgumentException(
-                                        "No TaskTypes enum configured for: " + taskName)))
-                        .forEach(handOffReasonTaskType -> {
+                                        "No TaskTypes enum configured for: " + taskName))
+                                .getClosingEventId())
+                        .forEach(eventId -> {
                             log.info("Case id {} : handOffReasonTaskType to be removed {}",
                                     callbackRequest.getCaseDetails().getId(),
-                                    handOffReasonTaskType);
+                                    eventId);
                             triggerEvent(callbackRequest.getCaseDetails(),
-                                    handOffReasonTaskType.getClosingEventId());
+                                    eventId);
                         });
 
             };
