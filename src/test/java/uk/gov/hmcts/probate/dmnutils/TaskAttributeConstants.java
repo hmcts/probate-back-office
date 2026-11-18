@@ -449,4 +449,7 @@ public class TaskAttributeConstants {
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE = "${roleAssignmentId}";
     public static final String DESCRIPTION_SPECIFIC_ACCESS = "[Review Access Request](/role-access/${taskId}"
             + "/assignment/${roleAssignmentId}/specific-access)";
+
+    public static final String DEATH_RECORD_VERIFIED_EVENT = "deathRecordVerified";
+    public static final String DEATH_RECORD_VERIFICATION_FAILED_EVENT = "deathRecordVerificationFailed";
 }

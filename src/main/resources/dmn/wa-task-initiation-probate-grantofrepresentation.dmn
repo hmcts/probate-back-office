@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -7510,6 +7510,53 @@ else false</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_10sy71g">
           <text>"case progression,handOffs,examineForeignWillCasePrinted"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0pp49l5">
+        <inputEntry id="UnaryTests_16vwug7">
+          <text>"deathRecordVerified","deathRecordVerificationFailed"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nwz5ce">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ummpe1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1uoa1la">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m6fk7b">
+          <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12mdc3v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1luz8nh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18eoi3o">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0scs4en">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pn4pf3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1erk9xk">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hdap7p">
+          <text>"ExamineDigitalCaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mdgubt">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mqk973">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12mlg7k">
+          <text>"case progression"</text>
         </outputEntry>
       </rule>
     </decisionTable>
