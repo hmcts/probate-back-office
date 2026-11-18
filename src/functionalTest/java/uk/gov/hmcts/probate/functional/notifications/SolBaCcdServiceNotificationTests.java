@@ -204,7 +204,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorApplicantDocumentReceivedContentIsOk() throws IOException {
-        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED);
+        validatePostSuccess("solicitorPayloadNotificationsLeeds.json", DOCUMENTS_RECEIVED);
     }
 
     @Test
@@ -361,7 +361,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
-        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED);
+        validatePostSuccess("solicitorPayloadNotificationsLeeds.json", GRANT_ISSUED);
     }
 
     @Test

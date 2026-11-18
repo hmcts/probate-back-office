@@ -124,15 +124,12 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         "solicitorPayloadNotificationsIntestacyCardiff.json";
     private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
     private static final String OXFORD_GOP_PAYLOAD = "solicitorPayloadNotificationsGopOxford.json";
-    private static final String MANCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopManchester.json";
     private static final String LEEDS_GOP_PAYLOAD = "solicitorPayloadNotificationsGopLeeds.json";
     private static final String LIVERPOOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopLiverpool.json";
     private static final String BRIGHTON_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBrighton.json";
-    private static final String LONDON_GOP_PAYLOAD = "solicitorPayloadNotificationsGopLondon.json";
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
-    private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
-    private static final String BULKSCAN_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
+    private static final String BULKSCAN_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
@@ -711,17 +708,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    void verifyTelephoneForManchesterGopGenerateGrant() throws IOException {
-        final CaseData caseData = CaseData.builder().build();
-        final String response = getFirstProbateDocumentsText(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
-
-        String expectedText = removeCrLfs(utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
-
-        assertTrue(response.contains(expectedText));
-    }
-
-    @Test
     void verifyTelephoneForLeedsGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
@@ -755,17 +741,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    void verifyTelephoneForLondonGopGenerateGrant() throws IOException {
-        final CaseData caseData = CaseData.builder().build();
-        final String response = getFirstProbateDocumentsText(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
-
-        String expectedText = removeCrLfs(utils.getJsonFromFile("londonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
-
-        assertTrue(response.contains(expectedText));
-    }
-
-    @Test
     void verifyTelephoneForNewcastleGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
@@ -782,17 +757,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getFirstProbateDocumentsText(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
-
-        assertTrue(response.contains(expectedText));
-    }
-
-    @Test
-    void verifyTelephoneForBristolGopGenerateGrant() throws IOException {
-        final CaseData caseData = CaseData.builder().build();
-        final String response = getFirstProbateDocumentsText(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
-
-        String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replace(JULY_2021, caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
