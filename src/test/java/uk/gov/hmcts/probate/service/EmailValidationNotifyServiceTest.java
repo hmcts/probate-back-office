@@ -20,16 +20,16 @@ class EmailValidationNotifyServiceTest {
 
     @Test
     void shouldReturnFalseIfPartOfHostnameTooLong() {
-        String HOSTNAME_PART = "a".repeat(65);
-        String email =  "a@" + HOSTNAME_PART + ".com";
+        String hostnamePart = "a".repeat(65);
+        String email =  "a@" + hostnamePart + ".com";
         assertFalse(emailValidationNotifyService.validateEmailAddress(email));
     }
 
     @Test
     void shouldReturnFalseIfHostnameTooLong() {
-        String HOSTNAME_PART = "b".repeat(49) + ".";
+        String hostnamePart = "b".repeat(49) + ".";
         //  51 + (4*50) + 3 = 254 characters
-        String email = "a@b" + HOSTNAME_PART.repeat(5) + "com";
+        String email = "a@b" + hostnamePart.repeat(5) + "com";
         assertFalse(emailValidationNotifyService.validateEmailAddress(email));
     }
 
@@ -79,6 +79,7 @@ class EmailValidationNotifyServiceTest {
         assertTrue(emailValidationNotifyService.validateEmailAddress(email));
     }
 
+    @SuppressWarnings("checkstyle:AvoidEscapedUnicodeCharacters")
     @Test
     void shouldFormatEmailAddress() {
         String email = " \u200BJohn.Doe+Test@EXAMPLE.COM\u00A0";
