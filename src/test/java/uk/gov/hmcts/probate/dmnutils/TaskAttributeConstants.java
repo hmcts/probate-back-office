@@ -437,11 +437,6 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
-<<<<<<< HEAD
-
-    public static final String DEATH_RECORD_VERIFIED_EVENT = "deathRecordVerified";
-    public static final String DEATH_RECORD_VERIFICATION_FAILED_EVENT = "deathRecordVerificationFailed";
-=======
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME =
             "Review Specific Access Request - Judiciary";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME =
@@ -454,5 +449,7 @@ public class TaskAttributeConstants {
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE = "${roleAssignmentId}";
     public static final String DESCRIPTION_SPECIFIC_ACCESS = "[Review Access Request](/role-access/${taskId}"
             + "/assignment/${roleAssignmentId}/specific-access)";
->>>>>>> origin/DTSPB-6154_no_task_duplication
+
+    public static final String DEATH_RECORD_VERIFIED_EVENT = "deathRecordVerified";
+    public static final String DEATH_RECORD_VERIFICATION_FAILED_EVENT = "deathRecordVerificationFailed";
 }
