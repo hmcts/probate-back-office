@@ -137,7 +137,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "changeState",
+                                "cancelChangeState",
                                 null,
                                 null,
                                 "case progression",
@@ -150,6 +150,87 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                                 "BOReadyToIssue",
                                 "BOReadyToIssue",
                                 "readyToIssueHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boStopCaseForCaseMatchingForExamining",
+                                null,
+                                null,
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boEscalateToRegistrar",
+                                null,
+                                null,
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "moveToCWEscalation",
+                                null,
+                                null,
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boIssueGrantForCaseMatching",
+                                null,
+                                null,
+                                "readyToIssueHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boStopCaseForCasePrinted",
+                                null,
+                                null,
+                                "casePrintedHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boSelectForQA",
+                                null,
+                                null,
+                                "casePrintedHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boEscalateToRegistrar",
+                                null,
+                                null,
+                                "casePrintedHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "moveToCWEscalation",
+                                null,
+                                null,
+                                "casePrintedHandOffs",
+                                "Cancel"
+                        )
+                ),
+                Arguments.of(
+                        cancelWithProperties(
+                                "boIssueGrantForCaseMatching",
+                                null,
+                                null,
+                                "casePrintedHandOffs",
                                 "Cancel"
                         )
                 )

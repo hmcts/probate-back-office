@@ -362,7 +362,8 @@ public class TaskAttributeConstants {
     public static final String APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT = "applyforGrantPaperApplicationMan";
     public static final String ATTACH_SCANNED_DOCS_EVENT = "attachScannedDocs";
     public static final String BO_RESOLVE_STOP_EVENT = "boResolveStop";
-    public static final String CHANGE_STATE_EVENT = "changeState";
+    public static final String CREATE_CHANGE_STATE_EVENT = "createChangeState";
+    public static final String CANCEL_CHANGE_STATE_EVENT = "cancelChangeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
@@ -438,4 +439,16 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME =
+            "Review Specific Access Request - Judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME =
+            "Review Specific Access Request - Legal Ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME =
+            "Review Specific Access Request - Admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME =
+            "Review Specific Access Request - CTSC";
+    public static final String ACCESS_REQUESTS_WORK_TYPE = "access_requests";
+    public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE = "${roleAssignmentId}";
+    public static final String DESCRIPTION_SPECIFIC_ACCESS = "[Review Access Request](/role-access/${taskId}"
+            + "/assignment/${roleAssignmentId}/specific-access)";
 }
