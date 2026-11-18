@@ -10,6 +10,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -40,6 +42,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -64,10 +67,18 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_PROBATE;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_LEADING_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_FIAT_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_IBIS_CASE_PRINTED;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DE_BONIS_NON;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FIAT_WILL;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FOREIGN_DOMICILE;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.HORIZON_SCHEME;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.INFECTED_BLOOD_INTERIM;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.LEADING_FOLLOWING_GRANTS;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -510,6 +521,12 @@ class WaTaskServiceTest {
 
     @Test
     void shouldNotTriggerEventWhenContextTaskExists() {
+        when(caseDetails.getId()).thenReturn(123456L);
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseHandedOffToLegacySite(NO)
@@ -662,6 +679,8 @@ class WaTaskServiceTest {
                         .caseHandedOffToLegacySite(YES)
                         .boHandoffReasonList(List.of(
                                 new CollectionMember<>(null,
+                                        HandoffReason.builder().caseHandoffReason(LEADING_FOLLOWING_GRANTS).build()),
+                                new CollectionMember<>(null,
                                         HandoffReason.builder().caseHandoffReason(FIAT_WILL).build()),
                                 new CollectionMember<>(null,
                                         HandoffReason.builder().caseHandoffReason(DE_BONIS_NON).build())
@@ -697,6 +716,7 @@ class WaTaskServiceTest {
             waTaskService.closeReadyToIssueTasks(
                     callbackRequest, null);
         }
+        verifyEvent(CLOSE_LEADING_FOLLOWING_GRANTS);
         verifyEvent(CLOSE_FIAT_WILL);
         verifyEvent(CLOSE_DE_BONIS_NON);
     }
@@ -846,6 +866,57 @@ class WaTaskServiceTest {
                         CLOSE_ICE_AD_COLLIGENDA_BONA
                 )
         );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenHandOffEventNotConfigured() {
+        try (MockedStatic<TaskTypes> mockedTaskTypes =
+                     Mockito.mockStatic(TaskTypes.class, Mockito.CALLS_REAL_METHODS)) {
+
+            mockedTaskTypes.when(() ->
+                            TaskTypes.getStateTasks(STATE_CASE_PRINTED))
+                    .thenReturn(Map.of("EXAMINEFIATWILLCASEPRINTED", EXAMINE_FIAT_WILL_CASE_PRINTED,
+                            "EXAMINEHORIZONSCHEMECASEPRINTED", EXAMINE_HORIZON_SCHEME_CASE_PRINTED,
+                            "EXAMINEIBISCASEPRINTED", EXAMINE_IBIS_CASE_PRINTED,
+                            "EXAMINEDOUBLEPROBATECASEPRINTED", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED));
+
+            when(caseDetailsBefore.getState()).thenReturn(STATE_CASE_PRINTED);
+            when(caseDetailsBefore.getData())
+                    .thenReturn(CaseData.builder()
+                            .caseType("gop")
+                            .caseHandedOffToLegacySite(YES)
+                            .boHandoffReasonList(List.of(
+                                    new CollectionMember<>(null,
+                                            HandoffReason.builder().caseHandoffReason(FOREIGN_DOMICILE).build()),
+                                    new CollectionMember<>(null,
+                                            HandoffReason.builder().caseHandoffReason(DOUBLE_PROBATE).build()),
+                                    new CollectionMember<>(null,
+                                            HandoffReason.builder().caseHandoffReason(HORIZON_SCHEME).build()),
+                                    new CollectionMember<>(null,
+                                            HandoffReason.builder().caseHandoffReason(INFECTED_BLOOD_INTERIM).build())
+                            ))
+                            .build());
+
+            when(callbackRequest.getCaseDetailsBefore())
+                    .thenReturn(caseDetailsBefore);
+
+            when(callbackRequest.getCaseDetails())
+                    .thenReturn(caseDetails);
+            when(caseDetails.getData())
+                    .thenReturn(CaseData.builder()
+                            .caseType("gop")
+                            .caseHandedOffToLegacySite(YES)
+                            .boHandoffReasonList(List.of(
+                                    new CollectionMember<>(null,
+                                            HandoffReason.builder().caseHandoffReason(DOUBLE_PROBATE).build())
+                            ))
+                            .build());
+
+            assertThatThrownBy(() -> waTaskService.closeAwaitingDocumentationTasks(
+                    callbackRequest, null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("No TaskTypes enum configured for: EXAMINEFOREIGNDOMICILECASEPRINTED");
+        }
     }
 
     @Test

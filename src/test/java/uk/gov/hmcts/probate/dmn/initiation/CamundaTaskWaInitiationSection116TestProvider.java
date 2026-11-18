@@ -38,19 +38,19 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
         Map<String,Object> examineSection116TaskAttributes = Map.of(
                 "taskId", EXAMINE_SECTION_116,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineSection116CasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_SECTION_116_CASE_PRINTED,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineSection116CaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_SECTION_116_CHANGE_STATE,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineSection116CasePrintedHandOffsTaskAttributes = Map.of(
