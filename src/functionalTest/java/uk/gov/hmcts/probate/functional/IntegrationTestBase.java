@@ -120,7 +120,7 @@ public abstract class IntegrationTestBase {
             .config(config)
             .relaxedHTTPSValidation()
             .headers(headers)
-            .body(payload)
+            .body(utils.withGrantCallbackCaseDetailsBefore(payload, path))
             .when().post(path)
             .andReturn();
 

@@ -437,7 +437,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.getString(atJsonPath);
 
-        assertNotNull(documentUrl);
+        assertNotNull(documentUrl, "Missing document URL. Callback response: " + responseBody.asString());
     }
 
     private void assertResponseContainsObjectAtJsonPath(
