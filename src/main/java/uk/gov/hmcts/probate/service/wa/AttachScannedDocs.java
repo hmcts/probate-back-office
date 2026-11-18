@@ -45,7 +45,7 @@ public class AttachScannedDocs implements CreateTaskProcessor {
                 })
                 .orElse(NO);
         log.info("Processing attach scanned docs set createTask : {} ", createTask);
-
+        responseCaseData.setCreateTask(createTask);
         if (createTask.equals(YES)) {
             log.info("Processing case id {} state {} with case type {}",
                     callbackRequest.getCaseDetails().getId(),
