@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class UploadDocument {
     private final DocumentType documentType;
 
     @JsonProperty("FinalWill")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private final String finalWill;
 
     @JsonProperty("Comment")
