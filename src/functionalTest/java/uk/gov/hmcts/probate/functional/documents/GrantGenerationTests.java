@@ -817,6 +817,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForGetDigitalGrantWithSingleExecutorPA() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithSingleExecutorPA Response: " + response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -843,6 +844,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
                 "\"caseType\": \"gop\",",
                 "\"caseType\": \"gop\",\n      \"grantIssuedDate\": \"2026-09-01\",");
         final String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithSingleExecutorPAWithGrantIssuedDate Response: " + response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -999,6 +1001,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1069,6 +1072,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1091,6 +1095,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1114,6 +1119,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantWithGrantInfoSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1158,6 +1164,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1181,6 +1188,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1258,6 +1266,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1280,6 +1289,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1302,6 +1312,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls Response: {}", response);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -1397,6 +1408,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                 GENERATE_GRANT_DRAFT);
 
+        log.error("verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying Response: {}", response);
+
         assertFalse(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
@@ -1412,6 +1425,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                 GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying Response: {}", response);
 
         assertFalse(response.contains(PRIMARY_APPLICANT));
 
@@ -1429,6 +1443,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText(
                 "solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved Response: {}", response);
 
         assertFalse(response.contains(PRIMARY_APPLICANT));
         assertFalse(response.contains(POWER_RESERVED));
@@ -1446,6 +1461,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved Response: {}", response);
 
         assertFalse(response.contains(PRIMARY_APPLICANT));
         assertFalse(response.contains(POWER_RESERVED));
@@ -1464,6 +1480,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT_DRAFT);
+        log.error("verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple Response: {}", response);
 
         assertFalse(response.contains(PRIMARY_APPLICANT));
         assertFalse(response.contains(POWER_RESERVED_SINGLE));
@@ -1481,6 +1498,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT);
+        log.error("verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple Response: {}", response);
 
         assertFalse(response.contains(PRIMARY_APPLICANT));
         assertFalse(response.contains(POWER_RESERVED_SINGLE));

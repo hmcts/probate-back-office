@@ -47,7 +47,7 @@ public class StandingSearchTests extends IntegrationTestBase {
         assertThat(ofPattern("yyyy-MM-dd").format(now().plusMonths(MONTHS_TO_ADD)),
             is(equalTo(jsonPath.get("data.expiryDate"))));
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
-        assertThat(jsonPath.get("data.registryLocation"), equalTo("Manchester"));
+        assertThat(jsonPath.get("data.registryLocation"), equalTo("Liverpool"));
         assertThat(jsonPath.get("data.applicationType"), equalTo("Solicitor"));
     }
 
@@ -55,7 +55,7 @@ public class StandingSearchTests extends IntegrationTestBase {
     void standingSearchCreatedShouldReturnDefaultValues() throws IOException {
         //ARRANGE
         String jsonAsString = utils.getJsonFromFile("/search/standingSearchPayload.json");
-        jsonAsString = jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",", "");
+        jsonAsString = jsonAsString.replaceFirst("\"registryLocation\": \"Liverpool\",", "");
         jsonAsString = jsonAsString.replaceFirst("\"applicationType\": \"Solicitor\",", "");
         //ACT
         final Response response = RestAssured.given()
