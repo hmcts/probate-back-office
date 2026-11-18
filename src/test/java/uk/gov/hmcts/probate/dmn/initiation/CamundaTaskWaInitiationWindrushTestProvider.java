@@ -67,8 +67,10 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
-                        List.of(examineWindrushSchemeTaskAttributes)
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
+                        List.of(examineWindrushSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -204,8 +206,10 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
-                        List.of(examineWindrushSchemeCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
+                        List.of(examineWindrushSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

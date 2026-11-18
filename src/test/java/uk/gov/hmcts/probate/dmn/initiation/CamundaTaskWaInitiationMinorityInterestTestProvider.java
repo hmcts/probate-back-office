@@ -68,8 +68,10 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason)),
+                        List.of(examineMinorityInterestCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -200,8 +202,10 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(minorityInterestHandOffReason)),
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

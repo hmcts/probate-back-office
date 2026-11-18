@@ -49,8 +49,9 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false,
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason)),
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

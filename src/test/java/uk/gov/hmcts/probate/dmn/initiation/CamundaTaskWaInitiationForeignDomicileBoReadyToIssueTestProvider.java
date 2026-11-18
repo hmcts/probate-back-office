@@ -55,8 +55,9 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
-                                false),
-                        List.of(foreignDomicileTaskAttributes)
+                                false,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason)),
+                        List.of(foreignDomicileReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

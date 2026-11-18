@@ -72,8 +72,10 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -112,8 +114,10 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(trustCorporationHandOffReason)),
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

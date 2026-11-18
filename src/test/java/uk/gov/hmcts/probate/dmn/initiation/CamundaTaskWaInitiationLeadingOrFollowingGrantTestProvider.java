@@ -74,8 +74,10 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason),
+                            false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
@@ -206,8 +208,10 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     HANDLE_EVIDENCE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes)
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason),
+                            false,
+                            handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason)),
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,

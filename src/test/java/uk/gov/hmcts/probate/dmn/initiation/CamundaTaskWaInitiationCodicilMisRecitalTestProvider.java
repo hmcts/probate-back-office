@@ -70,8 +70,9 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason)),
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -207,8 +208,9 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false,
+                                handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason)),
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

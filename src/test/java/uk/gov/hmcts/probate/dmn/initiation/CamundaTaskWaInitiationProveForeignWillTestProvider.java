@@ -55,8 +55,10 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(proveForeignWillHandOffReason)),
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

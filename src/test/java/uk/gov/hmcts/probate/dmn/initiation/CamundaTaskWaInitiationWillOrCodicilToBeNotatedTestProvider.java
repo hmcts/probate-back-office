@@ -69,8 +69,10 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -206,8 +208,10 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         "handleEvidence",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason)),
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",

@@ -69,8 +69,10 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -206,8 +208,10 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason)),
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

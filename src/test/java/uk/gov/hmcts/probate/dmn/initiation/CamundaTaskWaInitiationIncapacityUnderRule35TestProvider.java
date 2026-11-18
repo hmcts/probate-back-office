@@ -56,8 +56,9 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,

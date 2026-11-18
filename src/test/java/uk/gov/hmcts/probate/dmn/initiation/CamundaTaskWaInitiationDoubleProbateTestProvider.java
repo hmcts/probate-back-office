@@ -73,8 +73,9 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
-                        List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason)),
+                        List.of(examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -198,8 +199,9 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
-                        List.of(examineDigitalCaseDoubleProbateCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason)),
+                        List.of(examineDigitalCaseDoubleProbateCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

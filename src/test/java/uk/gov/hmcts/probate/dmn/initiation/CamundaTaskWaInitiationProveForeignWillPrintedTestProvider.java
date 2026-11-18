@@ -48,8 +48,9 @@ public class CamundaTaskWaInitiationProveForeignWillPrintedTestProvider implemen
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(examineProveForeignWill),
-                                false),
-                        List.of(proveForeignWillTaskAttributes)
+                                false,
+                                handOffReasonListWithHandOffReason(examineProveForeignWill)),
+                        List.of(proveForeignWillHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

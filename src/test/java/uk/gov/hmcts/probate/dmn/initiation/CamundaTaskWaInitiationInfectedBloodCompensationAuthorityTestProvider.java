@@ -70,9 +70,10 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(
-                                        infectedBloodCompensationAuthorityHandOffReason), false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -223,8 +224,9 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
-                                false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                                false,
+                                handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                        List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,

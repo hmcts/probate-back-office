@@ -71,8 +71,10 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason)),
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -208,8 +210,10 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason)),
+                        List.of(examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

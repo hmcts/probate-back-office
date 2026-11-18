@@ -48,8 +48,9 @@ public class CamundaTaskWaInitiationFiatWillCasePrintedTestProvider implements A
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason),
-                                false),
-                        List.of(fiatWillTaskAttributes)
+                                false,
+                                handOffReasonListWithHandOffReason(fiatWillCasePrintedHandOffReason)),
+                        List.of(fiatWillHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
