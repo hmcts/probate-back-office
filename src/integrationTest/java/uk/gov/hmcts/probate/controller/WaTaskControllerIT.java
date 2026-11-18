@@ -144,7 +144,7 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
+        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueTasks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(
                                 CLIENT_CONTEXT_HEADER_PARAMETER,
@@ -180,13 +180,7 @@ public class WaTaskControllerIT {
     void shouldReturnBadRequestForInvalidPayload() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())
@@ -263,13 +257,7 @@ public class WaTaskControllerIT {
     void shouldReturnBadRequestForInvalidPayloadEvidenceHandled() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())

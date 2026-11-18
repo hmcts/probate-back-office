@@ -429,7 +429,6 @@ public class TaskAttributeConstants {
     public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
 
-    public static final String CLOSE_HANDOFFS = "closeHandOffs";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY = "reviewSpecificAccessRequestJudiciary";
     public static final String SPECIFIC_ACCESS_JUDICIARY = "specific-access-approver-judiciary";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS = "reviewSpecificAccessRequestLegalOps";
@@ -438,6 +437,18 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME =
+            "Review Specific Access Request - Judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME =
+            "Review Specific Access Request - Legal Ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME =
+            "Review Specific Access Request - Admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME =
+            "Review Specific Access Request - CTSC";
+    public static final String ACCESS_REQUESTS_WORK_TYPE = "access_requests";
+    public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE = "${roleAssignmentId}";
+    public static final String DESCRIPTION_SPECIFIC_ACCESS = "[Review Access Request](/role-access/${taskId}"
+            + "/assignment/${roleAssignmentId}/specific-access)";
 
     public static final String DEATH_RECORD_VERIFIED_EVENT = "deathRecordVerified";
     public static final String DEATH_RECORD_VERIFICATION_FAILED_EVENT = "deathRecordVerificationFailed";

@@ -5,14 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
-
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 
 @Slf4j
 @Component
@@ -34,51 +26,13 @@ public class HandleEvidence implements CreateTaskProcessor {
                         final CallbackRequest callbackRequest,
                         final ResponseCaseData responseCaseData,
                         final String clientContext) {
-        String caseType = callbackRequest.getCaseDetails().getData().getCaseType();
         log.info("Processing case id {} state {} with case type {}",
                 callbackRequest.getCaseDetails().getId(),
                 callbackRequest.getCaseDetails().getState(),
-                caseType);
-        switch (callbackRequest.getCaseDetails().getState()) {
-            case STATE_CASE_PRINTED: {
-                TaskTypes.getAwaitingDocIceTask(caseType).ifPresent(taskType -> {
-                    updateTaskCreation(callbackRequest, responseCaseData, taskType);
-                });
+                callbackRequest.getCaseDetails().getData().getCaseType());
 
-                break;
-            }
-            case STATE_BO_READY_TO_ISSUE: {
-                TaskTypes.getReadyToIssueIceTask(caseType).ifPresent(taskType -> {
-                    updateTaskCreation(callbackRequest, responseCaseData, taskType);
-                });
-
-                break;
-            }
-            case STATE_BO_CASE_WORKER_ESCALATION: {
-                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.EXAMINE_SME_REFERRAL);
-
-                break;
-            }
-            case STATE_BO_CASE_STOPPED: {
-                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
-
-                break;
-            }
-            case STATE_BO_REDEC_NOTIFICATION_SENT: {
-                updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
-
-                break;
-            }
-            default:
-                responseCaseData.setCreateTask(YES);
-        }
-    }
-
-    private void updateTaskCreation(final CallbackRequest callbackRequest,
-                                    final ResponseCaseData responseCaseData,
-                                    final TaskTypes taskType) {
-        waTaskService
-                .setCreateTask(callbackRequest, responseCaseData, taskType);
-
+        waTaskService.createTaskIfRequired(getEventId(),
+                callbackRequest,
+                responseCaseData);
     }
 }

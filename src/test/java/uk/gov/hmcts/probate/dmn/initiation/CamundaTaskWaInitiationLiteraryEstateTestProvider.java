@@ -37,7 +37,7 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
         Map<String,Object> examineLiteraryEstateCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE_CASE_PRINTED,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineLiteraryEstateCasePrintedHandOffsTaskAttributes = Map.of(
@@ -49,13 +49,13 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
         Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineLiteraryEstateCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_LITERARY_ESTATE_CHANGE_STATE,
                 "name", EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineLiteraryEstateReadyToIssueHandOffsTaskAttributes = Map.of(

@@ -5,15 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 @Component
 @RequiredArgsConstructor
@@ -41,35 +38,23 @@ public class AttachScannedDocs implements CreateTaskProcessor {
                     List<String> roles = userInfo.getRoles();
                     boolean shouldCreateTask = roles.contains(CASEWORKER_PROBATE_SYSTEM_UPDATE)
                             || roles.contains(IDAM_SERVICE_ACCOUNT);
-                    log.info("Processing attach scanned docs. Roles: {}, createTask: {}", roles, shouldCreateTask);
+                    log.info("Processing attach scanned docs for case id {}. Roles: {}, createTask: {}",
+                            callbackRequest.getCaseDetails().getId(),
+                            roles, shouldCreateTask);
                     return shouldCreateTask ? YES : NO;
                 })
                 .orElse(NO);
         log.info("Processing attach scanned docs set createTask : {} ", createTask);
-
+        responseCaseData.setCreateTask(createTask);
         if (createTask.equals(YES)) {
-            switch (callbackRequest.getCaseDetails().getState()) {
-                case STATE_BO_CASE_STOPPED: {
-                    updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_STOPPED_CASE);
-                    break;
-                }
-                case STATE_BO_REDEC_NOTIFICATION_SENT: {
-                    updateTaskCreation(callbackRequest, responseCaseData, TaskTypes.RESOLVE_REDECLARATION);
-                    break;
-                }
-                default:
-                    responseCaseData.setCreateTask(YES);
-            }
-        } else {
-            responseCaseData.setCreateTask(NO);
+            log.info("Processing case id {} state {} with case type {}",
+                    callbackRequest.getCaseDetails().getId(),
+                    callbackRequest.getCaseDetails().getState(),
+                    callbackRequest.getCaseDetails().getData().getCaseType());
+
+            waTaskService.createTaskIfRequired(getEventId(),
+                    callbackRequest,
+                    responseCaseData);
         }
-    }
-
-    private void updateTaskCreation(final CallbackRequest callbackRequest,
-                                    final ResponseCaseData responseCaseData,
-                                    final TaskTypes taskType) {
-        waTaskService
-                .setCreateTask(callbackRequest, responseCaseData, taskType);
-
     }
 }
