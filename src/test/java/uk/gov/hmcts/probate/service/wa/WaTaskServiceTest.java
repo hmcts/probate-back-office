@@ -49,6 +49,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
@@ -66,6 +67,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DE_BONIS_NON;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FIAT_WILL;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FOREIGN_DOMICILE;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -131,7 +133,7 @@ class WaTaskServiceTest {
                 .thenReturn(CaseData.builder()
                         .boHandoffReasonList(
                                 generateHandOffReasonCollection(
-                                        Set.of(HandoffReasonId.FOREIGN_DOMICILE))
+                                        Set.of(FOREIGN_DOMICILE))
                         ).build());
         TaskData task = new TaskData();
         task.setType("ExamineDeBonisNon");
@@ -198,7 +200,7 @@ class WaTaskServiceTest {
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
                         .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
-                                HandoffReasonId.FOREIGN_DOMICILE)))
+                                FOREIGN_DOMICILE)))
                         .build());
 
         Set<HandoffReason> result =
@@ -208,7 +210,7 @@ class WaTaskServiceTest {
                 .extracting("caseHandoffReason")
                 .containsExactlyInAnyOrder(
                         DOUBLE_PROBATE,
-                        HandoffReasonId.FOREIGN_DOMICILE);
+                        FOREIGN_DOMICILE);
     }
 
     @Test
@@ -241,7 +243,7 @@ class WaTaskServiceTest {
                                 generateHandOffReasonCollection(
                                         Set.of(DOUBLE_PROBATE,
                                                 HandoffReasonId.LEADING_FOLLOWING_GRANTS,
-                                                HandoffReasonId.FOREIGN_DOMICILE))
+                                                FOREIGN_DOMICILE))
                         ).build());
 
         BiPredicate<CallbackRequest, String> predicate =
@@ -844,5 +846,61 @@ class WaTaskServiceTest {
                         CLOSE_ICE_AD_COLLIGENDA_BONA
                 )
         );
+    }
+
+    @Test
+    void shouldCreateExamineIceTask() {
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(NO)
+                .build();
+
+
+        waTaskService.createExamineTasks(
+                callbackRequest,
+                responseCaseData,
+                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType()),
+                waTaskService.casePrintedTask
+        );
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+    }
+
+    @Test
+    void shouldCreateExamineHandOffTask() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+
+        waTaskService.createExamineTasks(
+                callbackRequest,
+                responseCaseData,
+                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType()),
+                waTaskService.casePrintedTask
+        );
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(DOUBLE_PROBATE,
+                        FOREIGN_DOMICILE);
     }
 }
