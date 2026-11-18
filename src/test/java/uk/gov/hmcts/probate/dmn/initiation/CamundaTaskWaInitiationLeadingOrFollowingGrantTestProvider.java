@@ -38,7 +38,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes
@@ -52,14 +52,14 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes
