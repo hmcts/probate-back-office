@@ -20,7 +20,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_AWAIT_REDEC_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_SOT_GENERATED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDECLARATION_SOT_FOR_CASE_STOPPED_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 
 public class CamundaTaskWaInitiationRedeclarationTestProvider implements ArgumentsProvider {
@@ -133,7 +133,7 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
@@ -147,42 +147,42 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_AWAIT_REDEC_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_SOT_GENERATED_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
@@ -196,28 +196,28 @@ public class CamundaTaskWaInitiationRedeclarationTestProvider implements Argumen
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_SOT_GENERATED_STATE,
                         additionalData(false, GOP_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_SOT_GENERATED_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_SOT_GENERATED_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE,true,
                                 Collections.emptyList(), false),
                         List.of(redeclarationTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_SOT_GENERATED_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE,true,
                                 Collections.emptyList(), false),
