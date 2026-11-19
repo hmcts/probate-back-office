@@ -24,8 +24,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
-import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -182,8 +180,7 @@ public class EvidenceUploadService {
     }
 
     private boolean isWillDocument(ScannedDocument doc) {
-        return DOC_TYPE_WILL.equalsIgnoreCase(doc.getType())
-            || (DOC_TYPE_OTHER.equalsIgnoreCase(doc.getType()) && DOC_SUBTYPE_WILL.equalsIgnoreCase(doc.getSubtype()));
+        return DOC_TYPE_WILL.equalsIgnoreCase(doc.getType());
     }
 
     public List<CollectionMember<ScannedDocument>> defaultScannedFinalWillIndicator(
