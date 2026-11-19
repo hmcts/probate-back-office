@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -43,6 +45,8 @@ class ExceptionRecordCaseDataValidatorTest {
             "Invalid scanned Document Type Error for case type 'GRANT_OF_REPRESENTATION': [invalid]";
     private static final String INVALID_SCAN_DOC_CAVEAT =
             "Invalid scanned Document Type Error for case type 'CAVEAT': [will, invalid]";
+    private static final String INVALID_EMAIL_ADDRESS =
+            "Primary applicant email address (primaryApplicantEmailAddress) does not appear to be a valid email address";
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
 
@@ -227,4 +231,36 @@ class ExceptionRecordCaseDataValidatorTest {
         assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
 
+    @Test
+    void shouldThrowErrorsForInvalidEmailAddresses() {
+        GrantOfRepresentationData caseData = GrantOfRepresentationData
+                .builder()
+                .primaryApplicantEmailAddress("a@a")
+                .build();
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
+        MatcherAssert.assertThat(exception.getWarnings(), CoreMatchers.hasItems(INVALID_EMAIL_ADDRESS));
+    }
+
+    @Test
+    void shouldThrowErrorsForMixtureOfInvalidAndValidEmailAddresses() {
+        GrantOfRepresentationData caseData = GrantOfRepresentationData
+                .builder()
+                .primaryApplicantEmailAddress("valid@example.com")
+                .solsSolicitorEmail("invalid@example.c")
+                .build();
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
+        MatcherAssert.assertThat(exception.getWarnings(), CoreMatchers.hasItems("Solicitor email address "
+                + "(solsSolicitorEmail) does not appear to be a valid email address"));
+    }
+
+    @Test
+    void shouldDoNothingForValidEmailAddresses() {
+        GrantOfRepresentationData caseData = GrantOfRepresentationData
+                .builder()
+                .primaryApplicantEmailAddress("email@example.com")
+                .build();
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
+    }
 }

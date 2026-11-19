@@ -55,7 +55,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
         String formattedEmail = formatEmailAddress(emailAddress);
 
         if ("NULL".equals(formattedEmail) || !isEmailValid(formattedEmail)) {
-            log.info("Notification not send to due invalid email address: {}", getHashedEmail(emailAddress));
+            log.info("Invalid email address: {}", getHashedEmail(emailAddress));
             return false;
         }
 
