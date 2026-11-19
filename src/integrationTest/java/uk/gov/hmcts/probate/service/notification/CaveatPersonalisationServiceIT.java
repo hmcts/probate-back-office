@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -64,8 +63,9 @@ class CaveatPersonalisationServiceIT {
     private SendEmailResponse sendEmailResponse;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
+    @Autowired
     private DateFormatterService dateFormatterService;
+
     private CaseDetails caseDetails;
     private CaveatDetails caveatDetails;
     private CaveatDetails caveatDetailsDobNull;
@@ -159,9 +159,6 @@ class CaveatPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
             .build();
         solsCaveatDetails = new CaveatDetails(solsCaveatData, LAST_MODIFIED, ID);
-
-        when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
-
     }
 
     @Test
@@ -238,6 +235,5 @@ class CaveatPersonalisationServiceIT {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("SotName", response.get(PERSONALISATION_APPLICANT_NAME));
     }
-
 
 }

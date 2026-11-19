@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -13,84 +13,93 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class SolicitorPaymentMethodValidationRuleTest {
+
+    private static final String ERROR_MESSAGE =
+            "The solicitor payment method selected is not 'fee account'";
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    @Mock
-    private CaseDetails caseDetailsMock;
-    @Mock
-    private CaseData caseDataMock;
-    @Mock
-    private CaveatDetails caveatDetailsMock;
-    @Mock
-    private CaveatData caveatDataMock;
-
-
     private SolicitorPaymentMethodValidationRule underTest;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         underTest = new SolicitorPaymentMethodValidationRule(businessValidationMessageRetriever);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
-        when(caveatDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
-        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
-            .thenReturn("The solicitor payment method selected is not 'fee account'");
     }
 
     @Test
     void shouldThrowExceptionForChequePaymentMethodChosen() {
-        assertThrows(BusinessValidationException.class, () -> {
-            when(caseDataMock.getSolsPaymentMethods()).thenReturn("cheque");
+        CaseDetails caseDetails = createCaseDetails("cheque");
 
-            underTest.validate(caseDetailsMock);
-        });
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn(ERROR_MESSAGE);
+
+        assertThrows(BusinessValidationException.class, () -> underTest.validate(caseDetails));
     }
 
-    @Test()
-    public void shouldNotThrowExceptionForFeeAccountPaymentMethodChosen() {
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn("fee account");
-        underTest.validate(caseDetailsMock);
+    @Test
+    void shouldNotThrowExceptionForFeeAccountPaymentMethodChosen() {
+        CaseDetails caseDetails = createCaseDetails("fee account");
+
+        assertDoesNotThrow(() -> underTest.validate(caseDetails));
 
         verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
     }
 
     @Test
     void shouldThrowExceptionForChequePaymentMethodChosenCaveat() {
-        assertThrows(BusinessValidationException.class, () -> {
-            when(caveatDataMock.getSolsPaymentMethods()).thenReturn("cheque");
+        CaveatDetails caveatDetails = createCaveatDetails(ApplicationType.SOLICITOR, "cheque");
 
-            underTest.validate(caveatDetailsMock);
-        });
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn(ERROR_MESSAGE);
+
+        assertThrows(BusinessValidationException.class, () -> underTest.validate(caveatDetails));
     }
 
-    @Test()
-    public void shouldNotThrowExceptionForFeeAccountPaymentMethodChosenCaveat() {
-        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
-        underTest.validate(caveatDetailsMock);
+    @Test
+    void shouldNotThrowExceptionForFeeAccountPaymentMethodChosenCaveat() {
+        CaveatDetails caveatDetails = createCaveatDetails(ApplicationType.SOLICITOR, "fee account");
+
+        assertDoesNotThrow(() -> underTest.validate(caveatDetails));
 
         verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
     }
 
-    @Test()
-    public void shouldNotThrowExceptionForNotSolicitor() {
-        when(caveatDataMock.getApplicationType()).thenReturn(PERSONAL);
-        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
-        underTest.validate(caveatDetailsMock);
+    @Test
+    void shouldNotThrowExceptionForNotSolicitor() {
+        CaveatDetails caveatDetails = createCaveatDetails(ApplicationType.PERSONAL, "fee account");
+
+        assertDoesNotThrow(() -> underTest.validate(caveatDetails));
 
         verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
     }
 
+    private CaseDetails createCaseDetails(
+            String paymentMethod) {
+
+        CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .solsPaymentMethods(paymentMethod)
+                .build();
+
+        return new CaseDetails(caseData, null, 1L);
+    }
+
+    private CaveatDetails createCaveatDetails(
+            ApplicationType applicationType, String paymentMethod) {
+
+        CaveatData caveatData = CaveatData.builder()
+                .applicationType(applicationType)
+                .solsPaymentMethods(paymentMethod)
+                .build();
+
+        return new CaveatDetails(caveatData, null, 1L);
+    }
 }
