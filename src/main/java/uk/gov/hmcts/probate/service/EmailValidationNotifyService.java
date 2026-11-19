@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.net.IDN;
 import java.util.Locale;
@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class EmailValidationNotifyService extends EmailValidationService {
 
@@ -47,14 +47,14 @@ public class EmailValidationNotifyService extends EmailValidationService {
     );
 
     private static final Pattern SURROUNDING_WHITESPACE = Pattern.compile(
-            "^[\\p{javaWhitespace}\\p{Z}\\x{85}]+"
-                    + "|[\\p{javaWhitespace}\\p{Z}\\x{85}]+$"
+            "^[\\p{javaWhitespace}\\p{Z}\\x{85}]+|[\\p{javaWhitespace}\\p{Z}\\x{85}]+$"
     );
 
+    @Override
     public boolean validateEmailAddress(String emailAddress) {
         String formattedEmail = formatEmailAddress(emailAddress);
 
-        if ("NULL".equals(formattedEmail) || !isEmailValid(formattedEmail)) {
+        if ("NULL".equals(formattedEmail) || !isValid(formattedEmail)) {
             log.info("Invalid email address: {}", getHashedEmail(emailAddress));
             return false;
         }
@@ -62,7 +62,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
         return true;
     }
 
-    private boolean isEmailValid(String emailAddress) {
+    private boolean isValid(String emailAddress) {
         if (emailAddress.codePointCount(0, emailAddress.length()) > MAX_EMAIL_LENGTH) {
             log.info("email address is greater than " + MAX_EMAIL_LENGTH);
             return false;
