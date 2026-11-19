@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
@@ -162,35 +162,35 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
@@ -233,28 +233,28 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
@@ -337,35 +337,35 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ), //change state event
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
