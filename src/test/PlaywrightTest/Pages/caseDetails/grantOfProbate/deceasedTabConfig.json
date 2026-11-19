@@ -13,8 +13,7 @@
       "Town or City",
       "County",
       "Postcode/Zipcode",
-      "Country",
-      "Alias name"
+      "Country"
     ],
     "dataKeys": [
       "page4_bo_deceasedTitle",
@@ -24,7 +23,6 @@
       "page4_deceasedDob_long",
       "page4_deceasedDod_long",
       "page4_dateOfDeathType",
-      "page4_deceasedAlias",
       "page8_deceasedDomicileInEngWales",
       "address_line1",
       "address_line2",
