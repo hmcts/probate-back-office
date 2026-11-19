@@ -288,8 +288,10 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         ATTACH_SCANNED_DOCS_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), true),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(foreignDomicileHandOffReason)),
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
