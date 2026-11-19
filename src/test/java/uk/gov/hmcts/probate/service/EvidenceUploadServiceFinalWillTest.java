@@ -116,7 +116,7 @@ class EvidenceUploadServiceFinalWillTest {
                 .boDocumentsUploaded(List.of(uploaded("1", "Yes")))
                 .scannedDocuments(List.of(
                         scanned("2", "will", null, "No"),
-                        scanned("3", "other", "will", "Yes"),
+                        scanned("3", "will", "will", "Yes"),
                         scanned("4", "other", "not a will", "No")))
                 .build();
         assertEquals(3, service.countWillDocuments(caseData));
@@ -136,7 +136,7 @@ class EvidenceUploadServiceFinalWillTest {
     void scannedMissingValueDefaultsToNoWithoutOverwritingExistingYes() {
         var result = service.defaultScannedFinalWillIndicator(List.of(
                 scanned("1", "will", null, "Yes"),
-                scanned("2", "other", "will", " "),
+                scanned("2", "will", "copy will", " "),
                 scanned("3", "other", "not a will", null)), false);
         assertEquals("Yes", result.get(0).getValue().getFinalWill());
         assertEquals("No", result.get(1).getValue().getFinalWill());
