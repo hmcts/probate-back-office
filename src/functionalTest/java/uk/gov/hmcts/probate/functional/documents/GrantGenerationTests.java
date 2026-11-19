@@ -100,14 +100,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         + " of the estate in the United Kingdom amounts to £10,000 and the net value amounts to £8,000";
 
     private static final String REGISTRY_ADDRESS =
-        "High Court of Justice England and WalesBirmingham District Probate Registry The Priory Courts33 Bull "
-            + "StreetBirminghamB4 6DU0300 303 0648";
+        "High Court of Justice England and WalesLeeds District Probate Registry York HouseYork PlaceLeedsLS1"
+            + " 2BA0300 303 0648";
     private static final String REGISTRY_ADDRESS_HARLOW =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
             + "HarlowCM20 9QE";
-    private static final String LONDON_REGISTRY_ADDRESS =
-        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
-            + " HolbornLondonWC1V 6NP0300 303 0648 ";
+    private static final String NEWCASTLE_REGISTRY_ADDRESS =
+        "High Court of Justice England and WalesNewcastle District Probate Registry 2nd FloorKings CourtEarl Grey"
+            + " WayNorth ShieldsNE29 6AR0300 303 0648";
     private static final String CTSC_REGISTRY_ADDRESS =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box "
             + "12625HarlowCM20 9QE0300 303 0648";
@@ -1495,7 +1495,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
+        assertTrue(response.contains(NEWCASTLE_REGISTRY_ADDRESS));
     }
 
     @Test
@@ -1514,7 +1514,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
+        assertTrue(response.contains(NEWCASTLE_REGISTRY_ADDRESS));
     }
 
     @Test
