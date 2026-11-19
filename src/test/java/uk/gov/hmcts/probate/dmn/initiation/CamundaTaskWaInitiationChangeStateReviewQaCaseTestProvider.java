@@ -16,7 +16,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_QA_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.GOP_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_CASE_TYPE;
@@ -61,89 +61,89 @@ public class CamundaTaskWaInitiationChangeStateReviewQaCaseTestProvider implemen
 
         return Stream.of(
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, GOP_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseProbateTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, GOP_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseProbateTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, GOP_CASE_TYPE, true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(reviewQaCaseProbateTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, GOP_CASE_TYPE, false, Collections.emptyList(), true),
                         List.of(reviewQaCaseProbateTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseAdmonTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, ADMON_WILL_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseAdmonTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(reviewQaCaseAdmonTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseIntestacyTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, INTESTACY_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseIntestacyTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE, true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(reviewQaCaseIntestacyTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseAdColligendaBonaTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(true, AD_COLLIGENDA_BONA_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(reviewQaCaseAdColligendaBonaTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
                         List.of(reviewQaCaseAdColligendaBonaTask)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_QA_STATE,
                         additionalData(false, "", false, Collections.emptyList(), false),
                         emptyList()
