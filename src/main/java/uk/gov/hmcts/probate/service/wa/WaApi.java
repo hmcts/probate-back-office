@@ -19,8 +19,8 @@ public interface WaApi {
     @Operation(
             description = "Retrieve tasks by case id",
             security = {
-                    @SecurityRequirement(name = SERVICE_AUTHORIZATION),
-                    @SecurityRequirement(name = AUTHORIZATION)
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION),
+                @SecurityRequirement(name = AUTHORIZATION)
             }
     )
     @GetMapping(path = "/task/searchByCaseId")
