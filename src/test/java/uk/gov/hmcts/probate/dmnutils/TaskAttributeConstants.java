@@ -24,6 +24,9 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_DATE_ORIGIN_REF = "priorityDateOriginRef";
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID = "additionalProperties_roleAssignmentId";
     public static final String REGISTRY_LOCATION = "registryLocation";
+    public static final String TASK_LOCATION_EPIMMS_ID = "taskLocationEpimmsId";
+    public static final String TASK_LOCATION_NAME = "taskLocationName";
+    public static final String TASK_REGION = "taskRegion";
     public static final String DECEASED_FORENAMES = "deceasedForenames";
     public static final String DECEASED_SURNAME = "deceasedSurname";
     public static final String CASE_TYPE = "caseType";
@@ -172,7 +175,7 @@ public class TaskAttributeConstants {
     public static final String CASE_TYPE_VALUE = "someCaseType";
     public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
     public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
-    public static final String REGISTRY_LOCATION_VALUE = "someRegistryLocation";
+    public static final String REGISTRY_LOCATION_VALUE = "Oxford";
     public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
     public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
@@ -362,7 +365,8 @@ public class TaskAttributeConstants {
     public static final String APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT = "applyforGrantPaperApplicationMan";
     public static final String ATTACH_SCANNED_DOCS_EVENT = "attachScannedDocs";
     public static final String BO_RESOLVE_STOP_EVENT = "boResolveStop";
-    public static final String CHANGE_STATE_EVENT = "changeState";
+    public static final String CREATE_CHANGE_STATE_EVENT = "createChangeState";
+    public static final String CANCEL_CHANGE_STATE_EVENT = "cancelChangeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
     public static final String BO_FAIL_QA_EVENT = "boFailQA";
@@ -428,6 +432,9 @@ public class TaskAttributeConstants {
     public static final String BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS = "boStopCaseForRegistrarEscalations";
     public static final String BO_STOP_CASE_FOR_CASE_PRINTED = "boStopCaseForCasePrinted";
     public static final String RESOLVE_STOPPED_CASE_WORK_TYPE = "stopped_applications";
+    public static final String REGION_NATIONAL_VALUE = "12";
+    public static final String LOCATION_VALUE = "371016";
+    public static final String LOCATION_NAME_VALUE = "Oxford";
 
     public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY = "reviewSpecificAccessRequestJudiciary";
@@ -438,4 +445,16 @@ public class TaskAttributeConstants {
     public static final String SPECIFIC_ACCESS_ADMIN = "specific-access-approver-admin";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC = "reviewSpecificAccessRequestCTSC";
     public static final String SPECIFIC_ACCESS_CTSC = "specific-access-approver-ctsc";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME =
+            "Review Specific Access Request - Judiciary";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME =
+            "Review Specific Access Request - Legal Ops";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME =
+            "Review Specific Access Request - Admin";
+    public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME =
+            "Review Specific Access Request - CTSC";
+    public static final String ACCESS_REQUESTS_WORK_TYPE = "access_requests";
+    public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID_VALUE = "${roleAssignmentId}";
+    public static final String DESCRIPTION_SPECIFIC_ACCESS = "[Review Access Request](/role-access/${taskId}"
+            + "/assignment/${roleAssignmentId}/specific-access)";
 }
