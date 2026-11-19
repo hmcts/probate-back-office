@@ -48,7 +48,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
     );
 
     private static final Pattern SURROUNDING_WHITESPACE = Pattern.compile(
-            "^([\\p{javaWhitespace}\\p{Z}\\x{85}]+)|([\\p{javaWhitespace}\\p{Z}\\x{85}]+)$"
+            "(^[\\p{javaWhitespace}\\p{Z}\\x{85}]+)|([\\p{javaWhitespace}\\p{Z}\\x{85}]+$)"
     );
 
     @Override
