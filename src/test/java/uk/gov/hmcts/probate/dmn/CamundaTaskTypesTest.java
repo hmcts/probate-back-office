@@ -125,6 +125,14 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGIST
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -160,40 +168,40 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_DE_BONIS_NON
                 ),
                 Map.of(
-                    "taskTypeName", FIAT_WILL_TASK_TYPE_NAME,
-                    "taskTypeId", EXAMINE_FIAT_WILL
+                        "taskTypeName", FIAT_WILL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_FIAT_WILL
                 ),
                 Map.of(
-                    "taskTypeName", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                    "taskTypeId", EXAMINE_IBCA
+                        "taskTypeName", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_IBCA
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Windrush Scheme",
-                    "taskTypeId", EXAMINE_WINDRUSH_SCHEME
+                        "taskTypeName", "Examine - Windrush Scheme",
+                        "taskTypeId", EXAMINE_WINDRUSH_SCHEME
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Will or Codicil to be Notated",
-                    "taskTypeId", EXAMINE_WILL_CODICIL_NOTATED
+                        "taskTypeName", "Examine - Will or Codicil to be Notated",
+                        "taskTypeId", EXAMINE_WILL_CODICIL_NOTATED
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Witness Interview",
-                    "taskTypeId", EXAMINE_WITNESS_INTERVIEW
+                        "taskTypeName", "Examine - Witness Interview",
+                        "taskTypeId", EXAMINE_WITNESS_INTERVIEW
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Horizon Scheme",
-                    "taskTypeId", EXAMINE_HORIZON_SCHEME
+                        "taskTypeName", "Examine - Horizon Scheme",
+                        "taskTypeId", EXAMINE_HORIZON_SCHEME
                 ),
                 Map.of(
                         "taskTypeName", "Examine Digital Case - Ad Colligenda Bona",
                         "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA
                 ),
                 Map.of(
-                    "taskTypeName", "Examine Digital Case - Intestacy",
-                    "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                        "taskTypeName", "Examine Digital Case - Intestacy",
+                        "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
                 ),
                 Map.of(
-                    "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                    "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                        "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
@@ -208,20 +216,20 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_LEADING_FOLLOWING_GRANTS
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Section 116",
-                    "taskTypeId", EXAMINE_SECTION_116
+                        "taskTypeName", "Examine - Section 116",
+                        "taskTypeId", EXAMINE_SECTION_116
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Power of Attorney (POA)",
-                    "taskTypeId", EXAMINE_POA
+                        "taskTypeName", "Examine - Power of Attorney (POA)",
+                        "taskTypeId", EXAMINE_POA
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Reseal Foreign Grant",
-                    "taskTypeId", EXAMINE_RESEAL_FOREIGN_GRANT
+                        "taskTypeName", "Examine - Reseal Foreign Grant",
+                        "taskTypeId", EXAMINE_RESEAL_FOREIGN_GRANT
                 ),
                 Map.of(
-                    "taskTypeName", "Examine - Infected Blood Interim Scheme",
-                    "taskTypeId", EXAMINE_IBIS
+                        "taskTypeName", "Examine - Infected Blood Interim Scheme",
+                        "taskTypeId", EXAMINE_IBIS
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
@@ -344,8 +352,8 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_TRUST_CORPORATION
                 ),
                 Map.of(
-                    "taskTypeName", REVIEW_SME_REFERRAL_TASK_TYPE_NAME,
-                    "taskTypeId", REVIEW_SME_REFERRAL
+                        "taskTypeName", REVIEW_SME_REFERRAL_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_SME_REFERRAL
                 ),
                 Map.of(
                         "taskTypeName", RESOLVE_REGISTRAR_ESCALATION_REFERRALS_TASK_TYPE_NAME,
@@ -360,8 +368,8 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_FOREIGN_WILL_CASE_PRINTED
                 ),
                 Map.of(
-                    "taskTypeName", EXAMINE_SME_REFERRAL_TASK_TYPE_NAME,
-                    "taskTypeId", EXAMINE_SME_REFERRAL
+                        "taskTypeName", EXAMINE_SME_REFERRAL_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_SME_REFERRAL
                 ),
                 Map.of(
                         "taskTypeName", REVIEW_REGISTRAR_DECISION_TASK_TYPE_NAME,
@@ -394,8 +402,23 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", RESOLVE_REDECLARATION_TASK_TYPE_NAME,
                         "taskTypeId", RESOLVE_REDECLARATION
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_SPECIFIC_ACCESS_REQUEST_ADMIN
+                ),
+                Map.of(
+                        "taskTypeName", REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC_TASK_TYPE_NAME,
+                        "taskTypeId", REVIEW_SPECIFIC_ACCESS_REQUEST_CTSC
                 )
-
         );
         return Stream.of(
                 Arguments.of(
@@ -410,7 +433,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(65));
+        assertThat(logic.getRules().size(), is(69));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
