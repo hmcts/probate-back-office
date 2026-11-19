@@ -38,7 +38,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
     );
 
     private static final Pattern TLD_PART_PATTERN = Pattern.compile(
-            "^([a-z]{2,63}|xn--([a-z0-9]+-)*[a-z0-9]+)$",
+            "^([a-z]{2,63}|xn--([a-z0-9]+-){0,58}[a-z0-9]?)$",
             Pattern.CASE_INSENSITIVE
     );
 
