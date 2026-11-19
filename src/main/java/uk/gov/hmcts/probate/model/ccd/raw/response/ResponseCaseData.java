@@ -434,4 +434,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String resolveStoppedCaseUserIdamId;
     private String resolveRedeclarationUserIdamId;
     private List<CollectionMember<HandoffReason>> waHandoffReasonList;
+    private String taskLocationEpimmsId;
+    private String taskLocationName;
+    private String taskRegion;
 }
