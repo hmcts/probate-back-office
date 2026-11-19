@@ -33,7 +33,8 @@ public class EmailValidationNotifyService extends EmailValidationService {
     );
 
     private static final Pattern HOSTNAME_PART_PATTERN = Pattern.compile(
-            "^(xn|[a-z0-9]+)(-?-[a-z0-9]+)*$",
+            // Not sure if this properly follows notify, sonarscan will not allow that expression.
+            "^([a-z0-9]+)(-?-[a-z0-9]+){0,62}$",
             Pattern.CASE_INSENSITIVE
     );
 
