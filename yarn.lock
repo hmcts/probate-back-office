@@ -864,7 +864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.64.1":
+"@playwright/test@npm:^1.65.1":
   version: 1.65.1
   resolution: "@playwright/test@npm:1.65.1"
   dependencies:
@@ -1659,7 +1659,7 @@ __metadata:
     "@axe-core/playwright": "npm:^4.14.0"
     "@date-fns/upgrade": "npm:^1.0.3"
     "@hmcts/playwright-common": "npm:^1.1.7"
-    "@playwright/test": "npm:^1.64.1"
+    "@playwright/test": "npm:^1.65.1"
     "@types/node": "npm:^24.19.2"
     axios: "npm:^1.21.0"
     chai: "npm:^4.5.0"
