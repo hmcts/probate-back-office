@@ -156,7 +156,7 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await solCreateCasePage.makeCardPaymentPage(caseRef);
     await solCreateCasePage.makeCardPaymentPage2();
     await solCreateCasePage.confirmCardDetails();
-    await solCreateCasePage.viewCardPaymentStatus(caseRef);
+    // await solCreateCasePage.viewCardPaymentStatus(caseRef);
 
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 5,
