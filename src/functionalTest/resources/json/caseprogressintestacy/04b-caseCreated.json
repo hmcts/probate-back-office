@@ -82,7 +82,7 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
-      "solsAdditionalExecutorList": [
+      "solsIntestacyExecutorList": [
         {
           "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
           "value": {
@@ -99,28 +99,157 @@
             "additionalExecLastname": "exln1",
             "additionalExecForenames": "exfn1",
             "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "Alias name exfn1"
+            "additionalExecAliasNameOnWill": "Alias name exfn1",
+            "solsApplicantFamilyDetails": {
+              "relationship": {
+                "value": {
+                  "code": "wholeBloodSibling",
+                  "label": "They are the deceased’s whole blood sibling"
+                },
+                "list_items": [
+                  {
+                    "code": "wholeBloodSibling",
+                    "label": "They are the deceased’s whole blood sibling"
+                  },
+                  {
+                    "code": "wholeBloodNieceOrNephew",
+                    "label": "They are the deceased’s whole blood niece or nephew"
+                  }
+                ]
+              },
+              "coApplicantAdoptedIn": "Yes",
+              "coApplicantAdoptedOut": null,
+              "grandchildParentAdoptedIn": null,
+              "grandchildParentAdoptedOut": null,
+              "coApplicantAdoptedDeceasedIn": null,
+              "coApplicantAdoptedDeceasedOut": null,
+              "applicantRelationshipToDeceased": null,
+              "halfNieceOrNephewParentAdoptedIn": null,
+              "grandchildParentDieBeforeDeceased": null,
+              "halfNieceOrNephewParentAdoptedOut": null,
+              "wholeNieceOrNephewParentAdoptedIn": null,
+              "wholeNieceOrNephewParentAdoptedOut": null,
+              "coApplicantAdoptionInEnglandOrWales": "Yes",
+              "grandchildParentAdoptionInEnglandOrWales": null,
+              "halfNieceOrNephewParentDieBeforeDeceased": null,
+              "wholeNieceOrNephewParentDieBeforeDeceased": null,
+              "coApplicantAdoptionDeceasedInEnglandOrWales": null,
+              "halfNieceOrNephewParentAdoptionInEnglandOrWales": null,
+              "wholeNieceOrNephewParentAdoptionInEnglandOrWales": null
+            }
           }
         },
         {
           "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
           "value": {
+            "additionalExecAddress": {
+              "County": "",
+              "Country": "United Kingdom",
+              "PostCode": "SW11 1PD",
+              "PostTown": "London",
+              "AddressLine1": "1 Rse Way",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            },
             "additionalApplying": "No",
             "additionalExecLastname": "exln2",
             "additionalExecForenames": "exfn2",
             "additionalExecNameOnWill": "Yes",
             "additionalExecAliasNameOnWill": "alias name",
-            "additionalExecReasonNotApplying": "DiedBefore"
+            "additionalExecReasonNotApplying": "DiedBefore",
+            "solsApplicantFamilyDetails": {
+              "relationship": {
+                "value": {
+                  "code": "wholeBloodSibling",
+                  "label": "They are the deceased’s whole blood sibling"
+                },
+                "list_items": [
+                  {
+                    "code": "wholeBloodSibling",
+                    "label": "They are the deceased’s whole blood sibling"
+                  },
+                  {
+                    "code": "wholeBloodNieceOrNephew",
+                    "label": "They are the deceased’s whole blood niece or nephew"
+                  }
+                ]
+              },
+              "coApplicantAdoptedIn": "Yes",
+              "coApplicantAdoptedOut": null,
+              "grandchildParentAdoptedIn": null,
+              "grandchildParentAdoptedOut": null,
+              "coApplicantAdoptedDeceasedIn": null,
+              "coApplicantAdoptedDeceasedOut": null,
+              "applicantRelationshipToDeceased": null,
+              "halfNieceOrNephewParentAdoptedIn": null,
+              "grandchildParentDieBeforeDeceased": null,
+              "halfNieceOrNephewParentAdoptedOut": null,
+              "wholeNieceOrNephewParentAdoptedIn": null,
+              "wholeNieceOrNephewParentAdoptedOut": null,
+              "coApplicantAdoptionInEnglandOrWales": "Yes",
+              "grandchildParentAdoptionInEnglandOrWales": null,
+              "halfNieceOrNephewParentDieBeforeDeceased": null,
+              "wholeNieceOrNephewParentDieBeforeDeceased": null,
+              "coApplicantAdoptionDeceasedInEnglandOrWales": null,
+              "halfNieceOrNephewParentAdoptionInEnglandOrWales": null,
+              "wholeNieceOrNephewParentAdoptionInEnglandOrWales": null
+            }
           }
         },
         {
           "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
           "value": {
+            "additionalExecAddress": {
+              "County": "",
+              "Country": "United Kingdom",
+              "PostCode": "SW11 1PD",
+              "PostTown": "London",
+              "AddressLine1": "1 Rse Way",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            },
             "additionalApplying": "Yes",
             "additionalExecLastname": "ex3ln",
             "additionalExecForenames": "ex3fn",
             "additionalExecNameOnWill": "No",
             "additionalExecReasonNotApplying": "DiedBefore",
+            "solsApplicantFamilyDetails": {
+              "relationship": {
+                "value": {
+                  "code": "wholeBloodSibling",
+                  "label": "They are the deceased’s whole blood sibling"
+                },
+                "list_items": [
+                  {
+                    "code": "wholeBloodSibling",
+                    "label": "They are the deceased’s whole blood sibling"
+                  },
+                  {
+                    "code": "wholeBloodNieceOrNephew",
+                    "label": "They are the deceased’s whole blood niece or nephew"
+                  }
+                ]
+              },
+              "coApplicantAdoptedIn": "Yes",
+              "coApplicantAdoptedOut": null,
+              "grandchildParentAdoptedIn": null,
+              "grandchildParentAdoptedOut": null,
+              "coApplicantAdoptedDeceasedIn": null,
+              "coApplicantAdoptedDeceasedOut": null,
+              "applicantRelationshipToDeceased": null,
+              "halfNieceOrNephewParentAdoptedIn": null,
+              "grandchildParentDieBeforeDeceased": null,
+              "halfNieceOrNephewParentAdoptedOut": null,
+              "wholeNieceOrNephewParentAdoptedIn": null,
+              "wholeNieceOrNephewParentAdoptedOut": null,
+              "coApplicantAdoptionInEnglandOrWales": "Yes",
+              "grandchildParentAdoptionInEnglandOrWales": null,
+              "halfNieceOrNephewParentDieBeforeDeceased": null,
+              "wholeNieceOrNephewParentDieBeforeDeceased": null,
+              "coApplicantAdoptionDeceasedInEnglandOrWales": null,
+              "halfNieceOrNephewParentAdoptionInEnglandOrWales": null,
+              "wholeNieceOrNephewParentAdoptionInEnglandOrWales": null
+            },
             "additionalExecAddress": {
               "County": null,
               "Country": null,

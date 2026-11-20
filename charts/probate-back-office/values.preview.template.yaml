@@ -98,8 +98,8 @@ ccd:
         maxReplicas: 2
       devcpuRequests: 100m
       devcpuLimits: 600m
-      devmemoryRequests: 1Gi
-      devmemoryLimits: 2Gi
+      devmemoryRequests: 1.5Gi
+      devmemoryLimits: 3Gi
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
@@ -147,8 +147,8 @@ ccd:
         ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD}
       devcpuRequests: 250m
       devcpuLimits: 1000m
-      devmemoryRequests: 1Gi
-      devmemoryLimits: 2Gi
+      devmemoryRequests: 1.5Gi
+      devmemoryLimits: 3Gi
   ccd-definition-store-api:
     java:
       autoscaling:
@@ -179,8 +179,8 @@ ccd:
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
       devcpuRequests: 250m
       devcpuLimits: 512m
-      devmemoryRequests: 800Mi
-      devmemoryLimits: 1.2G
+      devmemoryRequests: 1000Mi
+      devmemoryLimits: 1.5G
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -213,10 +213,10 @@ ccd:
         value: hmcts
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
-    devcpuRequests: 500m
-    devcpuLimits: 700m
-    devmemoryRequests: 1.1G
-    devmemoryLimits: 1.5G
+    devcpuRequests: 400m
+    devcpuLimits: 800m
+    devmemoryRequests: 1G
+    devmemoryLimits: 2G
     extraInitContainers: |
         - name: download-postgres-jdbc
           image: hmctsprod.azurecr.io/curl:7.70.0
@@ -389,8 +389,8 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
-    devcpuRequests: 40m
-    devcpuLimits: 400m
+    devcpuRequests: 60m
+    devcpuLimits: 600m
     devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
     devmemoryLimits: 2000Mi
     environment:
@@ -420,7 +420,6 @@ xui-webapp:
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
-
     keyVaults:
       rpx:
         resourceGroup: rpx
@@ -470,10 +469,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 200m
-  devcpuLimits: 300m
-  devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5G
+  devcpuRequests: 300m
+  devcpuLimits: 500m
+  devmemoryRequests: 1.5Gi
+  devmemoryLimits: 3Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"

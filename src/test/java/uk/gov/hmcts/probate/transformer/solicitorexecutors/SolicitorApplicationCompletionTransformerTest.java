@@ -52,6 +52,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.GRANT_OF_PROBATE;
 
 class SolicitorApplicationCompletionTransformerTest {
 
@@ -116,6 +117,7 @@ class SolicitorApplicationCompletionTransformerTest {
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
         final CaseData caseData = CaseData.builder()
+                .caseType(GRANT_OF_PROBATE.getName())
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
                 .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
@@ -143,6 +145,7 @@ class SolicitorApplicationCompletionTransformerTest {
     void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         final CaseDetails caseDetailsMock = mock(CaseDetails.class);
         final CaseData caseData = CaseData.builder()
+                .caseType(GRANT_OF_PROBATE.getName())
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
                 .additionalExecutorsTrustCorpList(null)

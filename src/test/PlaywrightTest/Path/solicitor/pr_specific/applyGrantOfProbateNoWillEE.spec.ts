@@ -24,7 +24,7 @@ import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyPr
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Excepted Estates - No Will (Intestacy)", () => {
-  test("Solicitor - Apply Grant of probate Excepted Estates @firefox", async ({
+  test("Solicitor - Apply Grant of probate Excepted Estates @edge", async ({
       basePage,
       signInPage,
       createCasePage,
@@ -75,9 +75,11 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates - No Will (In
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2();
+    await solCreateCasePage.intestacyDetailsPage2('SpouseOrCivil', {
+      isMarried: true
+    });
     await solCreateCasePage.intestacyDetailsPage3();
-    await solCreateCasePage.intestacyDetailsPage4();
+    // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();
 
     await solCreateCasePage.seeEndState(endState);
