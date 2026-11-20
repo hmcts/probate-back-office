@@ -54,5 +54,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineForeignDomicile", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineForeignWill", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineWindrushScheme", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineCodicilMis", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineCodicilMis", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineTrustCorporation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
