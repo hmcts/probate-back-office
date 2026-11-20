@@ -36,13 +36,13 @@ class RedeclarationSoTValidationRuleTest {
             .applicationType(ApplicationType.PERSONAL)
             .paperForm(YES)
             .channelChoice(CHANNEL_CHOICE_PAPERFORM)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataDigital = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .paperForm(NO)
             .channelChoice(CHANNEL_CHOICE_DIGITAL)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
     }
 
     @Test

@@ -63,22 +63,22 @@ class EmailAddressExecutorsApplyingValidationRuleTest {
         caseDataEmpty = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_EMPTY)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotEmpty = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNull = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NULL)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotEmptySolicitor = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
     }
 
     @Test

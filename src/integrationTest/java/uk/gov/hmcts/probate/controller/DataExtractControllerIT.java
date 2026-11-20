@@ -111,7 +111,7 @@ class DataExtractControllerIT {
         objectMapper.registerModule(javaTimeModule);
 
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
-            .resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
+            .resendDate("2023-01-01").registryLocation("brighton").build(), null, null);
         CallbackRequest request = new CallbackRequest(caseDetails);
         String bodyText = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/data-extract/resend-iron-mountain")

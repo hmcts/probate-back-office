@@ -36,14 +36,14 @@ class NoneOfTheseSelectedValidationRuleTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTNoT")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesNo = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("No")
             .titleAndClearingType("TCTNoT")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoNo = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -51,7 +51,7 @@ class NoneOfTheseSelectedValidationRuleTest {
             .solsSolicitorIsApplying("No")
             .anyOtherApplyingPartners("No")
             .titleAndClearingType("TCTNoT")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesYes = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -59,14 +59,14 @@ class NoneOfTheseSelectedValidationRuleTest {
             .solsSolicitorIsApplying("Yes")
             .anyOtherApplyingPartners("No")
             .titleAndClearingType("TCTNoT")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoYesNoneOfTheseNotSelected = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTPartSuccPowerRes")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
     }
 

@@ -32,11 +32,11 @@ class CaveatAcknowledgementValidationRuleTest {
         caveatDataNoException = CaveatData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .paymentConfirmCheckbox(List.of("paymentAcknowledgement"))
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caveatDataWithException = CaveatData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
     }
 
     @Test
