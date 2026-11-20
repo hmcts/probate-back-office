@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,6 +59,8 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
+    private final WaClientApi waClientApi;
+
     UnaryOperator<String> readyToIssueTask = handOffReason -> "Examine" + handOffReason;
     UnaryOperator<String> casePrintedTask = handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED;
 
@@ -314,47 +315,24 @@ public class WaTaskService {
     public void setCreateTask(final CallbackRequest callbackRequest,
                               final ResponseCaseData responseCaseData,
                               final TaskTypes taskType) {
-        //TODO:: REMOVE
-        log.info("case id {}: wa task to create {}",
-                callbackRequest.getCaseDetails().getId(),
-                taskType);
-        responseCaseData.setCreateTask(YES);
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
+        String createTask = existingTasks.contains(taskType.getValue()) ? NO : YES;
+        log.info("case id {}: taskType {} to create {}",
+                caseDetails.getId(),
+                taskType.getValue(),
+                createTask);
 
-        if (taskType != null && isWaTaskPresent(taskType, callbackRequest.getCaseDetails().getId())) {
-            log.info("case id {}: wa task present {}",
-                    callbackRequest.getCaseDetails().getId(),
-                    taskType);
-            responseCaseData.setCreateTask(NO);
-        }
+        responseCaseData.setCreateTask(createTask);
     }
 
-    public boolean isWaTaskPresent(TaskTypes taskType, Long caseId) {
-        checkedTaskTypesByCaseId.putIfAbsent(caseId, new HashSet<>());
-        Set<TaskTypes> checkedTaskTypes = checkedTaskTypesByCaseId.get(caseId);
-
-        log.info("Checking taskType: {} for caseId: {}", taskType, caseId);
-        log.info("Current checkedTaskTypes for caseId {}: {}", caseId, checkedTaskTypes);
-
-        if (checkedTaskTypes.contains(taskType)) {
-            log.info("TaskType {} is already present in checkedTaskTypes for caseId {}.", taskType, caseId);
-            return true;
-        } else {
-            log.info("TaskType {} is not present in checkedTaskTypes for caseId {}. Adding it now.", taskType, caseId);
-            checkedTaskTypes.add(taskType);
-            return false;
-        }
-    }
 
     public void setCreateHandOffTask(final CallbackRequest callbackRequest,
                                      final ResponseCaseData responseCaseData,
                                      final UnaryOperator<String> taskNameFormatter) {
-        //TODO:: Task info from WA
         responseCaseData.setCreateTask(NO);
-        List<String> existingTasks = new ArrayList<>();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        log.info("case id {}: wa tasks present {}",
-                caseDetails.getId(),
-                existingTasks);
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
 
         List<CollectionMember<HandoffReason>> missingHandOffs = caseDetails.getData().getBoHandoffReasonList().stream()
                 .map(CollectionMember::getValue)
@@ -362,10 +340,12 @@ public class WaTaskService {
                     String handOffCode = handoffReason.getCaseHandoffReason().getCode();
 
                     String requiredHandOffTask = taskNameFormatter.apply(handOffCode);
-                    log.info("case id {}: required hand off task {}",
+                    boolean isRequired = !existingTasks.contains(requiredHandOffTask);
+                    log.info("case id {}: hand off task {} required {}",
                             caseDetails.getId(),
-                            requiredHandOffTask);
-                    return !existingTasks.contains(requiredHandOffTask);
+                            requiredHandOffTask,
+                            isRequired);
+                    return isRequired;
                 })
                 .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason))
                 .toList();
