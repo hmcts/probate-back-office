@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class WaClientApi {
     private final SecurityUtils securityUtils;
     private final WaApi waApi;
-    private static final Set<String> OPEN_TASK_STATE = Set.of("ASSIGNED", "UNASSIGNED");
+    private static final Set<String> OPEN_TASK_STATE = Set.of("assigned", "unassigned");
 
     public Set<String> searchActiveTasksByCaseId(String caseId) {
         SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
@@ -41,7 +41,7 @@ public class WaClientApi {
                 .map(TaskSearchResponse::tasks)
                 .orElseGet(Collections::emptyList)
                 .stream()
-                .filter(taskData -> OPEN_TASK_STATE.contains(taskData.getTaskState()))
+                .filter(taskData -> OPEN_TASK_STATE.contains(taskData.getTaskState().toLowerCase()))
                 .map(TaskData::getType)
                 .collect(Collectors.toSet());
 
