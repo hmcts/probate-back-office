@@ -56,10 +56,10 @@ class DocumentsReceivedNotificationServiceIT {
     private CallbackResponse callbackResponse;
     private CallbackResponse callbackResponseWithData;
     private CallbackResponse callbackResponseWithDataNoDocuments;
-    private CaseDetails personalCaseDataBirmingham;
-    private CaseDetails solicitorCaseDataBirmingham;
-    private CaseDetails personalCaseDataBirminghamFromBulkScan;
-    private CaseDetails solicitorCaseDataBirminghamFromBulkScan;
+    private CaseDetails personalCaseDataLeeds;
+    private CaseDetails solicitorCaseDataLeeds;
+    private CaseDetails personalCaseDataLeedsFromBulkScan;
+    private CaseDetails solicitorCaseDataLeedsFromBulkScan;
     private Map<String, Object> expectedMap;
     private List<String> errors = new ArrayList<String>();
     private List<Document> expectedOneDocument = new ArrayList<Document>();
@@ -89,34 +89,34 @@ class DocumentsReceivedNotificationServiceIT {
 
     @BeforeEach
     public void setup() throws IOException, NotificationClientException {
-        personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
+        personalCaseDataLeeds = new CaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
-            .registryLocation("Birmingham")
+            .registryLocation("Leeds")
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .bulkScanCaseReference("")
             .build(), LAST_MODIFIED, CASE_ID);
 
-        solicitorCaseDataBirmingham = new CaseDetails(CaseData.builder()
+        solicitorCaseDataLeeds = new CaseDetails(CaseData.builder()
             .applicationType(SOLICITOR)
-            .registryLocation("Birmingham")
+            .registryLocation("Leeds")
             .solsSolicitorEmail("solicitor@probate-test.com")
             .solsSolicitorAppReference("1234-5678-9012")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .bulkScanCaseReference(null)
             .build(), LAST_MODIFIED, CASE_ID);
 
-        personalCaseDataBirminghamFromBulkScan = new CaseDetails(CaseData.builder()
+        personalCaseDataLeedsFromBulkScan = new CaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
-            .registryLocation("Birmingham")
+            .registryLocation("Leeds")
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .bulkScanCaseReference(BULK_SCAN_CASE_REFERENCE)
             .build(), LAST_MODIFIED, CASE_ID);
 
-        solicitorCaseDataBirminghamFromBulkScan = new CaseDetails(CaseData.builder()
+        solicitorCaseDataLeedsFromBulkScan = new CaseDetails(CaseData.builder()
             .applicationType(SOLICITOR)
-            .registryLocation("Birmingham")
+            .registryLocation("Leeds")
             .solsSolicitorEmail("solicitor@probate-test.com")
             .solsSolicitorAppReference("1234-5678-9012")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
@@ -141,7 +141,7 @@ class DocumentsReceivedNotificationServiceIT {
 
     @Test
     void handleDocumentReceivedPersonalNotificationToggleOn() throws NotificationClientException {
-        callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
+        callbackRequest = new CallbackRequest(personalCaseDataLeeds);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
@@ -158,7 +158,7 @@ class DocumentsReceivedNotificationServiceIT {
 
     @Test
     void handleDocumentReceivedPersonalNotificationDefaultOff() throws NotificationClientException {
-        callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
+        callbackRequest = new CallbackRequest(personalCaseDataLeeds);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
@@ -175,7 +175,7 @@ class DocumentsReceivedNotificationServiceIT {
 
     @Test
     void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
-        callbackRequest = new CallbackRequest(solicitorCaseDataBirmingham);
+        callbackRequest = new CallbackRequest(solicitorCaseDataLeeds);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
@@ -193,7 +193,7 @@ class DocumentsReceivedNotificationServiceIT {
 
     @Test
     void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
-        callbackRequest = new CallbackRequest(personalCaseDataBirminghamFromBulkScan);
+        callbackRequest = new CallbackRequest(personalCaseDataLeedsFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
@@ -208,7 +208,7 @@ class DocumentsReceivedNotificationServiceIT {
 
     @Test
     void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
-        callbackRequest = new CallbackRequest(solicitorCaseDataBirminghamFromBulkScan);
+        callbackRequest = new CallbackRequest(solicitorCaseDataLeedsFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
