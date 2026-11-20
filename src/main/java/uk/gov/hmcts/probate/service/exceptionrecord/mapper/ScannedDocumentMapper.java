@@ -27,6 +27,7 @@ public class ScannedDocumentMapper {
                 exceptionRecordDoc.fileName,
                 exceptionRecordDoc.type,
                 exceptionRecordDoc.subtype,
+                null,
                 exceptionRecordDoc.scannedDate,
                 exceptionRecordDocumentLink,
                 exceptionRecordReference,
