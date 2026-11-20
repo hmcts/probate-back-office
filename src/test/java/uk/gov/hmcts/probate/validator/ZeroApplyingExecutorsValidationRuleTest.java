@@ -83,7 +83,7 @@ class ZeroApplyingExecutorsValidationRuleTest {
                 .primaryApplicantForenames("Probate")
                 .primaryApplicantSurname("Practitioner")
                 .anyOtherApplyingPartners("No")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .otherPartnersApplyingAsExecutors(emptyPartnerExecutorList)
                 .additionalExecutorsTrustCorpList(emptyTrustCorpsExecutorList)
                 .build();
@@ -116,7 +116,7 @@ class ZeroApplyingExecutorsValidationRuleTest {
                 .primaryApplicantForenames("Probate")
                 .primaryApplicantSurname("Practitioner")
                 .anyOtherApplyingPartners("No")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .build();

@@ -36,13 +36,13 @@ class ChangeToSameStateValidationRuleTest {
             .applicationType(ApplicationType.PERSONAL)
             .paperForm(YES)
             .transferToState(CASE_PRINTED.getId())
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         transferToCaseSelectForQA = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .paperForm(NO)
             .transferToState(CASE_QA.getId())
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
     }
 
     @Test

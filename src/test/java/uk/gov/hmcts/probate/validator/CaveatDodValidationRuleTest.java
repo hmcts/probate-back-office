@@ -40,17 +40,17 @@ class CaveatDodValidationRuleTest {
         caveatDataNoException = CaveatData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .deceasedDateOfDeath(DATE_01_JAN_1971)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caveatDataTodayNoException = CaveatData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .deceasedDateOfDeath(TODAY)
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
 
         caveatDataWithDodException = CaveatData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .deceasedDateOfDeath(DATE_02_JAN_2099)
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
     }
 
     @Test

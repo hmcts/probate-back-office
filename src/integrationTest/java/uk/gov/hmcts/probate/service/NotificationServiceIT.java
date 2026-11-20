@@ -1478,7 +1478,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
@@ -1501,7 +1501,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
@@ -1845,7 +1845,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -1862,7 +1862,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -1878,7 +1878,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(YES)
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -1895,7 +1895,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .grantDelayedNotificationDate(LocalDate.of(2020, 12, 31))
                 .build(),
@@ -1912,7 +1912,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -1930,7 +1930,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .scannedDocuments(new ArrayList())
                 .build(),
@@ -1951,7 +1951,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .scannedDocuments(Arrays.asList(collectionMember))
                 .build(),
@@ -1969,7 +1969,7 @@ class NotificationServiceIT {
                 .caseType("gop")
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .evidenceHandled(NO)
                 .grantAwaitingDocumentationNotificationDate(LocalDate.now())
                 .build(),
