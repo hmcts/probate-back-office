@@ -21,7 +21,7 @@ import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorA
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey", () => {
-  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey @firefox", async ({
+  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey @webkit", async ({
     basePage,
     signInPage,
     createCasePage,
