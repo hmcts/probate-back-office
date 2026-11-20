@@ -182,7 +182,7 @@ public class TestCaseCreator {
         final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
         JsonNode jsonNode = objectMapper.readValue(RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
             .header("Authorization", "Basic " + encoded)
-            .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
+            .post("/o/token?grant_type=password&response_type=code&client_id=probate&redirect_uri=" + redirectUri)
             .body().print(), JsonNode.class);
         return jsonNode.get("code").asText();
     }
@@ -200,7 +200,7 @@ public class TestCaseCreator {
     public String getUserId(String userToken) {
         return "" + RestAssured.given()
             .header("Authorization", userToken)
-            .get(idamUserBaseUrl + "/details")
+            .get(idamUserBaseUrl + "/o/userinfo")
             .body()
             .path("id");
     }
