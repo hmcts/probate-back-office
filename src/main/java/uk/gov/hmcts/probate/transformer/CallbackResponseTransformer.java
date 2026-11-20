@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -53,6 +54,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -162,7 +164,10 @@ public class CallbackResponseTransformer {
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
     private final WorkAllocationToggleService workAllocationToggleService;
+    private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
+    private final Clock clock;
     private final CreateTaskProcessorFactory createTaskProcessorFactory;
+    private final RegistryDetailsService registryDetailsService;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -439,6 +444,10 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
 
         }
+        String grantIssuedDate = caseData.getGrantIssuedDate();
+        if (StringUtils.isBlank(grantIssuedDate)) {
+            grantIssuedDate = dateTimeFormatter.format(LocalDate.now(clock));
+        }
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
@@ -448,7 +457,6 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
-            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
@@ -462,7 +470,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
-            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
 
             responseCaseDataBuilder.grantIssuedDate(grantIssuedDate);
         }
@@ -938,7 +945,11 @@ public class CallbackResponseTransformer {
                         transform);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        return transformResponse(responseCaseDataBuilder.build());
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        setTaskCreation(null, callbackRequest, responseCaseData);
+
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -1488,7 +1499,18 @@ public class CallbackResponseTransformer {
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .createTask(caseData.getCreateTask())
-            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId());
+            .selectForQAUserIdamId(caseData.getSelectForQAUserIdamId())
+            .moveToCWEscalationUserIdamId(caseData.getMoveToCWEscalationUserIdamId())
+            .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
+            .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
+            .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
+            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
+
+        if (caseData.getRegistryLocation() != null && !caseData.getRegistryLocation().equals("")) {
+            builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
+            builder.taskLocationName(caseData.getRegistryLocation());
+            builder.taskRegion(registryDetailsService.getTaskRegion(caseData.getRegistryLocation()));
+        }
 
         handleDeceasedAliases(
                 builder,

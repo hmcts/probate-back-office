@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -343,7 +345,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -365,7 +367,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -387,7 +389,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -409,7 +411,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -431,7 +433,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -453,7 +455,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -475,7 +477,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -497,7 +499,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -519,7 +521,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -541,7 +543,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -563,7 +565,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -585,7 +587,7 @@ class DocumentGeneratorServiceTest {
         assertEquals(WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
                 .getDocumentFileName());
-        verify(placeholderDecorator).decorate(expectedMap);
+        verify(placeholderDecorator).decorate(expectedMap, null);
     }
 
     @Test
@@ -916,5 +918,29 @@ class DocumentGeneratorServiceTest {
 
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForStandingSearch(standingSearchCallbackRequest);
         verify(documentService, times(1)).delete(any(Document.class), anyString());
+    }
+
+    @Test
+    void testGenerateProducesWelshDigitalGrantFinalWithExistingGrantIssuedDate() {
+        String grantIssuedDate = "2025-01-15";
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+                        .grantIssuedDate(grantIssuedDate)
+                        .languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_DIGITAL_GRANT)).thenReturn(Document.builder()
+                .documentFileName(DIGITAL_GRANT_FINAL_FILE_NAME).build());
+
+        when(documentTemplateService
+                .getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,
+                        DocumentCaseType.GOP)).thenReturn(DocumentType.WELSH_DIGITAL_GRANT);
+
+        assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE)
+                        .getDocumentFileName());
+        verify(placeholderDecorator).decorate(anyMap(), eq(grantIssuedDate));
     }
 }

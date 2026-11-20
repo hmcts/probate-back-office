@@ -16,10 +16,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.io.File;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,9 +31,10 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class HmrcFileService extends BaseFileService {
     private final TextFileBuilderService textFileBuilderService;
-    private final FileExtractDateFormatter fileExtractDateFormatter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final DateFormatterService dateFormatterService;
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final String DELIMITER = "~";
     private static final String ROW_DELIMITER = "\n";
     private static final String ROW_HEADER = "ENGLAND";
@@ -88,13 +90,13 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(data.getDeceasedSurname());
             fileData.add(nullToString(data.getBoDeceasedHonours()));
             fileData.add("");
-            fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
+            fileData.add(dateFormatterService.formatDateSafely(data.getDeceasedDateOfDeath(), DATE_FORMAT));
             fileData.add("");
-            fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfBirth()));
-            fileData.add(String.valueOf(ageCalculator(data)));
+            fileData.add(dateFormatterService.formatDateSafely(data.getDeceasedDateOfBirth(), DATE_FORMAT));
+            fileData.add(ageCalculator(data));
             fileData.add(DOMICILE);
             addAddress(fileData, addressManager(data.getDeceasedAddress()));
-            fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
+            fileData.add(dateFormatterService.formatDateSafely(data.getGrantIssuedDate(), DATE_FORMAT));
             addGranteeDetails(fileData, createGrantee(data, 1));
             addGranteeDetails(fileData, createGrantee(data, 2));
             addGranteeDetails(fileData, createGrantee(data, 3));

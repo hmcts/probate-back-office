@@ -13,16 +13,19 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.windrushSchemeHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsProvider {
 
@@ -31,13 +34,25 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
         Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineWindrushSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_WINDRUSH_SCHEME,
+                "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineWindrushSchemeCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WINDRUSH_SCHEME_CASE_PRINTED,
                 "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
+        );
+
+        Map<String,Object> examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_WINDRUSH_SCHEME_CHANGE_STATE,
+                "name", EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -144,40 +159,40 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
                 ),
-                //case printed tests
+                // case printed tests
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
@@ -281,37 +296,80 @@ public class CamundaTaskWaInitiationWindrushTestProvider implements ArgumentsPro
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         List.of(examineWindrushSchemeCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
+                        List.of(examineWindrushSchemeReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
+                        List.of(examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason), false),
+                        List.of(examineWindrushSchemeCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 )
         );

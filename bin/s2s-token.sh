@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -xeu
+set -eu
 
 microservice=${1}
 

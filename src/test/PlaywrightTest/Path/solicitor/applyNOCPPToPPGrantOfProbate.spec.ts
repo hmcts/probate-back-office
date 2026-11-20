@@ -86,6 +86,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
     endState = 'Application updated';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.selectMaritalStatus('deceasedDivorced');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();

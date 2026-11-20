@@ -194,7 +194,7 @@
     <tr>
         <td colspan="3" class="text-rightAligned">
             Case Reference: {{case_details.id}}<br />
-            Date of Issue: {{case_details.case_data.currentDateFormatted}}
+            Date of Issue: {{case_details.case_data.grantIssuedDateFormatted}}
             <br/>
             <br/>
         </td>
@@ -305,7 +305,7 @@
                 {{ case_details.case_data.boLimitationText }}{% endif %}
 
             </p>
-            
+
             <p>The application has stated that the gross value of the estate in {% if case_details.case_data.deceasedDomicileInEngWales != "No" %}the United Kingdom{% else %}England and Wales{% endif %} amounts to
                 {% if case_extras !=null%}
                 &#163;{{case_extras.grossValue}} and the net value amounts to

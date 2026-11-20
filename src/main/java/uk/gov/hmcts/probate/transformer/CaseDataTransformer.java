@@ -263,4 +263,36 @@ public class CaseDataTransformer {
     public void setSelectForQAUserIdamId(CaseDetails caseDetails, String idamUserId) {
         caseDetails.getData().setSelectForQAUserIdamId(idamUserId);
     }
+
+    public void setMoveToCWEscalationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setMoveToCWEscalationUserIdamId(idamUserId);
+    }
+
+    public void setEscalateToRegistrarUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setEscalateToRegistrarUserIdamId(idamUserId);
+    }
+
+    public void setRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setRedeclarationUserIdamId(idamUserId);
+    }
+
+    public void setResolveStoppedCaseUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setResolveStoppedCaseUserIdamId(idamUserId);
+    }
+
+    public void setResolveRedeclarationUserIdamId(CaseDetails caseDetails, String idamUserId) {
+        caseDetails.getData().setResolveRedeclarationUserIdamId(idamUserId);
+    }
+
+    public void setTaskLocationEpimmsId(CaseDetails caseDetails, String taskLocationEpimmsId) {
+        caseDetails.getData().setTaskLocationEpimmsId(taskLocationEpimmsId);
+    }
+
+    public void setTaskLocationName(CaseDetails caseDetails, String taskLocationName) {
+        caseDetails.getData().setTaskLocationName(taskLocationName);
+    }
+
+    public void setTaskRegion(CaseDetails caseDetails, String taskRegion) {
+        caseDetails.getData().setTaskRegion(taskRegion);
+    }
 }

@@ -10,6 +10,11 @@ import uk.gov.hmcts.probate.service.migration.Dtspb5064CaveatRollback;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorMigration;
 import uk.gov.hmcts.probate.service.migration.Dtspb5113GorRollback;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatMigration;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112CloseExpiredCaveatRollback;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatMigration;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112PaAppCreatedCaveatRollback;
+import uk.gov.hmcts.probate.service.migration.dtspb5112.Dtspb5112SetExpiryCaveatRollback;
 
 import java.util.Map;
 
@@ -32,11 +37,21 @@ public class DataMigrationConfiguration {
     public Map<String, CaveatMigrationHandler> caveatMigrationHandlers(
             final Dtspb5005CaveatRollback dtspb5005CaveatRollback,
             final Dtspb5064CaveatMigrationHandler dtspb5064CaveatMigrationHandler,
-            final Dtspb5064CaveatRollback dtspb5064CaveatRollback) {
+            final Dtspb5064CaveatRollback dtspb5064CaveatRollback,
+            final Dtspb5112PaAppCreatedCaveatMigration dtspb5112PaAppCreatedCaveatMigration,
+            final Dtspb5112PaAppCreatedCaveatRollback dtspb5112PaAppCreatedCaveatRollback,
+            final Dtspb5112SetExpiryCaveatRollback dtspb5112SetExpiryCaveatRollback,
+            final Dtspb5112CloseExpiredCaveatMigration dtspb5112CloseExpiredCaveatMigration,
+            final Dtspb5112CloseExpiredCaveatRollback dtspb5112CloseExpiredCaveatRollback) {
         return Map.of(
                 "DTSPB-5005_rollback", dtspb5005CaveatRollback,
                 "DTSPB-5064", dtspb5064CaveatMigrationHandler,
-                "DTSPB-5064_rollback", dtspb5064CaveatRollback);
+                "DTSPB-5064_rollback", dtspb5064CaveatRollback,
+                "DTSPB-5112-pa-app-created", dtspb5112PaAppCreatedCaveatMigration,
+                "DTSPB-5112-pa-app-created-rollback", dtspb5112PaAppCreatedCaveatRollback,
+                "DTSPB-5112-set-expiry-rollback", dtspb5112SetExpiryCaveatRollback,
+                "DTSPB-5112-close-expired", dtspb5112CloseExpiredCaveatMigration,
+                "DTSPB-5112-close-expired-rollback", dtspb5112CloseExpiredCaveatRollback);
     }
 
 }

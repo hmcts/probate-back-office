@@ -91,7 +91,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.Mockito.when;
@@ -110,6 +109,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_SOT_GENERATED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 
@@ -1053,6 +1054,36 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         ResponseEntity<CallbackResponse> response =
                 underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetRedeclarationUserWhenChangingStateToSotGenerated() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_SOT_GENERATED);
+        ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setRedeclarationUserIdamId(eq(caseDetailsMock), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetResolveStoppedCaseUserWhenChangingStateToCaseStopped() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getTransferToState()).thenReturn(STATE_BO_CASE_STOPPED);
+        final ResponseEntity<CallbackResponse> response =
+                underTest.changeCaseState(callbackRequestMock, httpServletRequest);
+        verify(caseDataTransformerMock, times(1))
+                .setResolveStoppedCaseUserIdamId(eq(caseDetailsMock), any());
+        verify(caseDataTransformerMock, never())
+                .setRedeclarationUserIdamId(any(), any());
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

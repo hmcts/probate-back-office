@@ -287,7 +287,7 @@ export class BasePage {
 
     if (tabConfigFile.tabName) {
       await expect(
-        this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`),
+        this.page.getByRole('tab', { name: tabConfigFile.tabName }),
       ).toBeEnabled();
       // const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
       // Tabs are hidden when there are more tabs

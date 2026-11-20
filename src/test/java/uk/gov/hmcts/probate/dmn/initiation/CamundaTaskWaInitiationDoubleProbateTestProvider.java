@@ -14,8 +14,9 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.doubleProbateHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -23,7 +24,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationDoubleProbateTestProvider implements ArgumentsProvider {
 
@@ -34,16 +36,30 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         Map<String,Object> examineDigitalCaseDoubleProbateCasePrintedTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_DOUBLE_PROBATE_CASE_PRINTED,
                 "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
+        Map<String,Object> examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_DOUBLE_PROBATE,
+                "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+
+        Map<String,Object> examineDigitalCaseDoubleProbateCaseMatchingIssueGrantTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_DOUBLE_PROBATE_CHANGE_STATE,
+                "name", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -74,28 +90,28 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true, 
                                 emptyList(), false),
@@ -273,36 +289,79 @@ public class CamundaTaskWaInitiationDoubleProbateTestProvider implements Argumen
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         List.of(examineDigitalCaseDoubleProbateCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
+                        emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason)),
+                        List.of(examineDigitalCaseDoubleProbateReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
+                        List.of(examineDigitalCaseDoubleProbateCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(doubleProbateHandOffReason), false),
+                        List.of(examineDigitalCaseDoubleProbateCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
                         emptyList()
                 )
         );

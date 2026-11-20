@@ -9,19 +9,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.witnessInterviewHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE;
 
 
 public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements ArgumentsProvider {
@@ -32,13 +37,25 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
         Map<String,Object> examineWitnessInterviewCasePrintedTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,casePrintedHandOffs"
         );
 
         Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineWitnessInterviewReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_WITNESS_INTERVIEW,
+                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE,
+                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -145,35 +162,35 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
@@ -181,127 +198,178 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                 // Ready to Issue scenarios
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
+                ),
+                Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
+                        CREATE_CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
+                        CREATE_CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
+                        CREATE_CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
+                        CREATE_CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         List.of(examineWitnessInterviewTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         null,
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
-                        "BOReadyToIssue",
+                        READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
+                        List.of(examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }

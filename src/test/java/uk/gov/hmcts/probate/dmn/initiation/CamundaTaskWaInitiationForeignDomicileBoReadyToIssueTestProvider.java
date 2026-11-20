@@ -9,18 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalData;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.additionalDataNoHandOffList;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.foreignDomicileCasePrintedHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.handOffReasonListWithHandOffReason;
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_MATCHING_ISSUE_GRANT_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE;
 
 public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider implements ArgumentsProvider {
 
@@ -30,7 +34,19 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
         Map<String,Object> foreignDomicileTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression"
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> foreignDomicileCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE,
+                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
+        );
+
+        Map<String,Object> foreignDomicileReadyToIssueHandOffsTaskAttributes = Map.of(
+                "taskId", EXAMINE_FOREIGN_DOMICILE,
+                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
+                "processCategories", "case progression,readyToIssueHandOffs"
         );
 
         return Stream.of(
@@ -143,7 +159,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
@@ -151,7 +167,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         List.of(foreignDomicileTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
@@ -159,24 +175,68 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 Collections.emptyList(), false),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason)),
+                        List.of(foreignDomicileReadyToIssueHandOffsTaskAttributes)
+                ), //change state event
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason), false),
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(true, "",true,
+                                handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason), false),
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason), false),
+                        emptyList()
+                ),
+                Arguments.of(
+                        CREATE_CHANGE_STATE_EVENT,
+                        BO_CASE_MATCHING_ISSUE_GRANT_STATE,
+                        additionalData(false, "",true,
+                                emptyList(), false),
+                        emptyList()
                 )
         );
     }
