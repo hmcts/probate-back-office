@@ -258,7 +258,7 @@ public class FunctionalTestUtils {
         final Headers headers = Headers.headers(
             new Header("Authorization", caseworkerToken));
 
-        final String userInfoUrl = authProviderUrl + "/details";
+        final String userInfoUrl = authProviderUrl + "/o/userinfo";
         final Response userResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(headers)
