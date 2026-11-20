@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,7 +71,7 @@ public class EvidenceUploadService {
         }
 
         List<CollectionMember<UploadDocument>> documentsBefore =
-                Optional.ofNullable(callbackRequest.getCaseDetailsBefore())
+                Optional.of(callbackRequest.getCaseDetailsBefore())
                 .map(CaseDetails::getData)
                 .map(CaseData::getBoDocumentsUploaded)
                 .orElse(Collections.emptyList());
@@ -78,7 +79,7 @@ public class EvidenceUploadService {
             return;
         }
 
-        List<CollectionMember<UploadDocument>> documentsAfter = Optional.ofNullable(callbackRequest.getCaseDetails())
+        List<CollectionMember<UploadDocument>> documentsAfter = Optional.of(callbackRequest.getCaseDetails())
                 .map(CaseDetails::getData)
                 .map(CaseData::getBoDocumentsUploaded)
                 .orElse(Collections.emptyList());
@@ -130,19 +131,22 @@ public class EvidenceUploadService {
 
     public void validateFinalWillIndicator(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        if (countWillDocuments(caseData) <= 1) {
+        Long caseId = callbackRequest.getCaseDetails().getId();
+        long willCount = countWillDocuments(caseData);
+        if (willCount <= 1) {
+            log.info("Final will indicator validation skipped for case: {}  willCount: {}", caseId, willCount);
             return;
         }
-
         long finalWillCount = countFinalWills(caseData);
+        if (finalWillCount != 1) {
+            log.warn("Final Will indicator validation failed for case: {} willCount: {} finalWillCount: {}",
+                caseId,
+                willCount,
+                finalWillCount);
 
-
-        if (finalWillCount == 0) {
-            throw new BusinessValidationException(NO_FINAL_WILL_ERROR, NO_FINAL_WILL_ERROR);
-        }
-
-        if (finalWillCount > 1) {
+            if (finalWillCount == 0) {
+                throw new BusinessValidationException(NO_FINAL_WILL_ERROR, NO_FINAL_WILL_ERROR);
+            }
             throw new BusinessValidationException(MULTIPLE_FINAL_WILLS_ERROR, MULTIPLE_FINAL_WILLS_ERROR);
         }
     }
@@ -256,61 +260,53 @@ public class EvidenceUploadService {
 
     private boolean sameUploadedDocuments(List<CollectionMember<UploadDocument>> oldDocuments,
                                           List<CollectionMember<UploadDocument>> newDocuments) {
-        List<CollectionMember<UploadDocument>> oldList = Optional.ofNullable(oldDocuments)
-                .orElseGet(Collections::emptyList);
-        List<CollectionMember<UploadDocument>> newList = Optional.ofNullable(newDocuments)
-                .orElseGet(Collections::emptyList);
-        if (oldList.size() != newList.size()) {
-            return false;
-        }
-        Map<String, String> originalUrls = new HashMap<>();
-        for (CollectionMember<UploadDocument> member : oldList) {
-            if (member == null || member.getId() == null || getDocumentUrl(member) == null
-                    || originalUrls.putIfAbsent(member.getId(), getDocumentUrl(member)) != null) {
-                return false;
-            }
-        }
-        for (CollectionMember<UploadDocument> member : newList) {
-            if (member == null || member.getId() == null || getDocumentUrl(member) == null
-                    || !Objects.equals(originalUrls.remove(member.getId()), getDocumentUrl(member))) {
-                return false;
-            }
-        }
-        return originalUrls.isEmpty();
+        return sameDocuments(oldDocuments, newDocuments, this::getDocumentUrl);
     }
 
     private boolean sameScannedDocuments(List<CollectionMember<ScannedDocument>> oldDocuments,
                                          List<CollectionMember<ScannedDocument>> newDocuments) {
-        List<CollectionMember<ScannedDocument>> oldList = Optional.ofNullable(oldDocuments)
+        return sameDocuments(oldDocuments, newDocuments, this::getScannedDocumentUrl);
+    }
+
+    private <T> boolean sameDocuments(List<CollectionMember<T>> oldDocuments,
+                                      List<CollectionMember<T>> newDocuments,
+                                      Function<CollectionMember<T>, String> urlExtractor) {
+        List<CollectionMember<T>> oldList = Optional.ofNullable(oldDocuments)
                 .orElseGet(Collections::emptyList);
-        List<CollectionMember<ScannedDocument>> newList = Optional.ofNullable(newDocuments)
+        List<CollectionMember<T>> newList = Optional.ofNullable(newDocuments)
                 .orElseGet(Collections::emptyList);
+        // Different collection sizes indicate documents have been added or removed
         if (oldList.size() != newList.size()) {
             return false;
         }
-        Map<String, ScannedDocument> original = new HashMap<>();
-        for (CollectionMember<ScannedDocument> member : oldList) {
-            if (member == null || member.getId() == null || member.getValue() == null
-                    || getScannedDocumentUrl(member) == null
-                    || original.putIfAbsent(member.getId(), member.getValue()) != null) {
+        // Map original collection member IDs to document URLs to verify document identity
+        Map<String, String> originalUrls = new HashMap<>();
+        for (CollectionMember<T> member : oldList) {
+            if (member == null || member.getId() == null) {
+                return false;
+            }
+            String documentUrl = urlExtractor.apply(member);
+            if (documentUrl == null || originalUrls.containsKey(member.getId())) {
+                return false;
+            }
+            originalUrls.put(member.getId(), documentUrl);
+        }
+        // Match each submitted document against the original ID and URL
+        for (CollectionMember<T> member : newList) {
+            if (member == null || member.getId() == null) {
+                return false;
+            }
+            String documentUrl = urlExtractor.apply(member);
+            if (documentUrl == null) {
+                return false;
+            }
+            // Remove matched entries so missing or duplicate documents are detected
+            String originalUrl = originalUrls.remove(member.getId());
+            if (!documentUrl.equals(originalUrl)) {
                 return false;
             }
         }
-        for (CollectionMember<ScannedDocument> member : newList) {
-            if (member == null || member.getId() == null || member.getValue() == null) {
-                return false;
-            }
-            ScannedDocument old = original.remove(member.getId());
-            ScannedDocument current = member.getValue();
-            if (old == null || !Objects.equals(old.getUrl(), current.getUrl())
-                    || !Objects.equals(old.getControlNumber(), current.getControlNumber())
-                    || !Objects.equals(old.getFileName(), current.getFileName())
-                    || !Objects.equals(old.getScannedDate(), current.getScannedDate())
-                    || !Objects.equals(old.getExceptionRecordReference(), current.getExceptionRecordReference())
-                    || !Objects.equals(old.getDeliveryDate(), current.getDeliveryDate())) {
-                return false;
-            }
-        }
-        return original.isEmpty();
+        // All original documents must have been matched exactly once
+        return originalUrls.isEmpty();
     }
 }
