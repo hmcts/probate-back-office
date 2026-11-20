@@ -47,6 +47,7 @@ class ScannedDocumentMapperTest {
             scannedDocumentCollectionMember.getValue().getUrl().getDocumentFilename());
         assertEquals("dcn" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getControlNumber());
         assertEquals("filename" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getFileName());
+        assertNull(scannedDocumentCollectionMember.getValue().getFinalWill());
     }
 
     @Test
