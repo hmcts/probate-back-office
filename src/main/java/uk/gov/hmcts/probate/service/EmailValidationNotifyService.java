@@ -65,7 +65,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
 
     private boolean isValid(String emailAddress) {
         if (emailAddress.codePointCount(0, emailAddress.length()) > MAX_EMAIL_LENGTH) {
-            log.info("email address is greater than " + MAX_EMAIL_LENGTH);
+            log.info("email address length is greater than " + MAX_EMAIL_LENGTH);
             return false;
         }
 
@@ -85,9 +85,10 @@ public class EmailValidationNotifyService extends EmailValidationService {
             return false;
         }
 
+        // Additional check as regex from notify does not pick up trailing '.'s within first part of email
         String localpart = emailAddress.split("@", -1)[0];
         if (localpart.endsWith(".")) {
-            log.info("local-part of email address contains a trailing \".\"");
+            log.info("local-part of email address ends with a trailing \".\"");
             return false;
         }
 
@@ -101,8 +102,7 @@ public class EmailValidationNotifyService extends EmailValidationService {
 
         String[] parts = hostname.split("\\.", -1);
         if (hostname.length() > MAX_HOSTNAME_LENGTH || parts.length < 2) {
-            // Emails can have more than
-            log.info("email address hostname is either too long, or contains too many parts");
+            log.info("email address hostname is either too long, or does not contain enough parts");
             return false;
         }
 
