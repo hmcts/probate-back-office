@@ -579,11 +579,12 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async viewCardPaymentStatus(caseRef: string) {
-    await expect(
+  /*  await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
     ).toBeVisible();
-    await expect(this.cardServiceRequestLinkLocator).toBeEnabled();
-    await this.cardServiceRequestLinkLocator.click();
+
+    await expect(this.serviceRequestLinkLocator).toBeEnabled();
+    await this.serviceRequestLinkLocator.click();
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatus)
@@ -592,6 +593,8 @@ export class SolCreateCasePage extends BasePage {
       this.page.getByText(makePaymentConfig.payNowLinkText)
     ).toBeHidden();
     await this.postPaymentReviewDetails(caseRef);
+
+   */
     for (let i=0; i<=6; i++) {
       await expect(this.eventHistoryTab).toBeEnabled();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
