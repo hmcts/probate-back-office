@@ -16,12 +16,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.EMPTY_LIST;
@@ -53,6 +55,9 @@ class ExceptionRecordControllerIT {
 
     @MockitoBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
+
+    @MockitoBean
+    private NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
 
     private String exceptionRecordPayloadCitizenPA8A;
     private String exceptionRecordPayloadSolicitorPA8A;
@@ -545,5 +550,22 @@ class ExceptionRecordControllerIT {
             .andExpect(jsonPath("$.warnings[0]").value(expectedWarning))
             .andExpect(jsonPath("$.errors[0]")
                     .value("OCR fields could not be mapped to a case"));
+    }
+
+    @Test
+    void shouldPopulateWarningsWithNonMandatoryFieldWarnings() throws Exception {
+        String expectedWarning = "Primary applicant email address (primaryApplicantEmailAddress) "
+                + "does not appear to be a valid email address";
+        List<String> returnedWarnings = Collections.singletonList(expectedWarning);
+
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(new ArrayList<>());
+        when(nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(any(), any())).thenReturn(returnedWarnings);
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.warnings[0]").value(expectedWarning))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("OCR fields could not be mapped to a case"));
     }
 }

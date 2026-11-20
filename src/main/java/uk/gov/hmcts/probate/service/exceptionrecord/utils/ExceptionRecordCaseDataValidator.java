@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.OcrEmailValidator;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.Clock;
@@ -46,7 +48,10 @@ public class ExceptionRecordCaseDataValidator {
     static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
+    private static final String INVALID_EMAIL_ERROR = "Email address invalid";
     private final Clock clock;
+
+    private final OcrEmailValidator ocrEmailValidator = new OcrEmailValidator();
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
             Map.of(DOC_TYPE_WILL, singletonList(CaseType.GRANT_OF_REPRESENTATION),
@@ -111,6 +116,36 @@ public class ExceptionRecordCaseDataValidator {
         }
         if (!errorMessages.isEmpty()) {
             throw new OCRMappingException(DOD_DOB_ERROR, errorMessages);
+        }
+    }
+
+    public void validateEmailAddresses(GrantOfRepresentationData caseData) {
+        List<OCRField> emailsToValidate = new ArrayList<>();
+        // Not complete
+        // need to work out which emails to actually check, as null is a valid entry from OCR
+        // No need for executor_2's email if there isn't an exec_2
+        // below is imo minimum for demo testing
+
+        if (caseData.getPrimaryApplicantEmailAddress() != null) {
+            OCRField primaryApplicantEmailAddress = OCRField.builder()
+                    .name("primaryApplicantEmailAddress")
+                    .value(caseData.getPrimaryApplicantEmailAddress())
+                    .build();
+            emailsToValidate.add(primaryApplicantEmailAddress);
+        }
+
+        if (caseData.getSolsSolicitorEmail() != null) {
+            OCRField solsSolicitorEmail = OCRField.builder()
+                    .name("solsSolicitorEmail")
+                    .value(caseData.getSolsSolicitorEmail())
+                    .build();
+            emailsToValidate.add(solsSolicitorEmail);
+        }
+
+        List<String> errorMessages = new ArrayList<>(ocrEmailValidator.validateField(emailsToValidate));
+
+        if (!errorMessages.isEmpty()) {
+            throw new OCRMappingException(INVALID_EMAIL_ERROR, errorMessages);
         }
     }
 
