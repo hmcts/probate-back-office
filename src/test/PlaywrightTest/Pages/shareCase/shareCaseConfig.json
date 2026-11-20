@@ -1,6 +1,6 @@
 {
   "caseList_sortCase": "Sort Case reference",
-  "case_Jurisdiction": "Manage probate application",
+  "case_Jurisdiction": "Manage probate applications",
   "caseType": "Grant of representation",
   "shareCase_comboBoxLocator": "input[role='combobox']",
   "secondProbatePractitioner_value": "Test User - probatesolicitortestorgtest2@gmail.com",
