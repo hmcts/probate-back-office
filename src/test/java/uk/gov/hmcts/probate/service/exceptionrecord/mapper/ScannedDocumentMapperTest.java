@@ -47,6 +47,7 @@ class ScannedDocumentMapperTest {
             scannedDocumentCollectionMember.getValue().getUrl().getDocumentFilename());
         assertEquals("dcn" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getControlNumber());
         assertEquals("filename" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getFileName());
+        assertNull(scannedDocumentCollectionMember.getValue().getFinalWill());
     }
 
     @Test
@@ -57,13 +58,13 @@ class ScannedDocumentMapperTest {
     }
 
     @Test
-    void shouldUPdateCaseDoc() {
+    void shouldUpdateCaseDoc() {
         InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
         uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             collectionMember
             = scannedDocumentMapper.updateCaseDoc(inputDoc, "Ref1");
         assertThat(collectionMember.getValue().getExceptionRecordReference(), is("Ref1"));
-
+        assertNull(collectionMember.getValue().getFinalWill());
     }
 
     @Test

@@ -783,6 +783,7 @@ feature:
   blobstorage:
     smeeandford:
       enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:true}
+      includeFinalIndicator: ${SMEEANDFORD_INCLUDE_FINAL_INDICATOR:false}
 
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}

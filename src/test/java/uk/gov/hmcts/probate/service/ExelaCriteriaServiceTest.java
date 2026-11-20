@@ -39,31 +39,31 @@ class ExelaCriteriaServiceTest {
     @BeforeEach
     public void setup() {
         final CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
-                "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", "other", "will", null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
         final CollectionMember<ScannedDocument> scannedDocumentBoundary = new CollectionMember<>(new ScannedDocument(
                 "2",
-                "test", "other", "will", LocalDateTime.of(2019, 04, 01, 00, 00), DocumentLink.builder().build(),
+                "test", "other", "will", null, LocalDateTime.of(2019, 04, 01, 00, 00), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
         final CollectionMember<ScannedDocument> scannedDocumentBelowBoundary =
                 new CollectionMember<>(new ScannedDocument("3",
-                        "test", "other", "will",
+                        "test", "other", "will", null,
                         LocalDateTime.of(2019, 03, 31, 23, 59),
                         DocumentLink.builder().build(),
                         "test", LocalDateTime.now()));
         final CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument(
                 "4",
-                "test", "other", "", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", "other", "", null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
 
         final CollectionMember<ScannedDocument> scannedDocumentCherished = new CollectionMember<>(new ScannedDocument(
                 "5",
-                "test", "Cherished", null, LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", "Cherished", null, null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
 
         final CollectionMember<ScannedDocument> scannedDocumentWillType
                 = new CollectionMember<>(new ScannedDocument("6",
-                "test", "will", "Original Will", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", "will", "Original Will", null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
 
         List<CollectionMember<ScannedDocument>> scannedDocumentsCase1 = new ArrayList<>();

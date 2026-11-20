@@ -63,10 +63,10 @@ class ExelaDataExtractServiceTest {
         MockitoAnnotations.openMocks(this);
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
-            "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
+            "test", "other", "will", null, LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
         CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
-            "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+            "test", "other", null, null, LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);

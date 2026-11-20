@@ -14,6 +14,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -36,6 +38,7 @@ import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.service.validation.FinalWillValidationRule;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -60,8 +63,13 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -71,7 +79,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -122,6 +129,8 @@ class DocumentControllerUnitTest {
     private DocumentTransformer documentTransformer;
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
+    @Mock
+    private FinalWillValidationRule finalWillValidationRule;
 
 
 
@@ -148,12 +157,29 @@ class DocumentControllerUnitTest {
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
         documentValidation = spy(realDocumentValidation);
 
-        documentController = new DocumentController(documentGeneratorService, registryDetailsService,
-                    pdfManagementService, callbackResponseTransformer, caseDataTransformer,
-            willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
-            eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
-            redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService
+        documentController = new DocumentController(
+            documentGeneratorService,
+            registryDetailsService,
+            pdfManagementService,
+            callbackResponseTransformer,
+            caseDataTransformer,
+            willLodgementCallbackResponseTransformer,
+            notificationService,
+            registriesProperties,
+            bulkPrintService,
+            eventValidationService,
+            emailAddressNotifyValidationRules,
+            bulkPrintValidationRules,
+            redeclarationSoTValidationRule,
+            reprintService,
+            documentValidation,
+            documentManagementService,
+            evidenceUploadService,
+            userInfoService,
+            featureToggleService,
+            documentTransformer,
+            ccdSupplementaryDataService,
+            finalWillValidationRule
         );
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
@@ -536,4 +562,126 @@ class DocumentControllerUnitTest {
         );
         verifyNoInteractions(ccdSupplementaryDataService);
     }
+
+
+    @Test
+    void shouldCallValidateFinalWillForGrantIssue() throws NotificationClientException {
+        CaseData caseData = CaseData.builder()
+                .caseType("gop")
+                .build();
+
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1234567890123456L);
+
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(eventValidationService.validateBulkPrintResponse(
+                any(), any()))
+                .thenReturn(CallbackResponse.builder()
+                        .errors(new ArrayList<>())
+                        .build());
+
+        uk.gov.hmcts.probate.model.ccd.raw.Document grantDocument =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.Document.class);
+        uk.gov.hmcts.probate.model.ccd.raw.Document coverSheet =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.Document.class);
+        CallbackResponse expectedResponse = CallbackResponse.builder()
+                .errors(new ArrayList<>())
+                .build();
+
+
+        when(documentGeneratorService.getDocument(
+                callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT))
+                .thenReturn(grantDocument);
+
+        when(pdfManagementService.generateAndUpload(
+                callbackRequest, DocumentType.GRANT_COVER))
+                .thenReturn(coverSheet);
+
+        when(userInfoService.getCaseworkerInfo())
+                .thenReturn(Optional.empty());
+
+        when(callbackResponseTransformer.addDocuments(
+                eq(callbackRequest),
+                anyList(),
+                nullable(String.class),
+                nullable(String.class),
+                eq(Optional.empty())))
+                .thenReturn(expectedResponse);
+
+        final ResponseEntity<CallbackResponse> response = documentController.generateGrant(callbackRequest);
+
+        verify(finalWillValidationRule).validate(callbackRequest);
+
+        verify(documentGeneratorService).getDocument(
+                callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT);
+
+        verify(pdfManagementService).generateAndUpload(
+                callbackRequest, DocumentType.GRANT_COVER);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+    }
+
+    @Test
+    void shouldCallValidateFinalWillForGrantReissue() throws NotificationClientException {
+        CaseData caseData = CaseData.builder()
+                .caseType("gop")
+                .build();
+
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(eventValidationService.validateBulkPrintResponse(
+                any(), any()))
+                .thenReturn(CallbackResponse.builder()
+                        .errors(new ArrayList<>())
+                        .build());
+
+        uk.gov.hmcts.probate.model.ccd.raw.Document grantDocument =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.Document.class);
+        uk.gov.hmcts.probate.model.ccd.raw.Document coverSheet =
+                mock(uk.gov.hmcts.probate.model.ccd.raw.Document.class);
+        CallbackResponse expectedResponse = CallbackResponse.builder()
+                .errors(new ArrayList<>())
+                .build();
+
+        when(documentGeneratorService.generateGrantReissue(
+                callbackRequest,
+                DocumentStatus.FINAL,
+                Optional.of(DocumentIssueType.REISSUE)))
+                .thenReturn(grantDocument);
+
+        when(documentGeneratorService.generateCoversheet(callbackRequest))
+                .thenReturn(coverSheet);
+
+        when(userInfoService.getCaseworkerInfo())
+                .thenReturn(Optional.empty());
+
+        when(callbackResponseTransformer.addDocuments(
+                eq(callbackRequest),
+                anyList(),
+                isNull(),
+                any(),
+                eq(Optional.empty())))
+                .thenReturn(expectedResponse);
+
+        final ResponseEntity<CallbackResponse> response = documentController.generateGrantReissue(callbackRequest);
+
+        verify(finalWillValidationRule).validate(callbackRequest);
+
+        verify(documentGeneratorService).generateGrantReissue(
+                callbackRequest,
+                DocumentStatus.FINAL,
+                Optional.of(DocumentIssueType.REISSUE));
+
+        verify(documentGeneratorService).generateCoversheet(callbackRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+    }
+
 }

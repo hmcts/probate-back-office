@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
@@ -57,6 +58,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
@@ -616,6 +618,10 @@ class CallbackResponseTransformerTest {
     private AmendCaseDetailsForAwaitingDocumentation amendCaseDetailsForAwaitingDocumentation;
     @Mock
     private RegistryDetailsService registryDetailsService;
+    @Mock
+    private ReviewFinalWillSwitchDefaulter reviewFinalWillSwitchDefaulter;
+    @Mock
+    private EvidenceUploadService evidenceUploadService;
 
     @Mock
     private Clock clock;
@@ -5976,11 +5982,59 @@ class CallbackResponseTransformerTest {
 
     @Test
     void testDefaultHasValidMatches() {
-        when(hasValidMatchesDefaulter.defaultHasValidMatches(caseDataBuilder.build())).thenReturn(YES);
-        CallbackResponse callbackResponse = underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
+        CaseData caseData = caseDataBuilder.build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(hasValidMatchesDefaulter.defaultHasValidMatches(caseData))
+                .thenReturn(YES);
+        when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
+                .thenReturn(NO);
+        when(evidenceUploadService.countWillDocuments(caseData))
+                .thenReturn(0L);
+
+        CallbackResponse callbackResponse =
+                underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
 
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
+        assertEquals(NO, callbackResponse.getData().getReviewFinalWillSwitch());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "0, No",
+        "1, No",
+        "2, Yes"
+    })
+    void shouldSetFinalWillReviewBasedOnWillCount(long willCount, String expectedReviewSwitch) {
+        CaseData caseData = caseDataBuilder.build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(evidenceUploadService.countWillDocuments(caseData))
+                .thenReturn(willCount);
+        when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
+                .thenReturn(expectedReviewSwitch);
+
+        CallbackResponse response =
+                underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
+
+        assertEquals(expectedReviewSwitch, response.getData().getReviewFinalWillSwitch());
+    }
+
+    @Test
+    void shouldSkipFinalWillReviewWhenOneOfMultipleWillsIsAlreadyFinal() {
+        CaseData caseData = caseDataBuilder.build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(evidenceUploadService.countWillDocuments(caseData))
+                .thenReturn(2L);
+        when(reviewFinalWillSwitchDefaulter.defaultReviewFinalWillSwitch(caseData))
+                .thenReturn(NO);
+
+        CallbackResponse response =
+                underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
+
+        assertEquals(NO, response.getData().getReviewFinalWillSwitch());
     }
 
     @Test
