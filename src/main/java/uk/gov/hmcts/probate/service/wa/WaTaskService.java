@@ -20,7 +20,17 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -236,32 +246,17 @@ public class WaTaskService {
                 caseDataContentFunction,
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
     }
+
     public void cancelCreateChangeStateEvent(CallbackRequest callbackRequest) {
-        log.info("Canceling create change state event for case id {}", callbackRequest.getCaseDetails().getId());
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
-                startEventResponse ->
-                        CaseDataContent.builder()
-                                .event(Event.builder()
-                                        .id(startEventResponse.getEventId())
-                                        .build())
-                                .eventToken(startEventResponse.getToken())
-                                .data(startEventResponse.getCaseDetails().getData())
-                                .build();
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CANCEL_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
         log.info("Terminated existing task for case id {}",
                 callbackRequest.getCaseDetails().getId());
+        triggerEvent(callbackRequest.getCaseDetails(), CANCEL_CHANGE_STATE);
 
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CREATE_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
         log.info("Created new task for case id {}",
                 callbackRequest.getCaseDetails().getId());
+        triggerEvent(callbackRequest.getCaseDetails(), CREATE_CHANGE_STATE);
     }
+
     public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
                                                  EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
