@@ -328,9 +328,16 @@ public class WaTaskService {
                               final TaskTypes taskType) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
-        String createTask = existingTasks.contains(taskType.getValue()) ? NO : YES;
-        log.info("case id {}: taskType {} to create {}",
+
+        boolean taskPresent = existingTasks.stream()
+                .flatMap(existingTask -> TaskTypes.getCaseType(existingTask).stream())
+                .map(TaskTypes::getCaseType)
+                .anyMatch(caseType -> caseType.equals(taskType.getCaseType()));
+
+        String createTask = taskPresent ? NO : YES;
+        log.info("case id {}: casetype {} taskType {} to create {}",
                 caseDetails.getId(),
+                taskType.getCaseType(),
                 taskType.getValue(),
                 createTask);
 

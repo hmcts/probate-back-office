@@ -205,7 +205,12 @@ public enum TaskTypes {
                 .findFirst();
     }
 
-
+    public static Optional<TaskTypes> getCaseType(String taskType) {
+        return Arrays.stream(values())
+                .filter(task -> task.getCaseType() != null)
+                .filter(taskTypes -> taskTypes.getValue().equals(taskType))
+                .findAny();
+    }
 
     public Optional<EventId> getOptionalClosingEventId() {
         return Optional.ofNullable(closingEventId);
