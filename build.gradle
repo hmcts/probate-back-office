@@ -180,7 +180,7 @@ def versions = [
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.23.0',
         jsoup                           : '1.24.1',
-        launchdarkly                    : '7.18.0',
+        launchdarkly                    : '7.18.1',
         lifeEventsClientVersion         : '1.7.0',
         lombok                          : '1.18.48',
         mapStruct                       : '1.2.0.Final',
@@ -193,7 +193,7 @@ def versions = [
         serviceAuthVersion              : '6.1.2',
         springBootVersion               : '4.1.2',
         springDocOpenUi                 : '3.1.1',
-        swaggerAnnotations              : '2.2.55',
+        swaggerAnnotations              : '2.2.56',
         camunda                         : '7.24.0'
 ]
 
@@ -290,7 +290,7 @@ dependencies {
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.5'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.30.2'
-  implementation group: 'org.commonmark', name: 'commonmark', version: '0.32.0'
+  implementation group: 'org.commonmark', name: 'commonmark', version: '0.33.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
