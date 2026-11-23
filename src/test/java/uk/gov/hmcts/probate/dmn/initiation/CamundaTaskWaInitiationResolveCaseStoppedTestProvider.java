@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REDECLARAT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_STOP_CASE_FOR_CASE_MATCHING_FOR_EXAMINING;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_STOP_CASE_FOR_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_STOP_CASE_FOR_REGISTRAR_ESCALATIONS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CITIZEN_HUB_RESPONSE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.GOP_CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
@@ -94,7 +94,7 @@ public class CamundaTaskWaInitiationResolveCaseStoppedTestProvider implements Ar
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, "", false, Collections.emptyList(), false),
                         List.of(resolveStoppedCaseTaskAttributes)
@@ -340,25 +340,25 @@ public class CamundaTaskWaInitiationResolveCaseStoppedTestProvider implements Ar
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, GOP_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, ADMON_WILL_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, INTESTACY_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(resolveStoppedCaseTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_STOPPED_STATE,
                         additionalData(false, AD_COLLIGENDA_BONA_CASE_TYPE, false, Collections.emptyList(), false),
                         List.of(resolveStoppedCaseTaskAttributes)

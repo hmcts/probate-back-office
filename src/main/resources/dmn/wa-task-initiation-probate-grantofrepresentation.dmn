@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -23,10 +23,10 @@
           </text>
         </inputExpression>
       </input>
-      <input id="InputClause_0bam1nc" label="evidenceHandledPresent">
-        <inputExpression id="LiteralExpression_1qsjajj" typeRef="boolean">
+      <input id="InputClause_1maphet" label="evidenceHandledPresent">
+        <inputExpression id="LiteralExpression_0jtdz1c" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
-              additionalData.Data.evidenceHandled != null) then true else false
+            additionalData.Data.evidenceHandled != null) then true else false
           </text>
         </inputExpression>
       </input>
@@ -88,7 +88,7 @@ else false</text>
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"applyforGrantPaperApplicationMan","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"applyforGrantPaperApplicationMan","boResolveStop","createChangeState","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -96,7 +96,7 @@ else false</text>
         <inputEntry id="UnaryTests_0izdcb4">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_16t9h7y">
+        <inputEntry id="UnaryTests_0w8q3xp">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
@@ -143,7 +143,7 @@ else false</text>
         <inputEntry id="UnaryTests_1df32yk">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0tzs9ft">
+        <inputEntry id="UnaryTests_1mptrxn">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ouuxmc">
@@ -182,7 +182,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0p8qcwb">
         <inputEntry id="UnaryTests_0r4ctab">
-          <text>"applyforGrantPaperApplicationMan","createCaseFromBulkScan",  "boResolveStop", "resolveCWEscalation", "changeState", "solicitorPaymentSuccessCase", "createCase", "createCasePaymentSuccess", "paymentSuccessApp", "serviceRequestPaymentSuccess"</text>
+          <text>"applyforGrantPaperApplicationMan","createCaseFromBulkScan", "boResolveStop", "resolveCWEscalation", "createChangeState", "solicitorPaymentSuccessCase", "createCase", "createCasePaymentSuccess", "paymentSuccessApp", "serviceRequestPaymentSuccess"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0sywdbi">
           <text>"CasePrinted"</text>
@@ -190,7 +190,7 @@ else false</text>
         <inputEntry id="UnaryTests_0g8530j">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_037y9x0">
+        <inputEntry id="UnaryTests_1ck17r2">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qkrz9q">
@@ -237,7 +237,7 @@ else false</text>
         <inputEntry id="UnaryTests_0ss9g8v">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_13hjrmu">
+        <inputEntry id="UnaryTests_17b79w5">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1pvpcjl">
@@ -276,7 +276,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1cnacr3">
         <inputEntry id="UnaryTests_1d1fivb">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1kl157u">
           <text>"BOReadyToIssue"</text>
@@ -284,7 +284,7 @@ else false</text>
         <inputEntry id="UnaryTests_0fxnaat">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1gmzx54">
+        <inputEntry id="UnaryTests_14xagpb">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_14qsrho">
@@ -323,7 +323,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_windrush_scheme">
         <inputEntry id="UnaryTests_windrush_event">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_windrush_state">
           <text>"BOReadyToIssue"</text>
@@ -331,7 +331,7 @@ else false</text>
         <inputEntry id="UnaryTests_windrush_evidence">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1l7z0k0">
+        <inputEntry id="UnaryTests_1nmleec">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_windrush_case_type">
@@ -370,7 +370,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ai19yd">
         <inputEntry id="UnaryTests_0vo16wg">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1liallg">
           <text>"BOReadyToIssue"</text>
@@ -378,7 +378,7 @@ else false</text>
         <inputEntry id="UnaryTests_0rly34i">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1mgocvb">
+        <inputEntry id="UnaryTests_01rdayw">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1sc4jza">
@@ -417,7 +417,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1b7npsg">
         <inputEntry id="UnaryTests_05xytyt">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1joj0y6">
           <text>"BOReadyToIssue"</text>
@@ -425,7 +425,7 @@ else false</text>
         <inputEntry id="UnaryTests_11umok7">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_11r6amk">
+        <inputEntry id="UnaryTests_0yi7mye">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1l1nfi1">
@@ -464,7 +464,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1dwwg1o">
         <inputEntry id="UnaryTests_0eks54i">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1b6lwai">
           <text>"BOReadyToIssue"</text>
@@ -472,7 +472,7 @@ else false</text>
         <inputEntry id="UnaryTests_1nfoodn">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_014k0er">
+        <inputEntry id="UnaryTests_17ry3qd">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ziutlp">
@@ -511,7 +511,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0colqyu">
         <inputEntry id="UnaryTests_1u72lqq">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0p4er5q">
           <text>"BOReadyToIssue"</text>
@@ -519,7 +519,7 @@ else false</text>
         <inputEntry id="UnaryTests_1lzzzfg">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0eeogfg">
+        <inputEntry id="UnaryTests_05axdka">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_01dko8w">
@@ -558,7 +558,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1a2fdh1">
         <inputEntry id="UnaryTests_1o3rl48">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1b1ipy9">
           <text>"BOReadyToIssue"</text>
@@ -566,7 +566,7 @@ else false</text>
         <inputEntry id="UnaryTests_0i7o2l6">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ebiwv6">
+        <inputEntry id="UnaryTests_0jnoqy1">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_01kwg85">
@@ -605,7 +605,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_08pps6u">
         <inputEntry id="UnaryTests_1yyaki0">
-          <text>"applyforGrantPaperApplicationMan",  "boResolveStop", "resolveCWEscalation", "changeState", "createCaseFromBulkScan"</text>
+          <text>"applyforGrantPaperApplicationMan",  "boResolveStop", "resolveCWEscalation", "createChangeState", "createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_06lwi0h">
           <text>"CasePrinted"</text>
@@ -613,7 +613,7 @@ else false</text>
         <inputEntry id="UnaryTests_0kjp3x1">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1et3bed">
+        <inputEntry id="UnaryTests_1wm2a93">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pm8adb">
@@ -660,7 +660,7 @@ else false</text>
         <inputEntry id="UnaryTests_0etiqu3">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0olq042">
+        <inputEntry id="UnaryTests_1i5px9i">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1h1n1ph">
@@ -699,7 +699,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0cn884k">
         <inputEntry id="UnaryTests_1jkenqv">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0kdbpd5">
           <text>"CasePrinted"</text>
@@ -707,7 +707,7 @@ else false</text>
         <inputEntry id="UnaryTests_08kwvmy">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1xxorjj">
+        <inputEntry id="UnaryTests_0ys8zbi">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_13kcry6">
@@ -793,7 +793,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1marxds">
         <inputEntry id="UnaryTests_1grawlz">
-          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+          <text>"createChangeState","resolveCWEscalation","boResolveStop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_07mmfig">
           <text>"BOReadyToIssue"</text>
@@ -801,7 +801,7 @@ else false</text>
         <inputEntry id="UnaryTests_0el2yzx">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_051ysn3">
+        <inputEntry id="UnaryTests_0mqbzsx">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_078n53k">
@@ -887,7 +887,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1k5wuqk">
         <inputEntry id="UnaryTests_0fl8lid">
-          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+          <text>"createChangeState","resolveCWEscalation","boResolveStop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0rlvdc0">
           <text>"BOReadyToIssue"</text>
@@ -895,7 +895,7 @@ else false</text>
         <inputEntry id="UnaryTests_192uq3u">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1knxb0j">
+        <inputEntry id="UnaryTests_0g932xz">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_06a7mrf">
@@ -981,7 +981,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_083or61">
         <inputEntry id="UnaryTests_0zfmp90">
-          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+          <text>"createChangeState","resolveCWEscalation","boResolveStop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1uel20n">
           <text>"BOReadyToIssue"</text>
@@ -989,7 +989,7 @@ else false</text>
         <inputEntry id="UnaryTests_0flnw1j">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1vubyr9">
+        <inputEntry id="UnaryTests_1fqrd3e">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_05jds0c">
@@ -1075,7 +1075,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0nc7hia">
         <inputEntry id="UnaryTests_054i6zs">
-          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+          <text>"createChangeState","resolveCWEscalation","boResolveStop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1et0f1l">
           <text>"BOReadyToIssue"</text>
@@ -1083,7 +1083,7 @@ else false</text>
         <inputEntry id="UnaryTests_1fyn0ej">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0jps49w">
+        <inputEntry id="UnaryTests_0k14xk7">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ozmtlk">
@@ -1169,7 +1169,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0rj0v11">
         <inputEntry id="UnaryTests_16le5bf">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1nsuetp">
           <text>"BOReadyToIssue"</text>
@@ -1177,7 +1177,7 @@ else false</text>
         <inputEntry id="UnaryTests_0caq0cj">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0qpzfqw">
+        <inputEntry id="UnaryTests_0fmjs0c">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1i7dgxz">
@@ -1216,7 +1216,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0kb0g67">
         <inputEntry id="UnaryTests_1guyfb6">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1xqt0ca">
           <text>"BOReadyToIssue"</text>
@@ -1224,7 +1224,7 @@ else false</text>
         <inputEntry id="UnaryTests_0xy1w4c">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_05vxetw">
+        <inputEntry id="UnaryTests_0mgul57">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1yl5jqj">
@@ -1263,7 +1263,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0x3pr17">
         <inputEntry id="UnaryTests_11kdb8w">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_00xay44">
           <text>"BOReadyToIssue"</text>
@@ -1271,7 +1271,7 @@ else false</text>
         <inputEntry id="UnaryTests_0fifzlm">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_11xjns3">
+        <inputEntry id="UnaryTests_1xjpuh2">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vixtid">
@@ -1310,7 +1310,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1wt1eed">
         <inputEntry id="UnaryTests_065n100">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0p6qpqn">
           <text>"BOReadyToIssue"</text>
@@ -1318,7 +1318,7 @@ else false</text>
         <inputEntry id="UnaryTests_0i6fjz2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1yqcriy">
+        <inputEntry id="UnaryTests_05t3z3k">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1l88d3z">
@@ -1357,7 +1357,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1deznxl">
         <inputEntry id="UnaryTests_09bwbqq">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0tcr8ml">
           <text>"BOReadyToIssue"</text>
@@ -1365,7 +1365,7 @@ else false</text>
         <inputEntry id="UnaryTests_0mk7ygn">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1qvqtvh">
+        <inputEntry id="UnaryTests_0ttonn4">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0wi2wlh">
@@ -1404,7 +1404,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_03v8h5s">
         <inputEntry id="UnaryTests_163j56d">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_13aa0j4">
           <text>"CasePrinted"</text>
@@ -1412,7 +1412,7 @@ else false</text>
         <inputEntry id="UnaryTests_0bsrtz6">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_068hw5z">
+        <inputEntry id="UnaryTests_19kg92b">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0n535da">
@@ -1451,7 +1451,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_section_116">
         <inputEntry id="UnaryTests_section_116_event">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_section_116_state">
           <text>"BOReadyToIssue"</text>
@@ -1459,7 +1459,7 @@ else false</text>
         <inputEntry id="UnaryTests_section_116_evidence">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0126005">
+        <inputEntry id="UnaryTests_0lw5svv">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_section_116_case_type">
@@ -1498,7 +1498,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_power_of_attorney">
         <inputEntry id="UnaryTests_power_of_attorney_event">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_power_of_attorney_state">
           <text>"BOReadyToIssue"</text>
@@ -1506,7 +1506,7 @@ else false</text>
         <inputEntry id="UnaryTests_power_of_attorney_evidence">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0lsingb">
+        <inputEntry id="UnaryTests_0syfkco">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_power_of_attorney_case_type">
@@ -1545,7 +1545,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_reseal_foreign_grant">
         <inputEntry id="UnaryTests_reseal_foreign_grant_event">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_reseal_foreign_grant_state">
           <text>"BOReadyToIssue"</text>
@@ -1553,7 +1553,7 @@ else false</text>
         <inputEntry id="UnaryTests_reseal_foreign_grant_evidence">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_199jqj7">
+        <inputEntry id="UnaryTests_0laf81c">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_reseal_foreign_grant_case_type">
@@ -1592,7 +1592,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_infected_blood_interim_scheme">
         <inputEntry id="UnaryTests_infected_blood_interim_event">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_infected_blood_interim_state">
           <text>"BOReadyToIssue"</text>
@@ -1600,7 +1600,7 @@ else false</text>
         <inputEntry id="UnaryTests_infected_blood_interim_evidence">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_06stmmd">
+        <inputEntry id="UnaryTests_0zlohn1">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_infected_blood_interim_case_type">
@@ -1647,7 +1647,7 @@ else false</text>
         <inputEntry id="UnaryTests_1jkuo9x">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0aro3fz">
+        <inputEntry id="UnaryTests_06pn6xt">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0we171j">
@@ -1694,7 +1694,7 @@ else false</text>
         <inputEntry id="UnaryTests_1c3pfxz">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1m7b8yv">
+        <inputEntry id="UnaryTests_1wi5rua">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dkfyhu">
@@ -1741,7 +1741,7 @@ else false</text>
         <inputEntry id="UnaryTests_1aoxnbd">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1j4rkmv">
+        <inputEntry id="UnaryTests_1y3s1iw">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_18me3up">
@@ -1788,7 +1788,7 @@ else false</text>
         <inputEntry id="UnaryTests_0bb75ir">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_09x8bn1">
+        <inputEntry id="UnaryTests_0rt0gxo">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bre07i">
@@ -1835,7 +1835,7 @@ else false</text>
         <inputEntry id="UnaryTests_1w2yghs">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0w8e29o">
+        <inputEntry id="UnaryTests_10l8jsy">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1xtf8ay">
@@ -1882,7 +1882,7 @@ else false</text>
         <inputEntry id="UnaryTests_08tkt45">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0pslap5">
+        <inputEntry id="UnaryTests_04nz7al">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0m8ey4e">
@@ -1929,7 +1929,7 @@ else false</text>
         <inputEntry id="UnaryTests_1r78gbh">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_06pm2re">
+        <inputEntry id="UnaryTests_110kbrr">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0xvnmkh">
@@ -1976,7 +1976,7 @@ else false</text>
         <inputEntry id="UnaryTests_1itp299">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1f6bbfw">
+        <inputEntry id="UnaryTests_11xool6">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1e79uis">
@@ -2015,7 +2015,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_14tadjt">
         <inputEntry id="UnaryTests_120do6g">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0in5ala">
           <text>"CasePrinted"</text>
@@ -2023,7 +2023,7 @@ else false</text>
         <inputEntry id="UnaryTests_184oe3q">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0uiwfq4">
+        <inputEntry id="UnaryTests_1w2v840">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hnt0fw">
@@ -2062,7 +2062,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_10tpe4b">
         <inputEntry id="UnaryTests_16c2wl0">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1o5z3dy">
           <text>"CasePrinted"</text>
@@ -2070,7 +2070,7 @@ else false</text>
         <inputEntry id="UnaryTests_194vk72">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0v1f5vu">
+        <inputEntry id="UnaryTests_0ryq0mu">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_13loy1v">
@@ -2109,7 +2109,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_06lgf5u">
         <inputEntry id="UnaryTests_1afw4ri">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0xyfxxn">
           <text>"CasePrinted"</text>
@@ -2117,7 +2117,7 @@ else false</text>
         <inputEntry id="UnaryTests_135osnt">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0qopz7y">
+        <inputEntry id="UnaryTests_0fum8io">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_15fsjtb">
@@ -2156,7 +2156,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1u1czbf">
         <inputEntry id="UnaryTests_19pgxd6">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0o4f4o7">
           <text>"CasePrinted"</text>
@@ -2164,7 +2164,7 @@ else false</text>
         <inputEntry id="UnaryTests_12mdp0b">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_12gorpf">
+        <inputEntry id="UnaryTests_19nvw4b">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1kb98kb">
@@ -2203,7 +2203,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_08fjjak">
         <inputEntry id="UnaryTests_0fh35m8">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_18jvqcu">
           <text>"CasePrinted"</text>
@@ -2211,7 +2211,7 @@ else false</text>
         <inputEntry id="UnaryTests_03jgbqq">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1qbs4qc">
+        <inputEntry id="UnaryTests_165j3l2">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0buyko1">
@@ -2250,7 +2250,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_02a3ezc">
         <inputEntry id="UnaryTests_19y5fxh">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vqddoy">
           <text>"CasePrinted"</text>
@@ -2258,7 +2258,7 @@ else false</text>
         <inputEntry id="UnaryTests_08shol9">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_00ndehf">
+        <inputEntry id="UnaryTests_0q71aeg">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_14pe65i">
@@ -2297,7 +2297,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0tqyr5k">
         <inputEntry id="UnaryTests_0v2vjan">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_06njgtw">
           <text>"BOReadyToIssue"</text>
@@ -2305,7 +2305,7 @@ else false</text>
         <inputEntry id="UnaryTests_0wenhe2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0uha2ur">
+        <inputEntry id="UnaryTests_0xihpni">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hhgm7m">
@@ -2344,7 +2344,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1w3s77o">
         <inputEntry id="UnaryTests_156a63j">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0huo3fy">
           <text>"BOReadyToIssue"</text>
@@ -2391,7 +2391,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1pw5gel">
         <inputEntry id="UnaryTests_0ldlrce">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0saay3m">
           <text>"BOReadyToIssue"</text>
@@ -2399,7 +2399,7 @@ else false</text>
         <inputEntry id="UnaryTests_1j8d5n8">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ey8jzs">
+        <inputEntry id="UnaryTests_0qzehat">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1on6ich">
@@ -2438,7 +2438,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1p5p0g6">
         <inputEntry id="UnaryTests_1fdoy84">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pd0znd">
           <text>"CasePrinted"</text>
@@ -2446,7 +2446,7 @@ else false</text>
         <inputEntry id="UnaryTests_08mfpjb">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1fj40c4">
+        <inputEntry id="UnaryTests_0wttf3y">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_085m0rl">
@@ -2485,7 +2485,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1adg5jb">
         <inputEntry id="UnaryTests_1ru0ni9">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0lg9i1y">
           <text>"CasePrinted"</text>
@@ -2493,7 +2493,7 @@ else false</text>
         <inputEntry id="UnaryTests_1exo9bt">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ds85sm">
+        <inputEntry id="UnaryTests_123hjni">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1blctrz">
@@ -2540,7 +2540,7 @@ else false</text>
         <inputEntry id="UnaryTests_1qu23gv">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1lep7ti">
+        <inputEntry id="UnaryTests_1k6g198">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bkzt4b">
@@ -2579,7 +2579,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1yhws0a">
         <inputEntry id="UnaryTests_19r9bpl">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_08axx9n">
           <text>"CasePrinted"</text>
@@ -2587,7 +2587,7 @@ else false</text>
         <inputEntry id="UnaryTests_0kgnnlt">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_02v9ebw">
+        <inputEntry id="UnaryTests_1mn48a3">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vidh4d">
@@ -2626,7 +2626,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_04u430i">
         <inputEntry id="UnaryTests_1aucwwp">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0gaa8zi">
           <text>"CasePrinted"</text>
@@ -2634,7 +2634,7 @@ else false</text>
         <inputEntry id="UnaryTests_0dw60px">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1y5gn41">
+        <inputEntry id="UnaryTests_16245nf">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_11sk3yk">
@@ -2673,7 +2673,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_11buehx">
         <inputEntry id="UnaryTests_0fd11jt">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1fy8yhf">
           <text>"CasePrinted"</text>
@@ -2681,7 +2681,7 @@ else false</text>
         <inputEntry id="UnaryTests_0uz4cl2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0xjakdk">
+        <inputEntry id="UnaryTests_1db8bx1">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0btnxur">
@@ -2720,7 +2720,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1svcxji">
         <inputEntry id="UnaryTests_1q5xsat">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0be4w2m">
           <text>"CasePrinted"</text>
@@ -2728,7 +2728,7 @@ else false</text>
         <inputEntry id="UnaryTests_1bt7uot">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0ha2dxe">
+        <inputEntry id="UnaryTests_1htl4om">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uzn4tq">
@@ -2767,7 +2767,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1expmii">
         <inputEntry id="UnaryTests_08t4je7">
-          <text> "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_19p1nbg">
           <text>"CasePrinted"</text>
@@ -2775,7 +2775,7 @@ else false</text>
         <inputEntry id="UnaryTests_1nskecl">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1e8wn8u">
+        <inputEntry id="UnaryTests_1m9g3sr">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ucqz9d">
@@ -2814,7 +2814,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1wb6eqa">
         <inputEntry id="UnaryTests_00njnnz">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_17akavn">
           <text>"CasePrinted"</text>
@@ -2822,7 +2822,7 @@ else false</text>
         <inputEntry id="UnaryTests_1koesjn">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0wymyaw">
+        <inputEntry id="UnaryTests_0vbysds">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gy7ji5">
@@ -2861,7 +2861,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_10v46rz">
         <inputEntry id="UnaryTests_1w0ji92">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_00dgyfh">
           <text>"CasePrinted"</text>
@@ -2869,7 +2869,7 @@ else false</text>
         <inputEntry id="UnaryTests_0tszm4k">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0rc94z8">
+        <inputEntry id="UnaryTests_1q9wvpw">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1j1qtwq">
@@ -2908,7 +2908,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0bidsq3">
         <inputEntry id="UnaryTests_0ave5me">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1fr6qny">
           <text>"CasePrinted"</text>
@@ -2916,7 +2916,7 @@ else false</text>
         <inputEntry id="UnaryTests_1f8uscg">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ntdji2">
+        <inputEntry id="UnaryTests_1h89ih3">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1msigww">
@@ -2955,7 +2955,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_19cnaez">
         <inputEntry id="UnaryTests_1536eay">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_08n3ds2">
           <text>"CasePrinted"</text>
@@ -2963,7 +2963,7 @@ else false</text>
         <inputEntry id="UnaryTests_19sh64n">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ptpeg0">
+        <inputEntry id="UnaryTests_1ymjnak">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1obyqni">
@@ -3002,7 +3002,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0iknswr">
         <inputEntry id="UnaryTests_1e6zqjh">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_09ubkq2">
           <text>"BOReadyToIssue"</text>
@@ -3010,7 +3010,7 @@ else false</text>
         <inputEntry id="UnaryTests_0vjdb0u">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_15sd411">
+        <inputEntry id="UnaryTests_14ph6bq">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uavz67">
@@ -3049,7 +3049,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0ee1zen">
         <inputEntry id="UnaryTests_10xiljl">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_03n7zwz">
           <text>"CasePrinted"</text>
@@ -3057,7 +3057,7 @@ else false</text>
         <inputEntry id="UnaryTests_1ecw4uw">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_161benb">
+        <inputEntry id="UnaryTests_0jcbuhq">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1i2jub4">
@@ -3096,7 +3096,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ate6dk">
         <inputEntry id="UnaryTests_05ymew6">
-          <text>"serviceRequestPaymentSuccess", "boResolveStop", "resolveCWEscalation", "changeState", "solicitorPaymentSuccessCase"</text>
+          <text>"serviceRequestPaymentSuccess", "boResolveStop", "resolveCWEscalation", "createChangeState", "solicitorPaymentSuccessCase"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vbvspz">
           <text>"CasePrinted"</text>
@@ -3104,7 +3104,7 @@ else false</text>
         <inputEntry id="UnaryTests_1bljggu">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_07759g0">
+        <inputEntry id="UnaryTests_02i1f64">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1k006h1">
@@ -3141,9 +3141,56 @@ else false</text>
           <text>"case progression,handOffs"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_16dqo2s">
+        <inputEntry id="UnaryTests_1hxtp8a">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_135jusv">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fgn6ee">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1blhdrk">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hwf7rj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wt49fo">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nc5ycj">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "TrustCorporation")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10ng0s7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11pvyqd">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ythr4q">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0583aap">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0drv2bv">
+          <text>"ExamineTrustCorporationCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l6ni7p">
+          <text>"Examine - Trust Corporation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x22uui">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kadsf7">
+          <text>"case progression,casePrintedHandOffs"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0kewu5p">
         <inputEntry id="UnaryTests_1sd8e9v">
-          <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "solicitorPaymentSuccessCase", "applyforGrantPaperApplicationMan", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "solicitorPaymentSuccessCase", "applyforGrantPaperApplicationMan",  "boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0d76wix">
           <text>"CasePrinted"</text>
@@ -3151,7 +3198,7 @@ else false</text>
         <inputEntry id="UnaryTests_0m8q56t">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0pjvm6e">
+        <inputEntry id="UnaryTests_1pvf3mg">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0x13y9z">
@@ -3190,7 +3237,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0phl3xd">
         <inputEntry id="UnaryTests_0vuho2y">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1mx1wbn">
           <text>"BOReadyToIssue"</text>
@@ -3237,7 +3284,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_037numm">
         <inputEntry id="UnaryTests_0kmmgfd">
-          <text>"boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"boResolveStop", "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0yggc5t">
           <text>"BOReadyToIssue"</text>
@@ -3425,7 +3472,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0vr8sci">
         <inputEntry id="UnaryTests_0rue9wy">
-          <text>"boResolveStop", "resolveCWEscalation","changeState","serviceRequestPaymentSuccess","solicitorPaymentSuccessCase"</text>
+          <text>"boResolveStop", "resolveCWEscalation","createChangeState","serviceRequestPaymentSuccess","solicitorPaymentSuccessCase"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ftm8hl">
           <text>"CasePrinted"</text>
@@ -3519,7 +3566,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0zjaely">
         <inputEntry id="UnaryTests_1gsp9qs">
-          <text>"registrarsDecision","changeState"</text>
+          <text>"registrarsDecision","createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0195lp4">
           <text>"BORegistrarEscalation"</text>
@@ -3566,7 +3613,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1fh8uzc">
         <inputEntry id="UnaryTests_0ywopwy">
-          <text>"boRedeclarationSoTForCaseStopped",  "resolveCWEscalation", "changeState"</text>
+          <text>"boRedeclarationSoTForCaseStopped",  "resolveCWEscalation", "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1q2k827">
           <text>"BOCaseStoppedAwaitRedec"</text>
@@ -3613,7 +3660,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0765g2w">
         <inputEntry id="UnaryTests_0ydtqnf">
-          <text>"citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","changeState","boWithdrawForRedeclarationSOT"</text>
+          <text>"citizenHubResponse","boRedeclarationComplete","boStopCaseForCaseMatchingForExamining","boStopCaseForRegistrarEscalations","boStopCaseForCasePrinted","createChangeState","boWithdrawForRedeclarationSOT"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cu0lxp">
           <text>"BOCaseStopped"</text>
@@ -3895,7 +3942,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_03cfali">
         <inputEntry id="UnaryTests_0hnhp6k">
-          <text>"changeState"</text>
+          <text> "createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ob66vl">
           <text>"BORedecNotificationSent"</text>
@@ -3989,7 +4036,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1are5lv">
         <inputEntry id="UnaryTests_14w4jrc">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0n8vyit">
           <text>"BOSotGenerated"</text>
@@ -4036,7 +4083,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1nj4xan">
         <inputEntry id="UnaryTests_0sv3m38">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0sauflt">
           <text>"BORegistrarEscalation"</text>
@@ -4083,7 +4130,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0z5t0c0">
         <inputEntry id="UnaryTests_140tkho">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0lu847x">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4130,7 +4177,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_02n9poj">
         <inputEntry id="UnaryTests_01x1qhg">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_107tf2o">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4177,7 +4224,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0tipfq6">
         <inputEntry id="UnaryTests_1pzn733">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_06drs9d">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4224,7 +4271,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0m48yti">
         <inputEntry id="UnaryTests_00oqk3f">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ycgwpg">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4271,7 +4318,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0bf2wd0">
         <inputEntry id="UnaryTests_1rkxmf0">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1h54ppy">
           <text>"BOCaseQA"</text>
@@ -4318,7 +4365,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_13kk9li">
         <inputEntry id="UnaryTests_1sw2jtq">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0u7w7at">
           <text>"BOCaseQA"</text>
@@ -4365,7 +4412,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0yfc4yx">
         <inputEntry id="UnaryTests_1ubvz9r">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ggz1g8">
           <text>"BOCaseQA"</text>
@@ -4412,7 +4459,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0cv6c8o">
         <inputEntry id="UnaryTests_0i36bqo">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0lwj31s">
           <text>"BOCaseQA"</text>
@@ -4459,7 +4506,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_18slgb9">
         <inputEntry id="UnaryTests_14b7vjl">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0yc3d8x">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4506,7 +4553,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1drnbpt">
         <inputEntry id="UnaryTests_1volqxu">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_043ubjt">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4553,7 +4600,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_17s0jeq">
         <inputEntry id="UnaryTests_064r7tn">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1n4zfgj">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4600,7 +4647,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1gbxtvm">
         <inputEntry id="UnaryTests_1n3tv12">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1y76zoq">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4647,7 +4694,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0w7kn4d">
         <inputEntry id="UnaryTests_1eyj13v">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1cq5534">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4694,7 +4741,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_127pb6l">
         <inputEntry id="UnaryTests_11401aw">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_09tyz79">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4741,7 +4788,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_13s9o1z">
         <inputEntry id="UnaryTests_1ghq8c0">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wsqkjj">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4788,7 +4835,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1xo6fxc">
         <inputEntry id="UnaryTests_1vnrojb">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_042k9sl">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4835,7 +4882,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0ctm7i6">
         <inputEntry id="UnaryTests_00tki1f">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_167pb51">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4882,7 +4929,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_09zq7jc">
         <inputEntry id="UnaryTests_1ssu3xy">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1rls2yk">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4929,7 +4976,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0ntp3bx">
         <inputEntry id="UnaryTests_0cmqfzn">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ih959l">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -4976,7 +5023,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1y6lo46">
         <inputEntry id="UnaryTests_0j6lol7">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ktas7c">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5023,7 +5070,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0m5ghfl">
         <inputEntry id="UnaryTests_1v4hl7h">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ttrnuh">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5070,7 +5117,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0abuno1">
         <inputEntry id="UnaryTests_1tg8ozx">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0seownp">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5117,7 +5164,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_022wn07">
         <inputEntry id="UnaryTests_0xrwxcz">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_000vrf1">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5164,7 +5211,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_03hi4w4">
         <inputEntry id="UnaryTests_1l5ykva">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0atbgnr">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5211,7 +5258,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0sh4bf0">
         <inputEntry id="UnaryTests_1c3vecg">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1etb8o3">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5258,7 +5305,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0rterni">
         <inputEntry id="UnaryTests_0p0dth9">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ebc59t">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5305,7 +5352,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_15md796">
         <inputEntry id="UnaryTests_1whk2ap">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0gkm8dk">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5352,7 +5399,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0s3wup1">
         <inputEntry id="UnaryTests_0nfy87h">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gpz82f">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5399,7 +5446,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_15o6xbq">
         <inputEntry id="UnaryTests_0d3xy82">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1tklzio">
           <text>"BOCaseMatchingIssueGrant"</text>
@@ -5446,7 +5493,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0cg4nrd">
         <inputEntry id="UnaryTests_0fye651">
-          <text>"changeState"</text>
+          <text>"createChangeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0iagruz">
           <text>"BOCaseMatchingIssueGrant"</text>
