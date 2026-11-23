@@ -347,7 +347,7 @@ public class WaTaskService {
         List<CollectionMember<HandoffReason>> missingHandOffs = caseDetails.getData().getBoHandoffReasonList().stream()
                 .map(CollectionMember::getValue)
                 .filter(handoffReason -> {
-                    String handOffCode = handoffReason.getCaseHandoffReason().getCode();
+                    String handOffCode = "examine" + handoffReason.getCaseHandoffReason().getCode();
 
                     boolean isRequired = existingTasks.stream()
                             .map(String::toLowerCase)

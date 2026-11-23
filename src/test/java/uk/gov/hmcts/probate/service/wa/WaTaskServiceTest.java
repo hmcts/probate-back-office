@@ -275,7 +275,7 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsRetained() {
+    void shouldNotCloseReadyToIssueTasksWhenCaseIsHandedOffToLegacySiteIsRetained() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")
@@ -298,7 +298,7 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsAdded() {
+    void shouldNotCloseReadyToIssueTasksWhenCaseIsHandedOffToLegacySiteIsAdded() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")
@@ -334,7 +334,7 @@ class WaTaskServiceTest {
 
 
     @Test
-    void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+    void shouldCloseReadyToIssueTasksWhenCaseIsNotHandedOffToLegacySite() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")

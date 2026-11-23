@@ -357,7 +357,7 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldByPassCloseReadyToIssueHandOffs() {
+    void shouldByPassCloseReadyToIssueTasks() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueTasks(
                 clientContext,
@@ -369,7 +369,7 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldInvokeCloseReadyToIssueHandOffs() {
+    void shouldInvokeCloseReadyToIssueTasks() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
@@ -636,7 +636,7 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueHandOffs() {
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueTasks() {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(bindingResult.hasErrors()).thenReturn(true);
