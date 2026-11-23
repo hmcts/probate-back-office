@@ -923,8 +923,7 @@ class WaTaskServiceTest {
         waTaskService.createExamineTasks(
                 callbackRequest,
                 responseCaseData,
-                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType()),
-                waTaskService.casePrintedTask
+                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType())
         );
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
@@ -950,8 +949,7 @@ class WaTaskServiceTest {
         waTaskService.createExamineTasks(
                 callbackRequest,
                 responseCaseData,
-                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType()),
-                waTaskService.casePrintedTask
+                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType())
         );
 
         assertThat(responseCaseData.getCreateTask())
@@ -1032,8 +1030,7 @@ class WaTaskServiceTest {
 
         waTaskService.setCreateHandOffTask(
                 callbackRequest,
-                responseCaseData,
-                waTaskService.casePrintedTask
+                responseCaseData
         );
 
         assertThat(responseCaseData.getCreateTask())
@@ -1065,8 +1062,7 @@ class WaTaskServiceTest {
 
         waTaskService.setCreateHandOffTask(
                 callbackRequest,
-                responseCaseData,
-                waTaskService.casePrintedTask
+                responseCaseData
         );
 
         assertThat(responseCaseData.getCreateTask())

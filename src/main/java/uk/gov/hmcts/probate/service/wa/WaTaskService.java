@@ -72,14 +72,12 @@ public class WaTaskService {
                     (callbackRequest,  responseCaseData) ->
                             createExamineTasks(callbackRequest,
                                     responseCaseData,
-                                    getAwaitingDocIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
-                                    casePrintedTask),
+                                    getAwaitingDocIceTask(callbackRequest.getCaseDetails().getData().getCaseType())),
                     STATE_BO_READY_TO_ISSUE,
                     (callbackRequest, responseCaseData) ->
                             createExamineTasks(callbackRequest,
                                     responseCaseData,
-                                    getReadyToIssueIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
-                                    readyToIssueTask),
+                                    getReadyToIssueIceTask(callbackRequest.getCaseDetails().getData().getCaseType())),
                     STATE_BO_CASE_WORKER_ESCALATION,
                     (callbackRequest, responseCaseData) ->
                             setCreateTask(callbackRequest,
@@ -341,8 +339,7 @@ public class WaTaskService {
 
 
     public void setCreateHandOffTask(final CallbackRequest callbackRequest,
-                                     final ResponseCaseData responseCaseData,
-                                     final UnaryOperator<String> taskNameFormatter) {
+                                     final ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask(NO);
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
@@ -352,11 +349,13 @@ public class WaTaskService {
                 .filter(handoffReason -> {
                     String handOffCode = handoffReason.getCaseHandoffReason().getCode();
 
-                    String requiredHandOffTask = taskNameFormatter.apply(handOffCode);
-                    boolean isRequired = !existingTasks.contains(requiredHandOffTask);
+                    boolean isRequired = existingTasks.stream()
+                            .map(String::toLowerCase)
+                            .noneMatch(taskType -> taskType.contains(handOffCode.toLowerCase()));
+
                     log.info("case id {}: hand off task {} required {}",
                             caseDetails.getId(),
-                            requiredHandOffTask,
+                            handOffCode,
                             isRequired);
                     return isRequired;
                 })
@@ -368,15 +367,14 @@ public class WaTaskService {
 
     public void createExamineTasks(CallbackRequest callbackRequest,
                                    ResponseCaseData responseCaseData,
-                                   Optional<TaskTypes> iceTask,
-                                   UnaryOperator<String> taskNameFormatter) {
+                                   Optional<TaskTypes> iceTask) {
         boolean createIceTask = NO.equals(responseCaseData.getCaseHandedOffToLegacySite());
         if (createIceTask) {
             iceTask.ifPresent(taskType ->
                     setCreateTask(callbackRequest, responseCaseData, taskType)
             );
         } else {
-            setCreateHandOffTask(callbackRequest, responseCaseData, taskNameFormatter);
+            setCreateHandOffTask(callbackRequest, responseCaseData);
         }
     }
 
