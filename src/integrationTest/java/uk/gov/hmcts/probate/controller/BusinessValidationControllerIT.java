@@ -151,6 +151,7 @@ class BusinessValidationControllerIT {
     private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final String REGISTRY_LOCATION = "Oxford";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/default-iht-estate";
@@ -333,7 +334,8 @@ class BusinessValidationControllerIT {
             .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
             .totalFee(TOTAL_FEE)
             .scannedDocuments(SCANNED_DOCUMENTS_LIST)
-            .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID);
+            .moveToCWEscalationUserIdamId(MOVE_TO_CW_ESCALATION_USER_IDAM_ID)
+            .registryLocation(REGISTRY_LOCATION);
 
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");

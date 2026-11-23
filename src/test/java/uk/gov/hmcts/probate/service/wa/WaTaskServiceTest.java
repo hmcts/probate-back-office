@@ -45,6 +45,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -56,6 +57,8 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_FIAT_WILL;
@@ -360,6 +363,64 @@ class WaTaskServiceTest {
                 .thenReturn(CaseData.builder().caseType(caseType).build());
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder().caseType(caseTypeBefore).build());
+    }
+
+    @Test
+    void shouldCancelTaskButNotCreateWhenCreateEventThrows() {
+        Long caseId = 123456789L;
+        when(caseDetails.getId()).thenReturn(caseId);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        doNothing()
+                .doThrow(new RuntimeException("CREATE_CHANGE_STATE event failed"))
+                .when(ccdClientApi).triggerEvent(
+                        eq(caseId.toString()),
+                        any(),
+                        any(),
+                        isA(SecurityDTO.class));
+
+        assertThatThrownBy(() -> waTaskService.cancelCreateChangeStateEvent(callbackRequest))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("CREATE_CHANGE_STATE event failed");
+
+        // cancel fired successfully
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CANCEL_CHANGE_STATE),
+                any(),
+                isA(SecurityDTO.class));
+
+        // create was attempted but threw — task is now cancelled with no replacement
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CREATE_CHANGE_STATE),
+                any(),
+                isA(SecurityDTO.class));
+    }
+
+    @Test
+    void shouldCancelAndCreateChangeStateEvent() {
+        Long caseId = 123456789L;
+        when(caseDetails.getId()).thenReturn(caseId);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
+                .thenReturn(SecurityDTO.builder().build());
+
+        waTaskService.cancelCreateChangeStateEvent(callbackRequest);
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CANCEL_CHANGE_STATE),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class));
+
+        verify(ccdClientApi).triggerEvent(
+                eq(caseId.toString()),
+                eq(CREATE_CHANGE_STATE),
+                functionCaptor.capture(),
+                isA(SecurityDTO.class));
     }
 
     @Test

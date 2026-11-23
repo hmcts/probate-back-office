@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_CASE_PRINTED;
@@ -169,35 +169,35 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
@@ -303,34 +303,34 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true, emptyList(), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalDataNoHandOffList(),
                         emptyList()
@@ -344,35 +344,35 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ), //change state event
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",false,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(true, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
                         List.of(examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         emptyList()
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
+                        CREATE_CHANGE_STATE_EVENT,
                         BO_CASE_MATCHING_ISSUE_GRANT_STATE,
                         additionalData(false, "",true,
                                 emptyList(), false),
