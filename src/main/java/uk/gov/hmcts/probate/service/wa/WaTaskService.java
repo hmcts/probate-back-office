@@ -50,8 +50,6 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_REDECLARATION;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_STOPPED_CASE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.getAwaitingDocIceTask;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.getReadyToIssueIceTask;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.getStateTasks;
 
 @Slf4j
@@ -69,15 +67,9 @@ public class WaTaskService {
     private final Map<String, BiConsumer<CallbackRequest, ResponseCaseData>> createTaskIfRequired =
             Map.of(
                     STATE_CASE_PRINTED,
-                    (callbackRequest,  responseCaseData) ->
-                            createExamineTasks(callbackRequest,
-                                    responseCaseData,
-                                    getAwaitingDocIceTask(callbackRequest.getCaseDetails().getData().getCaseType())),
+                    this::createExamineTasks,
                     STATE_BO_READY_TO_ISSUE,
-                    (callbackRequest, responseCaseData) ->
-                            createExamineTasks(callbackRequest,
-                                    responseCaseData,
-                                    getReadyToIssueIceTask(callbackRequest.getCaseDetails().getData().getCaseType())),
+                    this::createExamineTasks,
                     STATE_BO_CASE_WORKER_ESCALATION,
                     (callbackRequest, responseCaseData) ->
                             setCreateTask(callbackRequest,
@@ -328,17 +320,31 @@ public class WaTaskService {
                               final TaskTypes taskType) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
-
-        boolean taskPresent = existingTasks.stream()
-                .flatMap(existingTask -> TaskTypes.getCaseType(existingTask).stream())
-                .map(TaskTypes::getCaseType)
-                .anyMatch(caseType -> caseType.equals(taskType.getCaseType()));
-
-        String createTask = taskPresent ? NO : YES;
-        log.info("case id {}: casetype {} taskType {} to create {}",
+        String createTask = existingTasks.contains(taskType.getValue()) ? NO : YES;
+        log.info("case id {}: taskType {} to create {}",
                 caseDetails.getId(),
-                taskType.getCaseType(),
                 taskType.getValue(),
+                createTask);
+
+        responseCaseData.setCreateTask(createTask);
+    }
+
+    public void setIceCreateTask(final CallbackRequest callbackRequest,
+                                 final ResponseCaseData responseCaseData) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
+
+        String iceCaseType = callbackRequest.getCaseDetails().getData().getCaseType();
+        String createTask = existingTasks.stream()
+                .map(TaskTypes::getCaseType)
+                .flatMap(Optional::stream)
+                .map(TaskTypes::getCaseType)
+                .anyMatch(caseType -> caseType.equals(iceCaseType))
+                ? NO : YES;
+
+        log.info("case id {}: for casetype {} create task {}",
+                caseDetails.getId(),
+                iceCaseType,
                 createTask);
 
         responseCaseData.setCreateTask(createTask);
@@ -373,13 +379,10 @@ public class WaTaskService {
     }
 
     public void createExamineTasks(CallbackRequest callbackRequest,
-                                   ResponseCaseData responseCaseData,
-                                   Optional<TaskTypes> iceTask) {
+                                   ResponseCaseData responseCaseData) {
         boolean createIceTask = NO.equals(responseCaseData.getCaseHandedOffToLegacySite());
         if (createIceTask) {
-            iceTask.ifPresent(taskType ->
-                    setCreateTask(callbackRequest, responseCaseData, taskType)
-            );
+            setIceCreateTask(callbackRequest, responseCaseData);
         } else {
             setCreateHandOffTask(callbackRequest, responseCaseData);
         }

@@ -52,7 +52,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
@@ -910,6 +909,10 @@ class WaTaskServiceTest {
 
     @Test
     void shouldCreateExamineIceTask() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .build());
         when(caseDetails.getId())
                 .thenReturn(Long.valueOf(caseId));
         when(callbackRequest.getCaseDetails())
@@ -922,8 +925,7 @@ class WaTaskServiceTest {
 
         waTaskService.createExamineTasks(
                 callbackRequest,
-                responseCaseData,
-                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType())
+                responseCaseData
         );
         assertThat(responseCaseData.getCreateTask())
                 .isEqualTo(YES);
@@ -933,6 +935,7 @@ class WaTaskServiceTest {
     void shouldCreateExamineHandOffTask() {
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
+                        .caseType("gop")
                         .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
                                 FOREIGN_DOMICILE)))
                         .build());
@@ -945,11 +948,9 @@ class WaTaskServiceTest {
                 .caseHandedOffToLegacySite(YES)
                 .build();
 
-
         waTaskService.createExamineTasks(
                 callbackRequest,
-                responseCaseData,
-                TaskTypes.getAwaitingDocIceTask(GOP.getCaseType())
+                responseCaseData
         );
 
         assertThat(responseCaseData.getCreateTask())
