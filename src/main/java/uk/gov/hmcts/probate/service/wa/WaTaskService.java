@@ -43,12 +43,10 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
-import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_REDECLARATION;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_STOPPED_CASE;
@@ -296,63 +294,15 @@ public class WaTaskService {
                 eventId,
                 caseDataContentFunction,
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-                    ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                            CLOSE_READY_TO_ISSUE_HANDOFFS,
-                            caseDataContentFunction,
-                            securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-                });
     }
 
     public void cancelCreateChangeStateEvent(CallbackRequest callbackRequest) {
         log.info("Canceling create change state event for case id {}", callbackRequest.getCaseDetails().getId());
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
-                startEventResponse ->
-                        CaseDataContent.builder()
-                                .event(Event.builder()
-                                        .id(startEventResponse.getEventId())
-                                        .build())
-                                .eventToken(startEventResponse.getToken())
-                                .data(startEventResponse.getCaseDetails().getData())
-                                .build();
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CANCEL_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
+        triggerEvent(caseDetails, CANCEL_CHANGE_STATE);
         log.info("Terminated existing task for case id {}",
                 callbackRequest.getCaseDetails().getId());
-
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CREATE_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-        log.info("Created new task for case id {}",
-                callbackRequest.getCaseDetails().getId());
-    }
-
-    public void cancelCreateChangeStateEvent(CallbackRequest callbackRequest) {
-        log.info("Canceling create change state event for case id {}", callbackRequest.getCaseDetails().getId());
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
-                startEventResponse ->
-                        CaseDataContent.builder()
-                                .event(Event.builder()
-                                        .id(startEventResponse.getEventId())
-                                        .build())
-                                .eventToken(startEventResponse.getToken())
-                                .data(startEventResponse.getCaseDetails().getData())
-                                .build();
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CANCEL_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
-        log.info("Terminated existing task for case id {}",
-                callbackRequest.getCaseDetails().getId());
-
-        ccdClientApi.triggerEvent(caseDetails.getId().toString(),
-                CREATE_CHANGE_STATE,
-                caseDataContentFunction,
-                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
+        triggerEvent(caseDetails, CREATE_CHANGE_STATE);
         log.info("Created new task for case id {}",
                 callbackRequest.getCaseDetails().getId());
     }

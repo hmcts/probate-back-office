@@ -42,7 +42,6 @@ public enum EventId {
     CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED("caveatExpiredForCaveaNotMatched"),
     CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION("caveatExpiredForWarningValidation"),
     CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE("caveatExpiredForAwaitingWarningResponse"),
-    CLOSE_READY_TO_ISSUE_HANDOFFS("closeReadyToIssueHandOffs"),
 
     CREATE_CHANGE_STATE("createChangeState"),
     CANCEL_CHANGE_STATE("cancelChangeState"),

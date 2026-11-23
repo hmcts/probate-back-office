@@ -27,7 +27,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFailQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseQA", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "autoSelectForQACreateTask", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeReadyToIssueHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "cancelChangeState", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createChangeState", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeHandOffs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},

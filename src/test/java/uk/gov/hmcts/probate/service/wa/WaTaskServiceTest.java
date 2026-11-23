@@ -45,8 +45,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -60,8 +60,6 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICAT
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_FIAT_WILL;
@@ -71,6 +69,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BON
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_LEADING_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
