@@ -914,7 +914,6 @@ public class CallbackResponseTransformer {
         return transformCase(callbackRequest, caseworkerInfo, null);
     }
 
-    //TODO::ADD TEST
     public CallbackResponse transformCase(CallbackRequest callbackRequest,
                                           Optional<UserInfo> caseworkerInfo,
                                           String clientContext) {
@@ -1166,7 +1165,6 @@ public class CallbackResponseTransformer {
 
     }
 
-    //TODO::ADD TEST
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document,
                                       Optional<UserInfo> caseworkerInfo) {
 
