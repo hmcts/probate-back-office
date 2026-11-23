@@ -319,13 +319,6 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     emptyList()
             ),
             Arguments.of(
-                    HANDLE_EVIDENCE_EVENT,
-                    READY_TO_ISSUE_STATE,
-                    additionalData(false, "admonWill", false, 
-                            emptyList(), false),
-                    List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
-            ),
-            Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 

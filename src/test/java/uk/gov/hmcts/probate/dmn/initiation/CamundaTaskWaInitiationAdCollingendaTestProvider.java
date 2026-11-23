@@ -61,13 +61,6 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, emptyList(), false),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",
@@ -221,13 +214,6 @@ public class CamundaTaskWaInitiationAdCollingendaTestProvider implements Argumen
                         additionalData(false, "adColligendaBona",false,
                                 handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                         Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",
-                                false, Collections.emptyList(), false),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

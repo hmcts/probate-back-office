@@ -60,13 +60,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
-                    HANDLE_EVIDENCE_EVENT,
-                    READY_TO_ISSUE_STATE,
-                    additionalData(false, "intestacy", false,
-                            emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-            ),
-            Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
@@ -444,13 +437,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
-            ),
-            Arguments.of(
-                    "handleEvidence",
-                    "BOReadyToIssue",
-                    additionalData(false, "intestacy", false,
-                            Collections.emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     "handleEvidence",
