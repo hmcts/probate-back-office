@@ -1,1 +1,2 @@
-# Demo Postgres-flexible server is in postgresql subnet
+# Demo PostgreSQL Flexible Server uses the original subnet.
+subnet_suffix = null

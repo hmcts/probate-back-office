@@ -1,2 +1,0 @@
-subnet_suffix = "expanded"
-
