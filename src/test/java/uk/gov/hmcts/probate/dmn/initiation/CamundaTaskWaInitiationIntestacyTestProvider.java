@@ -18,6 +18,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEATH_RECORD_VERIFICATION_FAILED_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEATH_RECORD_VERIFIED_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
@@ -42,6 +44,11 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                 "processCategories", "case progression,examineDigitalCaseIntestacyReadyToIssue"
         );
 
+        Map<String,Object> examineDigitalCaseIntestacyDeathRecordTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY,
+                "name", INTESTACY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
 
         return Stream.of(
             Arguments.of(
@@ -548,6 +555,63 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     additionalData(false, "intestacy", false,
                             emptyList(), true),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+            ),
+            // deathRecordVerified / deathRecordVerificationFailed tests (row 159)
+            Arguments.of(
+                    DEATH_RECORD_VERIFIED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "intestacy", false,
+                            emptyList(), false),
+                    List.of(examineDigitalCaseIntestacyDeathRecordTaskAttributes)
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFIED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "intestacy", false,
+                            emptyList(), false),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFIED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false,
+                            emptyList(), false),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFIED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "intestacy", true,
+                            emptyList(), false),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFICATION_FAILED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "intestacy", false,
+                            emptyList(), false),
+                    List.of(examineDigitalCaseIntestacyDeathRecordTaskAttributes)
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFICATION_FAILED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "intestacy", false,
+                            emptyList(), false),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFICATION_FAILED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false,
+                            emptyList(), false),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    DEATH_RECORD_VERIFICATION_FAILED_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "intestacy", true,
+                            emptyList(), false),
+                    Collections.emptyList()
             )
         );
     }
