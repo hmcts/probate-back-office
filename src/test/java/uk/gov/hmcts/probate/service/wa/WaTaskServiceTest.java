@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -1109,6 +1110,36 @@ class WaTaskServiceTest {
                 .extracting(HandoffReason::getCaseHandoffReason)
                 .containsExactlyInAnyOrder(DOUBLE_PROBATE,
                         FOREIGN_DOMICILE);
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+
+    @ParameterizedTest(
+        name = "[{index}] State: {0}"
+    )
+    @CsvSource({
+        "BOCaseWorkerEscalation",
+        "BOCaseStopped",
+        "BORedecNotificationSent"
+    })
+    void shouldCreateTaskWhenStateIsConfigured(String state) {
+        when(caseDetails.getState())
+                .thenReturn(state);
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired("handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
         verify(waClientApi)
                 .searchActiveTasksByCaseId(caseDetails.getId().toString());
     }
