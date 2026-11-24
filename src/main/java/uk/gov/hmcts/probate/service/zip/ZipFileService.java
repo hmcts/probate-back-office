@@ -184,12 +184,7 @@ public class ZipFileService {
                                 + "_" + uploadedDocIndex.getAndIncrement();
 
                         String documentComment = switch (smeeAndFordCommentMode) {
-                            case INCLUDE_COMMENT, INCLUDE_COMMENT_AND_FINAL_INDICATOR -> {
-                                if (featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                                    yield doc.getValue().getComment();
-                                }
-                                yield null;
-                            }
+                            case INCLUDE_COMMENT, INCLUDE_COMMENT_AND_FINAL_INDICATOR -> doc.getValue().getComment();
                             case EXCLUDE_COMMENT -> null;
                         };
                         String finalIndicator = switch (smeeAndFordCommentMode) {
@@ -354,8 +349,7 @@ public class ZipFileService {
             throws IOException {
 
         boolean isUpdatedSmeeAndFord = switch (smeeAndFordCommentMode) {
-            case INCLUDE_COMMENT -> featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn();
-            case INCLUDE_COMMENT_AND_FINAL_INDICATOR -> true;
+            case INCLUDE_COMMENT, INCLUDE_COMMENT_AND_FINAL_INDICATOR -> true;
             case EXCLUDE_COMMENT -> false;
         };
         boolean includeFinalIndicator = switch (smeeAndFordCommentMode) {
