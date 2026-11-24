@@ -31,3 +31,9 @@ variable "tenant_id" {
 variable "common_tags" {
   type = map(string)
 }
+
+variable "subnet_suffix" {
+  default     = "expanded"
+  type        = string
+  description = "Suffix to append to the subnet name, the originally created one used by this module is full in a number of environments."
+}
