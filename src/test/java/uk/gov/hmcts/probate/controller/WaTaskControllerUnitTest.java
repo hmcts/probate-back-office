@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.wa.WaClientApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
@@ -91,6 +92,8 @@ public class WaTaskControllerUnitTest {
     private uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel;
     @Mock
     private WaTaskService waTaskService;
+    @Mock
+    private WaClientApi waClientApi;
 
     private WaTaskContoller waTaskContoller;
 
@@ -101,7 +104,7 @@ public class WaTaskControllerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi, waClientApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 
@@ -354,7 +357,7 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldByPassCloseReadyToIssueHandOffs() {
+    void shouldByPassCloseReadyToIssueTasks() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         waTaskContoller.closeReadyToIssueTasks(
                 clientContext,
@@ -366,7 +369,7 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldInvokeCloseReadyToIssueHandOffs() {
+    void shouldInvokeCloseReadyToIssueTasks() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
@@ -596,7 +599,44 @@ public class WaTaskControllerUnitTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueHandOffs() {
+    void shouldByPassCancelCreateChangeStateEventWhenWADisabled() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        waTaskContoller.cancelCreateChangeStateEvent(callbackRequest, bindingResult, httpServletRequest);
+
+        verify(waTaskService, never()).cancelCreateChangeStateEvent(any());
+    }
+
+    @Test
+    void shouldInvokeCancelCreateChangeStateEvent() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).cancelCreateChangeStateEvent(callbackRequest);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.cancelCreateChangeStateEvent(
+                callbackRequest, bindingResult, httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(waTaskService).cancelCreateChangeStateEvent(callbackRequest);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionOnCancelCreateChangeStateEventWhenBindingResultHasErrors() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.cancelCreateChangeStateEvent(callbackRequest, bindingResult, httpServletRequest))
+                .isInstanceOf(BadRequestException.class);
+
+        verify(waTaskService, never()).cancelCreateChangeStateEvent(any());
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseReadyToIssueTasks() {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(bindingResult.hasErrors()).thenReturn(true);

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.dmn.initiation;
 
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
@@ -20,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
+@Slf4j
 public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTest {
 
     @BeforeAll
@@ -159,7 +161,7 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(11));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(159));
+        assertThat(logic.getRules().size(), is(161));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} additionalData: {2} expectation: {3}")
@@ -216,8 +218,10 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
                                                                             List<Map<String, Object>> expectation) {
-        System.out.println("additionalData " + additionalData);
-        System.out.println("expectation " + expectation);
+        log.info(
+                "event id: {}, post event state: {}, additionalData: {}, expectation: {}",
+                eventId, postEventState, additionalData, expectation);
+
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);

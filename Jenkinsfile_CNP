@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.13.6")
+@Library("Infrastructure@2.14.0")
 
 String product = "probate"
 String component = "back-office"
@@ -106,8 +106,13 @@ def secrets = [
                 secret('am-role-assignment-service-s2s-secret', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
                 secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
                 secret('role-assignment-service-IDAM-ADMIN-SECRET', 'ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD')
+        ],
+        'camunda-${env}' : [
+                secret('s2s-secret-camunda-bpm', 'S2S_SECRET_CAMUNDA_BPM')
+        ],
+        'wa-${env}': [
+                secret('probate-search-email', 'PROBATE_SEARCH_EMAIL')
         ]
-
 ]
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',

@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,12 +44,12 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESC
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HANDOFFS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_SME_REFERRAL;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_REDECLARATION;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_STOPPED_CASE;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.getAwaitingDocIceTask;
-import static uk.gov.hmcts.probate.model.wa.TaskTypes.getReadyToIssueIceTask;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.getStateTasks;
 
 @Slf4j
@@ -60,23 +59,17 @@ public class WaTaskService {
     private final SecurityUtils securityUtils;
     private final TaskUtils taskUtils;
     private final CcdClientApi ccdClientApi;
+    private final WaClientApi waClientApi;
+
     UnaryOperator<String> readyToIssueTask = handOffReason -> "Examine" + handOffReason;
     UnaryOperator<String> casePrintedTask = handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED;
 
     private final Map<String, BiConsumer<CallbackRequest, ResponseCaseData>> createTaskIfRequired =
             Map.of(
                     STATE_CASE_PRINTED,
-                    (callbackRequest,  responseCaseData) ->
-                            createExamineTasks(callbackRequest,
-                                    responseCaseData,
-                                    getAwaitingDocIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
-                                    casePrintedTask),
+                    this::createExamineTasks,
                     STATE_BO_READY_TO_ISSUE,
-                    (callbackRequest, responseCaseData) ->
-                            createExamineTasks(callbackRequest,
-                                    responseCaseData,
-                                    getReadyToIssueIceTask(callbackRequest.getCaseDetails().getData().getCaseType()),
-                                    readyToIssueTask),
+                    this::createExamineTasks,
                     STATE_BO_CASE_WORKER_ESCALATION,
                     (callbackRequest, responseCaseData) ->
                             setCreateTask(callbackRequest,
@@ -293,6 +286,17 @@ public class WaTaskService {
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
     }
 
+    public void cancelCreateChangeStateEvent(CallbackRequest callbackRequest) {
+        log.info("Canceling create change state event for case id {}", callbackRequest.getCaseDetails().getId());
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        triggerEvent(caseDetails, CANCEL_CHANGE_STATE);
+        log.info("Terminated existing task for case id {}",
+                callbackRequest.getCaseDetails().getId());
+        triggerEvent(caseDetails, CREATE_CHANGE_STATE);
+        log.info("Created new task for case id {}",
+                callbackRequest.getCaseDetails().getId());
+    }
+
     public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
                                                  EventId eventId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -314,58 +318,59 @@ public class WaTaskService {
     public void setCreateTask(final CallbackRequest callbackRequest,
                               final ResponseCaseData responseCaseData,
                               final TaskTypes taskType) {
-        //TODO:: REMOVE
-        log.info("case id {}: wa task to create {}",
-                callbackRequest.getCaseDetails().getId(),
-                taskType);
-        responseCaseData.setCreateTask(YES);
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
+        String createTask = existingTasks.contains(taskType.getValue()) ? NO : YES;
+        log.info("case id {}: taskType {} to create {}",
+                caseDetails.getId(),
+                taskType.getValue(),
+                createTask);
 
-        if (taskType != null && isWaTaskPresent(taskType, callbackRequest.getCaseDetails().getId())) {
-            log.info("case id {}: wa task present {}",
-                    callbackRequest.getCaseDetails().getId(),
-                    taskType);
-            responseCaseData.setCreateTask(NO);
-        }
+        responseCaseData.setCreateTask(createTask);
     }
 
-    public boolean isWaTaskPresent(TaskTypes taskType, Long caseId) {
-        checkedTaskTypesByCaseId.putIfAbsent(caseId, new HashSet<>());
-        Set<TaskTypes> checkedTaskTypes = checkedTaskTypesByCaseId.get(caseId);
+    public void setIceCreateTask(final CallbackRequest callbackRequest,
+                                 final ResponseCaseData responseCaseData) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
 
-        log.info("Checking taskType: {} for caseId: {}", taskType, caseId);
-        log.info("Current checkedTaskTypes for caseId {}: {}", caseId, checkedTaskTypes);
+        String iceCaseType = callbackRequest.getCaseDetails().getData().getCaseType();
+        String createTask = existingTasks.stream()
+                .map(TaskTypes::getCaseType)
+                .flatMap(Optional::stream)
+                .map(TaskTypes::getCaseType)
+                .anyMatch(caseType -> caseType.equals(iceCaseType))
+                ? NO : YES;
 
-        if (checkedTaskTypes.contains(taskType)) {
-            log.info("TaskType {} is already present in checkedTaskTypes for caseId {}.", taskType, caseId);
-            return true;
-        } else {
-            log.info("TaskType {} is not present in checkedTaskTypes for caseId {}. Adding it now.", taskType, caseId);
-            checkedTaskTypes.add(taskType);
-            return false;
-        }
+        log.info("case id {}: for casetype {} create task {}",
+                caseDetails.getId(),
+                iceCaseType,
+                createTask);
+
+        responseCaseData.setCreateTask(createTask);
     }
+
 
     public void setCreateHandOffTask(final CallbackRequest callbackRequest,
-                                     final ResponseCaseData responseCaseData,
-                                     final UnaryOperator<String> taskNameFormatter) {
-        //TODO:: Task info from WA
+                                     final ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask(NO);
-        List<String> existingTasks = new ArrayList<>();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        log.info("case id {}: wa tasks present {}",
-                caseDetails.getId(),
-                existingTasks);
+        Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
 
         List<CollectionMember<HandoffReason>> missingHandOffs = caseDetails.getData().getBoHandoffReasonList().stream()
                 .map(CollectionMember::getValue)
                 .filter(handoffReason -> {
-                    String handOffCode = handoffReason.getCaseHandoffReason().getCode();
+                    String handOffCode = "examine" + handoffReason.getCaseHandoffReason().getCode();
 
-                    String requiredHandOffTask = taskNameFormatter.apply(handOffCode);
-                    log.info("case id {}: required hand off task {}",
+                    boolean isRequired = existingTasks.stream()
+                            .map(String::toLowerCase)
+                            .noneMatch(taskType -> taskType.contains(handOffCode.toLowerCase()));
+
+                    log.info("case id {}: hand off task {} required {}",
                             caseDetails.getId(),
-                            requiredHandOffTask);
-                    return !existingTasks.contains(requiredHandOffTask);
+                            handOffCode,
+                            isRequired);
+                    return isRequired;
                 })
                 .map(handoffReason -> new CollectionMember<>(UUID.randomUUID().toString(), handoffReason))
                 .toList();
@@ -374,16 +379,12 @@ public class WaTaskService {
     }
 
     public void createExamineTasks(CallbackRequest callbackRequest,
-                                   ResponseCaseData responseCaseData,
-                                   Optional<TaskTypes> iceTask,
-                                   UnaryOperator<String> taskNameFormatter) {
+                                   ResponseCaseData responseCaseData) {
         boolean createIceTask = NO.equals(responseCaseData.getCaseHandedOffToLegacySite());
         if (createIceTask) {
-            iceTask.ifPresent(taskType ->
-                    setCreateTask(callbackRequest, responseCaseData, taskType)
-            );
+            setIceCreateTask(callbackRequest, responseCaseData);
         } else {
-            setCreateHandOffTask(callbackRequest, responseCaseData, taskNameFormatter);
+            setCreateHandOffTask(callbackRequest, responseCaseData);
         }
     }
 

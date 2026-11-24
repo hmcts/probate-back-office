@@ -17,12 +17,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEATH_RECORD_VERIFICATION_FAILED_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DEATH_RECORD_VERIFIED_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -53,7 +52,7 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
 
         return Stream.of(
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
                             emptyList(), false),
@@ -61,13 +60,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
-                    READY_TO_ISSUE_STATE,
-                    additionalData(false, "intestacy", false,
-                            emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-            ),
-            Arguments.of(
-                    HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
                             emptyList(), false),
@@ -277,28 +269,28 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     List.of(examineDigitalCaseIntestacyTaskAttributes)
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "CasePrinted",
                     additionalData(true, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "CasePrinted",
                     additionalData(false, "other", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
@@ -455,13 +447,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
             Arguments.of(
                     "handleEvidence",
                     "BOReadyToIssue",
-                    additionalData(false, "intestacy", false,
-                            Collections.emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-            ),
-            Arguments.of(
-                    "handleEvidence",
-                    "BOReadyToIssue",
                     additionalData(true, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
@@ -537,28 +522,28 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "BOReadyToIssue",
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "BOReadyToIssue",
                     additionalData(true, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "BOReadyToIssue",
                     additionalData(false, "other", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
             ),
             Arguments.of(
-                    "changeState",
+                    CREATE_CHANGE_STATE_EVENT,
                     "BOReadyToIssue",
                     additionalData(false, "intestacy", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),

@@ -193,19 +193,12 @@ public enum TaskTypes {
                 .collect(Collectors.toSet());
     }
 
-    public static Optional<TaskTypes> getAwaitingDocIceTask(String caseType) {
-        return examineAwaitingDocTasks().stream()
-                .filter(taskType -> caseType.equals(taskType.caseType))
-                .findFirst();
+    public static Optional<TaskTypes> getCaseType(String taskType) {
+        return Arrays.stream(values())
+                .filter(task -> task.getCaseType() != null)
+                .filter(taskTypes -> taskTypes.getValue().equals(taskType))
+                .findAny();
     }
-
-    public static Optional<TaskTypes> getReadyToIssueIceTask(String caseType) {
-        return examineReadyToIssueTasks().stream()
-                .filter(taskType -> caseType.equals(taskType.caseType))
-                .findFirst();
-    }
-
-
 
     public Optional<EventId> getOptionalClosingEventId() {
         return Optional.ofNullable(closingEventId);

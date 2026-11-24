@@ -135,7 +135,7 @@ public class WaTaskControllerIT {
     }
 
     @Test
-    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsEnabled() throws Exception {
+    void shouldTriggerCloseReadyToIssueTasksWhenProbateWaIsEnabled() throws Exception {
         String payload = testUtils.getStringFromFile("waTaskCaseType.json");
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);

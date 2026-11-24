@@ -128,7 +128,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 ),
                 Arguments.of(
                         cancelWithProperties(
-                                "changeState",
+                                "cancelChangeState",
                                 null,
                                 null,
                                 "case progression",

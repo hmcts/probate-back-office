@@ -29,8 +29,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_STOPPED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CANCEL_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -137,7 +137,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else if (cancellationProperties.get("event").startsWith("close")) {
             assertResponse(dmnResultList, cancellationProperties);
-        } else if (cancellationProperties.containsValue(CHANGE_STATE_EVENT)) {
+        } else if (cancellationProperties.containsValue(CANCEL_CHANGE_STATE_EVENT)) {
             validate(dmnResultList, cancellationProperties);
         } else if (HAND_OFF_COMPLETION_EVENTS.contains(cancellationProperties.get("event"))) {
             testHandOffCompletionEvent(dmnResultList, cancellationProperties);

@@ -16,7 +16,7 @@ import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTes
 import static uk.gov.hmcts.probate.dmn.initiation.CamundaTaskWaInitiationBaseTest.invalidHandOffReason;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_IBCA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
@@ -46,8 +46,10 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                            false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -71,28 +73,28 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
                     List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",false,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             emptyList(), false),

@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_FROM_BULK_SCAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
@@ -60,13 +60,6 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     additionalData(false, "gop", false,
                             emptyList(), true),
                     List.of(examineDigitalCaseProbateTaskAttributes)
-            ),
-            Arguments.of(
-                    HANDLE_EVIDENCE_EVENT,
-                    READY_TO_ISSUE_STATE,
-                    additionalData(false, "gop", false,
-                            emptyList(), false),
-                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -257,42 +250,42 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
                     List.of(examineDigitalCaseProbateTaskAttributes)
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "gop", false,
                             emptyList(), false),
                     List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "gop", false,
                             emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false,
                             emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "gop", true,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),

@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -166,6 +167,7 @@ public class CallbackResponseTransformer {
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
     private final Clock clock;
     private final CreateTaskProcessorFactory createTaskProcessorFactory;
+    private final RegistryDetailsService registryDetailsService;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -912,7 +914,6 @@ public class CallbackResponseTransformer {
         return transformCase(callbackRequest, caseworkerInfo, null);
     }
 
-    //TODO::ADD TEST
     public CallbackResponse transformCase(CallbackRequest callbackRequest,
                                           Optional<UserInfo> caseworkerInfo,
                                           String clientContext) {
@@ -1164,7 +1165,6 @@ public class CallbackResponseTransformer {
 
     }
 
-    //TODO::ADD TEST
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document,
                                       Optional<UserInfo> caseworkerInfo) {
 
@@ -1518,6 +1518,12 @@ public class CallbackResponseTransformer {
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
             .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
             .waCaseState(caseDetails.getState());
+
+        if (caseData.getRegistryLocation() != null && !caseData.getRegistryLocation().equals("")) {
+            builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));
+            builder.taskLocationName(caseData.getRegistryLocation());
+            builder.taskRegion(registryDetailsService.getTaskRegion(caseData.getRegistryLocation()));
+        }
 
         handleDeceasedAliases(
                 builder,

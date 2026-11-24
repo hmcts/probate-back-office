@@ -924,6 +924,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineForeignWill", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineWindrushScheme", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineCodicilMis", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "closeExamineTrustCorporation", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledStartGrantDelayNotificationPeriod", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantDelayNotificationIdentified", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantDelayNotificationSent", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
@@ -1222,5 +1223,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "cancelChangeState", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createChangeState", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
 ]

@@ -44,6 +44,8 @@ class AmendCaseDetailsForReadyToIssueTest {
     private TaskUtils taskUtils;
     @Mock
     private CcdClientApi ccdClientApi;
+    @Mock
+    private WaClientApi waClientApi;
 
     private WaTaskService waTaskService;
 
@@ -76,7 +78,7 @@ class AmendCaseDetailsForReadyToIssueTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi, waClientApi));
         processor = new AmendCaseDetailsForReadyToIssue(waTaskService);
     }
 
