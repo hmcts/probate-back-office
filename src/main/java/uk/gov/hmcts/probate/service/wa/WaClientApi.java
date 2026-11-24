@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,12 +29,6 @@ public class WaClientApi {
                 securityDTO.getServiceAuthorisation(),
                 caseId
         );
-        //TODO: TO REMOVE
-        List<TaskData> tasks = Optional.ofNullable(taskSearchResponseResponseEntity.getBody())
-                .map(TaskSearchResponse::tasks)
-                .orElseGet(Collections::emptyList);
-        log.info("Tasks received {}", tasks);
-        //TODO: END
 
         Set<String> activeTasks = Optional.ofNullable(taskSearchResponseResponseEntity.getBody())
                 .map(TaskSearchResponse::tasks)
