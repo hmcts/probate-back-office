@@ -1134,4 +1134,53 @@ class WaTaskServiceTest {
                 .isEqualTo(YES);
         verifyNoInteractions(waClientApi);
     }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenIceTaskNotPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+
+        waTaskService.setIceCreateTask(
+                callbackRequest,
+                responseCaseData
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+    }
+
+    @Test
+    void shouldSetCreateTaskToNoWhenIceTaskIsPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of(EXAMINE_DIGITAL_CASE_PROBATE.getValue()));
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+
+        waTaskService.setIceCreateTask(
+                callbackRequest,
+                responseCaseData
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+    }
 }
