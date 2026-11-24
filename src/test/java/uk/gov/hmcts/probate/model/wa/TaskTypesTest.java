@@ -45,4 +45,17 @@ class TaskTypesTest {
         assertThat(optionalClosingEventId)
                 .contains(TaskTypes.EXAMINE_TRUST_CORPORATION.closingEventId);
     }
+
+    @Test
+    void shouldRetrieveTaskWhenIceTaskPresented() {
+        Optional<TaskTypes> caseType = TaskTypes.getCaseType(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE.value);
+        assertThat(caseType)
+                .contains(TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE);
+    }
+
+    @Test
+    void shouldNotRetrieveTaskWhenIceTaskNotPresented() {
+        Optional<TaskTypes> caseType = TaskTypes.getCaseType(TaskTypes.EXAMINE_DE_BONIS_NON.value);
+        assertThat(caseType).isEmpty();
+    }
 }

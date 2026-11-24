@@ -1048,6 +1048,7 @@ class WaTaskServiceTest {
                         .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
                                 FOREIGN_DOMICILE)))
                         .build());
+
         when(caseDetails.getId())
                 .thenReturn(Long.valueOf(caseId));
         when(callbackRequest.getCaseDetails())
@@ -1074,5 +1075,63 @@ class WaTaskServiceTest {
                 .extracting(HandoffReason::getCaseHandoffReason)
                 .containsExactlyInAnyOrder(DOUBLE_PROBATE,
                         FOREIGN_DOMICILE);
+
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+    @Test
+    void shouldCreateTaskWhenStateIsConfigured() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+        when(caseDetails.getState())
+                .thenReturn(STATE_CASE_PRINTED);
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired(
+                "handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(DOUBLE_PROBATE,
+                        FOREIGN_DOMICILE);
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+    @Test
+    void shouldCreateTaskWhenStateIsNotConfigured() {
+        when(caseDetails.getState())
+                .thenReturn("INVALID_STATE");
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired(
+                "handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+        verifyNoInteractions(waClientApi);
     }
 }

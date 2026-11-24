@@ -693,4 +693,23 @@ public class WaTaskControllerUnitTest {
 
         verifyNoInteractions(coreCaseDataApi);
     }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseAwaitingDocumentationTasks() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.closeAwaitingDocumentationTasks(
+                        clientContext,
+                        callbackRequest,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(waTaskService);
+    }
 }
