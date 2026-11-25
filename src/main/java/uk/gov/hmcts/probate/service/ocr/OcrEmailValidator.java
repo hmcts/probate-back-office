@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.ocr;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.EmailValidationNotifyService;
@@ -11,6 +12,7 @@ import java.util.Map;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+@RequiredArgsConstructor
 @Service
 public class OcrEmailValidator {
 
@@ -30,7 +32,7 @@ public class OcrEmailValidator {
     private static final String FOURTH_APPLYING_EMAIL_DESCRIPTION = "Fourth applicant email address";
 
     private static final Map<String, String> emailFields = new HashMap<>();
-    private final EmailValidationNotifyService emailValidationNotifyService = new EmailValidationNotifyService();
+    private final EmailValidationNotifyService emailValidationNotifyService;
 
     static {
         emailFields.put(PRIMARY_APPLICANT_EMAIL_ADDRESS, PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION);

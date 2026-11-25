@@ -3,7 +3,11 @@ package uk.gov.hmcts.probate.service.ocr;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.EmailValidationNotifyService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +21,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
 
+@ExtendWith(MockitoExtension.class)
 class OcrEmailValidatorTest {
 
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primaryApplicantEmailAddress";
@@ -47,7 +52,8 @@ class OcrEmailValidatorTest {
 
     @BeforeEach
     public void setUp() {
-        ocrEmailValidator = new OcrEmailValidator();
+        MockitoAnnotations.openMocks(this);
+        ocrEmailValidator = new OcrEmailValidator(new EmailValidationNotifyService());
     }
 
 
