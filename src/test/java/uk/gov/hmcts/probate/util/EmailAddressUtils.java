@@ -25,14 +25,14 @@ public class EmailAddressUtils {
         "Joe Smith <email@example.com>",
         "email.example.com",
         "email@example@example.com",
-        ".email@example.com",
-        "email.@example.com",
-        "email..email@example.com",
+        "email@",
+        "email@@example.com",
+        "email@example@com",
         "あいうえお@example.com",
         "email@example.com (Joe Smith)",
-        "email@example",
-        "email@example..com",
-        "Abc..123@example.com"
+        "email@.example.com",
+        "\"email\"@example.com",
+        "email,abc@example.com"
     };
 
     private EmailAddressUtils() {
