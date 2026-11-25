@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -30,7 +31,7 @@ class EvidenceUploadServiceTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
 

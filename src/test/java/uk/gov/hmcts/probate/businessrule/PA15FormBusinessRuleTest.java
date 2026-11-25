@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.businessrule;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -14,57 +14,59 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
+
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@ExtendWith(MockitoExtension.class)
 class PA15FormBusinessRuleTest {
 
     @InjectMocks
     private PA15FormBusinessRule underTest;
 
-    @Mock
     private CaseData mockCaseData;
-
-    @BeforeEach
-    public void setup() {
-        openMocks(this);
-    }
 
     @Test
     void shouldBeApplicableForPrimaryNotApplyingExecRenounced() {
-        when(mockCaseData.getPrimaryApplicantIsApplying()).thenReturn(NO);
-        when(mockCaseData.getSolsPrimaryExecutorNotApplyingReason()).thenReturn("Renunciation");
+        mockCaseData = CaseData.builder()
+            .primaryApplicantIsApplying(NO)
+            .solsPrimaryExecutorNotApplyingReason("Renunciation")
+            .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNotBeApplicableForPrimaryNotApplyingExecPowerReserved() {
-        when(mockCaseData.getPrimaryApplicantIsApplying()).thenReturn(NO);
-        when(mockCaseData.getSolsPrimaryExecutorNotApplyingReason()).thenReturn("PowerReserved");
+        mockCaseData = CaseData.builder()
+            .primaryApplicantIsApplying(NO)
+            .solsPrimaryExecutorNotApplyingReason("PowerReserved")
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldBeApplicableForSolIsExecRenounced() {
-        when(mockCaseData.getSolsSolicitorIsExec()).thenReturn(YES);
-        when(mockCaseData.getSolsSolicitorIsApplying()).thenReturn(NO);
-        when(mockCaseData.getSolsSolicitorNotApplyingReason()).thenReturn("Renunciation");
+        mockCaseData = CaseData.builder()
+            .solsSolicitorIsExec(YES)
+            .solsSolicitorIsApplying(NO)
+            .solsSolicitorNotApplyingReason("Renunciation")
+            .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNotBeApplicableForSolIsExecPowerReserved() {
-        when(mockCaseData.getSolsSolicitorIsExec()).thenReturn(YES);
-        when(mockCaseData.getSolsSolicitorIsApplying()).thenReturn(NO);
-        when(mockCaseData.getSolsSolicitorNotApplyingReason()).thenReturn("PowerReserved");
+        mockCaseData = CaseData.builder()
+            .solsSolicitorIsExec(YES)
+            .solsSolicitorIsApplying(NO)
+            .solsSolicitorNotApplyingReason("PowerReserved")
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldBeApplicableForNotApplyingExecRenounced() {
-        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
+
         List<CollectionMember<AdditionalExecutor>> execs = new ArrayList();
         CollectionMember<AdditionalExecutor> exec1 =
             new CollectionMember(AdditionalExecutor.builder().additionalApplying(YES).build());
@@ -74,13 +76,16 @@ class PA15FormBusinessRuleTest {
                 .build());
         execs.add(exec1);
         execs.add(exec2);
-        when(mockCaseData.getSolsAdditionalExecutorList()).thenReturn(execs);
+        mockCaseData = CaseData.builder()
+                .otherExecutorExists(YES)
+                .solsAdditionalExecutorList(execs)
+                .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNotBeApplicableForNotApplyingExecPowerReserved() {
-        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
+
         List<CollectionMember<AdditionalExecutor>> execs = new ArrayList();
         CollectionMember<AdditionalExecutor> exec1 =
             new CollectionMember(AdditionalExecutor.builder().additionalApplying(YES).build());
@@ -90,7 +95,10 @@ class PA15FormBusinessRuleTest {
                 .build());
         execs.add(exec1);
         execs.add(exec2);
-        when(mockCaseData.getSolsAdditionalExecutorList()).thenReturn(execs);
+        mockCaseData = CaseData.builder()
+                .otherExecutorExists(YES)
+                .solsAdditionalExecutorList(execs)
+                .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
@@ -105,13 +113,14 @@ class PA15FormBusinessRuleTest {
                 .build());
         execs.add(exec1);
         execs.add(exec2);
-        when(mockCaseData.getSolsAdditionalExecutorList()).thenReturn(execs);
+        mockCaseData = CaseData.builder()
+                .solsAdditionalExecutorList(execs)
+                .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldBeApplicableForNotApplyingExecsRenounced() {
-        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
         List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList();
         CollectionMember<AdditionalExecutorNotApplying> exec1 =
             new CollectionMember(AdditionalExecutorNotApplying.builder().build());
@@ -121,25 +130,32 @@ class PA15FormBusinessRuleTest {
                 .build());
         execs.add(exec1);
         execs.add(exec2);
-        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(execs);
+        mockCaseData = CaseData.builder()
+                .otherExecutorExists(YES)
+                .additionalExecutorsNotApplying(execs)
+                .build();
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNotBeApplicableForNotApplyingExecsRenounced() {
-        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
         List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList();
         CollectionMember<AdditionalExecutorNotApplying> exec1 =
             new CollectionMember(AdditionalExecutorNotApplying.builder().build());
         execs.add(exec1);
-        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(execs);
+        mockCaseData = CaseData.builder()
+                .otherExecutorExists(YES)
+                .additionalExecutorsNotApplying(execs)
+                .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
     void shouldNotBeApplicableForNotApplyingExecsNull() {
-        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
-        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(null);
+        mockCaseData = CaseData.builder()
+            .otherExecutorExists(YES)
+            .additionalExecutorsNotApplying(null)
+            .build();
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 

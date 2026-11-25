@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.criterion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 class CaseMatchingCriteriaTest {
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseData;
 
     @Mock
