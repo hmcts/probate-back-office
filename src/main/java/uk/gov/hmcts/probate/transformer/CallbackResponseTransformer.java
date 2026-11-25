@@ -1037,6 +1037,7 @@ public class CallbackResponseTransformer {
 
         String executorNames = setExecutorNames(caseDetails.getData(), listOfApplyingExecs, professionalName);
 
+        // Select a stable label variant key for translation; CCD then substitutes ${solsSOTName} at render time.
         builder.solsReviewSOTStatementVariant(
             determineSotStatementVariant(caseDetails.getData(), listOfApplyingExecs)
         );

@@ -1,7 +1,5 @@
 Source,CaseFieldID,EnglishText,WelshText,IsYesNo,WelshYes,WelshNo
-SOTWelshTranslationDictionary,solsReviewSOTIntroApplicant,"By signing the statement of truth by ticking the boxes below, I, ${solsSOTName} confirm the following:","Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, ${solsSOTName}, yn cadarnhau’r canlynol:",,,
-SOTWelshTranslationDictionary,solsReviewSOTIntroExecutor,"By signing the statement of truth by ticking the boxes below, I, ${solsSOTName} confirm the following:","Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, ${solsSOTName}, yn cadarnhau’r canlynol:",,,
-SOTWelshTranslationDictionary,solsReviewSOTIntroExecutors,"By signing the statement of truth by ticking the boxes below, I, ${solsSOTName} confirm the following:","Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, ${solsSOTName}, yn cadarnhau’r canlynol:",,,
+SOTWelshTranslationDictionary,solsReviewSOTIntro,"By signing the statement of truth by ticking the boxes below, I, ${solsSOTName} confirm the following:","Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, ${solsSOTName}, yn cadarnhau’r canlynol:",,,
 SOTWelshTranslationDictionary,solsReviewSOTBody1Applicant,"I, ${solsSOTName}, have provided a copy of this application to the applicant named below.","Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ymgeisydd a enwir isod.",,,
 SOTWelshTranslationDictionary,solsReviewSOTBody1Executor,"I, ${solsSOTName}, have provided a copy of this application to the executor named below.","Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ysgutor a enwir isod.",,,
 SOTWelshTranslationDictionary,solsReviewSOTBody1Executors,"I, ${solsSOTName}, have provided a copy of this application to the executors named below.","Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ysgutorion a enwir isod.",,,
@@ -43,11 +41,6 @@ DTSPB-5618-other-translations-demo-import-candidate,,Find out about call charges
 DTSPB-5618-other-translations-demo-import-candidate,,What is the gross value of assets for probate?,Beth yw gwerthoedd yr asedau ar gyfer profiant?,,,
 DTSPB-5618-other-translations-demo-import-candidate,,What is the net value for probate?,Beth yw'r gwerth net ar gyfer profiant?,,,
 DTSPB-5618-other-translations-demo-import-candidate,,Trust corporation (resolution lodged with Senior District Judge or Registrar),Ymddiriedolaeth gorfforaeth (datrysiad wedi'i gyflwyno i Uwch Farnwr Rhanbarth neu Gofrestrydd),,,
-DTSPB-5618-other-translations-demo-import-candidate,,"By signing the statement of truth by ticking the boxes below, {{ solicitor name }}, confirm the following:","Trwy lofnodi'r datganiad o wirionedd trwy roi tic yn y blychau isod, wyf i, {{ solicitor name }}, yn cadarnhau'r canlynol:",,,
-DTSPB-5618-other-translations-demo-import-candidate,,"I, {{ solicitor name }}, have provided a copy of this application to the executors named below.","Rwyf i, {{ solicitor name }}, wedi darparu copi o'r cais hwn i'r ysgutorion a enwir isod.",,,
-DTSPB-5618-other-translations-demo-import-candidate,,"I, {{ solicitor name }}, have informed the executors that in signing the statement of truth I am confirming that the executors believe the facts set out in this legal statement are true.","Rwyf i, {{ solicitor name }}, wedi hysbysu'r ysgutorion fy mod, wrth lofnodi'r datganiad o wirionedd, yn cadarnhau bod yr ysgutorion yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.",,,
-DTSPB-5618-other-translations-demo-import-candidate,,"I, {{ solicitor name }}, have been authorised by the executors to sign the statement of truth.","Rwyf i, {{ solicitor name }}, wedi cael fy awdurdodi gan yr ysgutorion i lofnodi'r datganiad o wirionedd.",,,
-DTSPB-5618-other-translations-demo-import-candidate,,"I, {{ solicitor name }}, understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.","Rwyf i, {{ solicitor name }}, yn deall y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy'n gwneud datganiad anwir, neu sy'n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilyswyd gan ddatganiad o wirionedd heb gred onest ei fod yn wir.",,,
 DTSPB-5618-other-translations-demo-import-candidate,,Enter the estate values for IHT,Nodwch werthoedd yr ystad ar gyfer IHT,,,
 DTSPB-5618-other-translations-demo-import-candidate,,"The values you enter must be whole numbers, and must not include full stops or commas. You do not need to include pence. For example 25000, not 25,000.","Mae'r rhaid i'r gwerthoedd a roddir gennych fod yn gyfanrifau, ac ni ddylent gynnwys atalnodau llawn neu gomas. Nid oes angen i chi gynnwys ceiniogau. Er enghraifft 25000, nid 25,000.",,,
 DTSPB-5618-other-translations-demo-import-candidate,,Net estate value for IHT,Gwerth net yr ystad ar gyfer IHT:,,,
@@ -105,7 +98,7 @@ DTSPB-5618-welsh-yes-no-demo-import-candidate,,Is there a minority interest in t
 DTSPB-5618-welsh-yes-no-demo-import-candidate,,Were any codicils added to the will?,A ychwanegwyd unrhyw godisiliau i'r ewyllys?,true,Do,Naddo
 DTSPB-5618-welsh-yes-no-demo-import-candidate,,Are any beneficiaries of the estate under the age of 18 years?,A yw unrhyw fuddiolwyr o'r ystad o dan 18 oed?,true,Ydyn,Nac ydyn
 DTSPB-5618-welsh-yes-no-demo-import-candidate,,Do you require your correspondence in English and Welsh?,Ydych chi eisiau eich gohebiaeth yn Gymraeg a Saesneg?,true,Ydw,Nac ydw
-DTSPB-5618-iht400Wait-full-label,,"## Wait 20 working days from when you sent the IHT400 to HMRC
+DTSPB-5618-other-translations-demo-import-candidate,iht400Wait,"## Wait 20 working days from when you sent the IHT400 to HMRC
 
 The letter or email from HMRC will be sent out up to 20 working days after you submit the IHT400.
 
@@ -117,15 +110,15 @@ Telephone: 0300 123 1072
 
 Monday to Friday, 9am to 5pm (except public holidays)
 
-<a href=""https://www.gov.uk/call-charges"" target=""_blank"">Find out about call charges</a>.","## Arhoswch 20 diwrnod gwaith o’r adeg y gwnaethoch anfon y ffurflen IHT400 i CThEF
+<a href=""https://www.gov.uk/call-charges"" target=""_blank"">Find out about call charges</a>.","## Arhoswch 20 diwrnod gwaith o’r adeg y gwnaethoch anfon yr IHT400 i CThEF
 
-Fe anfonir y llythyr neu’r e-bost gan CThEF hyd at 20 diwrnod gwaith ar ôl i chi gyflwyno’r ffurflen IHT400.
+Bydd y llythyr neu’r e-bost gan CThEF yn cael ei anfon hyd at 20 diwrnod gwaith ar ôl i chi gyflwyno’r IHT400.
 
 ### Os nad ydych wedi cael llythyr neu e-bost gan CThEF ar ôl 20 diwrnod
 
 Cysylltwch â CThEF ar y rhif hwn:
 
-Telephone: 0300 123 1072
+Rhif ffôn: 0300 123 1072
 
 Dydd Llun i ddydd Gwener, 9am i 5pm (ac eithrio gwyliau cyhoeddus)
 
