@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;

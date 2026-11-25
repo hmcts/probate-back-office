@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
-import uk.gov.hmcts.probate.service.ocr.OcrEmailValidator;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.Clock;
@@ -49,8 +47,6 @@ public class ExceptionRecordCaseDataValidator {
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
     private final Clock clock;
-
-    private final OcrEmailValidator ocrEmailValidator = new OcrEmailValidator();
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
             Map.of(DOC_TYPE_WILL, singletonList(CaseType.GRANT_OF_REPRESENTATION),
