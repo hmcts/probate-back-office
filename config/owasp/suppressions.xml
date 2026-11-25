@@ -17,10 +17,16 @@
         ]]></notes>
         <cve>CVE-2026-33117</cve>
     </suppress>
-    <suppress>
+    <suppress until = "2027-01-24">
         <notes><![CDATA[
    file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
    ]]></notes>
         <cve>CVE-2026-54285</cve>
+    </suppress>
+    <suppress until = "2027-01-24">
+        <notes><![CDATA[
+   file name: elasticsearch 9.5.6
+   ]]></notes>
+        <cve>CVE-2026-133981</cve>
     </suppress>
 </suppressions>
