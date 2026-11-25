@@ -106,7 +106,6 @@ class SolicitorLegalStatementPDFDecoratorTest {
                 .thenReturn("decoratedJson");
         when(caseExtraDecorator.combineDecorations("", "decoratedJson"))
                 .thenReturn("decoratedJson");
-        when(caseExtraDecorator.decorate(any())).thenReturn("decoratedJson");
 
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
 

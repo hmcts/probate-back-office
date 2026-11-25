@@ -1740,7 +1740,7 @@ class BusinessValidationUnitTest {
                 .thenReturn(callbackResponse);
 
         when(callbackResponse.getData())
-                .thenReturn(mock());
+                .thenReturn(ResponseCaseData.builder().build());
 
         final ResponseEntity<CallbackResponse> actual = underTest.solsValidateCreationProbateAdmon(
                 callbackRequest,

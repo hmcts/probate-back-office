@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -21,6 +21,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
@@ -38,7 +41,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_IS_NOT_DECEASED;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_ADOPTED_OUT;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyCoApplicantValidationRuleTest {
 
     @Mock
@@ -59,20 +62,17 @@ class IntestacyCoApplicantValidationRuleTest {
 
     @BeforeEach
      void setUp() {
+        // The validator requests a language-specific message key (including Welsh variants).
+        // Preserve the business error code irrespective of the translated message key.
+        lenient().when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), anyString()))
+                .thenAnswer(invocation -> {
+                    String messageKey = invocation.getArgument(1);
+                    return FieldErrorResponse.builder()
+                            .code(messageKey.replaceFirst("Welsh$", ""))
+                            .build();
+                });
         underTest = new IntestacyCoApplicantValidationRule(businessValidationMessageService);
         when(ccdDataMock.getExecutors()).thenReturn(executorMock);
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUT))
-                .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUT).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_IS_NOT_DECEASED))
-                .thenReturn(FieldErrorResponse.builder().code(PARENT_IS_NOT_DECEASED).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT))
-                .thenReturn(FieldErrorResponse.builder().code(PARENT_ADOPTED_OUT).build());
 
     }
 

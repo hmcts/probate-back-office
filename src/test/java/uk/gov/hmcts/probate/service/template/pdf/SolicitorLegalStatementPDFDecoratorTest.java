@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
@@ -15,7 +16,7 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorLe
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
@@ -32,7 +33,7 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     private ObjectMapper objectMapper;

@@ -14,7 +14,6 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockMakers;
-import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -139,7 +138,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -5800,10 +5798,7 @@ class CallbackResponseTransformerTest {
                 .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-
         final String eventId = "TEST_EVENT";
-        final boolean transform = false;
 
         final Set<CollectionMember<AliasName>> expAliases = Set.of(
                 WILL_ALIAS_NAME_CM,
@@ -5811,11 +5806,7 @@ class CallbackResponseTransformerTest {
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
 
-        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
-            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
-
-            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
-        }
+        underTest.handleDeceasedAliases(builderSpy, caseData, 1L, eventId);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5840,21 +5831,14 @@ class CallbackResponseTransformerTest {
                 .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-
         final String eventId = "TEST_EVENT";
-        final boolean transform = false;
 
         final Set<CollectionMember<AliasName>> expAliases = Set.of(
                 DEC_ALIAS_NAME_CM,
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
 
-        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
-            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
-
-            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
-        }
+        underTest.handleDeceasedAliases(builderSpy, caseData, 1L, eventId);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5879,10 +5863,7 @@ class CallbackResponseTransformerTest {
                 .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-
         final String eventId = "TEST_EVENT";
-        final boolean transform = false;
 
         final Set<CollectionMember<AliasName>> expAliases = Set.of(
                 WILL_ALIAS_NAME_CM,
@@ -5890,11 +5871,7 @@ class CallbackResponseTransformerTest {
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
 
-        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
-            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
-
-            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
-        }
+        underTest.handleDeceasedAliases(builderSpy, caseData, 1L, eventId);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -6578,17 +6555,19 @@ class CallbackResponseTransformerTest {
     })
     void shouldSkipDeceasedAliasConversionForDraftEventsWithCallback(String eventId) {
         final var builder = spy(ResponseCaseData.builder());
-        final CaseData caseData = mock(CaseData.class);
         final Long caseRef = 1L;
-
-        List<CollectionMember<ProbateAliasName>> aliases = List.of(mock(CollectionMember.class));
-
-        when(caseData.getDeceasedAliasNameList()).thenReturn(aliases);
+        List<CollectionMember<ProbateAliasName>> aliases = List.of(
+                new CollectionMember<>("alias-1", ProbateAliasName.builder()
+                        .forenames("Alias")
+                        .lastName("Name")
+                        .build()));
+        final CaseData caseData = CaseData.builder()
+                .deceasedAliasNameList(aliases)
+                .build();
 
         underTest.handleDeceasedAliases(builder, caseData, caseRef, eventId);
 
         verify(builder).deceasedAliasNameList(aliases);
         verify(builder, never()).solsDeceasedAliasNamesList(any());
-        verify(caseData, never()).getSolsDeceasedAliasNamesList();
     }
 }

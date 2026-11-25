@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -15,6 +15,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
@@ -26,7 +29,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidat
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JUDICIALLY_SEPARATED_VALUE;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyDivorceOrSeparationValidationRuleTest {
 
     @Mock
@@ -42,14 +45,18 @@ class IntestacyDivorceOrSeparationValidationRuleTest {
 
     @BeforeEach
      void setUp() {
+        // The validator requests a language-specific message key (including Welsh variants).
+        // Preserve the business error code irrespective of the translated message key.
+        lenient().when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), anyString()))
+                .thenAnswer(invocation -> {
+                    String messageKey = invocation.getArgument(1);
+                    return FieldErrorResponse.builder()
+                            .code(messageKey.replaceFirst("Welsh$", ""))
+                            .build();
+                });
         underTest = new IntestacyDivorceOrSeparationValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, DIVORCED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(DIVORCED_OUTSIDE_ENGLAND_OR_WALES).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, SEPARATED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(SEPARATED_OUTSIDE_ENGLAND_OR_WALES).build());
     }
 
     @Test

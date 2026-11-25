@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.ExecutorApplying;
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 
@@ -26,7 +27,7 @@ import static uk.gov.hmcts.probate.model.Constants.SPOUSE;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_SPOUSE;
 import static uk.gov.hmcts.probate.validator.IntestacyRelationshipToDeceasedValidationRule.INVALID_RELATIONSHIP_TO_DECEASED;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyRelationshipToDeceasedValidationRuleTest {
 
     @Mock
@@ -44,7 +45,7 @@ class IntestacyRelationshipToDeceasedValidationRuleTest {
     public void setUp() {
         underTest = new IntestacyRelationshipToDeceasedValidationRule(businessValidationMessageService);
         when(ccdDataMock.getCaseworkerExecutorsList()).thenReturn(executorMock);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, INVALID_RELATIONSHIP_TO_DECEASED))
+        lenient().when(businessValidationMessageService.generateError(BUSINESS_ERROR, INVALID_RELATIONSHIP_TO_DECEASED))
                 .thenReturn(FieldErrorResponse.builder().code(INVALID_RELATIONSHIP_TO_DECEASED).build());
     }
 

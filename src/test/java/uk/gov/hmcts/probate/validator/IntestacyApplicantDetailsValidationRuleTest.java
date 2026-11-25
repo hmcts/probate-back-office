@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Applicant;
@@ -17,6 +17,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
@@ -32,7 +35,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidation
 
 
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyApplicantDetailsValidationRuleTest {
 
     @Mock
@@ -48,17 +51,18 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @BeforeEach
      void setUp() {
+        // The validator requests a language-specific message key (including Welsh variants).
+        // Preserve the business error code irrespective of the translated message key.
+        lenient().when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), anyString()))
+                .thenAnswer(invocation -> {
+                    String messageKey = invocation.getArgument(1);
+                    return FieldErrorResponse.builder()
+                            .code(messageKey.replaceFirst("Welsh$", ""))
+                            .build();
+                });
         underTest = new IntestacyApplicantDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getApplicant()).thenReturn(applicantMock);
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, DECEASED_CHILD_DEAD))
-                .thenReturn(FieldErrorResponse.builder().code(DECEASED_CHILD_DEAD).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUT))
-                .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUT).build());
     }
 
     private static Stream<String> relationship() {
@@ -88,6 +92,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfApplicantParentAdoptedInEnglandOrWales() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(YES);
 
@@ -133,6 +138,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfApplicantParentIsNotAdoptedOut() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(NO);
 

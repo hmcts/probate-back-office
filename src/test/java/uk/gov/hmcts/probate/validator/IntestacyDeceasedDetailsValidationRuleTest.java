@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -15,6 +15,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
@@ -30,7 +33,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationR
 import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.LIVING_PARENTS;
 import static uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule.LIVING_WHOLE_SIBLING;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyDeceasedDetailsValidationRuleTest {
 
     @Mock
@@ -46,24 +49,19 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
     @BeforeEach
     void setUp() {
+        // The validator requests a language-specific message key (including Welsh variants).
+        // Preserve the business error code irrespective of the translated message key.
+        lenient().when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), anyString()))
+                .thenAnswer(invocation -> {
+                    String messageKey = invocation.getArgument(1);
+                    return FieldErrorResponse.builder()
+                            .code(messageKey.replaceFirst("Welsh$", ""))
+                            .build();
+                });
         underTest = new IntestacyDeceasedDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
-        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SIBLING);
+        lenient().when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SIBLING);
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, DECEASED_ADOPTED_OUT))
-                .thenReturn(FieldErrorResponse.builder().code(DECEASED_ADOPTED_OUT).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, LIVING_DESCENDANTS))
-                .thenReturn(FieldErrorResponse.builder().code(LIVING_DESCENDANTS).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, LIVING_PARENTS))
-                .thenReturn(FieldErrorResponse.builder().code(LIVING_PARENTS).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, LIVING_WHOLE_SIBLING))
-                .thenReturn(FieldErrorResponse.builder().code(LIVING_WHOLE_SIBLING).build());
     }
 
     @Test

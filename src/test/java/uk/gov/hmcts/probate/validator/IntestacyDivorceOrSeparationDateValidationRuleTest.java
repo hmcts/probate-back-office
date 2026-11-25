@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
@@ -24,7 +25,7 @@ import static uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationDateVal
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JUDICIALLY_SEPARATED_VALUE;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class IntestacyDivorceOrSeparationDateValidationRuleTest {
 
     @Mock
@@ -43,7 +44,8 @@ class IntestacyDivorceOrSeparationDateValidationRuleTest {
         underTest = new IntestacyDivorceOrSeparationDateValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, INVALID_DIVORCE_OR_SEPARATION_DATE))
+        lenient().when(businessValidationMessageService
+                .generateError(BUSINESS_ERROR, INVALID_DIVORCE_OR_SEPARATION_DATE))
                 .thenReturn(FieldErrorResponse.builder().code(INVALID_DIVORCE_OR_SEPARATION_DATE).build());
     }
 
