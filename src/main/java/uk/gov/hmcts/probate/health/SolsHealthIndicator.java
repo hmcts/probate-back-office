@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.health;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -45,7 +45,7 @@ public class SolsHealthIndicator implements HealthIndicator {
 
         if (responseEntity != null && !responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             return getHealthWithDownStatus(url, "HTTP Status code not 200",
-                "HTTP Status: " + responseEntity.getStatusCodeValue());
+                "HTTP Status: " + responseEntity.getStatusCode().value());
         }
 
         return getHealthWithUpStatus(url);
