@@ -46,7 +46,6 @@ public class ExceptionRecordCaseDataValidator {
     static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
-    private static final String INVALID_EMAIL_ERROR = "Email address invalid";
     private final Clock clock;
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
