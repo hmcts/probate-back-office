@@ -1044,10 +1044,12 @@ public class CallbackResponseTransformer {
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
 
-    private String determineSotStatementVariant(CaseData caseData,
-                                                List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs) {
+    private String determineSotStatementVariant(
+        CaseData caseData,
+        List<CollectionMember<AdditionalExecutorApplying>> applyingExecutors
+    ) {
         if (caseData.getSolsWillType() != null && caseData.getSolsWillType().matches("WillLeft")) {
-            return hasMultipleApplyingExecutors(listOfApplyingExecs, caseData.isPrimaryApplicantApplying())
+            return hasMultipleApplyingExecutors(applyingExecutors, caseData.isPrimaryApplicantApplying())
                 ? SOT_STATEMENT_VARIANT_EXECUTORS : SOT_STATEMENT_VARIANT_EXECUTOR;
         }
         return SOT_STATEMENT_VARIANT_APPLICANT;
