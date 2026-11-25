@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
@@ -82,7 +83,7 @@ class SolicitorCoversheetPDFDecoratorTest {
     private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRuleMock;
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
     private ObjectMapper objectMapper;
