@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
@@ -36,6 +37,8 @@ import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,10 +89,16 @@ public class ExceptionRecordController {
             erRequest.getFormType(), erRequest.getExceptionRecordId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        List<String> warnings = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrPopulatedValueMapper
-                .ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
-        warnings.addAll(nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrPopulatedValueMapper
-                .ocrPopulatedValueMapper(erRequest.getOcrFields()), formType));
+        List<OCRField> ocrFields = ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields());
+
+        List<String> warnings = new ArrayList<>();
+        List<String> warningsMandatory = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrFields, formType);
+        List<String> warningsNonMandatory = nonMandatoryFieldsValidator
+                .ocrToCCDNonMandatoryWarnings(ocrFields, formType);
+
+        warnings.addAll(warningsMandatory);
+        warnings.addAll(warningsNonMandatory);
 
         if (!warnings.isEmpty()) {
             log.warn(warnings.toString());
