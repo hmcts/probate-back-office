@@ -174,13 +174,13 @@ def versions = [
         commonsIO                       : '2.22.0',
         commonsValidator                : '1.11.0',
         documentClient                  : '2.0.0',
-        elasticSearchVersion            : '9.5.6',
+        elasticSearchVersion            : '9.5.7',
         feignVersion                    : '13.18',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.23.0',
         jsoup                           : '1.24.1',
-        launchdarkly                    : '7.18.1',
+        launchdarkly                    : '7.19.0',
         lifeEventsClientVersion         : '1.7.0',
         lombok                          : '1.18.48',
         mapStruct                       : '1.2.0.Final',
@@ -296,7 +296,7 @@ dependencies {
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBootVersion
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.14'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.15'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   implementation group: 'org.jsoup', name: 'jsoup', version: versions.jsoup
