@@ -295,6 +295,7 @@ public class WaTaskService {
         triggerEvent(caseDetails, CREATE_CHANGE_STATE);
         log.info("Created new task for case id {}",
                 callbackRequest.getCaseDetails().getId());
+        triggerEvent(callbackRequest.getCaseDetails(), CREATE_CHANGE_STATE);
     }
 
     public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
