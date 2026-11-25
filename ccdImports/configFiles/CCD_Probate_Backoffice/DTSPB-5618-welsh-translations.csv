@@ -40,8 +40,11 @@ Find out about call charges.,Gwybodaeth am gostau galwadau.
 What is the gross value of assets for probate?,Beth yw gwerthoedd yr asedau ar gyfer profiant?
 What is the net value for probate?,Beth yw'r gwerth net ar gyfer profiant?
 Trust corporation (resolution lodged with Senior District Judge or Registrar),Ymddiriedolaeth gorfforaeth (datrysiad wedi'i gyflwyno i Uwch Farnwr Rhanbarth neu Gofrestrydd)
-Enter the estate values for IHT,Nodwch werthoedd yr ystad ar gyfer IHT
-"The values you enter must be whole numbers, and must not include full stops or commas. You do not need to include pence. For example 25000, not 25,000.","Mae'r rhaid i'r gwerthoedd a roddir gennych fod yn gyfanrifau, ac ni ddylent gynnwys atalnodau llawn neu gomas. Nid oes angen i chi gynnwys ceiniogau. Er enghraifft 25000, nid 25,000."
+"### Enter the estate values for IHT
+
+ The values you enter must be whole numbers, and must not include full stops or commas. You do not need to include pence. For example 25000, not 25,000.","### Nodwch werthoedd yr ystad ar gyfer IHT
+
+ Mae'r rhaid i'r gwerthoedd a roddir gennych fod yn gyfanrifau, ac ni ddylent gynnwys atalnodau llawn neu gomas. Nid oes angen i chi gynnwys ceiniogau. Er enghraifft 25000, nid 25,000."
 Net estate value for IHT,Gwerth net yr ystad ar gyfer IHT:
 You can't use this service if you are not named in the will as a residuary legatee or devisee.,Ni allwch ddefnyddio'r gwasanaeth hwn os nad ydych wedi'ch enwi yn yr ewyllys fel derbynnydd cymynrodd neu gymynwr.
 You can't use this service if an executor/residuary legatee/devisee in trust is alive or applying.,Ni allwch ddefnyddio'r gwasanaeth hwn os yw ysgutor/derbynwyr cymynrodd/cymynwr mewn ymddiriedolaeth yn fyw neu'n gwneud cais.
