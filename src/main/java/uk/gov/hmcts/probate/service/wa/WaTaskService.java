@@ -287,15 +287,10 @@ public class WaTaskService {
     }
 
     public void cancelCreateChangeStateEvent(CallbackRequest callbackRequest) {
-        log.info("Canceling create change state event for case id {}", callbackRequest.getCaseDetails().getId());
+        log.info("Cancel and create change state event for case id {}", callbackRequest.getCaseDetails().getId());
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         triggerEvent(caseDetails, CANCEL_CHANGE_STATE);
-        log.info("Terminated existing task for case id {}",
-                callbackRequest.getCaseDetails().getId());
         triggerEvent(caseDetails, CREATE_CHANGE_STATE);
-        log.info("Created new task for case id {}",
-                callbackRequest.getCaseDetails().getId());
-        triggerEvent(callbackRequest.getCaseDetails(), CREATE_CHANGE_STATE);
     }
 
     public void createAndSubmitTaskForSystemUser(CallbackRequest callbackRequest,
