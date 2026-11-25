@@ -38,9 +38,6 @@ class AttachScannedDocsTest {
     @Mock
     private CaseDetails caseDetails;
 
-    @Mock
-    private CaseData caseData;
-
     @InjectMocks
     private AttachScannedDocs processor;
 
@@ -64,7 +61,7 @@ class AttachScannedDocsTest {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
         when(caseDetails.getData())
-                .thenReturn(caseData);
+                .thenReturn(CaseData.builder().build());
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("caseworker-probate-systemupdate")).build()));
 
@@ -93,7 +90,7 @@ class AttachScannedDocsTest {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
         when(caseDetails.getData())
-                .thenReturn(caseData);
+                .thenReturn(CaseData.builder().build());
 
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
@@ -122,7 +119,7 @@ class AttachScannedDocsTest {
         when(callbackRequest.getCaseDetails())
                 .thenReturn(caseDetails);
         when(caseDetails.getData())
-                .thenReturn(caseData);
+                .thenReturn(CaseData.builder().build());
 
         when(userInfoService.getCaseworkerInfoIncludingSystemUsers()).thenReturn(Optional.of(
                 UserInfo.builder().roles(List.of("idam-service-account")).build()));
