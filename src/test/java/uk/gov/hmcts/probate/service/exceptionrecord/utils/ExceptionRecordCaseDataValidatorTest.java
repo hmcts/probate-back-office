@@ -45,6 +45,9 @@ class ExceptionRecordCaseDataValidatorTest {
             "Invalid scanned Document Type Error for case type 'GRANT_OF_REPRESENTATION': [invalid]";
     private static final String INVALID_SCAN_DOC_CAVEAT =
             "Invalid scanned Document Type Error for case type 'CAVEAT': [will, invalid]";
+    private static final String INVALID_EMAIL_ADDRESS =
+            "Primary applicant email address (primaryApplicantEmailAddress) "
+                    + "does not appear to be a valid email address";
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
 
