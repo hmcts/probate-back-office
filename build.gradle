@@ -3,7 +3,7 @@ import uk.gov.hmcts.rse.AuthMode
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '4.1.2'
+  id 'org.springframework.boot' version '4.2.0'
   id 'uk.gov.hmcts.java' version '0.12.70'
   id 'io.github.ben-manes.versions' version '0.67.0'
   id 'com.gorylenko.gradle-git-properties' version '4.0.1'
@@ -191,7 +191,7 @@ def versions = [
         sendLetterClientVersion         : '6.0.0',
         serenity                        : '5.4.2',
         serviceAuthVersion              : '6.1.2',
-        springBootVersion               : '4.1.2',
+        springBootVersion               : '4.2.0',
         springDocOpenUi                 : '3.1.1',
         swaggerAnnotations              : '2.2.56',
         camunda                         : '7.24.0'
@@ -223,7 +223,7 @@ dependencyManagement {
   dependencies {
     dependency group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version: versions.camunda
 
-    dependencySet(group: 'org.apache.httpcomponents.core5', version: '5.4.4') {
+    dependencySet(group: 'org.apache.httpcomponents.core5', version: '5.5') {
         entry 'httpcore5'
         entry 'httpcore5-h2'
     }
