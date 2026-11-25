@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.businessrule.IhtEstate400421BusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -19,7 +20,7 @@ class Iht400421DefaulterTest {
     @InjectMocks
     private Iht400421Defaulter iht400421Defaulter;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilderMock;

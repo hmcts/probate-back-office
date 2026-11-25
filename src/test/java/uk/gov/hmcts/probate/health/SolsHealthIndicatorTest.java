@@ -4,21 +4,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.Status;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class SolsHealthIndicatorTest {
 
     private static final String URL = "http://url.com";
@@ -43,6 +47,7 @@ class SolsHealthIndicatorTest {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         Health health = solsHealthIndicator.health();
 
+        assertNotNull(health);
         assertThat(health.getStatus(), is(Status.UP));
         assertThat(health.getDetails().get("url"), is(URL));
     }
@@ -51,9 +56,9 @@ class SolsHealthIndicatorTest {
     void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
         when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
-        when(responseEntity.getStatusCodeValue()).thenReturn(HttpStatus.NO_CONTENT.value());
         Health health = solsHealthIndicator.health();
 
+        assertNotNull(health);
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
         assertThat(health.getDetails().get("message"), is("HTTP Status code not 200"));
@@ -67,6 +72,7 @@ class SolsHealthIndicatorTest {
 
         Health health = solsHealthIndicator.health();
 
+        assertNotNull(health);
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
         assertThat(health.getDetails().get("message"), is(message));
@@ -80,6 +86,7 @@ class SolsHealthIndicatorTest {
 
         Health health = solsHealthIndicator.health();
 
+        assertNotNull(health);
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
         assertThat(health.getDetails().get("message"), is("400 BAD_REQUEST"));
@@ -94,6 +101,7 @@ class SolsHealthIndicatorTest {
 
         Health health = solsHealthIndicator.health();
 
+        assertNotNull(health);
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
         assertThat(health.getDetails().get("message"), is("Unknown status code [999] status text"));

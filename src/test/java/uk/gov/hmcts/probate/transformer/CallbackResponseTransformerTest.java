@@ -12,9 +12,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.MockedStatic;
 import org.mockito.Spy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -59,6 +62,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -169,7 +173,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CallbackResponseTransformerTest {
 
     public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
@@ -531,10 +536,10 @@ class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsBeforeMock;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataMock;
 
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataBeforeMock;
 
     @Mock
@@ -613,6 +618,8 @@ class CallbackResponseTransformerTest {
     private CreateTaskProcessorFactory createTaskProcessorFactory;
     @Mock
     private AmendCaseDetailsForAwaitingDocumentation amendCaseDetailsForAwaitingDocumentation;
+    @Mock
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private Clock clock;
@@ -2397,7 +2404,8 @@ class CallbackResponseTransformerTest {
             .paperPaymentMethod("debitOrCredit")
             .paymentReferenceNumberPaperform(IHT_REFERENCE)
             .paperForm(YES)
-            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
+            .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE)
+            .registryLocation(REGISTRY_LOCATION);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
