@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,6 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,9 +68,9 @@ public class WaTaskControllerUnitTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseData;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataBefore;
     @Mock
     private BindingResult bindingResult;
@@ -133,8 +133,8 @@ public class WaTaskControllerUnitTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -176,8 +176,8 @@ public class WaTaskControllerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -229,8 +229,8 @@ public class WaTaskControllerUnitTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -278,8 +278,8 @@ public class WaTaskControllerUnitTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -327,8 +327,8 @@ public class WaTaskControllerUnitTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -493,7 +493,7 @@ public class WaTaskControllerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                 any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
                 clientContext,
@@ -503,8 +503,8 @@ public class WaTaskControllerUnitTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -531,7 +531,7 @@ public class WaTaskControllerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                 any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
                 clientContext,
@@ -540,8 +540,8 @@ public class WaTaskControllerUnitTest {
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -692,5 +692,24 @@ public class WaTaskControllerUnitTest {
                 .isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrorsOnCloseAwaitingDocumentationTasks() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.closeAwaitingDocumentationTasks(
+                        clientContext,
+                        callbackRequest,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(waTaskService);
     }
 }

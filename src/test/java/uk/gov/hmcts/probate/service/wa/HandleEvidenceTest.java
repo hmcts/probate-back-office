@@ -22,8 +22,6 @@ class HandleEvidenceTest {
     @Mock
     private CaseDetails caseDetails;
     @Mock
-    private CaseData caseData;
-    @Mock
     private WaTaskService waTaskService;
     @Mock
     private ResponseCaseData responseCaseData;
@@ -40,7 +38,7 @@ class HandleEvidenceTest {
                 .thenReturn(caseDetails);
 
         when(caseDetails.getData())
-                .thenReturn(caseData);
+                .thenReturn(CaseData.builder().build());
     }
 
     @Test
