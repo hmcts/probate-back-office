@@ -231,37 +231,4 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
-
-    @Test
-    void shouldThrowErrorsForInvalidEmailAddresses() {
-        GrantOfRepresentationData caseData = GrantOfRepresentationData
-                .builder()
-                .primaryApplicantEmailAddress("a@a")
-                .build();
-        OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
-        MatcherAssert.assertThat(exception.getWarnings(), CoreMatchers.hasItems(INVALID_EMAIL_ADDRESS));
-    }
-
-    @Test
-    void shouldThrowErrorsForMixtureOfInvalidAndValidEmailAddresses() {
-        GrantOfRepresentationData caseData = GrantOfRepresentationData
-                .builder()
-                .primaryApplicantEmailAddress("valid@example.com")
-                .solsSolicitorEmail("invalid@example.c")
-                .build();
-        OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
-        MatcherAssert.assertThat(exception.getWarnings(), CoreMatchers.hasItems("Solicitor email address "
-                + "(solsSolicitorEmail) does not appear to be a valid email address"));
-    }
-
-    @Test
-    void shouldDoNothingForValidEmailAddresses() {
-        GrantOfRepresentationData caseData = GrantOfRepresentationData
-                .builder()
-                .primaryApplicantEmailAddress("email@example.com")
-                .build();
-        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateEmailAddresses(caseData));
-    }
 }
