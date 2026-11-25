@@ -2090,10 +2090,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"basic-ftp@npm:^5.0.2":
-  version: 5.3.1
-  resolution: "basic-ftp@npm:5.3.1"
-  checksum: 10/9232ee155114efafadf5adee86a6750208653a9071e53e9803dceac61a66b3ba3974771ff2490ff28f1a118fdfb806ffcc488f64609e61a9cedb52480b312843
+"basic-ftp@npm:^6.2.4":
+  version: 6.2.6
+  resolution: "basic-ftp@npm:6.2.6"
+  checksum: 10/6c2be0f2787374d243375f3b38aa5399fadb4d1f440b4b0e5ee3689eb935c9bdc9244961d5f49b40cfe24d88a3a19bcaef1cb8fe06114cd688b6f265f0421bf5
   languageName: node
   linkType: hard
 
@@ -2717,10 +2717,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-uri-to-buffer@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "data-uri-to-buffer@npm:6.0.2"
-  checksum: 10/8b6927c33f9b54037f442856be0aa20e5fd49fa6c9c8ceece408dc306445d593ad72d207d57037c529ce65f413b421da800c6827b1dbefb607b8056f17123a61
+"data-uri-to-buffer@npm:8.0.0":
+  version: 8.0.0
+  resolution: "data-uri-to-buffer@npm:8.0.0"
+  checksum: 10/629a57906faab66bd56d299c3944f5314c2fe876d3c2a3553019635c0984464df00ec1938f23cd4e00fe34c32157eeaa73f49f8c994a56dd19f932ee628c99d8
   languageName: node
   linkType: hard
 
@@ -3892,14 +3892,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-uri@npm:^6.0.5":
-  version: 6.0.5
-  resolution: "get-uri@npm:6.0.5"
+"get-uri@npm:^8.0.0":
+  version: 8.0.2
+  resolution: "get-uri@npm:8.0.2"
   dependencies:
-    basic-ftp: "npm:^5.0.2"
-    data-uri-to-buffer: "npm:^6.0.2"
+    basic-ftp: "npm:^6.2.4"
+    data-uri-to-buffer: "npm:8.0.0"
     debug: "npm:^4.3.4"
-  checksum: 10/6daa56eb367dc030ae7bf6db4b5d36f200c9bb47ab00593c142176e4f33f22e129a294ac94329c6bcaebda19b7506080267a336742d20a915fb2bef9c400347f
+  checksum: 10/44ad62c3c50838823e62848572eb1768320986487f3eacedcabe51d604f1d880d36817f4c6a246a0876ab5b59adcb57237dc9157310df49fb5678cd01ea8ecfb
   languageName: node
   linkType: hard
 
