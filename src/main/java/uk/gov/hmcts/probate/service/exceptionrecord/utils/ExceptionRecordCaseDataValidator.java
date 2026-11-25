@@ -115,36 +115,6 @@ public class ExceptionRecordCaseDataValidator {
         }
     }
 
-    public void validateEmailAddresses(GrantOfRepresentationData caseData) {
-        List<OCRField> emailsToValidate = new ArrayList<>();
-        // Not complete
-        // need to work out which emails to actually check, as null is a valid entry from OCR
-        // No need for executor_2's email if there isn't an exec_2
-        // below is imo minimum for demo testing
-
-        if (caseData.getPrimaryApplicantEmailAddress() != null) {
-            OCRField primaryApplicantEmailAddress = OCRField.builder()
-                    .name("primaryApplicantEmailAddress")
-                    .value(caseData.getPrimaryApplicantEmailAddress())
-                    .build();
-            emailsToValidate.add(primaryApplicantEmailAddress);
-        }
-
-        if (caseData.getSolsSolicitorEmail() != null) {
-            OCRField solsSolicitorEmail = OCRField.builder()
-                    .name("solsSolicitorEmail")
-                    .value(caseData.getSolsSolicitorEmail())
-                    .build();
-            emailsToValidate.add(solsSolicitorEmail);
-        }
-
-        List<String> errorMessages = new ArrayList<>(ocrEmailValidator.validateField(emailsToValidate));
-
-        if (!errorMessages.isEmpty()) {
-            throw new OCRMappingException(INVALID_EMAIL_ERROR, errorMessages);
-        }
-    }
-
     public void validateInputScannedDocumentTypes(List<InputScannedDoc>
                                                             scannedDocuments,CaseType caseType) {
 
