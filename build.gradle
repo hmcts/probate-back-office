@@ -193,7 +193,7 @@ def versions = [
         serviceAuthVersion              : '6.1.2',
         springBootVersion               : '4.1.2',
         springDocOpenUi                 : '3.1.1',
-        swaggerAnnotations              : '2.2.56',
+        swaggerAnnotations              : '3.0.0',
         camunda                         : '7.24.0'
 ]
 
