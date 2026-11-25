@@ -3141,53 +3141,6 @@ else false</text>
           <text>"case progression,handOffs"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_16dqo2s">
-        <inputEntry id="UnaryTests_1hxtp8a">
-          <text>"attachScannedDocs"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_135jusv">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0fgn6ee">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_15iwu2i">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0hwf7rj">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1wt49fo">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1nc5ycj">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "TrustCorporation")</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_10ng0s7">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_11pvyqd">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ythr4q">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0583aap">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0drv2bv">
-          <text>"ExamineTrustCorporationCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0l6ni7p">
-          <text>"Examine - Trust Corporation"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1x22uui">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1kadsf7">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0kewu5p">
         <inputEntry id="UnaryTests_1sd8e9v">
           <text>"createCaseFromBulkScan", "serviceRequestPaymentSuccess", "solicitorPaymentSuccessCase", "applyforGrantPaperApplicationMan",  "boResolveStop", "resolveCWEscalation", "createChangeState"</text>
@@ -3232,53 +3185,6 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_04x5f9r">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_03buq14">
-        <inputEntry id="UnaryTests_0ntn9s4">
-          <text>"attachScannedDocs"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1wlekjv">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0otu2hq">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_16b0d9q">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_05jml9l">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0c0u7e7">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ihatue">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignDomicile")</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1e5ek89">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0761as9">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0a4jmen">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_08xxkme">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1e8ph38">
-          <text>"ExamineForeignDomicileCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1pppc4n">
-          <text>"Examine - Foreign Domicile"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_06wohu8">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1rnlz1l">
           <text>"case progression,handOffs"</text>
         </outputEntry>
       </rule>
@@ -3561,53 +3467,6 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_13im3qs">
-          <text>"case progression,handOffs"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0ky03cb">
-        <inputEntry id="UnaryTests_1ok8b9x">
-          <text>"attachScannedDocs"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_18sansh">
-          <text>"CasePrinted"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_023eav2">
-          <text>false</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1gisdab">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1q6ekqh">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_18283m9">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1qwr8j1">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "ForeignWill")</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0f64vr3">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0o2ovd1">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ky54ki">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_156nrgc">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0kbqmk1">
-          <text>"ExamineForeignWillCasePrinted"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0se7krm">
-          <text>"Examine - Prove a Foreign Will"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_11axfpf">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1xly1iz">
           <text>"case progression,handOffs"</text>
         </outputEntry>
       </rule>
@@ -6715,7 +6574,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0lv6fxc">
         <inputEntry id="UnaryTests_1swvzpm">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1nnvt7e">
           <text>"CasePrinted"</text>
@@ -6762,7 +6621,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_088n9pt">
         <inputEntry id="UnaryTests_1vb3c38">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0shrx1z">
           <text>"CasePrinted"</text>
@@ -6809,7 +6668,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1xhqcid">
         <inputEntry id="UnaryTests_02itsld">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0i43k9o">
           <text>"CasePrinted"</text>
@@ -6903,7 +6762,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_15qe864">
         <inputEntry id="UnaryTests_143nv80">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1lmy8bt">
           <text>"CasePrinted"</text>
@@ -6950,7 +6809,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_19x8br5">
         <inputEntry id="UnaryTests_1e25dac">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ymehcx">
           <text>"CasePrinted"</text>
@@ -6997,7 +6856,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1oh0264">
         <inputEntry id="UnaryTests_0xg48cn">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0jq4glt">
           <text>"CasePrinted"</text>
@@ -7044,7 +6903,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0ztvj7m">
         <inputEntry id="UnaryTests_06uot2e">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ntxl1x">
           <text>"CasePrinted"</text>
@@ -7091,7 +6950,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1o05ns9">
         <inputEntry id="UnaryTests_1hpe41t">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1h7ujik">
           <text>"CasePrinted"</text>
@@ -7138,7 +6997,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0ktny8w">
         <inputEntry id="UnaryTests_1u2d5q8">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_05dq9ah">
           <text>"CasePrinted"</text>
@@ -7185,7 +7044,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1vb4ggy">
         <inputEntry id="UnaryTests_1q4rue3">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0xdqtds">
           <text>"CasePrinted"</text>
@@ -7232,7 +7091,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1wfbgr7">
         <inputEntry id="UnaryTests_1pdmeuh">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0cum9sl">
           <text>"CasePrinted"</text>
@@ -7279,7 +7138,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0tbs3r8">
         <inputEntry id="UnaryTests_0jawu38">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1886kjl">
           <text>"CasePrinted"</text>
@@ -7326,7 +7185,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1i8ss3w">
         <inputEntry id="UnaryTests_06op6w3">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_17rklz0">
           <text>"CasePrinted"</text>
@@ -7373,7 +7232,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1hz9zrg">
         <inputEntry id="UnaryTests_19q5r80">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0hlafwb">
           <text>"CasePrinted"</text>
@@ -7420,7 +7279,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ezeyc7">
         <inputEntry id="UnaryTests_0j15f42">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1rq871e">
           <text>"CasePrinted"</text>
@@ -7467,7 +7326,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0nalq36">
         <inputEntry id="UnaryTests_08zdlmx">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0tjibig">
           <text>"CasePrinted"</text>
@@ -7514,7 +7373,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_12wtrda">
         <inputEntry id="UnaryTests_0bddwsj">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0gp7h44">
           <text>"CasePrinted"</text>
@@ -7561,7 +7420,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0qom2gw">
         <inputEntry id="UnaryTests_0v1i1vw">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bzy466">
           <text>"CasePrinted"</text>
@@ -7608,7 +7467,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1pp4ylm">
         <inputEntry id="UnaryTests_1psgjo2">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qhs9km">
           <text>"CasePrinted"</text>
@@ -7655,7 +7514,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_13rcvji">
         <inputEntry id="UnaryTests_0q387uo">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation","handleEvidence","attachScannedDocs"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0j5c8u1">
           <text>"CasePrinted"</text>
