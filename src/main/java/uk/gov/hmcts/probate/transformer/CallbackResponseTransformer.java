@@ -1034,13 +1034,12 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
         var professionalName = caseDetails.getData().getSolsSOTName();
+        var sotStatementVariant = determineSotStatementVariant(caseDetails.getData(), listOfApplyingExecs);
 
         String executorNames = setExecutorNames(caseDetails.getData(), listOfApplyingExecs, professionalName);
 
         // Select a stable label variant key for translation; CCD then substitutes ${solsSOTName} at render time.
-        builder.solsReviewSOTStatementVariant(
-            determineSotStatementVariant(caseDetails.getData(), listOfApplyingExecs)
-        );
+        builder.solsReviewSOTStatementVariant(sotStatementVariant);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
