@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_RESOLVE_STOP_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_FROM_BULK_SCAN_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
@@ -214,35 +214,35 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false, 
                             emptyList(), false),
                     List.of(examineDigitalCaseAdmonTaskAttributes)
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(true, "admonWill", false, 
                             emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "other", false, 
                             emptyList(), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", false,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
                     emptyList()
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     CASE_PRINTED_STATE,
                     additionalData(false, "admonWill", true,
                             handOffReasonListWithHandOffReason(invalidHandOffReason), false),
@@ -340,7 +340,7 @@ public class CamundaTaskWaInitiationAdmonTestProvider implements ArgumentsProvid
                     List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
             ),
             Arguments.of(
-                    CHANGE_STATE_EVENT,
+                    CREATE_CHANGE_STATE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "admonWill", false, 
                             emptyList(), false),

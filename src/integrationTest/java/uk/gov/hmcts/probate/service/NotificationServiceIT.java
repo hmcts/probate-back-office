@@ -74,6 +74,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -123,7 +124,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_APPLICANT_SURNAME = "applicantSN";
     private static final String PERSONALISATION_APPLICANT_EMAIL = "primary@probate-test.com";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
-    private static final String PERSONALISATION_DECEASED_FORNAMES = "deceasedFN";
+    private static final String PERSONALISATION_DECEASED_FORENAMES = "deceasedFN";
     private static final String PERSONALISATION_DECEASED_SURNAME = "deceasedSN";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
     private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
@@ -138,7 +139,6 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
-    private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
     private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
@@ -173,16 +173,15 @@ class NotificationServiceIT {
     @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
 
-    @Mock
+    @MockitoSpyBean
     private EventValidationService eventValidationService;
 
-    @Mock
-    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules = List.of();
 
     @Mock
     private CallbackResponse callbackResponse;
 
-    @Mock
+    @MockitoSpyBean
     private DateFormatterService dateFormatterService;
 
 
@@ -299,7 +298,7 @@ class NotificationServiceIT {
             .applicationType(PERSONAL)
             .primaryApplicantForenames(PERSONALISATION_APPLICANT_FORENAMES)
             .primaryApplicantSurname(PERSONALISATION_APPLICANT_SURNAME)
-            .deceasedForenames(PERSONALISATION_DECEASED_FORNAMES)
+            .deceasedForenames(PERSONALISATION_DECEASED_FORENAMES)
             .deceasedSurname(PERSONALISATION_DECEASED_SURNAME)
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .registryLocation("Oxford")
@@ -311,7 +310,7 @@ class NotificationServiceIT {
             .applicationType(SOLICITOR)
             .primaryApplicantForenames(PERSONALISATION_APPLICANT_FORENAMES)
             .primaryApplicantSurname(PERSONALISATION_APPLICANT_SURNAME)
-            .deceasedForenames(PERSONALISATION_DECEASED_FORNAMES)
+            .deceasedForenames(PERSONALISATION_DECEASED_FORENAMES)
             .deceasedSurname(PERSONALISATION_DECEASED_SURNAME)
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .registryLocation("Oxford")
@@ -1555,8 +1554,9 @@ class NotificationServiceIT {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
-            .thenReturn(callbackResponse);
+        doReturn(CallbackResponse.builder().errors(new ArrayList<>()).build())
+                .when(eventValidationService)
+                .validateEmailRequest(eq(callbackRequest), anyList());
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
         assertEquals(SENT_EMAIL_FILE_NAME,
@@ -1577,8 +1577,9 @@ class NotificationServiceIT {
         List<String> errors = new ArrayList<>();
         errors.add("test error");
 
-        when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+        doReturn(CallbackResponse.builder().errors(errors).build())
+                .when(eventValidationService)
+                .validateEmailRequest(eq(callbackRequest), anyList());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
@@ -1600,8 +1601,9 @@ class NotificationServiceIT {
         List<String> errors = new ArrayList<>();
         errors.add("test error");
 
-        when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+        doReturn(CallbackResponse.builder().errors(errors).build())
+                .when(eventValidationService)
+                .validateEmailRequest(eq(callbackRequest), anyList());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
