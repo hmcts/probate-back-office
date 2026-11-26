@@ -65,7 +65,7 @@ class DocumentGeneratorServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
-    private static final String REGISTRY_LOCATION = "bristol";
+    private static final String REGISTRY_LOCATION = "brighton";
     private static final String DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
     private static final String INTESTACY_DRAFT_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
     private static final String ADMON_WILL_DRAFT_REISSUE_FILE_NAME = "admonWillGrantDraftReissue.pdf";
@@ -142,14 +142,14 @@ class DocumentGeneratorServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
             .caseType("gop")
-            .registryLocation("Bristol")
+            .registryLocation("Brighton")
             .applicationType(ApplicationType.PERSONAL).build(),
             LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
         CaseDetails caseDetailsSolsGop = new CaseDetails(CaseData.builder()
             .caseType("gop")
-            .registryLocation("Bristol")
+            .registryLocation("Brighton")
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorAddress(SolsAddress.builder().build())
             .solsSolicitorFirmName("firmName").build(),
@@ -159,7 +159,7 @@ class DocumentGeneratorServiceTest {
         CaseDetails caseDetailsSolsTrustCorpGop = new CaseDetails(CaseData.builder()
                 .caseType("gop")
                 .schemaVersion("2.0.0")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .applicationType(ApplicationType.SOLICITOR)
                 .solsSolicitorAddress(SolsAddress.builder().build())
                 .solsSolicitorFirmName("firmName").build(),
@@ -169,14 +169,14 @@ class DocumentGeneratorServiceTest {
 
         CaseDetails caseDetailsSolsAdmon = new CaseDetails(CaseData.builder()
             .caseType("admonWill")
-            .registryLocation("Bristol")
+            .registryLocation("Brighton")
             .applicationType(ApplicationType.SOLICITOR).build(),
             LAST_MODIFIED, CASE_ID);
         callbackRequestSolsAdmon = new CallbackRequest(caseDetailsSolsAdmon);
 
         CaseDetails caseDetailsSolsIntestacy = new CaseDetails(CaseData.builder()
             .caseType("intestacy")
-            .registryLocation("Bristol")
+            .registryLocation("Brighton")
             .applicationType(ApplicationType.SOLICITOR).build(),
             LAST_MODIFIED, CASE_ID);
         callbackRequestSolsIntestacy = new CallbackRequest(caseDetailsSolsIntestacy);
@@ -195,7 +195,7 @@ class DocumentGeneratorServiceTest {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().caseType("gop").letterType(TEMPLATE)
-                .registryLocation("Bristol").build(), Map.class);
+                .registryLocation("Brighton").build(), Map.class);
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
@@ -235,7 +235,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
@@ -255,7 +255,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueDraftProducesCorrectDocumentForAdmonWill() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
@@ -288,7 +288,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueProducesFinalVersionForIntestacy() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
@@ -308,7 +308,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueProducesFinalVersionForAdmonWill() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
@@ -328,7 +328,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshAdmonWillVersionFinal() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -351,7 +351,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshAdmonWillVersionDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -373,7 +373,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshDigitalGrantFinal() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -395,7 +395,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshDigitalGrantDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -417,7 +417,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshIntestacyGrantDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -439,7 +439,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshIntestacyGrantFinal() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -461,7 +461,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshDigitalGrantReissueDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -483,7 +483,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshIntestacyGrantReissueDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -505,7 +505,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshAdmonGrantReissueDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -527,7 +527,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshDigitalGrantReissue() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -549,7 +549,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshIntestacyGrantReissue() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -571,7 +571,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateProducesWelshAdmonWIllGrantReissue() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES).build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -593,7 +593,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         assertEquals(DocumentType.EDGE_CASE,
@@ -604,7 +604,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateReissueProducesNewEdgeCaseDocumentForFinal() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
+            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Brighton").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         assertEquals(DocumentType.EDGE_CASE,
@@ -668,7 +668,7 @@ class DocumentGeneratorServiceTest {
         expectedMap.put("deceasedDateOfDeath", String.valueOf(LocalDate.of(2018, 10, 19)));
 
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                 .languagePreferenceWelsh(Constants.YES)
                 .deceasedDateOfBirth(LocalDate.of(2018, 10, 19))
                 .deceasedDateOfDeath(LocalDate.of(2018, 10, 19))
@@ -728,7 +728,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGeneratePDFDocument() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("digitalGrant").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("digitalGrant").registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -751,7 +751,7 @@ class DocumentGeneratorServiceTest {
     @Test
     void testGenerateEdgeCasePDFDocument() {
         CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol")
+            new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -924,7 +924,7 @@ class DocumentGeneratorServiceTest {
     void testGenerateProducesWelshDigitalGrantFinalWithExistingGrantIssuedDate() {
         String grantIssuedDate = "2025-01-15";
         CaseDetails caseDetails =
-                new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
+                new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Brighton")
                         .grantIssuedDate(grantIssuedDate)
                         .languagePreferenceWelsh(Constants.YES).build(),
                         LAST_MODIFIED, CASE_ID);

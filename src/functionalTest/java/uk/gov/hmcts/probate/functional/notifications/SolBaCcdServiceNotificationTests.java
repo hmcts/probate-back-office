@@ -34,9 +34,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String APPLICATION_RECEIVED = "/notify/application-received";
     private static final String PAPER_FORM = "/case/paperForm";
 
-    private static final String BIRMINGHAM_NO = "0300 303 0648";
-    private static final String REGISTRY_NO = " 0300 303 0648";
-
     private static final String EMAIL_NOTIFICATION_URL =
         "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String GENERATED_DOCUMENT_URL =
@@ -204,7 +201,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Disabled // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     void verifySolicitorApplicantDocumentReceivedContentIsOk() throws IOException {
-        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED);
+        validatePostSuccess("solicitorPayloadNotificationsLeeds.json", DOCUMENTS_RECEIVED);
     }
 
     @Test
@@ -361,7 +358,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
-        validatePostSuccess("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED);
+        validatePostSuccess("solicitorPayloadNotificationsLeeds.json", GRANT_ISSUED);
     }
 
     @Test

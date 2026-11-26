@@ -51,7 +51,7 @@ class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("Yes")
             .anyOtherApplyingPartners("No")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesNo = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -59,7 +59,7 @@ class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("No")
             .anyOtherApplyingPartners("No")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoNo = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -67,7 +67,7 @@ class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("No")
             .anyOtherApplyingPartners("No")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoError = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -75,7 +75,7 @@ class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("No")
             .anyOtherApplyingPartners("Yes")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoErrorTwo = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -83,7 +83,7 @@ class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .anyOtherApplyingPartners("Yes")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesYesTrustCorp = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -91,7 +91,7 @@ class PartnersAddedValidationRuleTest {
                 .solsSolicitorIsExec("Yes")
                 .solsSolicitorIsApplying("Yes")
                 .anyOtherApplyingPartnersTrustCorp("No")
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
 
         caseDataYesNoTrustCorp = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -99,7 +99,7 @@ class PartnersAddedValidationRuleTest {
                 .solsSolicitorIsExec("Yes")
                 .solsSolicitorIsApplying("No")
                 .anyOtherApplyingPartnersTrustCorp("No")
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
 
         caseDataNoNoTrustCorp = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -107,7 +107,7 @@ class PartnersAddedValidationRuleTest {
                 .solsSolicitorIsExec("No")
                 .solsSolicitorIsApplying("No")
                 .anyOtherApplyingPartnersTrustCorp("No")
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
 
         caseDataNoErrorTrustCorp = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -115,7 +115,7 @@ class PartnersAddedValidationRuleTest {
                 .solsSolicitorIsExec("No")
                 .solsSolicitorIsApplying("No")
                 .anyOtherApplyingPartnersTrustCorp("Yes")
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
 
         caseDataNoErrorTwoTrustCorp = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -123,7 +123,7 @@ class PartnersAddedValidationRuleTest {
                 .solsSolicitorIsExec("No")
                 .solsSolicitorIsApplying("Yes")
                 .anyOtherApplyingPartnersTrustCorp("Yes")
-                .registryLocation("Bristol").build();
+                .registryLocation("Brighton").build();
     }
 
     @Test
