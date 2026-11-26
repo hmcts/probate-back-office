@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.config;
 
+import jakarta.servlet.ServletContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.WebApplicationInitializer;
 import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
@@ -17,9 +20,10 @@ import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.AuthCheckerServiceAndUserFilter;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration implements WebApplicationInitializer {
 
     @Bean
     @Order(1)
@@ -105,5 +109,11 @@ public class SecurityConfiguration {
                 "/data-extract/**",
                 "/"
         );
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) {
+        log.info("SecurityConfiguration::onStartup - set session cookie httponly true");
+        servletContext.getSessionCookieConfig().setHttpOnly(true);
     }
 }
