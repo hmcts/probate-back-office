@@ -13,35 +13,9 @@
     "aac-manage-case-assignment",
     "org.mapstruct:mapstruct-processor",
     "org.mapstruct:mapstruct-jdk8",
-    "org.apache.pdfbox:pdfbox",
-    "com.github.hmcts.rse-cft-lib"
+    "org.apache.pdfbox:pdfbox"
   ],
   "packageRules": [
-    {
-      "description": "IDAM client 4.x targets Spring Boot 4; keep this repo on the Boot 3 compatible line.",
-      "matchPackageNames": ["com.github.hmcts:idam-java-client"],
-      "allowedVersions": "<3.1.0"
-    },
-    {
-      "description": "Spring Cloud 2025.1.x targets Spring Boot 4; keep this repo on the Boot 3 compatible 2025.0.x line.",
-      "matchPackageNames": ["org.springframework.cloud:spring-cloud-dependencies"],
-      "allowedVersions": "/^2025\\.0\\./"
-    },
-    {
-      "description": "These HMCTS client major versions target Spring Boot 4; keep this repo on the Boot 3 compatible lines.",
-      "matchPackageNames": [
-        "com.github.hmcts:service-auth-provider-java-client",
-        "com.github.hmcts:core-case-data-store-client"
-      ],
-      "allowedVersions": "<6.0.0"
-    },
-    {
-      "description": "springdoc v3 targets Spring Boot 4",
-      "matchPackageNames": [
-        "org.springdoc:springdoc-openapi-starter-webmvc-ui"
-      ],
-      "allowedVersions": "<3.0.0"
-    },
     {
       "description": "Ignore Java base image",
       "matchDatasources": ["docker"],
