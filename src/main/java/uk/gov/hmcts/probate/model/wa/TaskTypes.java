@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
@@ -27,7 +28,6 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_FOREIGN_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_IBCA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_IBIS;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
@@ -55,7 +55,7 @@ public enum TaskTypes {
             CLOSE_ICE_INTESTACY),
     EXAMINE_DIGITAL_CASE_ADMON_WILL(STATE_CASE_PRINTED,"ExamineDigitalCaseAdmonWill", ADMON_WILL.getCaseType(),
             CLOSE_ICE_ADMON_WILL),
-    EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA(STATE_CASE_PRINTED,"ExamineDigitalCaseAdcolligendaBona",
+    EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA(STATE_CASE_PRINTED,"ExamineDigitalCaseAdColligendaBona",
             AD_COLLIGENDA_BONA.getCaseType(), CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,"ExamineDigitalCaseProbateReadyToIssue",
             GOP.getCaseType(), CLOSE_ICE_PROBATE),
@@ -196,7 +196,7 @@ public enum TaskTypes {
     public static Optional<TaskTypes> getCaseType(String taskType) {
         return Arrays.stream(values())
                 .filter(task -> task.getCaseType() != null)
-                .filter(taskTypes -> taskTypes.getValue().equals(taskType))
+                .filter(taskTypes -> taskTypes.getValue().equalsIgnoreCase(taskType))
                 .findAny();
     }
 

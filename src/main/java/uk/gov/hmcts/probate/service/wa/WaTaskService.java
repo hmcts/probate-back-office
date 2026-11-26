@@ -331,11 +331,9 @@ public class WaTaskService {
         Set<String> existingTasks = waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString());
 
         String iceCaseType = callbackRequest.getCaseDetails().getData().getCaseType();
-        //TODO:REMOVE PEEK once testing done
+
         String createTask = existingTasks.stream()
                 .map(TaskTypes::getCaseType)
-                .peek(data -> log.info("case id {}: task types derived {}",
-                        caseDetails.getId(), data))
                 .flatMap(Optional::stream)
                 .map(TaskTypes::getCaseType)
                 .anyMatch(caseType -> caseType.equals(iceCaseType))

@@ -1193,14 +1193,14 @@ class WaTaskServiceTest {
     void shouldSetCreateTaskToNoWhenIceTaskIsPresent() {
         when(caseDetails.getData())
                 .thenReturn(CaseData.builder()
-                        .caseType("gop")
+                        .caseType("adColligendaBona")
                         .caseHandedOffToLegacySite(NO)
                         .build());
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getId()).thenReturn(123456789L);
 
         when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
-                .thenReturn(Set.of(EXAMINE_DIGITAL_CASE_PROBATE.getValue()));
+                .thenReturn(Set.of("ExamineDigitalCaseAdColligendaBona"));
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .build();
