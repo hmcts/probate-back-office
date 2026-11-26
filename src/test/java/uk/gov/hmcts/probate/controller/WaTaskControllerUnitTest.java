@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockMakers;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.service.wa.WaApi;
 import uk.gov.hmcts.probate.service.wa.WaTaskService;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.utils.TaskUtils;
@@ -33,7 +33,6 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,6 +42,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -67,9 +67,9 @@ public class WaTaskControllerUnitTest {
     private CaseDetails caseDetails;
     @Mock
     private CaseDetails caseDetailsBefore;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseData;
-    @Mock
+    @Mock(mockMaker = MockMakers.SUBCLASS)
     private CaseData caseDataBefore;
     @Mock
     private BindingResult bindingResult;
@@ -81,8 +81,6 @@ public class WaTaskControllerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
-    @Mock
-    private WaApi waApi;
     @Mock
     private SecurityUtils securityUtils;
     @Mock
@@ -103,7 +101,7 @@ public class WaTaskControllerUnitTest {
 
     @BeforeEach
     void setUp() {
-        waTaskService = spy(new WaTaskService(waApi, securityUtils, taskUtils, ccdClientApi));
+        waTaskService = spy(new WaTaskService(securityUtils, taskUtils, ccdClientApi));
         waTaskContoller = new WaTaskContoller(taskUtils, objectMapper, workAllocationToggleService, waTaskService);
     }
 
@@ -125,15 +123,15 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -167,16 +165,16 @@ public class WaTaskControllerUnitTest {
                 .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -221,15 +219,15 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -270,15 +268,15 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -318,16 +316,16 @@ public class WaTaskControllerUnitTest {
                 .getTaskData(clientContext);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateHandOffClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList(ENCODED_CLIENT_CONTEXT));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -347,8 +345,8 @@ public class WaTaskControllerUnitTest {
     void shouldByPassWaCompletionFlag() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateCaseTypeClientContext(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -358,12 +356,13 @@ public class WaTaskControllerUnitTest {
     @Test
     void shouldByPassCloseReadyToIssueHandOffs() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
-        waTaskContoller.closeReadyToIssueHandOffs(
+        waTaskContoller.closeReadyToIssueTasks(
+                clientContext,
                 callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
-        verify(waTaskService, never()).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService, never()).closeReadyToIssueTasks(eq(callbackRequest), anyString());
     }
 
     @Test
@@ -371,16 +370,48 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        doNothing().when(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        doNothing().when(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
 
-        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueHandOffs(
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = waTaskContoller.closeReadyToIssueTasks(
+                clientContext,
                 callbackRequest,
                 bindingResult,
                 httpServletRequest);
         assertThat(callbackResponseResponseEntity.getStatusCode())
                 .isEqualTo(HttpStatus.OK);
 
-        verify(waTaskService).closeReadyToIssueHandOffs(callbackRequest);
+        verify(waTaskService).closeReadyToIssueTasks(callbackRequest, clientContext);
+    }
+
+    @Test
+    void shouldByPassCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        waTaskContoller.closeAwaitingDocumentationTasks(
+                clientContext,
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+
+        verify(waTaskService, never()).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
+    }
+
+    @Test
+    void shouldInvokeCloseAwaitingDocumentationHandOffs() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        doNothing().when(waTaskService).closeAwaitingDocumentationTasks(eq(callbackRequest), anyString());
+
+        String clientConext = "clientConext";
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity
+                = waTaskContoller.closeAwaitingDocumentationTasks(clientConext,
+                callbackRequest,
+                bindingResult,
+                httpServletRequest);
+        assertThat(callbackResponseResponseEntity.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        verify(waTaskService).closeAwaitingDocumentationTasks(callbackRequest, clientConext);
     }
 
 
@@ -393,8 +424,8 @@ public class WaTaskControllerUnitTest {
 
         assertThatThrownBy(() ->
                 waTaskContoller.updateCaseTypeClientContext(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 )
@@ -419,8 +450,8 @@ public class WaTaskControllerUnitTest {
 
         ResponseEntity<CallbackResponse> response =
                 waTaskContoller.updateCaseTypeClientContext(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 );
@@ -459,18 +490,18 @@ public class WaTaskControllerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                 any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -497,17 +528,17 @@ public class WaTaskControllerUnitTest {
                 eq(clientContext),
                 eq(callbackRequest),
                 any()))
-                .thenReturn(Optional.of("encodedClientContext"));
+                .thenReturn(Optional.of(ENCODED_CLIENT_CONTEXT));
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getHeaders())
-                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+        assertThat(response.getHeaders().get(CLIENT_CONTEXT_HEADER_PARAMETER))
+                .containsExactly(ENCODED_CLIENT_CONTEXT);
 
         verify(taskUtils).setTaskCompletion(
                 eq(clientContext),
@@ -527,8 +558,8 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContextEvidenceHandled(
-                callbackRequest,
                 clientContext,
+                callbackRequest,
                 bindingResult,
                 httpServletRequest);
 
@@ -544,8 +575,8 @@ public class WaTaskControllerUnitTest {
 
         assertThatThrownBy(() ->
                 waTaskContoller.updateClientContextEvidenceHandled(
-                        callbackRequest,
                         null,
+                        callbackRequest,
                         bindingResult,
                         httpServletRequest
                 )
@@ -609,7 +640,8 @@ public class WaTaskControllerUnitTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         assertThatThrownBy(() ->
-                waTaskContoller.closeReadyToIssueHandOffs(
+                waTaskContoller.closeReadyToIssueTasks(
+                        clientContext,
                         callbackRequest,
                         bindingResult,
                         httpServletRequest
@@ -627,7 +659,7 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseData.getCaseType()).thenReturn("gop");
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(null, callbackRequest, bindingResult, httpServletRequest);
 
         verify(waTaskService).createAndSubmitTaskForSystemUser(
                 callbackRequest,
@@ -639,7 +671,7 @@ public class WaTaskControllerUnitTest {
     void shouldBypassTaskCreationWhenWAIsDisabled() {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
 
-        waTaskContoller.selectForQASetupWATask(callbackRequest, clientContext, bindingResult, httpServletRequest);
+        waTaskContoller.selectForQASetupWATask(null, callbackRequest, bindingResult, httpServletRequest);
 
         verifyNoInteractions(coreCaseDataApi);
     }
@@ -652,7 +684,8 @@ public class WaTaskControllerUnitTest {
         when(caseDetails.getId()).thenReturn(12345L);
 
         assertThatThrownBy(() -> waTaskContoller.selectForQASetupWATask(
-                callbackRequest, clientContext, bindingResult, httpServletRequest))
+                null,
+                callbackRequest, bindingResult, httpServletRequest))
                 .isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(coreCaseDataApi);

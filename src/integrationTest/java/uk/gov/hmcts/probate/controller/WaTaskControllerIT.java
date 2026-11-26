@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -134,7 +135,7 @@ public class WaTaskControllerIT {
     }
 
     @Test
-    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsNotEnabled() throws Exception {
+    void shouldTriggerCloseReadyToIssueHandOffsWhenProbateWaIsEnabled() throws Exception {
         String payload = testUtils.getStringFromFile("waTaskCaseType.json");
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);
@@ -143,25 +144,43 @@ public class WaTaskControllerIT {
         Optional<String> encodedString = taskUtils.base64Encode(waMapper);
         assertThat(encodedString).isNotEmpty();
 
-        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueHandOffs")
+        mockMvc.perform(post("/waTaskContoller/trigger/closeReadyToIssueTasks")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
                         .content(payload))
                 .andExpect(status().isOk());
 
-        verify(waTaskService).closeReadyToIssueHandOffs(isA(CallbackRequest.class));
+        verify(waTaskService).closeReadyToIssueTasks(isA(CallbackRequest.class), eq(encodedString.get()));
+    }
+
+    @Test
+    void shouldTriggerCloseAwaitingDocumentationHandOffsWhenProbateWaIsEnabled() throws Exception {
+        String payload = testUtils.getStringFromFile("waTaskCaseType.json");
+        when(workAllocationToggleService.isProbateWAEnabled())
+                .thenReturn(true);
+
+        WaMapper waMapper = objectMapper.readValue(CLIENT_CONTEXT, WaMapper.class);
+        Optional<String> encodedString = taskUtils.base64Encode(waMapper);
+        assertThat(encodedString).isNotEmpty();
+
+        mockMvc.perform(post("/waTaskContoller/trigger/closeAwaitingDocumentationTasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(
+                                CLIENT_CONTEXT_HEADER_PARAMETER,
+                                encodedString.get())
+                        .content(payload))
+                .andExpect(status().isOk());
+
+        verify(waTaskService).closeAwaitingDocumentationTasks(isA(CallbackRequest.class), eq(encodedString.get()));
     }
 
     @Test
     void shouldReturnBadRequestForInvalidPayload() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())
@@ -198,12 +217,13 @@ public class WaTaskControllerIT {
             // Mock the CallbackRequest and its nested objects
             CallbackRequest mockCallbackRequest = mock(CallbackRequest.class);
             CaseDetails mockCaseDetails = mock(CaseDetails.class);
-            CaseData mockCaseData = mock(CaseData.class);
+            CaseData mockCaseData = CaseData.builder()
+                    .evidenceHandled(NO)
+                    .build();
 
             // Set up the mock behavior
             when(mockCallbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
             when(mockCaseDetails.getData()).thenReturn(mockCaseData);
-            when(mockCaseData.getEvidenceHandled()).thenReturn(NO);
 
             // Test the predicate
             return predicate.test(mockCallbackRequest, CLIENT_CONTEXT_HEADER_PARAMETER);
@@ -238,13 +258,7 @@ public class WaTaskControllerIT {
     void shouldReturnBadRequestForInvalidPayloadEvidenceHandled() throws Exception {
 
         String invalidRequest = """
-                {
-                  "case_details": {
-                    "jurisdiction": "PROBATE",
-                    "case_data": {
-                    }
-                   }
-                }
+                {}
             """;
 
         when(workAllocationToggleService.isProbateWAEnabled())

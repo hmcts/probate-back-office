@@ -39,7 +39,7 @@ module "postgresql" {
   common_tags = var.common_tags
   name        = "${var.database_name}-postgres-flexible-db"
 
-  subnet_suffix = "expanded"
+  subnet_suffix = var.subnet_suffix
 
   pgsql_databases = [
     {

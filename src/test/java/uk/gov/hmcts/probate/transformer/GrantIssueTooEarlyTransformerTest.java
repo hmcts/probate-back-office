@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockMakers;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -24,7 +26,7 @@ class GrantIssueTooEarlyTransformerTest {
     void setUp() {
         transformer = new GrantIssueTooEarlyTransformer(Clock.systemUTC());
         responseBuilder = mock(ResponseCaseDataBuilder.class);
-        caseData = mock(CaseData.class);
+        caseData = mock(CaseData.class, withSettings().mockMaker(MockMakers.SUBCLASS));
     }
 
     @Test

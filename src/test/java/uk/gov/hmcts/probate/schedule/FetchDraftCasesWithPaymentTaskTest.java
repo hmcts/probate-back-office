@@ -3,10 +3,9 @@ package uk.gov.hmcts.probate.schedule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.service.FetchDraftCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class FetchDraftCasesWithPaymentTaskTest {
 
     @Mock
@@ -30,10 +29,8 @@ class FetchDraftCasesWithPaymentTaskTest {
     @Mock
     private FetchDraftCaseService fetchDraftCaseService;
 
-    @Mock
     private Clock clock;
 
-    @InjectMocks
     private FetchDraftCasesWithPaymentTask fetchDraftCasesWithPaymentTask;
     private static final String DATE_TODAY = "2025-10-02";
     private final String adhocDate = "2022-09-05";

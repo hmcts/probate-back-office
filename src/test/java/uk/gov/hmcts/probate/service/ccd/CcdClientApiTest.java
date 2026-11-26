@@ -5,7 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -36,7 +38,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.ccd.JurisdictionId.PROBATE;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CcdClientApiTest {
 
     private static final String AUTHORISATION = "XXJDHFHF";
@@ -376,7 +379,7 @@ class CcdClientApiTest {
     void shouldTriggerEvent() {
 
         String caseId = "123456789";
-        EventId eventId = EventId.CLOSE_READY_TO_ISSUE_HANDOFFS;
+        EventId eventId = EventId.CLOSE_HANDOFFS;
 
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .authorisation("auth-token")
