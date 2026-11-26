@@ -1,0 +1,662 @@
+[
+  {
+    "phrase": "Reject analytics cookies",
+    "lang": "cy",
+    "translation": {
+      "translation": "Gwrthod cwcis dadansoddol"
+    },
+    "validity": "2026-11-27T16:21:29.742+00:00",
+    "id": 1
+  },
+  {
+    "phrase": "Cookies on",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cwcis ymlaen"
+    },
+    "validity": "2026-11-27T16:21:29.744+00:00",
+    "id": 2
+  },
+  {
+    "phrase": "We'd also like to use analytics cookies so we can understand how you use the service and make improvements.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rydym hefyd eisiau defnyddio cwcis dadansoddol fel y gallwn ddeall sut rydych yn defnyddio’r gwasanaeth ac i wneud gwelliannau."
+    },
+    "validity": "2026-11-27T16:21:29.744+00:00",
+    "id": 3
+  },
+  {
+    "phrase": "Accept analytics cookies",
+    "lang": "cy",
+    "translation": {
+      "translation": "Derbyn cwcis dadansoddol"
+    },
+    "validity": "2026-11-27T16:21:29.744+00:00",
+    "id": 4
+  },
+  {
+    "phrase": "this service",
+    "lang": "cy",
+    "translation": {
+      "translation": "y gwasanaeth hwn"
+    },
+    "validity": "2026-11-27T16:21:29.744+00:00",
+    "id": 5
+  },
+  {
+    "phrase": "View cookies",
+    "lang": "cy",
+    "translation": {
+      "translation": "Gweld cwcis"
+    },
+    "validity": "2026-11-27T16:21:29.745+00:00",
+    "id": 6
+  },
+  {
+    "phrase": "We use some essential cookies to make this service work.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rydym ni’n defnyddio rhai cwcis hanfodol i wneud i’r gwasanaeth hwn weithio."
+    },
+    "validity": "2026-11-27T16:21:29.745+00:00",
+    "id": 7
+  },
+  {
+    "phrase": "Warning",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rhybudd"
+    },
+    "validity": "2026-11-27T16:21:33.360+00:00",
+    "id": 8
+  },
+  {
+    "phrase": "If you are signing on behalf of the applicants, you only need to sign next to your name. The practitioner who signs the legal statement must be the qualified practitioner who will also sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Os ydych yn llofnodi ar ran y ceiswyr, llofnodwch wrth eich enw chi yn unig. Rhaid i’r ymarferydd sy’n llofnodi’r datganiad cyfreithiol fod yr ymarferydd cymwys a fydd hefyd yn llofnodi’r datganiad o wirionedd."
+    },
+    "validity": "2026-11-27T16:21:33.360+00:00",
+    "id": 9
+  },
+  {
+    "phrase": "Find case",
+    "lang": "cy",
+    "translation": {
+      "translation": "Dod o hyd i achos"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 10
+  },
+  {
+    "phrase": "Accessibility",
+    "lang": "cy",
+    "translation": {
+      "translation": "Hygyrchedd"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 11
+  },
+  {
+    "phrase": "Get help",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cael help"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 12
+  },
+  {
+    "phrase": "Cancel",
+    "lang": "cy",
+    "translation": {
+      "translation": "Canslo"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 13
+  },
+  {
+    "phrase": "Complete application",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cwblhau'r cais"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 14
+  },
+  {
+    "phrase": "(Opens in a new window)",
+    "lang": "cy",
+    "translation": {
+      "translation": "(Yn agor mewn ffenestr newydd)"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 15
+  },
+  {
+    "phrase": "This is the legal statement and declaration. You can download it now for you and the applicants to review.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Hwn yw'r datganiad cyfreithiol a'r datganiad. Gallwch ei lwytho nawr i chi a'ch ceiswyr ei adolygu."
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 16
+  },
+  {
+    "phrase": "Create case",
+    "lang": "cy",
+    "translation": {
+      "translation": "Creu achos"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 17
+  },
+  {
+    "phrase": "Account navigation",
+    "lang": "cy",
+    "translation": {
+      "translation": "Llywio eich cyfrif"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 18
+  },
+  {
+    "phrase": "your",
+    "lang": "cy",
+    "translation": {
+      "translation": "eich"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 19
+  },
+  {
+    "phrase": "Hide message",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cuddio neges"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 20
+  },
+  {
+    "phrase": "feedback",
+    "lang": "cy",
+    "translation": {
+      "translation": "adborth"
+    },
+    "validity": "2026-11-27T16:21:33.361+00:00",
+    "id": 21
+  },
+  {
+    "phrase": "Cookies",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cwcis"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 22
+  },
+  {
+    "phrase": "Save or Submit application",
+    "lang": "cy",
+    "translation": {
+      "translation": "Cadw neu Gyflwyno’r cais"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 23
+  },
+  {
+    "phrase": "Where a probate practitioner signs the legal statement alone, the probate registry’s assumption is that you are signing and are authorised to sign on behalf of all applicants. If any applicants have not authorised you to sign on their behalf, they too should sign the legal statement.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Pan fydd yr ymarferydd profiant yn unig yn llofnodi'r datganiad cyfreithiol, bydd y gofrestrfa brofiant yn tybio eich bod yn llofnodi ac wedi'ch awdurdodi i lofnodi ar ran yr holl geiswyr. Os nad yw unrhyw un o'r ceiswyr wedi'ch awdurdodi i lofnodi ar eu rhan, dylen nhw hefyd lofnodi'r datganiad cyfreithiol."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 24
+  },
+  {
+    "phrase": "Case list",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rhestr achosion"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 25
+  },
+  {
+    "phrase": "Sign out",
+    "lang": "cy",
+    "translation": {
+      "translation": "Allgofnodi"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 26
+  },
+  {
+    "phrase": "Terms and conditions",
+    "lang": "cy",
+    "translation": {
+      "translation": "Telerau ac amodau"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 27
+  },
+  {
+    "phrase": "Review legal statement and declaration",
+    "lang": "cy",
+    "translation": {
+      "translation": "Gwirio'r datganiad cyfreithiol a'r datganiad"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 28
+  },
+  {
+    "phrase": "Notice of change",
+    "lang": "cy",
+    "translation": {
+      "translation": "Hysbysiad o newid"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 29
+  },
+  {
+    "phrase": "Do you need to make any changes to the legal statement and declaration?",
+    "lang": "cy",
+    "translation": {
+      "translation": "A oes angen ichi wneud unrhyw newidiadau i'r datganiad cyfreithiol a'r datganiad?",
+      "yesOrNo": true,
+      "yes": "Oes",
+      "no": "Nac oes"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 30
+  },
+  {
+    "phrase": "Legal statement",
+    "lang": "cy",
+    "translation": {
+      "translation": "Datganiad cyfreithiol"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 31
+  },
+  {
+    "phrase": "This is a new service",
+    "lang": "cy",
+    "translation": {
+      "translation": "Mae hwn yn wasanaeth newydd."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 32
+  },
+  {
+    "phrase": "You can make changes to your legal statement up to and until you submit your application.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Gallwch wneud newidiadau i'ch datganiad cyfreithiol hyd at y pwynt pan fyddwch yn cyflwyno eich cais."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 33
+  },
+  {
+    "phrase": "© Crown copyright",
+    "lang": "cy",
+    "translation": {
+      "translation": "© Hawlfraint y Goron"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 34
+  },
+  {
+    "phrase": "Skip to main content",
+    "lang": "cy",
+    "translation": {
+      "translation": "Ymlaen i'r prif gynnwys"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 35
+  },
+  {
+    "phrase": "Manage Cases",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rheoli Achosion"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 36
+  },
+  {
+    "phrase": "Privacy policy",
+    "lang": "cy",
+    "translation": {
+      "translation": "Polisi preifatrwydd"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 37
+  },
+  {
+    "phrase": "Previous",
+    "lang": "cy",
+    "translation": {
+      "translation": "Yn ôl"
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 38
+  },
+  {
+    "phrase": "The original legal statement and declaration must be sent along with your other documents. You may want to keep a copy for your own records.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rhaid anfon y datganiad cyfreithiol a'r datganiad gwreiddiol gyda'ch dogfennau eraill. Efallai yr hoffech gadw copi ar gyfer eich cofnodion chi eich hun."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 39
+  },
+  {
+    "phrase": "will help us to improve it.",
+    "lang": "cy",
+    "translation": {
+      "translation": "yn ein helpu ni i'w wella."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 40
+  },
+  {
+    "phrase": "The Respondent Solicitor Journey is available for Public Law Cases. To add a respondent solicitor to a case, please ensure you have selected their organisation in the respondent details page. Guidance will be available on the MyHMCTS pages.",
+    "lang": "cy",
+    "translation": {
+      "translation": "The Respondent Solicitor Journey is available for Public Law Cases. To add a respondent solicitor to a case, please ensure you have selected their organisation in the respondent details page. Guidance will be available on the MyHMCTS pages."
+    },
+    "validity": "2026-11-27T16:21:33.362+00:00",
+    "id": 41
+  },
+  {
+    "phrase": "If all the applicants agree with the legal statement and declaration, the document needs to be signed (typed or handwritten signatures are acceptable). The applicants can sign it, or they can authorise you to sign on their behalf. Where the applicants choose to sign the legal statement themselves, the probate practitioner is not required to sign the legal statement, except in circumstances where you are also an applicant who will be named on the grant.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Os yw'r holl geiswyr yn cytuno a'r datganiad cyfreithiol a'r datganiad, rhaid llofnodi'r ddogfen (mae llofnodion a llaw a rhai electronig yn dderbyniol). Gall y ceiswyr ei lofnodi, neu gallant eich awdurdodi chi i'w lofnodi ar eu rhan. Pan fydd y ceiswyr yn dewis llofnodi'r datganiad cyfreithiol eu hunain, nid oes rhaid i'r ymarferydd profiant lofnodi'r datganiad cyfreithiol, oni bai eich bod hefyd yn geisydd a fydd wedi'i enwi yn y grant."
+    },
+    "validity": "2026-11-27T16:21:33.363+00:00",
+    "id": 42
+  },
+  {
+    "phrase": "## Upload legal statement (optional)",
+    "lang": "cy",
+    "translation": {
+      "translation": "## Uwchlwytho datganiad cyfreithiol (dewisol)"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 43
+  },
+  {
+    "phrase": "Optional",
+    "lang": "cy",
+    "translation": {
+      "translation": "dewisol"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 44
+  },
+  {
+    "phrase": "Loading",
+    "lang": "cy",
+    "translation": {
+      "translation": "Wrthi’n llwytho"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 45
+  },
+  {
+    "phrase": "The maximum size of the file must not exceed 300MB. Acceptable file types are JPEG, BMP, TIFF, PNG and PDF.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Ni ddylai’r ffeil fod  yn fwy na 300MB o ran maint. Derbynnir y mathau canlynol o ffeiliau JPEG, BMP, TIFF, PNG a PDF.”"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 46
+  },
+  {
+    "phrase": "Upload legal statement",
+    "lang": "cy",
+    "translation": {
+      "translation": "Llwytho datganiad cyfreithiol"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 47
+  },
+  {
+    "phrase": "Cancel upload",
+    "lang": "cy",
+    "translation": {
+      "translation": "Canslo’r uwchlwytho"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 48
+  },
+  {
+    "phrase": "If you have amended the legal statement, you must notify us upon submission of your original documents. You should clearly highlight the changes in your cover sheet for examination purposes.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Os ydych wedi diwygio'r datganiad cyfreithiol, rhaid i chi ein hysbysu wrth gyflwyno eich dogfennau gwreiddiol. Dylech amlygu'r newidiadau'n glir ar eich dalen glawr er dibenion archwilio."
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 49
+  },
+  {
+    "phrase": "You now have the option to upload your signed legal statement. You can upload the signed legal statement as a PDF, a scan or a photo. You can use a phone to do this if it has a camera. If you choose to upload a scan or a photo, the image must be of good quality. No page of the legal statement should be missing, partial, or otherwise obscured in any way.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Mae gennych nawr yr opsiwn i uwchlwytho eich datganiad cyfreithiol wedi'i lofnodi. Gallwch uwchlwytho'r datganiad cyfreithiol wedi'i lofnodi fel dogfen PDF, dogfen wedi'i sganio neu lun. Gallwch ddefnyddio ff√¥n i wneud hyn os oes ganddo gamera. Os byddwch yn dewis dogfen wedi'i sganio neu lun, rhaid iddo fod o ansawdd da. Ni ddylai unrhyw dudalen o'r datganiad cyfreithiol fod ar goll, yn anghyflawn neu yn aneglur mewn unrhyw ffordd."
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 50
+  },
+  {
+    "phrase": "Select file to upload",
+    "lang": "cy",
+    "translation": {
+      "translation": "Dewiswch ffeil i'w llwytho"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 51
+  },
+  {
+    "phrase": "If the material you submit is not legible or is missing information, your application will be delayed if we require you to resubmit material to an acceptable standard.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Os nad oes modd darllen y deunydd yr ydych yn ei gyflwyno neu os oes gwybodaeth ar goll, efallai y bydd oedi wrth brosesu eich cais os byddwn angen i chi ailgyflwyno deunydd o safon dderbyniol."
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 52
+  },
+  {
+    "phrase": "Continue",
+    "lang": "cy",
+    "translation": {
+      "translation": "Parhau"
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 53
+  },
+  {
+    "phrase": "If you do not wish to upload your legal statement, you can continue with your application. You must then send a signed copy of your legal statement along with any other supporting documentation required from you once you submit your application.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Os nad ydych eisiau uwchlwytho eich datganiad cyfreithiol, gallwch barhau â'ch cais. Rhaid i chi wedyn anfon copi wedi’i lofnodi o’ch datganiad cyfreithiol gydag unrhyw ddogfennau ategol eraill sydd eu hangen gennych unwaith y byddwch wedi cyflwyno eich cais."
+    },
+    "validity": "2026-11-27T16:21:36.252+00:00",
+    "id": 54
+  },
+  {
+    "phrase": "I, ${solsSOTName}, have provided a copy of this application to the executor named below.\n\nI, ${solsSOTName}, have informed the executor that in signing the statement of truth I am confirming that the executor believes the facts set out in this legal statement are true.\n\nI, ${solsSOTName}, have informed the executor of the consequences if it should subsequently appear that the executor did not have an honest belief in the facts set out in the legal statement.\n\nI, ${solsSOTName}, have been authorised by the executor to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ysgutor a enwir isod.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ysgutor fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutor yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ysgutor o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutor gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, ${solsSOTName}, wedi cael awdurdod gan yr ysgutor i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 55
+  },
+  {
+    "phrase": "I, ${solsSOTName}, understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, ${solsSOTName}, yn deall y gellir dwyn achos am ddirmyg llys yn erbyn unrhyw un sy’n gwneud, neu sy’n peri i ddatganiad ffug gael ei wneud, mewn dogfen a wirheir gan ddatganiad gwirionedd heb gred onest yn ei wirionedd."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 56
+  },
+  {
+    "phrase": "By signing the statement of truth by ticking the boxes below, I, Practitioner1 Practitioner1L confirm the following:",
+    "lang": "cy",
+    "translation": {
+      "translation": "By signing the statement of truth by ticking the boxes below, I, Practitioner1 Practitioner1L confirm the following:"
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 57
+  },
+  {
+    "phrase": "By signing the statement of truth by ticking the boxes below, I, ${solsSOTName} confirm the following:",
+    "lang": "cy",
+    "translation": {
+      "translation": "Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, ${solsSOTName}, yn cadarnhau’r canlynol:"
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 58
+  },
+  {
+    "phrase": "I, Practitioner1 Practitioner1L, understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "I, Practitioner1 Practitioner1L, understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 59
+  },
+  {
+    "phrase": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the executors named below.\n\nI, Practitioner1 Practitioner1L, have informed the executors that in signing the statement of truth I am confirming that the executors believe the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the executors of the consequences if it should subsequently appear that the executors did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the executors to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the executors named below.\n\nI, Practitioner1 Practitioner1L, have informed the executors that in signing the statement of truth I am confirming that the executors believe the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the executors of the consequences if it should subsequently appear that the executors did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the executors to sign the statement of truth."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 60
+  },
+  {
+    "phrase": "believe(s) that the facts stated in this legal statement are true.",
+    "lang": "cy",
+    "translation": {
+      "translation": "yn credu fod y ffeithiau sydd wedi’u cynnwys yn y datganiad cyfreithiol hwn yn wir."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 61
+  },
+  {
+    "phrase": "understand(s) that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Mae'r uchod yn deall y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad o wirionedd heb gredu’n onest ei fod yn wir."
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 62
+  },
+  {
+    "phrase": "Statement of truth",
+    "lang": "cy",
+    "translation": {
+      "translation": "Datganiad gwirionedd"
+    },
+    "validity": "2026-11-27T16:21:37.982+00:00",
+    "id": 63
+  },
+  {
+    "phrase": "I, ${solsSOTName}, have provided a copy of this application to the applicant named below.\n\nI, ${solsSOTName}, have informed the applicant that in signing the statement of truth I am confirming that the applicant believes the facts set out in this legal statement are true.\n\nI, ${solsSOTName}, have informed the applicant of the consequences if it should subsequently appear that the applicant did not have an honest belief in the facts set out in the legal statement.\n\nI, ${solsSOTName}, have been authorised by the applicant to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ymgeisydd a enwir isod.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ymgeisydd fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ymgeisydd yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ymgeisydd o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ymgeisydd gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, ${solsSOTName}, wedi cael awdurdod gan yr ymgeisydd i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:21:37.983+00:00",
+    "id": 64
+  },
+  {
+    "phrase": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the applicant named below.\n\nI, Practitioner1 Practitioner1L, have informed the applicant that in signing the statement of truth I am confirming that the applicant believes the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the applicant of the consequences if it should subsequently appear that the applicant did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the applicant to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the applicant named below.\n\nI, Practitioner1 Practitioner1L, have informed the applicant that in signing the statement of truth I am confirming that the applicant believes the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the applicant of the consequences if it should subsequently appear that the applicant did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the applicant to sign the statement of truth."
+    },
+    "validity": "2026-11-27T16:21:37.983+00:00",
+    "id": 65
+  },
+  {
+    "phrase": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the executor named below.\n\nI, Practitioner1 Practitioner1L, have informed the executor that in signing the statement of truth I am confirming that the executor believes the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the executor of the consequences if it should subsequently appear that the executor did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the executor to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "I, Practitioner1 Practitioner1L, have provided a copy of this application to the executor named below.\n\nI, Practitioner1 Practitioner1L, have informed the executor that in signing the statement of truth I am confirming that the executor believes the facts set out in this legal statement are true.\n\nI, Practitioner1 Practitioner1L, have informed the executor of the consequences if it should subsequently appear that the executor did not have an honest belief in the facts set out in the legal statement.\n\nI, Practitioner1 Practitioner1L, have been authorised by the executor to sign the statement of truth."
+    },
+    "validity": "2026-11-27T16:21:37.983+00:00",
+    "id": 66
+  },
+  {
+    "phrase": "I, ${solsSOTName}, have provided a copy of this application to the executors named below.\n\nI, ${solsSOTName}, have informed the executors that in signing the statement of truth I am confirming that the executors believe the facts set out in this legal statement are true.\n\nI, ${solsSOTName}, have informed the executors of the consequences if it should subsequently appear that the executors did not have an honest belief in the facts set out in the legal statement.\n\nI, ${solsSOTName}, have been authorised by the executors to sign the statement of truth.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, ${solsSOTName}, wedi darparu copi o’r cais hwn i’r ysgutorion a enwir isod.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ysgutorion fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutorion yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, ${solsSOTName}, wedi hysbysu’r ysgutorion o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutorion gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, ${solsSOTName}, wedi cael awdurdod gan yr ysgutorion i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:21:37.983+00:00",
+    "id": 67
+  },
+  {
+    "phrase": "Applicant",
+    "lang": "cy",
+    "translation": {
+      "translation": "Ceisydd"
+    },
+    "validity": "2026-11-27T16:21:37.983+00:00",
+    "id": 68
+  },
+  {
+    "phrase": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ymgeisydd a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ymgeisydd fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ymgeisydd yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ymgeisydd o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ymgeisydd gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ymgeisydd i lofnodi’r datganiad gwirionedd.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ymgeisydd a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ymgeisydd fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ymgeisydd yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ymgeisydd o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ymgeisydd gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ymgeisydd i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:36:51.892+00:00",
+    "id": 69
+  },
+  {
+    "phrase": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ysgutor a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutor fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutor yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutor o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutor gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ysgutor i lofnodi’r datganiad gwirionedd.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ysgutor a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutor fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutor yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutor o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutor gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ysgutor i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:36:51.893+00:00",
+    "id": 70
+  },
+  {
+    "phrase": "Rwyf i, Practitioner1 Practitioner1L, yn deall y gellir dwyn achos am ddirmyg llys yn erbyn unrhyw un sy’n gwneud, neu sy’n peri i ddatganiad ffug gael ei wneud, mewn dogfen a wirheir gan ddatganiad gwirionedd heb gred onest yn ei wirionedd.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, Practitioner1 Practitioner1L, yn deall y gellir dwyn achos am ddirmyg llys yn erbyn unrhyw un sy’n gwneud, neu sy’n peri i ddatganiad ffug gael ei wneud, mewn dogfen a wirheir gan ddatganiad gwirionedd heb gred onest yn ei wirionedd."
+    },
+    "validity": "2026-11-27T16:36:51.893+00:00",
+    "id": 71
+  },
+  {
+    "phrase": "Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, Practitioner1 Practitioner1L, yn cadarnhau’r canlynol:",
+    "lang": "cy",
+    "translation": {
+      "translation": "Drwy lofnodi’r datganiad gwirionedd drwy dicio’r blychau isod, rwyf i, Practitioner1 Practitioner1L, yn cadarnhau’r canlynol:"
+    },
+    "validity": "2026-11-27T16:36:51.893+00:00",
+    "id": 72
+  },
+  {
+    "phrase": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ysgutorion a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutorion fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutorion yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutorion o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutorion gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ysgutorion i lofnodi’r datganiad gwirionedd.",
+    "lang": "cy",
+    "translation": {
+      "translation": "Rwyf i, Practitioner1 Practitioner1L, wedi darparu copi o’r cais hwn i’r ysgutorion a enwir isod.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutorion fy mod, drwy lofnodi’r datganiad gwirionedd, yn cadarnhau bod yr ysgutorion yn credu bod y ffeithiau a nodir yn y datganiad cyfreithiol hwn yn wir.\n\nRwyf i, Practitioner1 Practitioner1L, wedi hysbysu’r ysgutorion o’r canlyniadau pe bai’n ymddangos wedyn nad oedd gan yr ysgutorion gred onest yn y ffeithiau a nodir yn y datganiad cyfreithiol.\n\nRwyf i, Practitioner1 Practitioner1L, wedi cael awdurdod gan yr ysgutorion i lofnodi’r datganiad gwirionedd."
+    },
+    "validity": "2026-11-27T16:36:51.893+00:00",
+    "id": 73
+  }
+]
