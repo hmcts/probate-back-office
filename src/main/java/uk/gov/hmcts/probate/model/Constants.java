@@ -62,11 +62,53 @@ public final class Constants {
     public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
     public static final String EXECUTOR_TYPE_NAMED = "Named";
+    public static final String EXECUTOR_TYPE_APPLICANTS = "Applicants";
 
     public static final String EXECUTOR_NOT_APPLYING_REASON = "PowerReserved";
 
     public static final String SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "ChildAdopted";
     public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
+    public static final String CHILD = "child";
+    public static final String SOLICITOR_SPOUSE = "SpouseOrCivil";
+    public static final String SOLICITOR_CHILD = "Child";
+    public static final String SOLICITOR_GRANDCHILD = "Grandchild";
+    public static final String SOLICITOR_PARENT = "Parent";
+    public static final String SOLICITOR_SIBLING = "Sibling";
+    public static final String SPOUSE = "partner";
+    public static final String GRAND_CHILD = "grandchild";
+    public static final String PARENT = "parent";
+    public static final String SIBLING = "sibling";
+    public static final String WHOLE_SIBLING = "bothParentsSame";
+    public static final String HALF_SIBLING = "oneParentsSame";
+    public static final String WHOLE_BLOOD_SIBLING = "wholeBloodSibling";
+    public static final String WHOLE_BLOOD_NIECE_OR_NEPHEW = "wholeBloodNieceOrNephew";
+    public static final String HALF_BLOOD_SIBLING = "halfBloodSibling";
+    public static final String HALF_BLOOD_NIECE_OR_NEPHEW = "halfBloodNieceOrNephew";
+
+    public static final String LS_SPOUSE = "husband, wife or civil partner";
+    public static final String LS_WHOLE_SIBLING = "whole blood sibling";
+    public static final String LS_HALF_SIBLING = "half blood sibling";
+    public static final String LS_WHOLE_NIECE_NEPHEW = "niece or nephew";
+    public static final String LS_HALF_NIECE_NEPHEW = "half-niece or half-nephew";
+
+    public static final String WELSH_CHILD = "plentyn";
+    public static final String WELSH_SPOUSE = "gyn-briod neu’n bartner sifil";
+    public static final String WELSH_GRANDCHILD = "wyr/wyres";
+    public static final String WELSH_PARENT = "rhiant";
+    public static final String WELSH_SIBLING = "brawd/chwaer";
+    public static final String WELSH_WHOLE_BLOOD_SIBLING = "brawd neu chwaer gwaed cyfan";
+    public static final String WELSH_HALF_BLOOD_SIBLING = "hanner brawd/chwaer";
+    public static final String WELSH_WHOLE_BLOOD_NIECE_OR_NEPHEW = "nith neu nai";
+    public static final String WELSH_HALF_BLOOD_NIECE_OR_NEPHEW = "hanner nith neu hanner nai";
+
+    public static final String CHILD_LABEL = "They are the deceased’s child";
+    public static final String GRAND_CHILD_LABEL = "They are the deceased’s grandchild";
+    public static final String PARENT_LABEL = "They are the deceased’s parent";
+    public static final String WHOLE_BLOOD_SIBLING_LABEL = "They are the deceased’s whole blood sibling";
+    public static final String WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL = "They are the deceased’s whole blood niece or "
+            + "nephew";
+    public static final String HALF_BLOOD_SIBLING_LABEL = "They are the deceased’s half blood sibling";
+    public static final String HALF_BLOOD_NIECE_OR_NEPHEW_LABEL = "They are the deceased’s half blood niece or nephew";
 
     public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
     public static final String TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR = "TCTFirmCeasedTradingNoSucc";
