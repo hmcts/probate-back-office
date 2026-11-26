@@ -28,13 +28,17 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
+import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,17 +54,20 @@ public class ExceptionRecordController {
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private final NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
     private final ObjectMapper objectMapper;
     private final ExceptionRecordService erService;
 
     public ExceptionRecordController(OCRPopulatedValueMapper ocrPopulatedValueMapper,
                                      OCRToCCDMandatoryField ocrToCCDMandatoryField,
                                      ObjectMapper objectMapper,
-                                     ExceptionRecordService erService) {
+                                     ExceptionRecordService erService,
+                                     NonMandatoryFieldsValidator nonMandatoryFieldsValidator) {
         this.ocrPopulatedValueMapper = ocrPopulatedValueMapper;
         this.ocrToCCDMandatoryField = ocrToCCDMandatoryField;
         this.objectMapper = objectMapper;
         this.erService = erService;
+        this.nonMandatoryFieldsValidator = nonMandatoryFieldsValidator;
     }
 
     @Operation(summary = "Transforms OCR data to case data",
@@ -82,9 +89,16 @@ public class ExceptionRecordController {
             erRequest.getFormType(), erRequest.getExceptionRecordId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        List<String> warnings = ocrToCCDMandatoryField
-            .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()),
-                formType);
+        List<OCRField> ocrFields = ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields());
+
+        List<String> warnings = new ArrayList<>();
+        List<String> warningsMandatory = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrFields, formType);
+        List<String> warningsNonMandatory = nonMandatoryFieldsValidator
+                .ocrToCCDNonMandatoryWarnings(ocrFields, formType);
+
+        warnings.addAll(warningsMandatory);
+        warnings.addAll(warningsNonMandatory);
 
         if (!warnings.isEmpty()) {
             log.warn(warnings.toString());

@@ -226,5 +226,4 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
-
 }
