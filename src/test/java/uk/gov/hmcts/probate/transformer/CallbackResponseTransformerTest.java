@@ -3207,7 +3207,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSetApplicantStatementVariantForNoWillAndNotPopulateLegacyStatementText() {
+    void shouldSetApplicantStatementVariantForNoWill() {
         CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
@@ -3218,11 +3218,10 @@ class CallbackResponseTransformerTest {
         ResponseCaseData responseCaseData = builder.build();
 
         assertEquals("applicant", responseCaseData.getSolsReviewSOTStatementVariant());
-        assertNull(responseCaseData.getSolsReviewSOTConfirm());
     }
 
     @Test
-    void shouldSetExecutorStatementVariantForSingleExecutorWillAndNotPopulateLegacyStatementText() {
+    void shouldSetExecutorStatementVariantForSingleExecutorWill() {
         CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_PROBATE).primaryApplicantIsApplying(YES).build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
@@ -3233,11 +3232,10 @@ class CallbackResponseTransformerTest {
         ResponseCaseData responseCaseData = builder.build();
 
         assertEquals("executor", responseCaseData.getSolsReviewSOTStatementVariant());
-        assertNull(responseCaseData.getSolsReviewSOTConfirm());
     }
 
     @Test
-    void shouldSetExecutorsStatementVariantForPrimaryAndOneAdditionalApplyingExecutorAndNotPopulateLegacyText() {
+    void shouldSetExecutorsStatementVariantForPrimaryAndOneAdditionalApplyingExecutor() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         additionalExecs.add(new CollectionMember<>(
             AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build()));
@@ -3252,11 +3250,10 @@ class CallbackResponseTransformerTest {
         ResponseCaseData responseCaseData = builder.build();
 
         assertEquals("executors", responseCaseData.getSolsReviewSOTStatementVariant());
-        assertNull(responseCaseData.getSolsReviewSOTConfirm());
     }
 
     @Test
-    void shouldSetExecutorsStatementVariantForMultipleExecutorWillAndNotPopulateLegacyStatementText() {
+    void shouldSetExecutorsStatementVariantForMultipleExecutorWill() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         additionalExecs.add(new CollectionMember<>(
             AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build()));
@@ -3272,7 +3269,6 @@ class CallbackResponseTransformerTest {
         ResponseCaseData responseCaseData = builder.build();
 
         assertEquals("executors", responseCaseData.getSolsReviewSOTStatementVariant());
-        assertNull(responseCaseData.getSolsReviewSOTConfirm());
     }
 
     @Test

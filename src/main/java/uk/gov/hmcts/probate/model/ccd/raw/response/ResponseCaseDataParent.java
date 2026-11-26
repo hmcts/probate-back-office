@@ -70,7 +70,6 @@ public class ResponseCaseDataParent {
     protected String solsIdentifiedApplyingExecs;
     protected String solsIdentifiedNotApplyingExecsCcdCopy;
     protected String solsIdentifiedApplyingExecsCcdCopy;
-    protected final String solsReviewSOTConfirm;
     protected final String solsReviewSOTStatementVariant;
     protected final String solsReviewSOTConfirmCheckbox1Names;
     protected final String solsReviewSOTConfirmCheckbox2Names;
