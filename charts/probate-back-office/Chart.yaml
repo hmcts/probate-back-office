@@ -6,6 +6,8 @@ version: 1.0.87
 maintainers:
   - name: HMCTS Probate Team
     email: probate-action-group@HMCTS.NET
+annotations:
+  hmcts.github.io/skip-publish: ccd, xui-webapp, aac-manage-case-assignment, postgresql, wa, servicebus, am-org-role-mapping-service, ccd-message-publisher
 dependencies:
   - name: java
     version:  6.1.1
