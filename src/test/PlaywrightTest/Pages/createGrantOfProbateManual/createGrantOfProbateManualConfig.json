@@ -95,5 +95,14 @@
   "EE_deceasedHadLateSpouseOrCivilPartnerNo": "No",
   "EE_deceasedHadLateSpouseOrCivilPartnerYes": "Yes",
   "EE_ihtUnusedAllowanceClaimed_No": "No",
-  "ihtHmrcCode": "CTS04052311043tpps8e9"
+  "ihtHmrcCode": "CTS04052311043tpps8e9",
+
+  "page4_bo_deceasedTitle": "Mr",
+  "page4_deceasedForenames": "deceased_fn",
+  "page4_deceasedSurname": "deceased_sn",
+  "page4_bo_deceasedHonours": "deceased_honour",
+  "page4_deceasedDob_long": "3 Mar 1970",
+  "page4_deceasedDod_long": "2 Jan 2022",
+  "page4_dateOfDeathType": "Died on",
+  "page8_deceasedDomicileInEngWales": "Yes"
 }
