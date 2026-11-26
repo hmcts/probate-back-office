@@ -436,7 +436,6 @@ public class TaskAttributeConstants {
     public static final String LOCATION_VALUE = "371016";
     public static final String LOCATION_NAME_VALUE = "Oxford";
 
-    public static final String CLOSE_READY_TO_ISSUE_HANDOFFS = "closeReadyToIssueHandOffs";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_JUDICIARY = "reviewSpecificAccessRequestJudiciary";
     public static final String SPECIFIC_ACCESS_JUDICIARY = "specific-access-approver-judiciary";
     public static final String REVIEW_SPECIFIC_ACCESS_REQUEST_LEGAL_OPS = "reviewSpecificAccessRequestLegalOps";
