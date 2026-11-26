@@ -8,6 +8,14 @@ import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
 String component = "back-office"
 
+properties([
+        parameters([
+                string(name: 'SecurityRules',
+                        defaultValue: 'https://raw.githubusercontent.com/hmcts/security-test-rules/master/conf/security-rules.conf',
+                        description: 'The URL you want to run these tests against'),
+        ])
+]);
+
 AppPipelineConfig pipelineConf;
 
 def secrets = [
