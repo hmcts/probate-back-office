@@ -1504,7 +1504,8 @@ public class CallbackResponseTransformer {
             .escalateToRegistrarUserIdamId(caseData.getEscalateToRegistrarUserIdamId())
             .redeclarationUserIdamId(caseData.getRedeclarationUserIdamId())
             .resolveStoppedCaseUserIdamId(caseData.getResolveStoppedCaseUserIdamId())
-            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId());
+            .resolveRedeclarationUserIdamId(caseData.getResolveRedeclarationUserIdamId())
+            .waCaseState(caseDetails.getState());
 
         if (caseData.getRegistryLocation() != null && !caseData.getRegistryLocation().equals("")) {
             builder.taskLocationEpimmsId(registryDetailsService.getEpimmsId(caseData.getRegistryLocation()));

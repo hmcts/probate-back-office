@@ -34,19 +34,19 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
         Map<String,Object> foreignDomicileTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> foreignDomicileCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> foreignDomicileReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,readyToIssueHandOffs"
+                "processCategories", "case progression,handOffs,examineForeignDomicile"
         );
 
         return Stream.of(

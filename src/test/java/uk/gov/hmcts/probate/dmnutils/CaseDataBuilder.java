@@ -98,4 +98,9 @@ public class CaseDataBuilder {
         caseData.put("taskRegion", taskRegion);
         return this;
     }
+
+    public CaseDataBuilder setWaCaseState(String state) {
+        caseData.put("waCaseState", state);
+        return this;
+    }
 }
