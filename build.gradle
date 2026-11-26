@@ -186,7 +186,7 @@ def versions = [
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '9.0.0',
-        probateCommonsVersion           : '2.4.0',
+        probateCommonsVersion           : '2.4.1-DTSPB-6207-v1',
         restAssured                     : '6.3.0',
         sendLetterClientVersion         : '6.0.0',
         serenity                        : '5.4.2',

@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DataExtractType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
@@ -34,6 +35,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -107,8 +109,9 @@ public class ZipFileService {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
                 log.info("Smee And Ford Starting for case {}", returnedCaseDetails.getId());
                 getWillDocuments(zipOut, returnedCaseDetails, manifestDataList, smeeAndFordCommentMode);
-                getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
-                getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
+                CollectionMember<Document> latestGrant = getLatestGrantDocument(returnedCaseDetails);
+                getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList, latestGrant);
+                getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList, latestGrant);
             }
             getSmeeAndFordCaseData(zipOut, cases, fromDate);
             generateManifestFile(zipOut, manifestDataList, smeeAndFordCommentMode);
@@ -138,13 +141,14 @@ public class ZipFileService {
                                   final ReturnedCaseDetails caseDetails,
                                   List<ZippedManifestData> manifestDataList,
                                   SmeeAndFordCommentMode smeeAndFordCommentMode) {
-        getScannedDocuments(zos, caseDetails, manifestDataList);
+        getScannedDocuments(zos, caseDetails, manifestDataList, smeeAndFordCommentMode);
         getUploadedWillDocuments(zos, caseDetails, manifestDataList, smeeAndFordCommentMode);
     }
 
     private void getScannedDocuments(final ZipOutputStream zos,
                                      ReturnedCaseDetails caseDetails,
-                                     List<ZippedManifestData> manifestDataList) {
+                                     List<ZippedManifestData> manifestDataList,
+                                     SmeeAndFordCommentMode smeeAndFordCommentMode) {
         AtomicInteger scannedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getScannedDocuments() != null) {
             caseDetails.getData()
@@ -155,8 +159,12 @@ public class ZipFileService {
                         final String documentTypeName = "scanned_" + WILL.getTemplateName()
                                 + "_" + scannedDocIndex.getAndIncrement();
                         final String documentSubType = doc.getValue().getSubtype();
+                        String finalIndicator = switch (smeeAndFordCommentMode) {
+                            case INCLUDE_COMMENT_AND_FINAL_INDICATOR -> doc.getValue().getFinalWill();
+                            case INCLUDE_COMMENT, EXCLUDE_COMMENT -> null;
+                        };
                         fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, documentSubType,
-                                manifestDataList, null);
+                                manifestDataList, null, finalIndicator);
                     });
         }
     }
@@ -176,23 +184,45 @@ public class ZipFileService {
                                 + "_" + uploadedDocIndex.getAndIncrement();
 
                         String documentComment = switch (smeeAndFordCommentMode) {
-                            case INCLUDE_COMMENT -> {
-                                if (featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                                    yield doc.getValue().getComment();
-                                }
-                                yield null;
-                            }
+                            case INCLUDE_COMMENT, INCLUDE_COMMENT_AND_FINAL_INDICATOR -> doc.getValue().getComment();
                             case EXCLUDE_COMMENT -> null;
                         };
+                        String finalIndicator = switch (smeeAndFordCommentMode) {
+                            case INCLUDE_COMMENT_AND_FINAL_INDICATOR -> doc.getValue().getFinalWill();
+                            case INCLUDE_COMMENT, EXCLUDE_COMMENT -> null;
+                        };
                         fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
-                                manifestDataList, documentComment);
+                                manifestDataList, documentComment, finalIndicator);
                     });
         }
     }
 
+    private CollectionMember<Document> getLatestGrantDocument(ReturnedCaseDetails caseDetails) {
+        return caseDetails.getData().getProbateDocumentsGenerated().stream()
+                .filter(member -> member != null && member.getValue() != null)
+                .filter(member -> isGrantDocument(member.getValue().getDocumentType()))
+                .filter(member -> member.getValue().getDocumentLink() != null)
+                .max(Comparator
+                        .comparing((CollectionMember<Document> member) ->
+                                        member.getValue().getDocumentLink().getUploadTimestamp(),
+                                Comparator.nullsFirst(Comparator.naturalOrder())))
+                .orElse(null);
+    }
+
+    private boolean isGrantDocument(DocumentType documentType) {
+        return Arrays.asList(GRANT_TYPES).contains(documentType)
+                || Arrays.asList(REISSUE_GRANT_TYPES).contains(documentType);
+    }
+
+    private String getGrantFinalIndicator(CollectionMember<Document> document,
+                                          CollectionMember<Document> latestGrant) {
+        return document == latestGrant ? "Yes" : "No";
+    }
+
     private void getGrantDocuments(ZipOutputStream zos,
                                    ReturnedCaseDetails caseDetails,
-                                   List<ZippedManifestData> manifestDataList) {
+                                   List<ZippedManifestData> manifestDataList,
+                                   CollectionMember<Document> latestGrant) {
         caseDetails.getData()
                 .getProbateDocumentsGenerated().stream()
                 .filter(collectionMember -> Arrays.asList(GRANT_TYPES).contains(collectionMember.getValue()
@@ -200,13 +230,15 @@ public class ZipFileService {
                 .forEach(doc -> {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     fetchAndUploadDocument(zos, binaryUrl, caseDetails,
-                            doc.getValue().getDocumentType().getTemplateName(), PDF, null, manifestDataList, null);
+                            doc.getValue().getDocumentType().getTemplateName(), PDF, null, manifestDataList,
+                            null, getGrantFinalIndicator(doc, latestGrant));
                 });
     }
 
     private void getReIssueGrantDocuments(ZipOutputStream zos,
                                           ReturnedCaseDetails caseDetails,
-                                          List<ZippedManifestData> manifestDataList) {
+                                          List<ZippedManifestData> manifestDataList,
+                                          CollectionMember<Document> latestGrant) {
         AtomicInteger reIssueGrantDocIndex = new AtomicInteger(1);
         caseDetails.getData()
                 .getProbateDocumentsGenerated().stream()
@@ -217,9 +249,8 @@ public class ZipFileService {
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
                             + "_" + reIssueGrantDocIndex.getAndIncrement();
                     fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
-                            manifestDataList, null);
+                            manifestDataList, null, getGrantFinalIndicator(doc, latestGrant));
                 });
-
     }
 
     private void fetchAndUploadDocument(ZipOutputStream zos,
@@ -229,7 +260,8 @@ public class ZipFileService {
                                         String docType,
                                         String documentSubType,
                                         List<ZippedManifestData> manifestDataList,
-                                        String documentComment) {
+                                        String documentComment,
+                                        String finalIndicator) {
         final String documentId = binaryUrl.substring(binaryUrl
                 .indexOf("/documents/") + 11, binaryUrl.lastIndexOf("/"));
         String errorDescription = "";
@@ -242,6 +274,7 @@ public class ZipFileService {
                 .caseType(caseDetails.getData().getCaseType())
                 .errorDescription(errorDescription)
                 .comment(documentComment)
+                .finalIndicator(finalIndicator)
                 .build();
 
         try {
@@ -316,8 +349,12 @@ public class ZipFileService {
             throws IOException {
 
         boolean isUpdatedSmeeAndFord = switch (smeeAndFordCommentMode) {
-            case INCLUDE_COMMENT -> featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn();
+            case INCLUDE_COMMENT, INCLUDE_COMMENT_AND_FINAL_INDICATOR -> true;
             case EXCLUDE_COMMENT -> false;
+        };
+        boolean includeFinalIndicator = switch (smeeAndFordCommentMode) {
+            case INCLUDE_COMMENT_AND_FINAL_INDICATOR -> true;
+            case INCLUDE_COMMENT, EXCLUDE_COMMENT -> false;
         };
 
         StringBuilder data = new StringBuilder();
@@ -343,6 +380,9 @@ public class ZipFileService {
             if (isUpdatedSmeeAndFord) {
                 csvWriter.print("Comment");
             }
+            if (includeFinalIndicator) {
+                csvWriter.print("Is Final");
+            }
             csvWriter.println();
             csvWriter.println();
 
@@ -356,6 +396,9 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getErrorDescription());
                 if (isUpdatedSmeeAndFord) {
                     csvWriter.print(sanitiseComment(zippedManifestData.getComment()));
+                }
+                if (includeFinalIndicator) {
+                    csvWriter.print(zippedManifestData.getFinalIndicator());
                 }
                 csvWriter.println();
             }

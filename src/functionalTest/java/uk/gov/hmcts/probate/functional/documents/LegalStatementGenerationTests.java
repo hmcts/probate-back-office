@@ -633,7 +633,8 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD))
+                .body(utils.withGrantCallbackCaseDetailsBefore(
+                    utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD), GENERATE_GRANT))
                 .when().post(GENERATE_GRANT).andReturn();
         assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }
@@ -643,7 +644,8 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("evidenceHandledNo.json"))
+                .body(utils.withGrantCallbackCaseDetailsBefore(
+                    utils.getJsonFromFile("evidenceHandledNo.json"), GENERATE_GRANT))
                 .when().post(GENERATE_GRANT).andReturn();
         assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }
@@ -653,7 +655,8 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("evidenceHandledYes.json"))
+                .body(utils.withGrantCallbackCaseDetailsBefore(
+                    utils.getJsonFromFile("evidenceHandledYes.json"), GENERATE_GRANT))
                 .when().post(GENERATE_GRANT).andReturn();
         assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }

@@ -120,6 +120,31 @@ public class FunctionalTestUtils {
         return replacement;
     }
 
+    /**
+     * CCD provides the previous case snapshot on grant issue callbacks. Most older FT
+     * fixtures predate the document-integrity validation and omit that snapshot.
+     * Keep existing snapshots unchanged; only add one when a grant/reissue test
+     * submits a fixture without it.
+     */
+    public String withGrantCallbackCaseDetailsBefore(String payload, String path) {
+        if (!"/document/generate-grant".equals(path)
+                && !"/document/generate-grant-reissue".equals(path)) {
+            return payload;
+        }
+
+        JSONObject callback = new JSONObject(payload);
+        if (callback.has("case_details_before") && !callback.isNull("case_details_before")) {
+            return payload;
+        }
+
+        JSONObject caseDetails = callback.optJSONObject("case_details");
+        if (caseDetails == null) {
+            throw new IllegalArgumentException("Grant FT payload is missing case_details");
+        }
+        callback.put("case_details_before", new JSONObject(caseDetails.toString()));
+        return callback.toString();
+    }
+
     public String getJsonFromFile(String fileName) throws IOException {
         final File file = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("json/" + fileName));
         return Files.readString(file.toPath(), StandardCharsets.UTF_8);

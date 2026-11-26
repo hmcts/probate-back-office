@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @Slf4j
 public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     protected static final String GENERATE_GRANT = "/document/generate-grant";
@@ -25,7 +27,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
+            .body(utils.withGrantCallbackCaseDetailsBefore(utils.getJsonFromFile(jsonFileName), path))
             .when().post(path).andReturn();
 
         jsonResponse.then().assertThat().statusCode(200);
@@ -34,6 +36,8 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
 
         final String documentUrl =
             jsonPath.get("data." + documentName + ".document_binary_url");
+        assertNotNull(documentUrl,
+                "Missing generated document URL. Callback response: " + jsonResponse.asString());
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -44,7 +48,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
+            .body(utils.withGrantCallbackCaseDetailsBefore(utils.getJsonFromFile(jsonFileName), path))
             .when().post(path).andReturn();
 
         jsonResponse.then().assertThat().statusCode(200);
@@ -74,13 +78,14 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(payload)
+                .body(utils.withGrantCallbackCaseDetailsBefore(payload, path))
                 .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
         final String documentUrl =
                 jsonPath.get("data." + documentName + ".document_binary_url");
+        assertNotNull(documentUrl, "Missing generated document URL. Callback response: " + jsonResponse.asString());
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
     }

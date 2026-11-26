@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,8 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
         expected = expected.replaceAll(Pattern.quote("<today-welsh/>"), this.todaysDateWelsh);
 
+        assertNotNull(jsonPath.get("data.caseType"),
+                "Case progress callback did not return case data: " + response);
         switch (jsonPath.get("data.caseType").toString()) {
             case "gop":
                 expected = replaceAllInString(expected,"{willExists}",
@@ -115,7 +118,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
                 .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithSolicitorUser())
-                .body(utils.getJsonFromFile(jsonFileName))
+                .body(utils.withGrantCallbackCaseDetailsBefore(utils.getJsonFromFile(jsonFileName), path))
                 .when().post(path)
                 .andReturn();
 
@@ -127,7 +130,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
                 .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
+                .body(utils.withGrantCallbackCaseDetailsBefore(utils.getJsonFromFile(jsonFileName), path))
                 .when().post(path)
                 .andReturn();
 

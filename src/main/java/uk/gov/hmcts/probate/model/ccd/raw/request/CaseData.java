@@ -670,6 +670,8 @@ public class CaseData extends CaseDataParent {
 
     private final String caseNameHmctsInternal;
 
+    private final String reviewFinalWillSwitch;
+
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 

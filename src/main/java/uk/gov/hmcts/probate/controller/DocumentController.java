@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.service.validation.FinalWillValidationRule;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -104,6 +105,7 @@ public class DocumentController {
     private final FeatureToggleService featureToggleService;
     private final DocumentTransformer documentTransformer;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final FinalWillValidationRule finalWillValidationRule;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -175,10 +177,10 @@ public class DocumentController {
         @Validated({BulkPrintValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
+        finalWillValidationRule.validate(callbackRequest);
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
-
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
@@ -288,6 +290,8 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrantReissue(
             @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
+        finalWillValidationRule.validate(callbackRequest);
+
         final List<Document> documents = new ArrayList<>();
         Document grantDocument;
         Document coversheet;
