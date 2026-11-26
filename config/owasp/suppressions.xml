@@ -17,7 +17,7 @@
         ]]></notes>
         <cve>CVE-2026-33117</cve>
     </suppress>
-    <suppress>
+    <suppress until = "2027-01-24">
         <notes><![CDATA[
    file name: opentelemetry-runtime-attach-core-1.57.0-alpha.jar
    ]]></notes>
