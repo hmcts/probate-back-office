@@ -60,6 +60,7 @@ import java.util.List;
 public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final String state;
+    private final String waCaseState;
     private final ApplicationType applicationType;
     private final String registryLocation;
 
