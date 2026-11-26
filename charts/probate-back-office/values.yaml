@@ -1,9 +1,6 @@
 tags:
   probate-ccd-stack: false
 
-idam-pr:
-  enabled: false
-
 aac-manage-case-assignment:
   enabled: false
 
