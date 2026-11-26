@@ -115,7 +115,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
                 .caseType("gop")
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantEmailAddress("primary@probate-test.com")
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
@@ -143,7 +143,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
                 .applicationType(ApplicationType.PERSONAL)
-                .registryLocation("Bristol")
+                .registryLocation("Brighton")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);

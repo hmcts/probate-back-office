@@ -62,7 +62,7 @@ class NumberOfApplyingExecutorsValidationRuleTest {
             .primaryApplicantForenames("Probate")
             .primaryApplicantSurname("Practitioner")
             .anyOtherApplyingPartners("Yes")
-            .registryLocation("Bristol")
+            .registryLocation("Brighton")
             .build();
     }
 

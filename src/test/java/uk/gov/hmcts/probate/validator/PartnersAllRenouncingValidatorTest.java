@@ -37,42 +37,42 @@ class PartnersAllRenouncingValidatorTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTPartSuccAllRenouncing")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataFirmAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTPartAllRenouncing")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTTrustCorpResWithApp")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNoNoAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("No")
             .titleAndClearingType("TCTPartAllRenouncing")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesYesAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("Yes")
             .titleAndClearingType("TCTPartAllRenouncing")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataYesNoAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("No")
             .titleAndClearingType("TCTPartAllRenouncing")
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
     }
 

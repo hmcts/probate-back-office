@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
 class RegistryDetailsServiceTest {
 
-    private static final String REGISTRY_LOCATION = "bristol";
+    private static final String REGISTRY_LOCATION = "brighton";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -52,7 +52,7 @@ class RegistryDetailsServiceTest {
 
         registriesProperties.setRegistries(registryMap);
 
-        caseDetails = new CaseDetails(CaseData.builder().registryLocation("bristol").build(), LAST_MODIFIED, CASE_ID);
+        caseDetails = new CaseDetails(CaseData.builder().registryLocation("brighton").build(), LAST_MODIFIED, CASE_ID);
     }
 
     @Test

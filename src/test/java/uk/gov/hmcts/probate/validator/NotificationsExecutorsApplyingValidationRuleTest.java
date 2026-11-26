@@ -100,22 +100,22 @@ class NotificationsExecutorsApplyingValidationRuleTest {
         caseDataNotificationYesSingle = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_YES_SINGLE)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotificationNoSingle = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NO_SINGLE)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotificationYesMultiple = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_YES_MULTIPLE)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
 
         caseDataNotificationNoMultiple = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NO_MULTIPLE)
-            .registryLocation("Bristol").build();
+            .registryLocation("Brighton").build();
     }
 
     @Test
