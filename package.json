@@ -50,11 +50,11 @@
     "test-e2e-cw-applyCaveat-Playwright-Poc": "npx playwright test Path/caseworker/caveatPath.spec.ts --headed",
     "test-e2e-cw-caveat3-Playwright": "npx playwright test Path/caseworker/caveatPath3.spec.ts --headed",
     "test-e2e-cw-grantOfProbatePathEECwEx-Playwright": "npx playwright test Path/caseworker/pr_specific/grantOfProbatePathEENormalCw.spec.ts --headed",
-    "test-e2e-cw-grantOfProbatePathEESuperuserCw-Playwright": "npx playwright test Path/caseworker/grantOfProbatePathEESuperuserCw.spec.ts --headed",
+    "test-e2e-cw-grantOfProbatePathEESuperuserCw-Playwright": "yarn playwright install firefox && npx playwright test Path/caseworker/pr_specific/grantOfProbatePathEESuperuserCw.spec.ts --headed",
     "test-e2e-cw-grantOfProbateProbateManCaseMatch-Playwright": "npx playwright test Path/caseworker/grantOfProbateProbateManCaseMatchPath.spec.ts --headed",
     "test-e2e-cw-willLodgement-Playwright": "npx playwright test Path/caseworker/willLodgementPath.spec.ts --headed",
     "test-e2e-sol-grantOfProbateMulti-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateMultiExecutorPath.spec.ts --headed",
-    "test-e2e-sol-gorNoWillEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/pr_specific/applyGrantOfProbateNoWillEE.spec.ts --headed",
+    "test-e2e-sol-gorNoWillEE-Playwright": "yarn playwright install firefox && npx playwright test Path/solicitor/pr_specific/applyGrantOfProbateNoWillEE.spec.ts --headed",
     "test-e2e-sol-grantOfProbateEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/pr_specific/applyGrantOfProbateSingleExecutorEE.spec.ts --headed",
     "test-e2e-sol-grantOfProbateMultiEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateMultiExecutorEE.spec.ts --headed",
     "test-e2e-sol-gorNoWill-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateNoWill.spec.ts --headed",
@@ -95,15 +95,15 @@
     "install-dependencies": "/usr/bin/yarn install --silent"
   },
   "dependencies": {
-    "@axe-core/playwright": "^4.14.0",
+    "@axe-core/playwright": "4.14.0",
     "@date-fns/upgrade": "^1.0.3",
     "dotenv-extended": "^2.9.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
   "devDependencies": {
-    "@hmcts/playwright-common": "^1.1.7",
-    "@playwright/test": "^1.64.1",
+    "@hmcts/playwright-common": "1.1.7",
+    "@playwright/test": "1.64.1",
     "@types/node": "^24.19.2",
     "axios": "^1.21.0",
     "chai": "^4.5.0",
@@ -135,6 +135,11 @@
     "webdriverio": "^9.32.0",
     "when": "^3.7.8",
     "yaml": "^2.9.1"
+  },
+  "overrides": {
+    "@playwright/test": "$@playwright/test",
+    "playwright": "1.64.1",
+    "playwright-core": "1.64.1"
   },
   "resolutions": {
     "diff": "^9.0.0",
