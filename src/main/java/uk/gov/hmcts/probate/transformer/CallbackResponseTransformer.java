@@ -886,7 +886,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo,
-                                      String authToken) {
+                                      String authToken, String clientContext) {
         ResponseCaseData responseCaseData = getResponseCaseData(
                 callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(),
@@ -894,23 +894,32 @@ public class CallbackResponseTransformer {
                 false
         ).build();
 
-        //Setting task creation flag as mid event doesnt persist
-        setTaskCreation(authToken, callbackRequest, responseCaseData);
+        setTaskCreation(authToken, callbackRequest, responseCaseData, clientContext);
 
         return transformResponse(responseCaseData);
     }
 
-    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    private void setTaskCreation(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData,
+                                 String clientContext) {
         if (workAllocationToggleService.isProbateWAEnabled()) {
             responseCaseData.setCreateTask(Constants.NO);
             createTaskProcessorFactory.get(callbackRequest.getEventId())
-                    .ifPresent(processor -> processor.process(authToken, callbackRequest, responseCaseData));
+                    .ifPresent(processor ->
+                            processor.process(authToken, callbackRequest, responseCaseData, clientContext));
         }
     }
 
-    public CallbackResponse transformCase(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse transformCase(CallbackRequest callbackRequest,
+                                          Optional<UserInfo> caseworkerInfo) {
+        return transformCase(callbackRequest, caseworkerInfo, null);
+    }
+
+    public CallbackResponse transformCase(CallbackRequest callbackRequest,
+                                          Optional<UserInfo> caseworkerInfo,
+                                          String clientContext) {
 
         boolean transform = doTransform(callbackRequest);
+
 
         ResponseCaseData responseCaseData = getResponseCaseData(
             callbackRequest.getCaseDetails(),
@@ -919,6 +928,7 @@ public class CallbackResponseTransformer {
             transform
         ).build();
 
+        setTaskCreation(null, callbackRequest, responseCaseData, clientContext);
         return transformResponse(responseCaseData);
     }
 
@@ -947,7 +957,8 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        setTaskCreation(null, callbackRequest, responseCaseData);
+
+        setTaskCreation(null, callbackRequest, responseCaseData, null);
 
         return transformResponse(responseCaseData);
     }
@@ -1180,6 +1191,7 @@ public class CallbackResponseTransformer {
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
+        setTaskCreation(null, callbackRequest, responseCaseDataBuilder.build(), null);
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
                 .build()

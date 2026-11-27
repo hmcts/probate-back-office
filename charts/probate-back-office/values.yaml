@@ -67,6 +67,7 @@ java:
     MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
     FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
     CCD_SERVICEBUS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
+    WA_SERVICE_HOST: http://wa-task-management-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
     probate:
       secrets:

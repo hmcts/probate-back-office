@@ -46,8 +46,10 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
-                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
+                            false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,

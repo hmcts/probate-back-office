@@ -71,8 +71,10 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116TaskAttributes)
+                                handOffReasonListWithHandOffReason(section116HandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason)),
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -208,8 +210,10 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116CasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(section116HandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(section116HandOffReason)),
+                        List.of(examineSection116CasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

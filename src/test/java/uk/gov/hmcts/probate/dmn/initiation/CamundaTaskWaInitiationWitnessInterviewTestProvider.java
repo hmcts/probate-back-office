@@ -70,8 +70,10 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -207,8 +209,10 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         "handleEvidence",
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewTaskAttributes)
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(witnessInterviewHandOffReason)),
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,

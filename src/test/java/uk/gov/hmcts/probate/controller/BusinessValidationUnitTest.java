@@ -121,6 +121,7 @@ class BusinessValidationUnitTest {
     private static final Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
     private static final String PAPERFORM = "PaperForm";
     private static final String AUTH_TOKEN = "AuthToken";
+    private static final String CLIENT_CONTEXT = "CLIENT_CONTEXT";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -572,10 +573,10 @@ class BusinessValidationUnitTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty(), AUTH_TOKEN))
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty(), AUTH_TOKEN, ""))
             .thenReturn(callbackResponseMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN, "",
                 callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -590,7 +591,7 @@ class BusinessValidationUnitTest {
             when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
             when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN, "",
                     callbackRequestMock, bindingResultMock, httpServletRequest);
 
             assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -608,7 +609,7 @@ class BusinessValidationUnitTest {
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN,
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(AUTH_TOKEN, "",
                 callbackRequestMock, bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -821,9 +822,9 @@ class BusinessValidationUnitTest {
 
     @Test
     void shouldValidateIHT400Date() {
-        ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date("", callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        verify(callbackResponseTransformerMock).transform(any(), eq(Optional.empty()), any());
+        verify(callbackResponseTransformerMock).transform(any(), eq(Optional.empty()), any(), any());
     }
 
     @Test
@@ -897,9 +898,9 @@ class BusinessValidationUnitTest {
     @Test
     void shouldValidateSolPostCode() {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
-        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate("", callbackRequestMock);
         verify(callbackResponseTransformerMock).transform(callbackRequestMock,
-                Optional.empty(), "");
+                Optional.empty(), "", "");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -918,9 +919,9 @@ class BusinessValidationUnitTest {
         errors.add("some error");
         when(callbackResponseMock.getErrors()).thenReturn(errors);
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
-        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(null,callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0))
-                .transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+                .transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN, CLIENT_CONTEXT);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -1031,7 +1032,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
 
         ResponseEntity<CallbackResponse> response =
-                underTest.caseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                underTest.caseworkerEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
         verify(caseEscalatedServiceMock, times(1)).setCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
@@ -1304,14 +1305,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, never())
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
@@ -1364,14 +1365,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
@@ -1398,14 +1399,14 @@ class BusinessValidationUnitTest {
                 .thenReturn(notificationsGenerated);
 
         final ResponseEntity<CallbackResponse> response = underTest
-                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+                .caseEscalated(null, callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(notificationService, times(1))
                 .sendRegistrarEscalationNotification(any());
         verify(notificationService, never())
                 .sendRegistrarEscalationNotificationFailed(any(), any());
         verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO, null);
 
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),

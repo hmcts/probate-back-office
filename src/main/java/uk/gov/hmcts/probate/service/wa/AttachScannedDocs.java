@@ -21,6 +21,7 @@ public class AttachScannedDocs implements CreateTaskProcessor {
     private static final String IDAM_SERVICE_ACCOUNT = "idam-service-account";
     public static final String ATTACH_SCANNED_DOCS = "attachScannedDocs";
     private final UserInfoService caseworkerInfo;
+    private final WaTaskService waTaskService;
 
     @Override
     public String getEventId() {
@@ -28,17 +29,32 @@ public class AttachScannedDocs implements CreateTaskProcessor {
     }
 
     @Override
-    public void process(String authToken, CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+    public void process(final String authToken,
+                        final CallbackRequest callbackRequest,
+                        final ResponseCaseData responseCaseData,
+                        final String clientContext) {
         String createTask = caseworkerInfo.getCaseworkerInfoIncludingSystemUsers()
                 .map(userInfo -> {
                     List<String> roles = userInfo.getRoles();
                     boolean shouldCreateTask = roles.contains(CASEWORKER_PROBATE_SYSTEM_UPDATE)
                             || roles.contains(IDAM_SERVICE_ACCOUNT);
-                    log.info("Processing attach scanned docs. Roles: {}, createTask: {}", roles, shouldCreateTask);
+                    log.info("Processing attach scanned docs for case id {}. Roles: {}, createTask: {}",
+                            callbackRequest.getCaseDetails().getId(),
+                            roles, shouldCreateTask);
                     return shouldCreateTask ? YES : NO;
                 })
                 .orElse(NO);
         log.info("Processing attach scanned docs set createTask : {} ", createTask);
         responseCaseData.setCreateTask(createTask);
+        if (createTask.equals(YES)) {
+            log.info("Processing case id {} state {} with case type {}",
+                    callbackRequest.getCaseDetails().getId(),
+                    callbackRequest.getCaseDetails().getState(),
+                    callbackRequest.getCaseDetails().getData().getCaseType());
+
+            waTaskService.createTaskIfRequired(getEventId(),
+                    callbackRequest,
+                    responseCaseData);
+        }
     }
 }

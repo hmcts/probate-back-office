@@ -46,8 +46,9 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35CasePrintedTestProvider
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason),
-                                false),
-                        List.of(incapacityUnderRule35TaskAttributes)
+                                false,
+                                handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(incapacityUnderRule35HandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

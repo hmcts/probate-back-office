@@ -53,8 +53,9 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineFiatWillTaskAttributes)
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason), false,
+                                handOffReasonListWithHandOffReason(fiatWillHandOffReason)),
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

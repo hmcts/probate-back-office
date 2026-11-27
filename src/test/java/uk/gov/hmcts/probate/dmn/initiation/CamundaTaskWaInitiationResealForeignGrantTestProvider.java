@@ -70,8 +70,10 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason)),
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -207,8 +209,10 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason)),
+                        List.of(examineResealForeignGrantCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

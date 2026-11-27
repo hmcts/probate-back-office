@@ -69,8 +69,10 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
-                        List.of(examineLiteraryEstateCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                        List.of(examineLiteraryEstateCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -201,8 +203,9 @@ public class CamundaTaskWaInitiationLiteraryEstateTestProvider implements Argume
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false),
-                        List.of(examineLiteraryEstateTaskAttributes)
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason), false,
+                                handOffReasonListWithHandOffReason(literaryEstateHandOffReason)),
+                        List.of(examineLiteraryEstateReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

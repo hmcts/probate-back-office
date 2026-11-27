@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.wa.TaskData;
 import uk.gov.hmcts.probate.model.wa.TaskTypes;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -44,8 +46,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -58,7 +60,6 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICAT
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.AUTO_SELECT_FOR_QA_CREATE_TASK;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CANCEL_CHANGE_STATE;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_FIAT_WILL;
@@ -68,10 +69,17 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_AD_COLLIGENDA_BON
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_INTESTACY;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_ICE_PROBATE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_LEADING_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CREATE_CHANGE_STATE;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DE_BONIS_NON_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_DOUBLE_PROBATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_FIAT_WILL_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_HORIZON_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_IBIS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.EXAMINE_SME_REFERRAL;
+import static uk.gov.hmcts.probate.model.wa.TaskTypes.RESOLVE_STOPPED_CASE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DE_BONIS_NON;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.DOUBLE_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FIAT_WILL;
@@ -97,6 +105,8 @@ class WaTaskServiceTest {
     private TaskUtils taskUtils;
     @Mock
     private CcdClientApi ccdClientApi;
+    @Mock
+    private WaClientApi waClientApi;
 
     @Captor
     ArgumentCaptor<Function<StartEventResponse, CaseDataContent>> functionCaptor;
@@ -265,7 +275,7 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsRetained() {
+    void shouldNotCloseReadyToIssueTasksWhenCaseIsHandedOffToLegacySiteIsRetained() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")
@@ -288,7 +298,7 @@ class WaTaskServiceTest {
     }
 
     @Test
-    void shouldNotCloseReadyToIssueHandOffsWhenCaseIsHandedOffToLegacySiteIsAdded() {
+    void shouldNotCloseReadyToIssueTasksWhenCaseIsHandedOffToLegacySiteIsAdded() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")
@@ -324,7 +334,7 @@ class WaTaskServiceTest {
 
 
     @Test
-    void shouldCloseReadyToIssueHandOffsWhenCaseIsNotHandedOffToLegacySite() {
+    void shouldCloseReadyToIssueTasksWhenCaseIsNotHandedOffToLegacySite() {
         when(caseDetailsBefore.getData())
                 .thenReturn(CaseData.builder()
                         .caseType("gop")
@@ -896,5 +906,312 @@ class WaTaskServiceTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("No TaskTypes enum configured for: EXAMINEFOREIGNDOMICILECASEPRINTED");
         }
+    }
+
+    @Test
+    void shouldCreateExamineIceTask() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .build());
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(NO)
+                .build();
+
+
+        waTaskService.createExamineTasks(
+                callbackRequest,
+                responseCaseData
+        );
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+    }
+
+    @Test
+    void shouldCreateExamineHandOffTask() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createExamineTasks(
+                callbackRequest,
+                responseCaseData
+        );
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(DOUBLE_PROBATE,
+                        FOREIGN_DOMICILE);
+    }
+
+    @Test
+    void shouldSetCreateTaskToNo() {
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+        TaskTypes taskType = EXAMINE_DIGITAL_CASE_PROBATE;
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of(taskType.getValue(),
+                        EXAMINE_SME_REFERRAL.getValue()));
+
+        waTaskService.setCreateTask(
+                callbackRequest,
+                responseCaseData,
+                taskType
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYes() {
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of(RESOLVE_STOPPED_CASE.getValue(),
+                        EXAMINE_SME_REFERRAL.getValue()));
+
+        waTaskService.setCreateTask(
+                callbackRequest,
+                responseCaseData,
+                EXAMINE_DIGITAL_CASE_PROBATE
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+    }
+
+    @Test
+    void shouldNotCreateHandOffTaskWhenTaskPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of(EXAMINE_DOUBLE_PROBATE_CASE_PRINTED.getValue(),
+                        EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED.getValue()));
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+
+        waTaskService.setCreateHandOffTask(
+                callbackRequest,
+                responseCaseData
+        );
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .isNullOrEmpty();
+    }
+
+    @Test
+    void shouldCreateHandOffTaskWhenTaskPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of(EXAMINE_DE_BONIS_NON_CASE_PRINTED.getValue(),
+                        EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED.getValue()));
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+
+        waTaskService.setCreateHandOffTask(
+                callbackRequest,
+                responseCaseData
+        );
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(DOUBLE_PROBATE,
+                        FOREIGN_DOMICILE);
+
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+    @Test
+    void shouldCreateTaskWhenStateIsConfigured() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .boHandoffReasonList(generateHandOffReasonCollection(Set.of(DOUBLE_PROBATE,
+                                FOREIGN_DOMICILE)))
+                        .build());
+        when(caseDetails.getState())
+                .thenReturn(STATE_CASE_PRINTED);
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired(
+                "handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
+        assertThat(responseCaseData.getWaHandoffReasonList())
+                .extracting(CollectionMember::getValue)
+                .extracting(HandoffReason::getCaseHandoffReason)
+                .containsExactlyInAnyOrder(DOUBLE_PROBATE,
+                        FOREIGN_DOMICILE);
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+
+    @ParameterizedTest(
+        name = "[{index}] State: {0}"
+    )
+    @CsvSource({
+        "BOCaseWorkerEscalation",
+        "BOCaseStopped",
+        "BORedecNotificationSent"
+    })
+    void shouldCreateTaskWhenStateIsConfigured(String state) {
+        when(caseDetails.getState())
+                .thenReturn(state);
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired("handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+    }
+
+    @Test
+    void shouldCreateTaskWhenStateIsNotConfigured() {
+        when(caseDetails.getState())
+                .thenReturn("INVALID_STATE");
+
+        when(caseDetails.getId())
+                .thenReturn(Long.valueOf(caseId));
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .caseHandedOffToLegacySite(YES)
+                .build();
+
+        waTaskService.createTaskIfRequired(
+                "handleEvidence", callbackRequest, responseCaseData);
+
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+        verifyNoInteractions(waClientApi);
+    }
+
+    @Test
+    void shouldSetCreateTaskToYesWhenIceTaskNotPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("gop")
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+
+        waTaskService.setIceCreateTask(
+                callbackRequest,
+                responseCaseData
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(YES);
+    }
+
+    @Test
+    void shouldSetCreateTaskToNoWhenIceTaskIsPresent() {
+        when(caseDetails.getData())
+                .thenReturn(CaseData.builder()
+                        .caseType("adColligendaBona")
+                        .caseHandedOffToLegacySite(NO)
+                        .build());
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        when(caseDetails.getId()).thenReturn(123456789L);
+
+        when(waClientApi.searchActiveTasksByCaseId(caseDetails.getId().toString()))
+                .thenReturn(Set.of("ExamineDigitalCaseAdColligendaBona"));
+
+        ResponseCaseData responseCaseData = ResponseCaseData.builder()
+                .build();
+
+        waTaskService.setIceCreateTask(
+                callbackRequest,
+                responseCaseData
+        );
+        verify(waClientApi)
+                .searchActiveTasksByCaseId(caseDetails.getId().toString());
+        assertThat(responseCaseData.getCreateTask())
+                .isEqualTo(NO);
     }
 }

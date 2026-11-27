@@ -510,6 +510,8 @@ class CallbackResponseTransformerTest {
         .roles(List.of("caseworker-probate"))
         .build());
     private static final String AUTH_TOKEN = "AUTH_TOKEN";
+    private static final String CLIENT_CONTEXT = "CLIENT_CONTEXT";
+
     private static final String MOVE_TO_CW_ESCALATION_USER_IDAM_ID = "someEscalationId";
 
     @InjectMocks
@@ -1716,7 +1718,8 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldTransformCallbackRequestToCallbackResponse() {
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
 
         assertCommon(callbackResponse);
     }
@@ -4695,7 +4698,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4710,7 +4714,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(null, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4724,7 +4729,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4738,7 +4744,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4753,7 +4760,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4943,7 +4951,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
     }
 
@@ -4956,7 +4965,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4967,7 +4977,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4978,7 +4989,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
         assertNull(callbackResponse.getData().getCreateTask());
     }
@@ -5002,9 +5014,10 @@ class CallbackResponseTransformerTest {
             responseCaseData.setCreateTask(YES);
             return null;
         }).when(amendCaseDetailsForAwaitingDocumentation)
-                .process(anyString(), any(CallbackRequest.class), any(ResponseCaseData.class));
+                .process(anyString(), any(CallbackRequest.class), any(ResponseCaseData.class), anyString());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(YES, callbackResponse.getData().getCreateTask());
     }
 
@@ -5022,7 +5035,8 @@ class CallbackResponseTransformerTest {
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         when(createTaskProcessorFactory.get("boAmendCaseDetailsForAwaitingDocumentation"))
                 .thenReturn(Optional.empty());
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(NO, callbackResponse.getData().getCreateTask());
     }
 
@@ -5038,7 +5052,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertNull(callbackResponse.getData().getCreateTask());
     }
 
@@ -5051,7 +5066,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO, AUTH_TOKEN);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO,
+                AUTH_TOKEN, CLIENT_CONTEXT);
         assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
@@ -5999,7 +6015,7 @@ class CallbackResponseTransformerTest {
             inv.<ResponseCaseData>getArgument(2).setCreateTask(YES);
             return null;
         })
-                .when(attachScannedDocsProcessor).process(any(), any(), any());
+                .when(attachScannedDocsProcessor).process(any(), any(), any(), any());
         when(createTaskProcessorFactory.get("attachScannedDocs"))
                 .thenReturn(Optional.of(attachScannedDocsProcessor));
 

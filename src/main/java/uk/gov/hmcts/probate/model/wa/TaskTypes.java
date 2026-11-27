@@ -10,7 +10,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.ADMON_WILL;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.GOP;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_WORKER_ESCALATION;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_CODICIL_MIS;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_DE_BONIS_NON;
@@ -42,22 +49,22 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CLOSE_WITNESS_INTERVIEW;
 @Getter
 public enum TaskTypes {
 
-    EXAMINE_DIGITAL_CASE_PROBATE(STATE_CASE_PRINTED, "ExamineDigitalCaseProbate", "gop",
+    EXAMINE_DIGITAL_CASE_PROBATE(STATE_CASE_PRINTED, "ExamineDigitalCaseProbate", GOP.getCaseType(),
             CLOSE_ICE_PROBATE),
-    EXAMINE_DIGITAL_CASE_INTESTACY(STATE_CASE_PRINTED, "ExamineDigitalCaseIntestacy", "intestacy",
+    EXAMINE_DIGITAL_CASE_INTESTACY(STATE_CASE_PRINTED, "ExamineDigitalCaseIntestacy", INTESTACY.getCaseType(),
             CLOSE_ICE_INTESTACY),
-    EXAMINE_DIGITAL_CASE_ADMON_WILL(STATE_CASE_PRINTED,"ExamineDigitalCaseAdmonWill", "admonWill",
+    EXAMINE_DIGITAL_CASE_ADMON_WILL(STATE_CASE_PRINTED,"ExamineDigitalCaseAdmonWill", ADMON_WILL.getCaseType(),
             CLOSE_ICE_ADMON_WILL),
-    EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA(STATE_CASE_PRINTED,"ExamineDigitalCaseAdcolligendaBona",
-            "adColligendaBona", CLOSE_ICE_AD_COLLIGENDA_BONA),
+    EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA(STATE_CASE_PRINTED,"ExamineDigitalCaseAdColligendaBona",
+            AD_COLLIGENDA_BONA.getCaseType(), CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,"ExamineDigitalCaseProbateReadyToIssue",
-            "gop", CLOSE_ICE_PROBATE),
+            GOP.getCaseType(), CLOSE_ICE_PROBATE),
     EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,"ExamineDigitalCaseIntestacyReadyToIssue",
-            "intestacy", CLOSE_ICE_INTESTACY),
+            INTESTACY.getCaseType(), CLOSE_ICE_INTESTACY),
     EXAMINE_DIGITAL_CASE_ADMON_WILL_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,
-            "ExamineDigitalCaseAdmonWillReadyToIssue", "admonWill", CLOSE_ICE_ADMON_WILL),
+            "ExamineDigitalCaseAdmonWillReadyToIssue", ADMON_WILL.getCaseType(), CLOSE_ICE_ADMON_WILL),
     EXAMINE_DIGITAL_CASE_ADCOLLIGENDA_BONA_READY_TO_ISSUE(STATE_BO_READY_TO_ISSUE,
-            "ExamineDigitalCaseAdColligendaBonaReadyToIssue", "adColligendaBona",
+            "ExamineDigitalCaseAdColligendaBonaReadyToIssue", AD_COLLIGENDA_BONA.getCaseType(),
             CLOSE_ICE_AD_COLLIGENDA_BONA),
     EXAMINE_DE_BONIS_NON(STATE_BO_READY_TO_ISSUE,"ExamineDeBonisNon",
             null, CLOSE_DE_BONIS_NON),
@@ -146,7 +153,13 @@ public enum TaskTypes {
     EXAMINE_CODICIL_MIS(STATE_BO_READY_TO_ISSUE,"ExamineCodicilMis",
             null, CLOSE_CODICIL_MIS),
     EXAMINE_CODICIL_MIS_CASE_PRINTED(STATE_CASE_PRINTED,"ExamineCodicilMisCasePrinted",
-            null, CLOSE_CODICIL_MIS);
+            null, CLOSE_CODICIL_MIS),
+    EXAMINE_SME_REFERRAL(STATE_BO_CASE_WORKER_ESCALATION,
+            "ExamineSMEReferral", null, null),
+    RESOLVE_STOPPED_CASE(STATE_BO_CASE_STOPPED,
+            "ResolveStoppedCase", null, null),
+    RESOLVE_REDECLARATION(STATE_BO_REDEC_NOTIFICATION_SENT,
+            "ResolveRedeclaration", null, null);
 
     final String state;
     final String value;
@@ -168,7 +181,7 @@ public enum TaskTypes {
 
     public static Map<String, TaskTypes> getStateTasks(String state) {
         return Arrays.stream(values())
-                .filter(taskType -> taskType.state.equals(state))
+                .filter(taskType -> taskType.state.equals(state) && taskType.closingEventId != null)
                 .collect(toMap(taskType ->
                         taskType.getValue().toUpperCase(),
                         taskType -> taskType));
@@ -180,6 +193,12 @@ public enum TaskTypes {
                 .collect(Collectors.toSet());
     }
 
+    public static Optional<TaskTypes> getCaseType(String taskType) {
+        return Arrays.stream(values())
+                .filter(task -> task.getCaseType() != null)
+                .filter(taskTypes -> taskTypes.getValue().equalsIgnoreCase(taskType))
+                .findAny();
+    }
 
     public Optional<EventId> getOptionalClosingEventId() {
         return Optional.ofNullable(closingEventId);

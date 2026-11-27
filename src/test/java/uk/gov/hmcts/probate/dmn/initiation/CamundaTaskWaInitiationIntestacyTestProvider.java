@@ -20,7 +20,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESOLVE_SME_REFERRAL_EVENT;
@@ -54,13 +53,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
-                    READY_TO_ISSUE_STATE,
-                    additionalData(false, "intestacy", false,
-                            emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-            ),
-            Arguments.of(
-                    HANDLE_EVIDENCE_EVENT,
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "intestacy", false,
                             emptyList(), false),
@@ -147,7 +139,7 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     "handleEvidence",
                     "CasePrinted",
                     additionalData(false, "intestacy", false,
-                            Collections.emptyList(), false),
+                            Collections.emptyList(), true),
                     List.of(examineDigitalCaseIntestacyTaskAttributes)
             ),
             Arguments.of(
@@ -444,13 +436,6 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
                     additionalData(false, "intestacy", false,
                             Collections.emptyList(), false),
                     Collections.emptyList()
-            ),
-            Arguments.of(
-                    "handleEvidence",
-                    "BOReadyToIssue",
-                    additionalData(false, "intestacy", false,
-                            Collections.emptyList(), false),
-                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
             ),
             Arguments.of(
                     "handleEvidence",

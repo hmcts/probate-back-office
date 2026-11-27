@@ -109,8 +109,10 @@ def secrets = [
         ],
         'camunda-${env}' : [
                 secret('s2s-secret-camunda-bpm', 'S2S_SECRET_CAMUNDA_BPM')
+        ],
+        'wa-${env}': [
+                secret('probate-search-email', 'PROBATE_SEARCH_EMAIL')
         ]
-
 ]
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',

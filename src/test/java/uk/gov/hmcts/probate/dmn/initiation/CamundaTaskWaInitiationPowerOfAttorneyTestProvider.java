@@ -69,8 +69,10 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason)),
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -206,8 +208,10 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason),
+                                false,
+                                handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason)),
+                        List.of(examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,

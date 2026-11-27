@@ -70,8 +70,9 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -207,8 +208,9 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
-                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false,
+                                handOffReasonListWithHandOffReason(deBonisNonHandOffReason)),
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
