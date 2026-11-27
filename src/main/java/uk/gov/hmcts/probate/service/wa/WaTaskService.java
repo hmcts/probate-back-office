@@ -135,7 +135,6 @@ public class WaTaskService {
     private void triggerCloseIceEvent(CallbackRequest callbackRequest,
                                       String clientContext,
                                       Set<TaskTypes> taskTypes) {
-        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         Long caseId = callbackRequest.getCaseDetails().getId();
         log.debug("15....");
         Consumer<String> eventTrigger = caseType ->
@@ -150,12 +149,12 @@ public class WaTaskService {
                                     eventId);
                             triggerEvent(callbackRequest.getCaseDetails(), eventId);
                         });
-        log.debug("16....");
         if (isHandOffsAdded(callbackRequest)) {
             log.debug("17....");
             eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType());
         }
         log.debug("18....");
+        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         if (taskData.isEmpty()) {
             log.debug("19....");
             boolean caseTypeChanged =
