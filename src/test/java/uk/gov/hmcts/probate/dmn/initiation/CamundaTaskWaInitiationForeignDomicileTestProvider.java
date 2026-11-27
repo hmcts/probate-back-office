@@ -31,11 +31,6 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        Map<String,Object> examineForeignDomicileCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
-                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
 
         Map<String,Object> examineForeignDomicileCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE_CASE_PRINTED,
@@ -50,7 +45,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -90,7 +85,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -124,7 +119,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -152,7 +147,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -186,7 +181,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CASE_FROM_BULK_SCAN_EVENT,
@@ -220,7 +215,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
@@ -254,7 +249,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), false),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
@@ -288,7 +283,7 @@ public class CamundaTaskWaInitiationForeignDomicileTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileHandOffReason), true),
-                        List.of(examineForeignDomicileCasePrintedTaskAttributes)
+                        List.of(examineForeignDomicileCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,

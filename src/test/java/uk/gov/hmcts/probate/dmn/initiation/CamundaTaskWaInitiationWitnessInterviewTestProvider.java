@@ -35,22 +35,10 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String,Object> examineWitnessInterviewCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
-                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineWitnessInterviewCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CASE_PRINTED,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineWitnessInterviewCasePrinted"
-        );
-
-        Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
-                "taskId", EXAMINE_WITNESS_INTERVIEW,
-                "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineWitnessInterviewReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -62,7 +50,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
         Map<String,Object> examineWitnessInterviewCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_WITNESS_INTERVIEW_CHANGE_STATE,
                 "name", EXAMINE_WITNESS_INTERVIEW_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineWitnessInterview"
         );
 
         return Stream.of(
@@ -71,7 +59,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -111,7 +99,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -145,7 +133,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -173,7 +161,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewCasePrintedTaskAttributes)
+                        List.of(examineWitnessInterviewCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -208,7 +196,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewTaskAttributes)
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
@@ -244,7 +232,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewTaskAttributes)
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -272,7 +260,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewTaskAttributes)
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
@@ -300,7 +288,7 @@ public class CamundaTaskWaInitiationWitnessInterviewTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(witnessInterviewHandOffReason), false),
-                        List.of(examineWitnessInterviewTaskAttributes)
+                        List.of(examineWitnessInterviewReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",

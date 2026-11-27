@@ -33,7 +33,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
         Map<String,Object> examineFiatWillTaskAttributes = Map.of(
                 "taskId", EXAMINE_FIAT_WILL,
                 "name", FIAT_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineFiatWill"
         );
         Map<String,Object> examineFiatWillReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FIAT_WILL,
@@ -44,7 +44,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
         Map<String,Object> examineFiatWillCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_FIAT_WILL_CHANGE_STATE,
                 "name", FIAT_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineFiatWill"
         );
 
 
@@ -89,7 +89,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineFiatWillTaskAttributes)
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -124,7 +124,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineFiatWillTaskAttributes)
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -159,7 +159,7 @@ public class CamundaTaskWaInitiationFiatWillTestProvider implements ArgumentsPro
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(fiatWillHandOffReason), false),
-                        List.of(examineFiatWillTaskAttributes)
+                        List.of(examineFiatWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,

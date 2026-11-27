@@ -35,29 +35,16 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examineRectifyWillOrCodicilTaskAttributes = Map.of(
-                "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
-                "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_CODICIL,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineRectifyWillCodicil"
         );
 
-        Map<String,Object> examineRectifyWillOrCodicilCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_RECTIFY_WILL_CODICIL_CASE_PRINTED,
-                "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineRectifyWillOrCodicilCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_RECTIFY_WILL_OR_CODICIL_CHANGE_STATE,
                 "name", EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineRectifyWillCodicil"
         );
 
         Map<String,Object> examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes = Map.of(
@@ -72,7 +59,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -112,7 +99,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -146,7 +133,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -174,7 +161,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -209,7 +196,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilCasePrintedTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -249,7 +236,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilCasePrintedTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -283,7 +270,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilCasePrintedTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -311,7 +298,7 @@ public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements 
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(rectifyWillOrCodicilHandOffReason), false),
-                        List.of(examineRectifyWillOrCodicilCasePrintedTaskAttributes)
+                        List.of(examineRectifyWillOrCodicilCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

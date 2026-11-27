@@ -33,28 +33,16 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-        Map<String,Object> examineMinorityInterestCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
-                "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineMinorityInterestCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST_CASE_PRINTED,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineMinorityInterestCasePrinted"
         );
 
-        Map<String,Object> examineMinorityInterestTaskAttributes = Map.of(
-                "taskId", EXAMINE_MINORITY_INTEREST,
-                "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineMinorityInterestCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_MINORITY_INTEREST_CHANGE_STATE,
                 "name", EXAMINE_MINORITY_INTEREST_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineMinorityInterest"
         );
 
         Map<String,Object> examineMinorityInterestReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -69,7 +57,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestCasePrintedTaskAttributes)
+                        List.of(examineMinorityInterestCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -108,7 +96,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestCasePrintedTaskAttributes)
+                        List.of(examineMinorityInterestCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -141,7 +129,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestCasePrintedTaskAttributes)
+                        List.of(examineMinorityInterestCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -168,7 +156,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestCasePrintedTaskAttributes)
+                        List.of(examineMinorityInterestCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -201,7 +189,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -240,7 +228,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -274,7 +262,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -301,7 +289,7 @@ public class CamundaTaskWaInitiationMinorityInterestTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(minorityInterestHandOffReason), false),
-                        List.of(examineMinorityInterestTaskAttributes)
+                        List.of(examineMinorityInterestReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

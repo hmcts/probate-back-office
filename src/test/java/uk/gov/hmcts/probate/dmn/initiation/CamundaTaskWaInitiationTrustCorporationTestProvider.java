@@ -36,11 +36,6 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        Map<String, Object> examineTrustCorporationCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
-                "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
 
         Map<String, Object> examineTrustCorporationCasePrintedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION_CASE_PRINTED,
@@ -48,16 +43,10 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                 "processCategories", "case progression,handOffs,examineTrustCorporationCasePrinted"
         );
 
-        Map<String, Object> examineTrustCorporationTaskAttributes = Map.of(
-                "taskId", EXAMINE_TRUST_CORPORATION,
-                "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String, Object> examineTrustCorporationCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_TRUST_CORPORATION_CHANGE_STATE,
                 "name", EXAMINE_TRUST_CORPORATION_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineTrustCorporation"
         );
 
         Map<String, Object> examineTrustCorporationReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -73,7 +62,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -113,7 +102,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -153,7 +142,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -187,7 +176,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -221,7 +210,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -249,7 +238,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -277,7 +266,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -311,7 +300,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationTaskAttributes)
+                        List.of(examineTrustCorporationReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -345,7 +334,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), true),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         ATTACH_SCANNED_DOCS_EVENT,
@@ -456,7 +445,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         SERVIVE_REQUEST_PAYMENT_SUCCESS_EVENT,
@@ -478,7 +467,7 @@ public class CamundaTaskWaInitiationTrustCorporationTestProvider implements Argu
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(trustCorporationHandOffReason), false),
-                        List.of(examineTrustCorporationCasePrintedTaskAttributes)
+                        List.of(examineTrustCorporationCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         SOLICITOR_PAYMENT_SUCCESS_CASE_EVENT,

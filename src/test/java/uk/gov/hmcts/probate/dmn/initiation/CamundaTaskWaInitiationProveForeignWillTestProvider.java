@@ -31,12 +31,6 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String,Object> examineProveForeignWillTaskAttributes = Map.of(
-                "taskId", EXAMINE_FOREIGN_WILL,
-                "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineProveForeignWillReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_WILL,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
@@ -46,7 +40,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
         Map<String,Object> examineProveForeignWillCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_PROVE_FOREIGN_WILL_CHANGE_STATE,
                 "name", EXAMINE_PROVE_FOREIGN_WILL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineForeignWill"
         );
 
 
@@ -56,7 +50,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -96,7 +90,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -130,7 +124,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -158,7 +152,7 @@ public class CamundaTaskWaInitiationProveForeignWillTestProvider implements Argu
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(proveForeignWillHandOffReason), false),
-                        List.of(examineProveForeignWillTaskAttributes)
+                        List.of(examineProveForeignWillReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

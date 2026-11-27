@@ -29,12 +29,6 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-        Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                "taskId", EXAMINE_IBCA,
-                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
@@ -47,7 +41,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -75,7 +69,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CHANGE_STATE_EVENT,
@@ -103,7 +97,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
@@ -131,7 +125,7 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason), false),
-                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                    List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
