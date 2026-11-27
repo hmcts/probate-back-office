@@ -2,6 +2,11 @@ server:
   port: ${probate.sol.ccd.port}
   tomcat:
     maxSwallowSize: ${MAX_SWALLOW_SIZE:10MB}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
 
 resttemplate:
   httpclient:
