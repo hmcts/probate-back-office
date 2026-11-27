@@ -3207,6 +3207,71 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldSetApplicantStatementVariantForNoWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
+            .thenReturn(new ArrayList<>());
+
+        ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder();
+        underTest.transformCaseForSolicitorConfirmText(caseDetailsMock, builder);
+        ResponseCaseData responseCaseData = builder.build();
+
+        assertEquals("applicant", responseCaseData.getSolsReviewSOTStatementVariant());
+    }
+
+    @Test
+    void shouldSetExecutorStatementVariantForSingleExecutorWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_PROBATE).primaryApplicantIsApplying(YES).build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
+            .thenReturn(new ArrayList<>());
+
+        ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder();
+        underTest.transformCaseForSolicitorConfirmText(caseDetailsMock, builder);
+        ResponseCaseData responseCaseData = builder.build();
+
+        assertEquals("executor", responseCaseData.getSolsReviewSOTStatementVariant());
+    }
+
+    @Test
+    void shouldSetExecutorsStatementVariantForPrimaryAndOneAdditionalApplyingExecutor() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        additionalExecs.add(new CollectionMember<>(
+            AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build()));
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_PROBATE).primaryApplicantIsApplying(YES).build();
+        assertTrue(caseData.isPrimaryApplicantApplying());
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
+            .thenReturn(additionalExecs);
+
+        ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder();
+        underTest.transformCaseForSolicitorConfirmText(caseDetailsMock, builder);
+        ResponseCaseData responseCaseData = builder.build();
+
+        assertEquals("executors", responseCaseData.getSolsReviewSOTStatementVariant());
+    }
+
+    @Test
+    void shouldSetExecutorsStatementVariantForMultipleExecutorWill() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        additionalExecs.add(new CollectionMember<>(
+            AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build()));
+        additionalExecs.add(new CollectionMember<>(
+            AdditionalExecutorApplying.builder().applyingExecutorName("Jane Smith").build()));
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_PROBATE).primaryApplicantIsApplying(YES).build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(solicitorExecutorTransformerMock.createCaseworkerApplyingList(any(CaseData.class)))
+            .thenReturn(additionalExecs);
+
+        ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder();
+        underTest.transformCaseForSolicitorConfirmText(caseDetailsMock, builder);
+        ResponseCaseData responseCaseData = builder.build();
+
+        assertEquals("executors", responseCaseData.getSolsReviewSOTStatementVariant());
+    }
+
+    @Test
     void checkSolsReviewCheckBoxesTextSingleExecSolApplying() {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.solsSolicitorIsApplying(YES).build());

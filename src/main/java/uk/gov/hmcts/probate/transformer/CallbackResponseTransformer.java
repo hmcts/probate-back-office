@@ -130,6 +130,9 @@ public class CallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
+    private static final String SOT_STATEMENT_VARIANT_APPLICANT = "applicant";
+    private static final String SOT_STATEMENT_VARIANT_EXECUTOR = "executor";
+    private static final String SOT_STATEMENT_VARIANT_EXECUTORS = "executors";
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
@@ -1030,71 +1033,39 @@ public class CallbackResponseTransformer {
     public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder) {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
-
-        var primaryApplicantIsApplying = caseDetails.getData().isPrimaryApplicantApplying();
-        var believePlural = "s";
-        if (listOfApplyingExecs != null
-            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
-            believePlural = "";
-        }
-
         var professionalName = caseDetails.getData().getSolsSOTName();
-        var confirmSOT = "";
-
-        if (caseDetails.getData().getSolsWillType() != null
-                && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
-
-            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
-                    + " confirm the following:\n\n"
-                    + "I, " + professionalName + ", have provided a copy of this application to the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying) + " named below.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
-                    + " that in signing the statement of truth I am confirming that the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
-                    + " believe"  + believePlural + " the facts set out in this legal statement are true.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
-                    + " of the consequences if it should subsequently appear that the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
-                    + " did not have an honest belief in the facts set out in the legal statement.\n\n"
-                    + "I, " + professionalName + ", have been authorised by the executor"
-                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
-                    + " to sign the statement of truth.\n\n"
-                    + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
-                    + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
-                    + "statement of truth without an honest belief in its truth.\n";
-        } else {
-
-            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
-                    + " confirm the following:\n\n"
-                    + "I, " + professionalName + ", have provided a copy of this application to the applicant"
-                    + " named below.\n\n"
-                    + "I, " + professionalName + ", have informed the applicant"
-                    + " that in signing the statement of truth I am confirming that the applicant"
-                    + " believes the facts set out in this legal statement are true.\n\n"
-                    + "I, " + professionalName + ", have informed the applicant"
-                    + " of the consequences if it should subsequently appear that the applicant"
-                    + " did not have an honest belief in the facts set out in the legal statement.\n\n"
-                    + "I, " + professionalName + ", have been authorised by the applicant"
-                    + " to sign the statement of truth.\n\n"
-                    + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
-                    + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
-                    + "statement of truth without an honest belief in its truth.\n";
-        }
+        var sotStatementVariant = determineSotStatementVariant(caseDetails.getData(), listOfApplyingExecs);
 
         String executorNames = setExecutorNames(caseDetails.getData(), listOfApplyingExecs, professionalName);
 
-        builder.solsReviewSOTConfirm(confirmSOT);
+        // Select a stable label variant key for translation; XUI/browser rendering substitutes ${solsSOTName}.
+        builder.solsReviewSOTStatementVariant(sotStatementVariant);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
+    }
+
+    private String determineSotStatementVariant(
+        CaseData caseData,
+        List<CollectionMember<AdditionalExecutorApplying>> applyingExecutors
+    ) {
+        if (caseData.getSolsWillType() != null && caseData.getSolsWillType().matches("WillLeft")) {
+            return hasMultipleApplyingExecutors(applyingExecutors, caseData.isPrimaryApplicantApplying())
+                ? SOT_STATEMENT_VARIANT_EXECUTORS : SOT_STATEMENT_VARIANT_EXECUTOR;
+        }
+        return SOT_STATEMENT_VARIANT_APPLICANT;
+    }
+
+    private boolean hasMultipleApplyingExecutors(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
+                                                 Boolean primaryApplicantIsApplying) {
+        return listOfApplyingExecs != null
+            && ((Boolean.TRUE.equals(primaryApplicantIsApplying) && !listOfApplyingExecs.isEmpty())
+            || listOfApplyingExecs.size() > 1);
     }
 
     private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
                                 Boolean primaryApplicantIsApplying) {
         var plural = "";
-        if (listOfApplyingExecs != null
-            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
+        if (hasMultipleApplyingExecutors(listOfApplyingExecs, primaryApplicantIsApplying)) {
             plural = "s";
         }
         return plural;
@@ -1103,7 +1074,7 @@ public class CallbackResponseTransformer {
     public String setExecutorNames(CaseData caseData,
                                 List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
                                 String professionalName) {
-        String executorNames = "";
+        String executorNames;
         Boolean primaryApplicantIsApplying = caseData.isPrimaryApplicantApplying();
         if (caseData.getSolsWillType() != null
             && caseData.getSolsWillType().matches("WillLeft")) {
