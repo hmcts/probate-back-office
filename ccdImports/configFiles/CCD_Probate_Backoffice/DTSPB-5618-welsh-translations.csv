@@ -39,6 +39,52 @@ Rwyf i, ${solsSOTName}, wedi hysbysu’r ysgutorion o’r canlyniadau pe bai’n
 
 Rwyf i, ${solsSOTName}, wedi cael awdurdod gan yr ysgutorion i lofnodi’r datganiad gwirionedd."
 "I, ${solsSOTName}, understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.","Rwyf i, ${solsSOTName}, yn deall y gellir dwyn achos am ddirmyg llys yn erbyn unrhyw un sy’n gwneud, neu sy’n peri i ddatganiad ffug gael ei wneud, mewn dogfen a wirheir gan ddatganiad gwirionedd heb gred onest yn ei wirionedd."
+"## Submit grant of probate applications online
+
+You must submit grant of probate applications online, unless an exemption applies.
+
+You can submit applications for letters of administration (intestacy) and letters of administration with will annexed (admon will) online when certain conditions apply.
+
+<a href=""https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"" target=""_blank"">Guidance on exemptions, conditions and when application must be submitted by paper</a>
+
+Step by step guidance on submitting an application online can be found at <a href=""https://www.gov.uk/government/publications/myhmcts-how-to-apply-for-probate-online/apply-for-probate-with-myhmcts"" target=""_blank"">Apply for probate with MyHMCTS</a>
+
+## If you have submitted an IHT400 form
+You must wait to receive a letter or email from HMRC with a probate code. You will need this code to apply.
+
+HMRC will send out the letter or email up to 20 working days after you submit the IHT400 form. If you have not received the letter or email, you should contact HMRC. 
+
+### Inheritance Tax helpline
+
+Telephone: 0300 123 1072
+
+Monday to Friday, 9am to 5pm
+
+Closed on bank holidays","## Cyflwyno ceisiadau am grant profiant ar-lein
+
+Mae'n rhaid i chi gyflwyno ceisiadau am grant profiant ar-lein oni bai bod esemptiad yn berthnasol i'ch achos.
+
+Gallwch gyflwyno ceisiadau am lythyrau gweinyddu (pan nad oes ewyllys) a llythyrau gweinyddu gydag ewyllys yn atodedig (ewyllys admon) ar-lein pan fydd amodau penodol yn berthnasol i'ch achos.
+
+<a href=""https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"" target=""_blank"">Arweiniad ar esemptiadau, amodau a pha bryd y mae'n rhaid cyflwyno cais ar bapur</a>
+
+Gallwch ddod o hyd i arweiniad cam wrth gam ar gyflwyno cais ar-lein yn <a href=""https://www.gov.uk/government/publications/myhmcts-how-to-apply-for-probate-online/apply-for-probate-with-myhmcts"" target=""_blank"">Gwneud cais am brofiant trwy MyHMCTS</a>
+
+## Os ydych wedi cyflwyno ffurflen IHT400
+Rhaid i chi aros i dderbyn llythyr neu e-bost gan Gyllid a Thollau EF (HMRC) gyda chod profiant. Byddwch angen y cod hwn i wneud cais.
+
+Bydd HMRC yn anfon y llythyr hyd at 20 diwrnod gwaith ar ôl i chi gyflwyno'r ffurflen IHT400. Os nad ydych wedi cael y llythyr yna dylech gysylltu â HMRC.
+
+### Llinell Gymorth Treth Etifeddiant
+
+Rhif ffôn: 0300 123 1072
+
+Dydd Llun i ddydd Gwener, 9am i 5pm
+
+Ar gau ar wyliau banc"
+"### What's the full name of the deceased? 
+Use the name on the death certificate","### Beth yw enw llawn yr ymadawedig? 
+Defnyddiwch yr enw sydd ar y dystysgrif marwolaeth"
 Case Reference,Cyfeirnod yr achos
 Your reference,Eich cyfeirnod
 First name(s) of deceased,Enw(au) cyntaf yr ymadawedig
