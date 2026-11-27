@@ -34,28 +34,16 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String,Object> examineInfectedBloodInterimSchemeTaskAttributes = Map.of(
-                "taskId", EXAMINE_IBIS,
-                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBIS,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineIBIS"
         );
 
-        Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_IBIS_CASE_PRINTED,
-                "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineInfectedBloodInterimSchemeCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CHANGE_STATE,
                 "name", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineIBIS"
         );
 
         Map<String,Object> examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes = Map.of(
@@ -70,7 +58,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -110,7 +98,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -144,7 +132,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -172,7 +160,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -207,7 +195,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeCasePrintedTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -247,7 +235,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeCasePrintedTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -281,7 +269,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeCasePrintedTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -309,7 +297,7 @@ public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider imple
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodInterimSchemeHandOffReason), false),
-                        List.of(examineInfectedBloodInterimSchemeCasePrintedTaskAttributes)
+                        List.of(examineInfectedBloodInterimSchemeCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

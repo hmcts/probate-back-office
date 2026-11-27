@@ -34,23 +34,10 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examineSection116TaskAttributes = Map.of(
-                "taskId", EXAMINE_SECTION_116,
-                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
-        Map<String,Object> examineSection116CasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_SECTION_116_CASE_PRINTED,
-                "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineSection116CaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_SECTION_116_CHANGE_STATE,
                 "name", EXAMINE_SECTION_116_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineSection116"
         );
 
         Map<String,Object> examineSection116CasePrintedHandOffsTaskAttributes = Map.of(
@@ -72,7 +59,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116TaskAttributes)
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -112,7 +99,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116TaskAttributes)
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -146,7 +133,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116TaskAttributes)
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -174,7 +161,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116TaskAttributes)
+                        List.of(examineSection116ReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -209,7 +196,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116CasePrintedTaskAttributes)
+                        List.of(examineSection116CasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -249,7 +236,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116CasePrintedTaskAttributes)
+                        List.of(examineSection116CasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -283,7 +270,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116CasePrintedTaskAttributes)
+                        List.of(examineSection116CasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -311,7 +298,7 @@ public class CamundaTaskWaInitiationSection116TestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(section116HandOffReason), false),
-                        List.of(examineSection116CasePrintedTaskAttributes)
+                        List.of(examineSection116CasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

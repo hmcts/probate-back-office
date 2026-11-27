@@ -35,28 +35,16 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-        Map<String,Object> infectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                "taskId", EXAMINE_IBCA_CASE_PRINTED,
-                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> infectedBloodCompensationAuthorityHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_IBCA_CASE_PRINTED,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineIBCACasePrinted"
         );
 
-        Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                "taskId", EXAMINE_IBCA,
-                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineInfectedBloodCompensationAuthorityCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CHANGE_STATE,
                 "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineIBCA"
         );
 
         Map<String,Object> examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -72,7 +60,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(
                                         infectedBloodCompensationAuthorityHandOffReason), false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -116,7 +104,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                                 handOffReasonListWithHandOffReason(
                                         infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -154,7 +142,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                                 handOffReasonListWithHandOffReason(
                                         infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -186,7 +174,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                                 handOffReasonListWithHandOffReason(
                                         infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(infectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(infectedBloodCompensationAuthorityHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -224,7 +212,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
@@ -263,7 +251,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -293,7 +281,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -323,7 +311,7 @@ public class CamundaTaskWaInitiationInfectedBloodCompensationAuthorityTestProvid
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason),
                                 false),
-                        List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+                        List.of(examineInfectedBloodCompensationAuthorityReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,

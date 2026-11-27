@@ -41,22 +41,10 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                 "processCategories", "case progression,handOffs,examineDeBonisNon"
         );
 
-        Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
-                "taskId", EXAMINE_DE_BONIS_NON,
-                "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
-        Map<String,Object> examineDeBonisNonCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_DE_BONIS_NON_CASE_PRINTED,
-                "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineDeBonisNonCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON_CHANGE_STATE,
                 "name", DE_BONIS_NON_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineDeBonisNon"
         );
 
         Map<String,Object> examineDeBonisNonCasePrintedHandOffsTaskAttributes = Map.of(
@@ -71,7 +59,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -111,7 +99,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -145,7 +133,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -173,7 +161,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonTaskAttributes)
+                        List.of(examineDeBonisNonReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -208,7 +196,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -247,7 +235,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -280,7 +268,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -307,7 +295,7 @@ public class CamundaTaskWaInitiationDeBonisNonTestProvider implements ArgumentsP
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(deBonisNonHandOffReason), false),
-                        List.of(examineDeBonisNonCasePrintedTaskAttributes)
+                        List.of(examineDeBonisNonCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

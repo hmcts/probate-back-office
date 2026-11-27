@@ -34,23 +34,10 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examineResealForeignGrantTaskAttributes = Map.of(
-                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT,
-                "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
-        Map<String,Object> examineResealForeignGrantCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CASE_PRINTED,
-                "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineResealForeignGrantCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_RESEAL_FOREIGN_GRANT_CHANGE_STATE,
                 "name", EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineResealForeignGrant"
         );
 
         Map<String,Object> examineResealForeignGrantCasePrintedHandOffsTaskAttributes = Map.of(
@@ -71,7 +58,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -111,7 +98,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -145,7 +132,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -173,7 +160,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantTaskAttributes)
+                        List.of(examineResealForeignGrantReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -208,7 +195,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantCasePrintedTaskAttributes)
+                        List.of(examineResealForeignGrantCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -248,7 +235,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantCasePrintedTaskAttributes)
+                        List.of(examineResealForeignGrantCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -282,7 +269,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantCasePrintedTaskAttributes)
+                        List.of(examineResealForeignGrantCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -310,7 +297,7 @@ public class CamundaTaskWaInitiationResealForeignGrantTestProvider implements Ar
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(resealForeignGrantHandOffReason), false),
-                        List.of(examineResealForeignGrantCasePrintedTaskAttributes)
+                        List.of(examineResealForeignGrantCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

@@ -30,18 +30,11 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String,Object> examineDigitalCaseIncapacityUnderRule35TaskAttributes
-                = Map.of(
-                "taskId", EXAMINE_INCAPACITY_RULE_35,
-                "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35CaseMatchingIssueGrantTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35_CHANGE_STATE,
                 "name", EXAMINE_INCAPACITY_RULE_35_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineIncapacityRule35"
         );
 
         Map<String,Object> examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes
@@ -57,7 +50,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -85,7 +78,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CHANGE_STATE_EVENT,
@@ -113,7 +106,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
@@ -141,7 +134,7 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason), false),
-                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                    List.of(examineDigitalCaseIncapacityUnderRule35ReadyToIssueHandOffsTaskTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,

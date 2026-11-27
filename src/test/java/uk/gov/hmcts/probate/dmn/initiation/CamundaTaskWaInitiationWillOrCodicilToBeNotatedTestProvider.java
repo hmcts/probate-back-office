@@ -34,28 +34,16 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String, Object> examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
-                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String, Object> examineWillOrCodicilToBeNotatedHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_CODICIL_NOTATED_CASE_PRINTED,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineWillCodicilNotatedCasePrinted"
         );
 
-        Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
-                "taskId", EXAMINE_WILL_CODICIL_NOTATED,
-                "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineWillOrCodicilToBeNotatedCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_CHANGE_STATE,
                 "name", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineWillCodicilNotated"
         );
 
         Map<String,Object> examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -70,7 +58,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -110,7 +98,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -144,7 +132,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -172,7 +160,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         CASE_PRINTED_STATE,
                         additionalData(false, "", true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedCasePrintedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -207,7 +195,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
@@ -235,7 +223,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -263,7 +251,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
@@ -291,7 +279,7 @@ public class CamundaTaskWaInitiationWillOrCodicilToBeNotatedTestProvider impleme
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(willOrCodicilToBeNotatedHandOffReason), false),
-                        List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                        List.of(examineWillOrCodicilToBeNotatedReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",

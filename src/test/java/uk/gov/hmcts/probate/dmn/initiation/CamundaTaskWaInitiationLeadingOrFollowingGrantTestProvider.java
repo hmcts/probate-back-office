@@ -34,13 +34,6 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-        Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes
-                = Map.of(
-                "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
-                "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS,
@@ -48,18 +41,11 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                 "processCategories", "case progression,handOffs,examineLeadingFollowingGrants"
         );
 
-        Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes
-                = Map.of(
-                "taskId", EXAMINE_LEADING_FOLLOWING_GRANTS_CASE_PRINTED,
-                "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCaseMatchingIssueGrantTaskAttributes
                 = Map.of(
                 "taskId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CHANGE_STATE,
                 "name", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineLeadingFollowingGrants"
         );
 
         Map<String,Object> examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes
@@ -75,7 +61,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     BO_AMEND_CASE_DETAILS_FOR_READY_TO_ISSUE_EVENT,
@@ -111,7 +97,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CHANGE_STATE_EVENT,
@@ -139,7 +125,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
@@ -167,7 +153,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     READY_TO_ISSUE_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsReadyToIssueHandOffsTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
@@ -207,7 +193,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     CASE_PRINTED_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes)
             ),
             Arguments.of(
                     HANDLE_EVIDENCE_EVENT,
@@ -246,7 +232,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     CASE_PRINTED_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes)
             ),
             Arguments.of(
                     BO_RESOLVE_STOP_EVENT,
@@ -279,7 +265,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     CASE_PRINTED_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes)
             ),
             Arguments.of(
                     RESOLVE_SME_REFERRAL_EVENT,
@@ -306,7 +292,7 @@ public class CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider implemen
                     CASE_PRINTED_STATE,
                     additionalData(false, "",true,
                             handOffReasonListWithHandOffReason(leadingFollowingGrantsHandOffReason), false),
-                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedTaskAttributes)
+                    List.of(examineDigitalCaseLeadingOrFollowingGrantsCasePrintedHandOffsTaskAttributes)
             ),
             Arguments.of(
                     CREATE_CHANGE_STATE_EVENT,

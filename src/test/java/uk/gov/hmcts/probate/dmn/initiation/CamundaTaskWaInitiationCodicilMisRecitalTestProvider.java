@@ -34,29 +34,10 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examineCodicilMisRecitalTaskAttributes = Map.of(
-                "taskId", EXAMINE_CODICIL_MIS,
-                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes = Map.of(
                 "taskId", EXAMINE_CODICIL_MIS,
                 "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
                 "processCategories", "case progression,handOffs,examineCodicilMis"
-        );
-
-        Map<String,Object> examineCodicilMisRecitalCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_CODICIL_MIS_CASE_PRINTED,
-                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
-        Map<String,Object> examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes = Map.of(
-                "taskId", EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE,
-                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
         );
 
         Map<String,Object> examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes = Map.of(
@@ -65,13 +46,19 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                 "processCategories", "case progression,handOffs,examineCodicilMisCasePrinted"
         );
 
+        Map<String,Object> examineCodicilMisRecitalCaseMatchingIssueGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_CODICIL_MIS_RECITAL_CHANGE_STATE,
+                "name", EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME,
+                "processCategories", "case progression,handOffs,examineCodicilMis"
+        );
+
         return Stream.of(
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -111,7 +98,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -145,7 +132,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -173,7 +160,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalTaskAttributes)
+                        List.of(examineCodicilMisRecitalReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -208,7 +195,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -247,7 +234,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -280,7 +267,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -307,7 +294,7 @@ public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements Arg
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(codicilMisRecitalHandOffReason), false),
-                        List.of(examineCodicilMisRecitalCasePrintedTaskAttributes)
+                        List.of(examineCodicilMisRecitalCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

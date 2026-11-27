@@ -31,16 +31,10 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-        Map<String,Object> foreignDomicileTaskAttributes = Map.of(
-                "taskId", EXAMINE_FOREIGN_DOMICILE,
-                "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> foreignDomicileCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_FOREIGN_DOMICILE_CHANGE_STATE,
                 "name", EXAMINE_FOREIGN_DOMICILE_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examineForeignDomicile"
         );
 
         Map<String,Object> foreignDomicileReadyToIssueHandOffsTaskAttributes = Map.of(
@@ -56,7 +50,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
                                 false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -98,7 +92,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
                                 false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -134,7 +128,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
                                 false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -164,7 +158,7 @@ public class CamundaTaskWaInitiationForeignDomicileBoReadyToIssueTestProvider im
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(foreignDomicileCasePrintedHandOffReason),
                                 false),
-                        List.of(foreignDomicileTaskAttributes)
+                        List.of(foreignDomicileCaseMatchingIssueGrantTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,

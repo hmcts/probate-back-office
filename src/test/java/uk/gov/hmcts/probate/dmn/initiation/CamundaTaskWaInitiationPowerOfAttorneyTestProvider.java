@@ -33,23 +33,10 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-
-        Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
-                "taskId", EXAMINE_POA,
-                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
-        Map<String,Object> examinePowerOfAttorneyCasePrintedTaskAttributes = Map.of(
-                "taskId", EXAMINE_POA_CASE_PRINTED,
-                "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
-        );
-
         Map<String,Object> examinePowerOfAttorneyCaseMatchingIssueGrantTaskAttributes = Map.of(
                 "taskId", EXAMINE_POWER_OF_ATTORNEY_CHANGE_STATE,
                 "name", EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME,
-                "processCategories", "case progression,handOffs"
+                "processCategories", "case progression,handOffs,examinePOA"
         );
 
         Map<String,Object> examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes = Map.of(
@@ -70,7 +57,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -110,7 +97,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -144,7 +131,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -172,7 +159,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyTaskAttributes)
+                        List.of(examinePowerOfAttorneyReadyToIssueHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
@@ -207,7 +194,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                        List.of(examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -246,7 +233,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                        List.of(examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
@@ -279,7 +266,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                        List.of(examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -306,7 +293,7 @@ public class CamundaTaskWaInitiationPowerOfAttorneyTestProvider implements Argum
                         CASE_PRINTED_STATE,
                         additionalData(false, "",true,
                                 handOffReasonListWithHandOffReason(powerOfAttorneyHandOffReason), false),
-                        List.of(examinePowerOfAttorneyCasePrintedTaskAttributes)
+                        List.of(examinePowerOfAttorneyCasePrintedHandOffsTaskAttributes)
                 ),
                 Arguments.of(
                         CREATE_CHANGE_STATE_EVENT,
