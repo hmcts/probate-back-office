@@ -208,6 +208,7 @@ public class WaTaskContoller {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
             waTaskService.closeAwaitingDocumentationTasks(callbackRequest, clientContext);
+            log.debug("23....");
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());
     }

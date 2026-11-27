@@ -103,6 +103,7 @@ public class WaTaskService {
     }
 
     public Set<HandoffReason> getGetHandOffReasons(CaseDetails caseDetails) {
+        log.debug("6....");
         return ofNullable(caseDetails.getData())
                 .map(CaseData::getBoHandoffReasonList)
                 .stream()
@@ -125,6 +126,7 @@ public class WaTaskService {
                                                 String clientContext) {
         triggerCloseHandOffEvent(callbackRequest,
                 handOffReason -> "Examine" + handOffReason + STATE_CASE_PRINTED);
+        log.debug("13....");
         triggerCloseIceEvent(callbackRequest,
                 clientContext,
                 TaskTypes.examineAwaitingDocTasks());
@@ -133,8 +135,8 @@ public class WaTaskService {
     private void triggerCloseIceEvent(CallbackRequest callbackRequest,
                                       String clientContext,
                                       Set<TaskTypes> taskTypes) {
-        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         Long caseId = callbackRequest.getCaseDetails().getId();
+        log.debug("15....");
         Consumer<String> eventTrigger = caseType ->
                 taskTypes.stream()
                         .filter(taskType -> Objects.nonNull(taskType.getCaseType()))
@@ -147,17 +149,19 @@ public class WaTaskService {
                                     eventId);
                             triggerEvent(callbackRequest.getCaseDetails(), eventId);
                         });
-
         if (isHandOffsAdded(callbackRequest)) {
+            log.debug("17....");
             eventTrigger.accept(callbackRequest.getCaseDetails().getData().getCaseType());
         }
-
+        log.debug("18....");
+        Optional<TaskData> taskData = taskUtils.getTaskData(clientContext);
         if (taskData.isEmpty()) {
+            log.debug("19....");
             boolean caseTypeChanged =
                     getCaseTypePredicate().test(callbackRequest, clientContext);
 
             if (caseTypeChanged) {
-
+                log.debug("20....");
                 String caseTypeBefore = callbackRequest.getCaseDetailsBefore().getData().getCaseType();
 
                 log.info("Case id {} : no context task and remove case type as it has changed {}",
@@ -165,16 +169,21 @@ public class WaTaskService {
                         caseTypeBefore);
                 eventTrigger.accept(caseTypeBefore);
             }
+            log.debug("21....");
         }
+        log.debug("22....");
     }
 
     private void triggerCloseHandOffEvent(CallbackRequest callbackRequest,
                                           UnaryOperator<String> handOffReasonTask) {
+        log.debug("1....");
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         if (isAllHandOffsRemoved(callbackRequest)) {
+            log.debug("2....");
             triggerEvent(caseDetails, CLOSE_HANDOFFS);
         } else {
+            log.debug("5....");
             Set<HandoffReason> handOffReasonBefore = getGetHandOffReasons(callbackRequest.getCaseDetailsBefore());
             Set<HandoffReason> handOffReasonAfter = getGetHandOffReasons(callbackRequest.getCaseDetails());
 
@@ -183,6 +192,7 @@ public class WaTaskService {
 
             String caseState = callbackRequest.getCaseDetailsBefore().getState();
 
+            log.debug("7....");
             Consumer<Map<String, TaskTypes>> eventTrigger = stateTasks -> {
                 handOffReasonsToBeRemoved.stream()
                         .map(HandoffReason::getCaseHandoffReason)
@@ -202,17 +212,21 @@ public class WaTaskService {
                         });
 
             };
-
+            log.debug("8....");
             if (!handOffReasonsToBeRemoved.isEmpty()) {
+                log.debug("9....");
                 if (STATE_CASE_PRINTED.equals(caseState)) {
+                    log.debug("10....");
                     Map<String, TaskTypes> examineAwaitingDocTasks = getStateTasks(STATE_CASE_PRINTED);
                     eventTrigger.accept(examineAwaitingDocTasks);
                 } else if (StateConstants.STATE_BO_READY_TO_ISSUE.equals(caseState)) {
+                    log.debug("11....");
                     Map<String, TaskTypes> examineReadyToIssueTask =
                             getStateTasks(StateConstants.STATE_BO_READY_TO_ISSUE);
                     eventTrigger.accept(examineReadyToIssueTask);
                 }
             }
+            log.debug("12....");
         }
     }
 
@@ -231,6 +245,7 @@ public class WaTaskService {
     }
 
     private void triggerEvent(CaseDetails caseDetails, EventId eventId) {
+        log.debug("3....");
         Function<StartEventResponse, CaseDataContent> caseDataContentFunction =
                 startEventResponse ->
                         CaseDataContent.builder()
@@ -240,7 +255,7 @@ public class WaTaskService {
                                 .eventToken(startEventResponse.getToken())
                                 .data(startEventResponse.getCaseDetails().getData())
                                 .build();
-
+        log.debug("4....");
         ccdClientApi.triggerEvent(caseDetails.getId().toString(),
                 eventId,
                 caseDataContentFunction,
