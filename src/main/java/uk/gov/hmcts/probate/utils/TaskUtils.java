@@ -42,6 +42,7 @@ public class TaskUtils {
     }
 
     public Optional<TaskData> getTaskData(String clientContext) {
+        log.debug("14....");
         return getWaMapper(clientContext)
                 .map(WaMapper::getClientContext)
                 .filter(value -> nonNull(value.getUserTask()))
