@@ -3,7 +3,7 @@ echo ${TEST_URL}
 
 if [[ -z ${SecurityRules} ]]; then
   echo "SecurityRules variable not set. Please set it as a parameter in your Jenkinsfile_nightly file."
-  exit 1
+  SecurityRules="https://raw.githubusercontent.com/hmcts/security-test-rules/master/conf/security-rules.conf"
 fi
 
 ZAP_URL_EXCLUSIONS="-config globalexcludeurl.url_list.url\(0\).regex='^https?:\/\/.*\/(?:.*login.*)+$' ${ZAP_URL_EXCLUSIONS}"
